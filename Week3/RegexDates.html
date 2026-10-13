@@ -9,7 +9,7 @@
 <x-dc>
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
 <style>body{margin:0;background:#EEF1FEfff}a{color:#1e7a4c}a:hover{color:#15513d}</style>
 </helmet>
 <div style="min-height:100vh;background:#EEF1FEfff;color:#1B2F6B;font-family:Arial,Helvetica,sans-serif;padding:40px 32px 64px;box-sizing:border-box">
@@ -53,14 +53,16 @@
     </div>
     <sc-if value="{{ pass }}" hint-placeholder-val="{{ false }}">
     <div style="display:flex;flex-direction:column;gap:10px;border-top:2px solid #1B2F6B;padding-top:20px">
-      <div style="font-size:15px">Explain it · which sentence describes your pattern?</div>
+      <div style="font-size:15px">Reference solution · several patterns can be correct, this is one of them<br></div>
+      <pre style="margin:0;font-family:'JetBrains Mono',monospace;font-size:18px;background:#EEF1FE;border:2px solid #1e7a4c;border-radius:8px;padding:12px 16px;overflow:auto;white-space:pre-wrap">{{ solution }}</pre>
+      <div style="font-size:15px;margin-top:6px">Explain it · which sentence describes the reference solution?</div>
       <sc-for list="{{ opts }}" as="o" hint-placeholder-count="3">
         <button onClick="{{ o.pick }}" style="text-align:left;font:inherit;font-size:17px;padding:14px 16px;border-radius:8px;border:1px solid {{ o.border }};background:{{ o.bg }};color:#1B2F6B;cursor:pointer">{{ o.text }}</button>
       </sc-for>
       <div style="min-height:22px;font-weight:500;color:{{ explainColor }}">{{ explainMsg }}</div>
       <sc-if value="{{ explained }}" hint-placeholder-val="{{ false }}">
         <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
-          <div style="font-size:15px;color:#5A6385">One possible solution: <code style="font-family:'JetBrains Mono',monospace;color:#1B2F6B;background:#EEF1FE;padding:3px 8px;border-radius:4px">{{ solution }}</code></div>
+          
           <button onClick="{{ next }}" style="font:inherit;font-size:16px;padding:12px 22px;border:0;border-radius:8px;background:#1B2F6B;color:#fff;cursor:pointer">Next step →</button>
         </div>
       </sc-if>
@@ -106,6 +108,11 @@
     <sc-if value="{{ sayOk }}" hint-placeholder-val="{{ false }}"><div style="font-size:18px;font-weight:700;color:#1e7a4c">Exercise complete. Be ready to explain each piece aloud.</div></sc-if>
   </div>
   </sc-if>
+  <div style="display:flex;align-items:center;justify-content:center;gap:6px;align-self:center;background:#1B2F6B;color:#fff;border-radius:999px;padding:6px 10px;margin-top:8px">
+    <button onClick="{{ prev }}" aria-label="Previous step" style="font:inherit;font-size:22px;line-height:1;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:#fff;cursor:pointer;opacity:{{ prevOp }}">‹</button>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:15px;min-width:64px;text-align:center">{{ pos }}</span>
+    <button onClick="{{ skip }}" aria-label="Next step" style="font:inherit;font-size:22px;line-height:1;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:#fff;cursor:pointer;opacity:{{ nextOp }}">›</button>
+  </div>
 </div>
 </div>
 </x-dc>
@@ -151,7 +158,7 @@ class Component extends DCLogic {
     const s = this.state, st = s.step, cur = this.steps[st], isRead = st === 5, set = (o) => this.setState(o);
     const stepper = this.steps.map((x, i) => ({ n: i + 1, label: x.label, mark: s.explained[i] ? '✓' : '', bg: i === st ? '#1B2F6B' : i <= s.max ? '#26314F' : '#5A6385', op: 1, cursor: i <= s.max ? 'pointer' : 'default', go: () => { if (i <= s.max) set({ step: i }); } }))
       .concat([{ n: 6, label: 'Read a pattern', mark: s.say === 0 ? '✓' : '', bg: isRead ? '#1B2F6B' : 5 <= s.max ? '#26314F' : '#5A6385', op: 1, cursor: 5 <= s.max ? 'pointer' : 'default', go: () => { if (5 <= s.max) set({ step: 5 }); } }]);
-    const v = { stepper, isWrite: !isRead, isRead, title: isRead ? '6 · Cut, label, say it, check' : cur.title };
+    const v = { pos: (st + 1) + ' / 6', prevOp: st > 0 ? 1 : 0.4, nextOp: st < 5 ? 1 : 0.4, prev: () => { if (st > 0) set({ step: st - 1 }); }, skip: () => { if (st < 5) set({ step: st + 1, max: Math.max(s.max, st + 1) }); }, stepper, isWrite: !isRead, isRead, title: isRead ? '6 · Cut, label, say it, check' : cur.title };
     if (!isRead) {
       const rx = s.rx[st]; let full = null, glob = null, err = '';
       if (rx) { try { full = new RegExp('^(?:' + rx + ')$'); glob = new RegExp(rx, 'g'); } catch (e) { err = 'Invalid pattern: ' + e.message.replace(/^Invalid regular expression: /, ''); } }
@@ -164,7 +171,7 @@ class Component extends DCLogic {
       const all = mustRows, good = all.filter(r => r.ok).length;
       const pass = !!full && good === all.length;
       Object.assign(v, {
-        task: cur.task, rx, mustRows, pass, hint: cur.hint, solution: cur.sol,
+        task: cur.task, explainQ: cur.q, rx, mustRows, pass, hint: cur.hint, solution: cur.sol,
         onRx: (e) => { const r = s.rx.slice(); r[st] = e.target.value; set({ rx: r }); },
         status: err || (!rx ? 'Waiting for a pattern.' : pass ? 'All ' + all.length + ' strings behave correctly.' : good + ' of ' + all.length + ' strings behave correctly.'), statusColor: err ? '#b3261e' : pass ? '#1e7a4c' : '#1B2F6B',
         hintOpen: !!s.hint[st], hintLabel: s.hint[st] ? 'Hide hint' : 'Show hint', toggleHint: () => set({ hint: Object.assign({}, s.hint, { [st]: !s.hint[st] }) }),
