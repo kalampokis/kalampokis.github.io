@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#ffffff}a{color:#1e7a4c}a:hover{color:#15513d}</style>
+</helmet>
+<div style="min-height:100vh;background:#ffffff;color:#1B2F6B;font-family:Arial,Helvetica,sans-serif;padding:40px 32px 64px;box-sizing:border-box">
+<div style="max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+  <div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.14em;color:#5A6385;text-transform:uppercase">Web and Text Analytics · Week 3 · String methods in pandas</div>
+    <h1 style="margin:8px 0 0;font-family:Georgia,serif;font-weight:700;font-size:40px;line-height:1.1">Predict, check, explain</h1>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-size:15px;color:#5A6385">The data. <span style="font-family:'JetBrains Mono',monospace">df['text']</span> holds these five sentences, indexed 0 to 4.</div>
+    <pre style="margin:0;background:#EEF1FE;border:1px solid #B9C8FC;border-radius:8px;padding:14px 18px;font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.6;overflow:auto">{{ dataText }}</pre>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:10px">
+    <sc-for list="{{ stepper }}" as="s" hint-placeholder-count="10">
+      <button onClick="{{ s.go }}" style="text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 14px;background:{{ s.bg }};color:#fff;cursor:{{ s.cursor }};display:flex;flex-direction:column;gap:2px">
+        <span style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px">{{ s.n }} {{ s.mark }}</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:13px">{{ s.label }}</span>
+      </button>
+    </sc-for>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <pre style="margin:0;background:#1B2F6B;color:#ffffff;border-radius:8px;padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:18px;line-height:1.6;overflow:auto">{{ code }}</pre>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:15px">Step 1 · predict: {{ question }}</div>
+      <sc-for list="{{ predOpts }}" as="o" hint-placeholder-count="4">
+        <button onClick="{{ o.pick }}" style="text-align:left;font:inherit;font-size:17px;padding:12px 16px;border-radius:8px;border:1px solid {{ o.border }};background:{{ o.bg }};color:#1B2F6B;cursor:pointer">{{ o.text }}</button>
+      </sc-for>
+      <div style="min-height:22px;font-weight:500;color:{{ predColor }}">{{ predMsg }}</div>
+    </div>
+    <sc-if value="{{ predicted }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="font-size:15px">Output</div>
+        <pre style="margin:0;background:#EEF1FE;border:2px solid #1e7a4c;border-radius:8px;padding:14px 18px;font-family:'JetBrains Mono',monospace;font-size:15px;line-height:1.5;overflow:auto">{{ output }}</pre>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;border-top:2px solid #1B2F6B;padding-top:20px">
+        <div style="font-size:15px">Step 2 · explain: why does it behave this way?</div>
+        <sc-for list="{{ whyOpts }}" as="o" hint-placeholder-count="3">
+          <button onClick="{{ o.pick }}" style="text-align:left;font:inherit;font-size:17px;padding:14px 16px;border-radius:8px;border:1px solid {{ o.border }};background:{{ o.bg }};color:#1B2F6B;cursor:pointer">{{ o.text }}</button>
+        </sc-for>
+        <div style="min-height:22px;font-weight:500;color:{{ whyColor }}">{{ whyMsg }}</div>
+        <sc-if value="{{ canNext }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ next }}" style="align-self:flex-start;font:inherit;font-size:16px;padding:12px 22px;border:0;border-radius:8px;background:#1B2F6B;color:#fff;cursor:pointer">Next →</button>
+        </sc-if>
+        <sc-if value="{{ finished }}" hint-placeholder-val="{{ false }}"><div style="font-size:18px;font-weight:700;color:#1e7a4c">All examples complete. Be ready to explain each one aloud.</div></sc-if>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:6px;align-self:center;background:#1B2F6B;color:#fff;border-radius:999px;padding:6px 10px;margin-top:8px">
+    <button onClick="{{ prev }}" aria-label="Previous example" style="font:inherit;font-size:22px;line-height:1;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:#fff;cursor:pointer;opacity:{{ prevOp }}">‹</button>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:15px;min-width:64px;text-align:center">{{ pos }}</span>
+    <button onClick="{{ skip }}" aria-label="Next example" style="font:inherit;font-size:22px;line-height:1;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:#fff;cursor:pointer;opacity:{{ nextOp }}">›</button>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { step: 0, max: 0, pred: {}, why: {}, done: {} };
+  dataText = `time_sentences = ["Monday: The doctor's appointment is at 2:45pm.",
+  "Tuesday: The dentist's appointment is at 11:30 am.",
+  "Wednesday: At 7:00pm, there is a basketball game!",
+  "Thursday: Be back home by 11:15 pm at the latest.",
+  "Friday: Take the train at 08:10 am, arrive at 09:00am."]
+df = pd.DataFrame(time_sentences, columns=['text'])`;
+  items = [
+    { label: 'len', code: "df['text'].str.len()", q: 'what does this return?',
+      pred: ['A Series of ints: the number of characters of each sentence (46, 50, 49, 49, 54)', 'A single int: the number of sentences', 'A Series of bools', 'A DataFrame with one column per word'],
+      out: '0    46\n1    50\n2    49\n3    49\n4    54\nName: text, dtype: int64',
+      why: ['str.len() is applied to every element and counts its characters, spaces and punctuation included.', 'str.len() counts the words of each element.', 'str.len() returns the length of the Series, not of its elements.'] },
+    { label: 'split+len', code: "df['text'].str.split().str.len()", q: 'what does this return?',
+      pred: ['A Series of ints: the number of tokens of each sentence (7, 8, 8, 10, 10)', 'The same numbers as str.len()', 'A Series of lists of words', 'A single int: 43'],
+      out: '0     7\n1     8\n2     8\n3    10\n4    10\nName: text, dtype: int64',
+      why: ['split() turns each sentence into a list of tokens, and the second str.len() then measures the length of each list.', 'split() splits into characters, so the counts equal the character counts.', 'The second str.len() is applied to the Series, so it returns 5.'] },
+    { label: 'contains', code: "# find which entries contain the word 'appointment'\ndf['text'].str.contains('appointment')", q: 'what does this return?',
+      pred: ['A bool Series: True, True, False, False, False', 'The positions where the word starts', 'A bool Series: all True', 'A list of the matching sentences'],
+      out: '0     True\n1     True\n2    False\n3    False\n4    False\nName: text, dtype: bool',
+      why: ['contains() tests every element and returns True where the pattern occurs anywhere in the string.', 'contains() returns the position of the match, like find().', 'contains() only tests the start of each string.'] },
+    { label: 'count', code: "# find how many times a digit occurs in each string\ndf['text'].str.count(r'\\d')", q: 'what does this return?',
+      pred: ['A Series of ints: 3, 4, 3, 4, 8', 'A Series of ints: 1, 1, 1, 1, 2 (one per matching time)', 'A Series of lists of digits', 'A bool Series'],
+      out: '0    3\n1    4\n2    3\n3    4\n4    8\nName: text, dtype: int64',
+      why: ['count() returns how many times the pattern occurs in each element, and \\d matches one digit at a time (2:45 has three).', 'count() counts the times, not the digits, so each time is one occurrence.', 'count() returns the matches themselves, not their number.'] },
+    { label: 'findall 1', code: "# find all occurrences of the digits\ndf['text'].str.findall(r'\\d')", q: 'what does this return for rows 0 and 4?',
+      pred: ["Lists of single-digit strings: row 0 ['2', '4', '5'], row 4 has 8 items", 'A Series of ints: 3 and 8', 'One string per row: the first digit', 'Lists with the whole numbers: row 0 [2, 45]'],
+      out: "0                                ['2', '4', '5']\n1                          ['1', '1', '3', '0']\n2                                ['7', '0', '0']\n3                          ['1', '1', '1', '5']\n4        ['0', '8', '1', '0', '0', '9', '0', '0']\nName: text, dtype: object",
+      why: ['findall() returns, for every element, a list with all non-overlapping matches. \\d matches one digit, so each digit is its own item.', 'findall() returns only the first match of each element.', 'findall() returns the number of matches, like count().'] },
+    { label: 'findall 2', code: "# group and find the hours and minutes\ndf['text'].str.findall(r'(\\d?\\d):(\\d\\d)')", q: 'what does this return for rows 0 and 4?',
+      pred: ["Lists of tuples: row 0 [('2', '45')], row 4 [('08', '10'), ('09', '00')]", "Lists of strings: row 0 ['2:45']", 'A DataFrame with one column per group', "A list of ints: row 0 [2, 45]"],
+      out: "0                    [('2', '45')]\n1                   [('11', '30')]\n2                    [('7', '00')]\n3                   [('11', '15')]\n4    [('08', '10'), ('09', '00')]\nName: text, dtype: object",
+      why: ['With more than one capture group, findall() returns a tuple of the groups for every match, and one list of tuples per element.', 'findall() always returns the whole matched text, whatever the groups.', 'findall() builds a DataFrame when the pattern has groups; only extract() does not.'] },
+    { label: 'replace', code: "# replace weekdays with '???'\ndf['text'].str.replace(r'\\w+day\\b', '???', regex=True)", q: 'what does this return?',
+      pred: ["The weekday of each sentence becomes '???', the rest is unchanged", 'Every occurrence of the letters day becomes ???', "Only row 0 changes, replace() stops at the first match", 'The whole sentence becomes ???'],
+      out: "0            ???: The doctor's appointment is at 2:45pm.\n1          ???: The dentist's appointment is at 11:30 am.\n2           ???: At 7:00pm, there is a basketball game!\n3          ???: Be back home by 11:15 pm at the latest.\n4    ???: Take the train at 08:10 am, arrive at 09:00am.\nName: text, dtype: object",
+      why: ['\\w+day\\b matches a whole word that ends in day (Monday, Tuesday, ...); replace() substitutes every match in every element.', 'The pattern is the literal text day, so only that part of each word would change.', 'replace() only substitutes the first match of each element.'] },
+    { label: 'replace λ', code: "# replace weekdays with 3 letter abbreviations\ndf['text'].str.replace(r'(\\w+day\\b)', lambda x: x.groups()[0][:3], regex=True)", q: 'what does this return?',
+      pred: ['Each weekday is shortened to its first three letters: Mon, Tue, Wed, Thu, Fri', "Each weekday becomes '???'", 'Each weekday is replaced by its group number, 1', 'An error: replace() does not accept a function'],
+      out: "0        Mon: The doctor's appointment is at 2:45pm.\n1      Tue: The dentist's appointment is at 11:30 am.\n2       Wed: At 7:00pm, there is a basketball game!\n3      Thu: Be back home by 11:15 pm at the latest.\n4    Fri: Take the train at 08:10 am, arrive at 09:00am.\nName: text, dtype: object",
+      why: ['The lambda receives each match object; groups()[0] is the matched weekday and [:3] keeps its first three letters, which becomes the replacement.', 'The lambda receives the whole sentence, so [:3] would keep the first three letters of each sentence.', 'A function is applied once to the whole Series, not once per match.'] },
+    { label: 'extract', code: "# create new columns from first match of extracted groups\ndf['text'].str.extract(r'(\\d?\\d):(\\d\\d)')", q: 'what is the shape of the result, and which match is used in row 4?',
+      pred: ['A DataFrame of 5 rows × 2 columns; row 4 holds the first match (08, 10)', 'A Series of 5 strings', 'A DataFrame of 6 rows × 2 columns; row 4 appears twice', 'A DataFrame of 5 rows × 1 column'],
+      out: '    0   1\n0   2  45\n1  11  30\n2   7  00\n3  11  15\n4  08  10',
+      why: ['extract() returns one column per capture group and one row per element, using only the first match of each element.', 'extract() returns every match, so row 4 contributes two rows.', 'extract() joins the groups into a single string per element.'] },
+    { label: 'extractall', code: "# extract the entire time, the hours, the minutes, and the period\ndf['text'].str.extractall(r'((\\d?\\d):(\\d\\d) ?([ap]m))')", q: 'how many rows, and what is the row index?',
+      pred: ['6 rows, a MultiIndex (row, match): row 4 has two matches', '5 rows, a plain index 0 to 4', '5 rows, a MultiIndex (row, match)', '4 columns and 1 row'],
+      out: '              0   1   2   3\n  match\n0 0        2:45pm   2  45  pm\n1 0       11:30 am  11  30  am\n2 0        7:00pm   7  00  pm\n3 0       11:15 pm  11  15  pm\n4 0       08:10 am  08  10  am\n  1       09:00am   09  00  am',
+      why: ['extractall() returns one row per match, indexed by the original row and the match number; the outer group gives column 0 and the inner groups the others.', 'extractall() returns only the first match, so there is one row per element.', 'extractall() keeps the original index and numbers the matches in a new column.'] }
+  ];
+  renderVals() {
+    const s = this.state, set = (o) => this.setState(o), n = this.items.length, st = s.step;
+    const stepper = this.items.map((x, i) => ({ n: i + 1, label: x.label, mark: s.done[i] ? '✓' : '', bg: i === st ? '#1B2F6B' : i <= s.max ? '#26314F' : '#5A6385', cursor: i <= s.max ? 'pointer' : 'default', go: () => { if (i <= s.max) set({ step: i }); } }));
+    const it = this.items[st], pk = s.pred[st], wk = s.why[st];
+    const rot = (a, k) => { const m = a.map((x, i) => ({ x, i })); return m.slice(k % m.length).concat(m.slice(0, k % m.length)); };
+    const style = (on, ok) => ({ border: on ? (ok ? '#1e7a4c' : '#b3261e') : '#B9C8FC', bg: on ? (ok ? '#d0e8da' : '#f6d9d5') : '#EEF1FE' });
+    return {
+      dataText: this.dataText, stepper, code: it.code, question: it.q, output: it.out + (it.note ? '\n\n# ' + it.note : ''),
+      predicted: pk === 0, canNext: !!s.done[st] && st < n - 1, finished: !!s.done[st] && st === n - 1,
+      predOpts: rot(it.pred, st + 1).map(e => Object.assign({ text: e.x, pick: () => set({ pred: Object.assign({}, s.pred, { [st]: e.i }) }) }, style(pk === e.i, e.i === 0))),
+      predMsg: pk === undefined ? '' : pk === 0 ? 'Correct. Now explain it.' : 'Not what Python returns. Read the code again and retry.', predColor: pk === 0 ? '#1e7a4c' : '#b3261e',
+      whyOpts: rot(it.why, st + 2).map(e => Object.assign({ text: e.x, pick: () => set({ why: Object.assign({}, s.why, { [st]: e.i }), done: e.i === 0 ? Object.assign({}, s.done, { [st]: true }) : s.done }) }, style(wk === e.i, e.i === 0))),
+      whyMsg: wk === undefined ? '' : wk === 0 ? 'Correct.' : 'Not quite. Think about what the method is documented to do.', whyColor: wk === 0 ? '#1e7a4c' : '#b3261e',
+      next: () => set({ step: st + 1, max: Math.max(s.max, st + 1) }),
+      pos: (st + 1) + ' / ' + n, prevOp: st > 0 ? 1 : 0.4, nextOp: st < n - 1 ? 1 : 0.4,
+      prev: () => { if (st > 0) set({ step: st - 1 }); }, skip: () => { if (st < n - 1) set({ step: st + 1, max: Math.max(s.max, st + 1) }); }
+    };
+  }
+}
+</script>
+</body>
+</html>
