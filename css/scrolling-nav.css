@@ -76,3 +76,26 @@ of those sections to manage the look and feel of the site. */
 .course-page .panel-heading h4 {
     margin: 0;
 }
+
+/* Collapsible week panels */
+.course-page .week-toggle {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+.course-page .week-toggle h4:after {
+    content: "\e114"; /* chevron-down */
+    font-family: 'Glyphicons Halflings';
+    float: right;
+    font-size: 12px;
+    line-height: 20px;
+    color: #999;
+    transition: transform .2s;
+}
+.course-page .week-toggle.collapsed h4:after {
+    transform: rotate(-90deg);
+}
+.course-page .panel-heading:hover {
+    background-color: #eee;
+}

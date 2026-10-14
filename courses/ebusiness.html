@@ -66,10 +66,11 @@
 
                     <h3>Weekly material</h3>
 
-                    <!-- To add a week, add a panel like this:
+                    <!-- To add a week, add a panel like this (give each week its own id, e.g. week1, week2;
+                         use class="list-group collapse in" and no "collapsed" on the link to show it open by default):
                     <div class="panel panel-default">
-                        <div class="panel-heading"><h4>Week 1 &middot; Topic</h4></div>
-                        <ul class="list-group">
+                        <a class="panel-heading week-toggle collapsed" data-toggle="collapse" href="#week1"><h4>Week 1 &middot; Topic</h4></a>
+                        <ul id="week1" class="list-group collapse">
                             <li class="list-group-item"><a href="...">Material title</a></li>
                         </ul>
                     </div>
