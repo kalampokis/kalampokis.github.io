@@ -60,3 +60,32 @@ of those sections to manage the look and feel of the site. */
     text-align: center;
 }
 
+
+/* Courses */
+
+.course-list {
+    text-align: left;
+}
+
+.course-list .list-group-item h4 {
+    margin-top: 0;
+}
+
+.course-list .list-group-item p {
+    margin-bottom: 0;
+    color: #555;
+}
+
+.course-page {
+    padding-top: 100px;
+    padding-bottom: 60px;
+    text-align: left;
+}
+
+.course-page .course-meta {
+    color: #777;
+}
+
+.course-page .panel-heading h4 {
+    margin: 0;
+}
