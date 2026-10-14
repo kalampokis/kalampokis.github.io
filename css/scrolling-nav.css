@@ -195,3 +195,9 @@ of those sections to manage the look and feel of the site. */
 .services-list li {
     margin-bottom: 6px;
 }
+
+/* Sub-pages (publications, completed projects, service): first section clears the fixed navbar */
+.navbar + section.about-section,
+.navbar + section.services-section {
+    padding-top: 110px;
+}
