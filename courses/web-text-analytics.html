@@ -91,11 +91,17 @@
         </div>
     </section>
 
+    <!-- Footer -->
+    <div class="container">
+        <p class="text-right">&copy; <span class="year">2026</span> Dr. Evangelos Kalampokis</p>
+    </div>
+
     <!-- jQuery -->
     <script src="../js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="../js/bootstrap.min.js"></script>
+    <script>document.querySelectorAll(".year").forEach(function(e){e.textContent=new Date().getFullYear();});</script>
 
 </body>
 
