@@ -44,22 +44,33 @@ of those sections to manage the look and feel of the site. */
 
 .services-section {
      /* height: 200%;*/
-    padding-top: 100px;
-    text-align: center;
+    padding-top: 50px;
+    text-align: left;
 }
 
 .about-section {
      /* height: 200%;*/
-    padding-top: 100px;
-    text-align: center;
+    padding-top: 50px;
+    text-align: left;
 }
 
 .contact-section {
      /* height: 200%;*/
-    padding-top: 100px;
-    text-align: center;
+    padding-top: 50px;
+    text-align: left;
 }
 
+
+/* About text: justified on wide screens only, to avoid wide gaps on phones */
+.about-text {
+    text-align: left;
+}
+
+@media(min-width:768px) {
+    .about-text {
+        text-align: justify;
+    }
+}
 
 /* Courses */
 

@@ -21,7 +21,8 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/scrolling-nav.css" rel="stylesheet">
+    <link href="css/scrolling-nav.css?v=5" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="/figures/favicon.svg">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -50,6 +51,7 @@
             <!-- Collect the nav links -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav">
+                    <li><a class="page-scroll" href="index.html#intro">About</a></li>
                     <li><a class="page-scroll" href="index.html#publications">Publications</a></li>
                     <li><a class="page-scroll" href="index.html#projects">Back to Ongoing Projects</a></li>
                     <li><a class="page-scroll" href="index.html#teaching">Teaching</a></li>
@@ -95,12 +97,13 @@
 
     <!-- Footer -->
     <footer class="bg-dark text-white text-center py-3">
-        <p>&copy; 2026 Dr. Evangelos Kalampokis. All Rights Reserved.</p>
+        <p>&copy; <span class="year">2026</span> Dr. Evangelos Kalampokis. All Rights Reserved.</p>
     </footer>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script>document.querySelectorAll(".year").forEach(function(e){e.textContent=new Date().getFullYear();});</script>
 
 </body>
 </html>

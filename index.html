@@ -22,7 +22,8 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/scrolling-nav.css" rel="stylesheet">
+    <link href="css/scrolling-nav.css?v=5" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="/figures/favicon.svg">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,7 +36,7 @@
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
 
-<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" data-offset="80">
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -58,6 +59,9 @@
                     <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
                     <li class="hidden">
                         <a class="page-scroll" href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#intro">About</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#publications">Publications</a>
@@ -106,7 +110,7 @@
         
         <div class="container">
             <div class="row">
-                <div class="col-lg-12" align="justify">
+                <div class="col-lg-12 about-text">
                     <h2>About</h2>
                     <p>Evangelos Kalampokis is an Asst. Professor of Information Systems and eGovernment at the Business Administration Dept., University of Macedonia, Greece, and Director of the <a target="_blank" href="https://mis.uom.gr">MSc in Information Systems (MIS)</a> at the same University. He is also affiliated with the Hellenic Open University in Greece and the <a target="_blank" href="https://www.iti.gr/iti/index.html">Information Technologies Institute</a> of the <a target="_blank" href="https://www.certh.gr/root.en.aspx"> Centre for Research & Technology - Hellas</a> (CERTH-ITI) in Thessaloniki, Greece. He holds a Diploma (MEng) in 
                      Electrical and Computer Engineering from the Aristotle University of Thessaloniki, Greece, an MSc in Business Administration-MBA from the University of Macedonia, Greece and a Ph.D. on <a target="_blank" href="https://dspace.lib.uom.gr/handle/2159/19439">"Linked Open Government Data Analytics"</a> from the same University. 
@@ -164,11 +168,10 @@
   
    </ul>
 			
+                    <p><a href="full-publications.html" class="btn btn-primary">View Complete List of Publications</a></p>
                 </div>
             </div>
         </div>
-
-    <a href="full-publications.html" class="btn btn-primary mt-3">View Complete List of Publications</a>
 
     </section>
 
@@ -184,11 +187,10 @@
 			<li><a target="_blank" href="https://cordis.europa.eu/project/id/101178806">AI4Deliberation</a> Artificial Intelligence for Institutionalised, Multimodal, Gamified, Mass Democratic Deliberations <i>HORIZON-CL2-2024-DEMOCRACY-01 No 101178806</i> (2024-2027)</li>
 			<li><a target="_blank" href="https://cordis.europa.eu/project/id/101187937">AIOLIA</a> Operationalizing AI Ethics for Learning and Practice: A Global Approach <i>HORIZON-WIDERA-2024-ERA-01 No 101187937</i> (2025-2028)</li>
 			</ul>
+                    <p><a href="completed-projects.html" class="btn btn-primary">View Completed Projects</a></p>
                 </div>
             </div>
         </div>
-
-    <a href="completed-projects.html" class="btn btn-primary mt-3">View Completed Projects</a>
 
     </section> 
 
@@ -306,7 +308,7 @@
 <!-- <span id='badgeCont840511' style='width:26px'><script src='http://labs.researcherid.com/mashlets?el=badgeCont840511&mashlet=badge&showTitle=false&className=a&rid=K-3302-2012&size=small'></script></span> -->
         
         </p>
-        <p class="text-right">&copy; Dr. Evangelos Kalampokis</p>
+        <p class="text-right">&copy; <span class="year">2026</span> Dr. Evangelos Kalampokis</p>
       </div>
   </div>
   </div>
@@ -321,6 +323,7 @@
     <!-- Scrolling Nav JavaScript -->
     <script src="js/jquery.easing.min.js"></script>
     <script src="js/scrolling-nav.js"></script>
+    <script>document.querySelectorAll(".year").forEach(function(e){e.textContent=new Date().getFullYear();});</script>
 
 </body>
 
