@@ -63,19 +63,6 @@ of those sections to manage the look and feel of the site. */
 
 /* Courses */
 
-.course-list {
-    text-align: left;
-}
-
-.course-list .list-group-item h4 {
-    margin-top: 0;
-}
-
-.course-list .list-group-item p {
-    margin-bottom: 0;
-    color: #555;
-}
-
 .course-page {
     padding-top: 100px;
     padding-bottom: 60px;
