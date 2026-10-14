@@ -183,3 +183,10 @@ of those sections to manage the look and feel of the site. */
 }
 
 .intro-links a:hover i { color: #337ab7; }
+
+/* Term label next to a course in the Teaching list */
+.course-term {
+    margin-left: 6px;
+    font-size: 12px;
+    color: #999;
+}
