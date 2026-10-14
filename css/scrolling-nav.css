@@ -104,3 +104,24 @@ of those sections to manage the look and feel of the site. */
     color: inherit;
     text-decoration: none;
 }
+
+/* Material type badges */
+.course-page .mat-tag {
+    display: inline-block;
+    min-width: 92px;
+    margin-right: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    text-align: center;
+    color: #fff;
+    vertical-align: middle;
+}
+.course-page .mat-tag.interactive { background: #1e7a4c; }
+.course-page .mat-tag.slides      { background: #1B2F6B; }
+.course-page .mat-tag.notebook    { background: #F5821F; }
+.course-page .mat-tag.datacamp    { background: #03EF62; color: #05192D; }
+.course-page .mat-tag.reading     { background: #5A6385; }
