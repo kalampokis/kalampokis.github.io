@@ -498,7 +498,14 @@ print(x[1:4])"></div>
     });
     return loading;
   }
-  async function runPython(src){
+  let chain=Promise.resolve();
+  function runPython(src){
+    // serialise runs: stdout capture is global in Pyodide
+    const p=chain.then(()=>runPythonNow(src));
+    chain=p.catch(()=>{});
+    return p;
+  }
+  async function runPythonNow(src){
     const py=await loadPy();
     if(/^\s*import numpy|^\s*from numpy/m.test(src)){ try{ await py.loadPackage('numpy'); }catch(e){} }
     let out='';
