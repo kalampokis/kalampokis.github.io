@@ -190,3 +190,8 @@ of those sections to manage the look and feel of the site. */
     font-size: 12px;
     color: #999;
 }
+
+/* Services: a little air between grouped entries */
+.services-list li {
+    margin-bottom: 6px;
+}
