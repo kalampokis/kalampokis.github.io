@@ -171,7 +171,7 @@ print(float(&quot;3.14&quot;) * 2)"></div>
     <div class="runner" data-code="savings = 100
 result = savings * 1.1 ** 7
 sales = 1250000
-share = 0.2345
+share = 0.24
 print(f&quot;Now I have ${result:.2f}&quot;)
 print(f&quot;Sales: {sales:,} euros&quot;)
 print(f&quot;Market share: {share:.1%}&quot;)"></div>
@@ -597,10 +597,13 @@ print(x[1:4])"></div>
     return {out,err,ns};
   }
   function fmtErr(e){
-    // keep only the last meaningful lines of a Python traceback
+    // show where (line in the user's code) and what (the last Error line)
     const lines=e.trim().split('\n');
-    const last=lines.filter(l=>!/^\s*File |^\s*\^|^Traceback|^\s*$|pyodide|_pyodide/.test(l));
-    return last.slice(-3).join('\n');
+    const where=lines.filter(l=>/File "<exec>", line \d+/.test(l)).map(l=>l.replace(/.*line (\d+).*/,'γραμμή $1')).pop();
+    let what='';
+    for(let i=lines.length-1;i>=0;i--){ if(/^[A-Za-z]*(Error|Exception|Warning)\b/.test(lines[i])){ what=lines[i]; break; } }
+    if(!what) what=lines[lines.length-1];
+    return (where?'Σφάλμα στη '+where+':\n':'')+what;
   }
 
   // ---------- runners ----------
