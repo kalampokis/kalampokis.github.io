@@ -91,7 +91,7 @@
   <div>
     <div class="kicker">Προγραμματισμός για Επιχειρηματική Αναλυτική · Εβδομάδα 3 · <span id="pyStatus" class="status">φόρτωση Python…</span></div>
     <h1>Εισαγωγή στην Python</h1>
-    <p class="lead" style="margin-top:10px">Ένας διαδραστικός οδηγός για την τάξη και το σπίτι. Ο κώδικας τρέχει μέσα στον browser σου: άλλαξέ τον, πάτησε <b>Τρέξε</b> (ή Ctrl+Enter) και δες τι γίνεται. Σε κάθε βήμα υπάρχουν κουίζ «τι θα τυπώσει;» και ασκήσεις που ελέγχονται αυτόματα.</p>
+    <p class="lead" style="margin-top:10px">Ένας διαδραστικός οδηγός για την τάξη και το σπίτι, σε 8 βήματα. Ο κώδικας τρέχει μέσα στον browser σου: άλλαξέ τον, πάτησε <b>Τρέξε</b> (ή Ctrl+Enter) και δες τι γίνεται. Σε κάθε βήμα υπάρχουν κουίζ «τι θα τυπώσει;» και ασκήσεις που ελέγχονται αυτόματα.</p>
   </div>
 
   <div class="stepper" id="stepper"></div>
@@ -99,7 +99,7 @@
   <!-- ============ 1 ============ -->
   <section class="step" data-title="Περιβάλλον &amp; σχόλια">
     <h2>1. Το περιβάλλον της Python</h2>
-    <p>Στο DataCamp γράφεις κώδικα σε ένα <b>script</b> <span class="en">(script.py)</span> και βλέπεις το αποτέλεσμα στην <b>κονσόλα</b> <span class="en">(IPython Shell)</span>. Εδώ το παράθυρο κώδικα παίζει τον ρόλο του script και το γκρι κουτί από κάτω τον ρόλο της κονσόλας.</p>
+    <p>Κώδικα Python γράφουμε σε ένα <b>script</b> <span class="en">(αρχείο .py ή κελί σε Jupyter / Google Colab)</span> και βλέπουμε το αποτέλεσμα στην <b>κονσόλα</b> <span class="en">(console)</span>. Εδώ το σκούρο παράθυρο παίζει τον ρόλο του script και το ανοιχτό κουτί από κάτω τον ρόλο της κονσόλας. Σε script, ό,τι θέλεις να δεις πρέπει να το τυπώσεις με <code>print()</code>.</p>
     <p>Η <code>print()</code> εμφανίζει μια τιμή. Ό,τι ακολουθεί το <code>#</code> είναι <b>σχόλιο</b> <span class="en">(comment)</span>: η Python το αγνοεί, είναι για τους ανθρώπους.</p>
     <div class="runner" data-code="# Διαίρεση
 print(5 / 8)
@@ -166,6 +166,26 @@ print(int(&quot;42&quot;) + 1)
 print(float(&quot;3.14&quot;) * 2)"></div>
     <div class="box tip"><b>ΔΟΚΙΜΑΣΕ</b>Γράψε <code>print("total: " + 3)</code>. Διάβασε το μήνυμα σφάλματος: η Python δεν ξέρει αν θες πρόσθεση ή ένωση. Διόρθωσέ το με <code>str(3)</code>.</div>
 
+    <h3>Κείμενο με τιμές μέσα: f-strings</h3>
+    <p>Αντί για αλυσίδες από <code>+</code> και <code>str()</code>, γράφεις <code>f"...{μεταβλητή}..."</code>. Μέσα στα άγκιστρα μπορείς να ζητήσεις μορφοποίηση: <code>{x:.2f}</code> δύο δεκαδικά, <code>{x:,}</code> διαχωριστικό χιλιάδων, <code>{x:.1%}</code> ποσοστό.</p>
+    <div class="runner" data-code="savings = 100
+result = savings * 1.1 ** 7
+sales = 1250000
+share = 0.2345
+print(f&quot;Now I have ${result:.2f}&quot;)
+print(f&quot;Sales: {sales:,} euros&quot;)
+print(f&quot;Market share: {share:.1%}&quot;)"></div>
+    <h3>Συγκρίσεις: από πού έρχονται τα True και False</h3>
+    <p>Οι τελεστές <code>==</code> <code>!=</code> <code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code> δίνουν boolean. Τα <code>and</code>, <code>or</code>, <code>not</code> τα συνδυάζουν. Προσοχή: <code>=</code> αναθέτει, <code>==</code> συγκρίνει.</p>
+    <div class="runner" data-code="sales = 1250
+target = 1000
+print(sales &gt; target)
+print(sales == target)
+print(sales &gt;= 1000 and sales &lt; 2000)
+print(&quot;Athens&quot; == &quot;athens&quot;)
+hit = sales &gt; target
+print(type(hit))"></div>
+
     <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = &quot;5&quot;
 y = 2
 print(x * y)" data-opts='["10","55","\"5\" * 2","Σφάλμα"]' data-ans="1" data-why="Το x είναι string (έχει εισαγωγικά). String * ακέραιος σημαίνει επανάληψη: &quot;5&quot; δύο φορές = &quot;55&quot;."></div>
@@ -174,11 +194,16 @@ print(x * y)" data-opts='["10","55","\"5\" * 2","Σφάλμα"]' data-ans="1" da
 A = 2
 print(a + A)" data-opts='["9","14","Σφάλμα: η A δεν υπάρχει","7"]' data-ans="0" data-why="Τα ονόματα είναι case-sensitive: a και A είναι δύο διαφορετικές μεταβλητές, 7 + 2 = 9."></div>
 
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="price = 19.99
+print(f&quot;Price: {price:.1f}&quot;)" data-opts='["Price: 19.99","Price: 20.0","Price: 19.9","Price: {price:.1f}"]' data-ans="1" data-why="Το :.1f στρογγυλοποιεί σε ένα δεκαδικό: 19.99 → 20.0."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="a = 5
+print(a == 5 and a &gt; 10)" data-opts='["True","False","5","Σφάλμα"]' data-ans="1" data-why="a == 5 είναι True αλλά a &gt; 10 είναι False· το and χρειάζεται και τα δύο αληθή."></div>
+
     <div class="exercise" data-code="savings = 100
 growth_multiplier = 1.1
 # 1. Υπολόγισε result = savings * growth_multiplier ** 7
 # 2. Τύπωσε το κείμενο: I started with $100 and now have $194.87
-#    (χρησιμοποίησε str() και round(result, 2))
+#    (με str() και round(result, 2), ή με f-string: {result:.2f})
 " data-check="assert 'result' in globals(), 'Δεν βρήκα μεταβλητή result.'
 assert abs(result - 194.87171) < 0.01, 'Το result δεν έχει τη σωστή τιμή.'
 assert _out.strip() == 'I started with $100 and now have $194.87', 'Το κείμενο δεν είναι ακριβώς: I started with $100 and now have $194.87'" data-solution="result = savings * growth_multiplier ** 7
@@ -204,6 +229,14 @@ house = [[&quot;hallway&quot;, 11.25], [&quot;kitchen&quot;, 18.0], [&quot;bedro
 print(house[1])
 print(house[1][0])"></div>
 
+    <h3>Χρήσιμα εργαλεία: len, in, sum, max</h3>
+    <div class="runner" data-code="areas = [11.25, 18.0, 20.0, 10.75, 9.50]
+print(len(areas))
+print(20.0 in areas)
+print(25.0 in areas)
+print(sum(areas), max(areas), min(areas))
+print(sum(areas) / len(areas))   # μέσος όρος"></div>
+
     <h3>Δείκτες: η αρίθμηση ξεκινά από το 0</h3>
     <p>Το πρώτο στοιχείο έχει δείκτη <code>0</code>, το δεύτερο <code>1</code> κ.ο.κ. Αρνητικοί δείκτες μετρούν από το τέλος: <code>-1</code> είναι το τελευταίο. Πληκτρολόγησε μια έκφραση και δες ποια στοιχεία επιλέγει:</p>
     <div class="viz" data-list='["a","b","c","d","e"]' data-init="x[1]"></div>
@@ -212,6 +245,8 @@ print(house[1][0])"></div>
 print(areas[1])" data-opts='["hallway","11.25","kitchen","18.0"]' data-ans="1" data-why="Ο δείκτης 1 είναι το ΔΕΥΤΕΡΟ στοιχείο, γιατί η αρίθμηση ξεκινά από το 0."></div>
     <div class="quiz" data-q="Τι θα τυπώσει;" data-code="areas = [&quot;hallway&quot;, 11.25, &quot;kitchen&quot;, 18.0, &quot;living room&quot;, 20.0]
 print(areas[-2])" data-opts='["18.0","living room","20.0","Σφάλμα"]' data-ans="1" data-why="Το -1 είναι το τελευταίο (20.0), το -2 το προτελευταίο: &quot;living room&quot;."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = [3, 8, 1]
+print(len(x) + max(x))" data-opts='["12","11","4","[3, 8, 1, 8]"]' data-ans="1" data-why="len(x) είναι 3 και max(x) είναι 8: 3 + 8 = 11."></div>
     <div class="quiz" data-q="Τι θα τυπώσει;" data-code="house = [[&quot;hallway&quot;, 11.25], [&quot;kitchen&quot;, 18.0]]
 print(house[-1][1])" data-opts='["kitchen","18.0","[\"kitchen\", 18.0]","11.25"]' data-ans="1" data-why="house[-1] είναι η τελευταία εσωτερική λίστα [&quot;kitchen&quot;, 18.0]· από αυτήν το [1] είναι το 18.0."></div>
 
@@ -409,9 +444,49 @@ print(dist)">
   </section>
 
   <!-- ============ 7 ============ -->
+  <section class="step" data-title="Σφάλματα">
+    <h2>7. Όταν κάτι πάει στραβά: διαβάζοντας ένα σφάλμα</h2>
+    <p>Ένα μήνυμα σφάλματος <span class="en">(traceback)</span> διαβάζεται <b>από κάτω προς τα πάνω</b>: η τελευταία γραμμή λέει <i>τι</i> (τον τύπο και την αιτία), οι γραμμές από πάνω λένε <i>πού</i> (σε ποια γραμμή κώδικα). Τα τέσσερα που θα δεις πρώτα:</p>
+    <table class="t">
+      <tr><th>Σφάλμα</th><th>Τι σημαίνει</th><th>Παράδειγμα</th></tr>
+      <tr><td>NameError</td><td>Όνομα που δεν έχει οριστεί (ή γράφτηκε αλλιώς)</td><td class="m">print(saving)</td></tr>
+      <tr><td>TypeError</td><td>Πράξη ανάμεσα σε ασύμβατους τύπους</td><td class="m">"total: " + 3</td></tr>
+      <tr><td>IndexError</td><td>Δείκτης που δεν υπάρχει στη λίστα</td><td class="m">[1, 2, 3][3]</td></tr>
+      <tr><td>SyntaxError</td><td>Η γραμμή δεν διαβάζεται: λείπει παρένθεση ή εισαγωγικό</td><td class="m">print("hello"</td></tr>
+    </table>
+    <p style="margin-top:10px">Τρέξε τον παρακάτω κώδικα, διάβασε το μήνυμα, και διόρθωσε <b>ένα σφάλμα τη φορά</b> μέχρι να τυπώσει <code>Savings: 100</code> και <code>9.5</code>.</p>
+    <div class="runner" data-code="savings = 100
+label = &quot;Savings: &quot;
+print(label + savings)
+
+areas = [11.25, 18.0, 20.0, 10.75, 9.50]
+print(areas[5])"></div>
+    <div class="quiz" data-q="Ποιο σφάλμα θα εμφανιστεί;" data-code="total = 10
+print(Total)" data-opts='["NameError","TypeError","SyntaxError","Κανένα, τυπώνει 10"]' data-ans="0" data-why="Το Total με κεφαλαίο δεν έχει οριστεί· τα ονόματα είναι case-sensitive: NameError: name &#39;Total&#39; is not defined."></div>
+    <div class="quiz" data-q="Ποιο σφάλμα θα εμφανιστεί;" data-code="x = [10, 20, 30]
+print(x[3])" data-opts='["IndexError","TypeError","NameError","Κανένα, τυπώνει 30"]' data-ans="0" data-why="Τρία στοιχεία έχουν δείκτες 0, 1, 2. Το x[3] δεν υπάρχει: IndexError: list index out of range."></div>
+    <div class="quiz" data-q="Ποιο σφάλμα θα εμφανιστεί;" data-code="age = &quot;30&quot;
+print(age + 1)" data-opts='["TypeError","ValueError","NameError","Κανένα, τυπώνει 31"]' data-ans="0" data-why="Το age είναι string. str + int δίνει TypeError. Διόρθωση: int(age) + 1."></div>
+    <div class="exercise" data-code="# Ο κώδικας έχει τρία σφάλματα. Διόρθωσέ τα ώστε να τυπώνει:
+# Total sales: 3750
+# Average: 1250.0
+sales = [1200, 1550, 1000]
+total = sum(sale)
+print(&quot;Total sales: &quot; + total)
+print(f&quot;Average: {total / len(sales)}&quot;
+" data-check="assert _out.strip().split('\n') == ['Total sales: 3750', 'Average: 1250.0'], 'Περίμενα δύο γραμμές: Total sales: 3750 και Average: 1250.0'" data-solution="sales = [1200, 1550, 1000]
+total = sum(sales)
+print(&quot;Total sales: &quot; + str(total))
+print(f&quot;Average: {total / len(sales)}&quot;)">
+      <div class="title">Άσκηση 7</div>
+      <p>Τρία σφάλματα, τρεις διορθώσεις: ένα NameError, ένα TypeError και ένα SyntaxError. Πάτησε «Έλεγξε», διάβασε το μήνυμα, διόρθωσε, ξαναπάτησε.</p>
+    </div>
+  </section>
+
+  <!-- ============ 8 ============ -->
   <section class="step" data-title="Τελικό κουίζ">
-    <h2>7. Τελικό κουίζ</h2>
-    <p>Δέκα ερωτήσεις από όλη την εβδομάδα. Σκέψου πρώτα, μετά απάντησε· αν αμφιβάλλεις, άνοιξε το παράθυρο κώδικα στο τέλος και δοκίμασέ το.</p>
+    <h2>8. Τελικό κουίζ</h2>
+    <p>Δώδεκα ερωτήσεις από όλη την εβδομάδα. Σκέψου πρώτα, μετά απάντησε· αν αμφιβάλλεις, άνοιξε το παράθυρο κώδικα στο τέλος και δοκίμασέ το.</p>
     <div class="quiz" data-q="1. Τι θα τυπώσει;" data-code="print(7 // 2, 7 % 2, 7 / 2)" data-opts='["3 1 3.5","3.5 1 3","3 1 3","3 0 3.5"]' data-ans="0" data-why="// ακέραια διαίρεση = 3, % υπόλοιπο = 1, / κανονική διαίρεση = 3.5."></div>
     <div class="quiz" data-q="2. Τι θα τυπώσει;" data-code="x = &quot;3&quot; + &quot;4&quot;
 print(x)" data-opts='["7","34","\"34\"","Σφάλμα"]' data-ans="1" data-why="Δύο strings με + ενώνονται: &quot;34&quot;. Η print δεν δείχνει τα εισαγωγικά."></div>
@@ -433,19 +508,23 @@ fam.index(&quot;liz&quot;)   # α
 len(fam)           # β" data-opts='["Η α είναι μέθοδος, η β συνάρτηση","Η α είναι συνάρτηση, η β μέθοδος","Και οι δύο είναι μέθοδοι","Και οι δύο είναι συναρτήσεις"]' data-ans="0" data-why="Η μέθοδος καλείται με τελεία πάνω στο αντικείμενο (fam.index), η συνάρτηση παίρνει το αντικείμενο ως όρισμα (len(fam))."></div>
     <div class="quiz" data-q="10. Τι θα τυπώσει;" data-code="import math as m
 print(m.floor(3.7))" data-opts='["3","4","3.7","Σφάλμα: το m δεν ορίστηκε"]' data-ans="0" data-why="Το import math as m δίνει ψευδώνυμο m· η floor στρογγυλοποιεί προς τα κάτω: 3."></div>
+    <div class="quiz" data-q="11. Τι θα τυπώσει;" data-code="n = 3
+print(f&quot;{n} items, {n * 2.5:.1f} kg&quot;)" data-opts='["3 items, 7.5 kg","3 items, 7.50 kg","{n} items, {n * 2.5:.1f} kg","Σφάλμα"]' data-ans="0" data-why="Το f-string υπολογίζει ό,τι είναι μέσα στα άγκιστρα· το :.1f δίνει ένα δεκαδικό: 7.5."></div>
+    <div class="quiz" data-q="12. Ποιο σφάλμα θα εμφανιστεί;" data-code="prices = [9.99, 19.99]
+print(prices[2])" data-opts='["IndexError","TypeError","NameError","Κανένα, τυπώνει 19.99"]' data-ans="0" data-why="Δύο στοιχεία = δείκτες 0 και 1. Το 2 είναι εκτός ορίων: IndexError."></div>
     <div id="finalScore" class="box note" style="display:none"></div>
     <h3>Δοκιμαστήριο</h3>
     <div class="runner" data-code="# Ελεύθερος χώρος για πειράματα
 x = [10, 20, 30, 40, 50]
 print(x[1:4])"></div>
-    <div class="box tip"><b>ΓΙΑ ΤΟ ΣΠΙΤΙ</b>Ολοκλήρωσε τα κεφάλαια 1–3 του <a href="https://app.datacamp.com/learn/courses/intro-to-python-for-data-science" target="_blank" rel="noopener">Introduction to Python</a> στο DataCamp. Επόμενη εβδομάδα: NumPy.</div>
+    <div class="box tip"><b>ΓΙΑ ΤΟ ΣΠΙΤΙ</b>Εργασία: ολοκλήρωσε και τα 8 βήματα αυτής της σελίδας (κουίζ και ασκήσεις). Συμπληρωματική, προαιρετική εξάσκηση στην ίδια ύλη: <a href="https://app.datacamp.com/learn/courses/intro-to-python-for-data-science" target="_blank" rel="noopener">DataCamp · Introduction to Python</a>, κεφάλαια 1–3. Επόμενη εβδομάδα: NumPy.</div>
   </section>
 
   <div class="nav">
     <button class="btn outline" id="prevBtn">← Προηγούμενο</button>
     <button class="btn navy" id="nextBtn">Επόμενο βήμα →</button>
   </div>
-  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Το υλικό βασίζεται στο μάθημα «Introduction to Python» του DataCamp. Ο κώδικας εκτελείται στον browser με <a href="https://pyodide.org" target="_blank" rel="noopener">Pyodide</a>.</footer>
+  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Ο κώδικας εκτελείται στον browser με <a href="https://pyodide.org" target="_blank" rel="noopener">Pyodide</a>.</footer>
 </div>
 
 <script>
@@ -573,7 +652,7 @@ print(x[1:4])"></div>
     const idx=qs.map(q=>quizzes.indexOf(q)); const done=idx.filter(i=>state.quiz[i]!==undefined).length;
     const ok=idx.filter(i=>state.quiz[i]===true).length;
     const el=document.getElementById('finalScore');
-    if(done===qs.length){el.style.display='block'; el.innerHTML='<b>ΑΠΟΤΕΛΕΣΜΑ</b>Σωστές απαντήσεις: '+ok+' / '+qs.length+(ok===qs.length?' — άψογα!':ok>=7?' — πολύ καλά, ξαναδές τις λάθος.':' — ξαναδιάβασε τα βήματα 2–5 και ξαναπροσπάθησε.');}
+    if(done===qs.length){el.style.display='block'; el.innerHTML='<b>ΑΠΟΤΕΛΕΣΜΑ</b>Σωστές απαντήσεις: '+ok+' / '+qs.length+(ok===qs.length?' — άψογα!':ok>=8?' — πολύ καλά, ξαναδές τις λάθος.':' — ξαναδιάβασε τα βήματα 2–7 και ξαναπροσπάθησε.');}
   }
   finalScore();
 
