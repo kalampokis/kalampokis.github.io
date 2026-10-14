@@ -22,7 +22,8 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/scrolling-nav.css" rel="stylesheet">
+    <link href="css/scrolling-nav.css?v=6" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="/figures/favicon.svg">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,7 +36,7 @@
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
 
-<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" data-offset="80">
 
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -58,6 +59,9 @@
                     <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
                     <li class="hidden">
                         <a class="page-scroll" href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#intro">About</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#publications">Publications</a>
@@ -99,6 +103,9 @@
               Business Administration Dept., University of Macedonia, Greece<sup><a target="_blank" href="http://www.uom.gr/ekal">1</a></sup></p>
               <br>
 		 <a href="https://orcid.org/0000-0003-4416-8764" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon">orcid.org/0000-0003-4416-8764</a>
+		 &nbsp;&middot;&nbsp; <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+		 <!-- Email is assembled by script below so it does not appear whole in the page source -->
+		 <a class="js-email" data-user="ekal" data-domain="uom.edu.gr">ekal [at] uom [dot] edu [dot] gr</a>
 	     </div>
 	   </div>
   </div>
@@ -106,14 +113,14 @@
         
         <div class="container">
             <div class="row">
-                <div class="col-lg-12" align="justify">
+                <div class="col-lg-12 about-text">
                     <h2>About</h2>
-                    <p>Evangelos Kalampokis is an Asst. Professor of Information Systems and eGovernment at the Business Administration Dept., University of Macedonia, Greece, and Director of the <a target="_blank" href="https://mis.uom.gr">MSc in Information Systems (MIS)</a> at the same University. He is also affiliated with the Hellenic Open University in Greece and the <a target="_blank" href="https://www.iti.gr/iti/index.html">Information Technologies Institute</a> of the <a target="_blank" href="https://www.certh.gr/root.en.aspx"> Centre for Research & Technology - Hellas</a> (CERTH-ITI) in Thessaloniki, Greece. He holds a Diploma (MEng) in 
+                    <p>Evangelos Kalampokis is an Asst. Professor of Information Systems and eGovernment at the Business Administration Dept., University of Macedonia, Greece, and Director of the <a target="_blank" href="https://mis.uom.gr">MSc in Information Systems (MIS)</a> at the same University. He is also affiliated with the <a target="_blank" href="https://www.iti.gr/iti/index.html">Information Technologies Institute</a> of the <a target="_blank" href="https://www.certh.gr/root.en.aspx"> Centre for Research & Technology - Hellas</a> (CERTH-ITI) in Thessaloniki, Greece. He holds a Diploma (MEng) in 
                      Electrical and Computer Engineering from the Aristotle University of Thessaloniki, Greece, an MSc in Business Administration-MBA from the University of Macedonia, Greece and a Ph.D. on <a target="_blank" href="https://dspace.lib.uom.gr/handle/2159/19439">"Linked Open Government Data Analytics"</a> from the same University. 
                      His main research interests include Digital Government, Digital Health, Business Intelligence, (eXplainable) Artificial Intelligence, Large Language Models, and Knowledge Graphs.</p>
                      <p>Since 2009, he has been a technical consultant in numerous EU co-funded research projects and initiated many of them (e.g., <a target="_blank" href="https://cordis.europa.eu/project/rcn/200048/en">H2020 OpenGovIntelligence</a> and <a target="_blank" href="https://cordis.europa.eu/project/rcn/110723/en">FP7 OpenCube</a>). Between June 2009 and November 2011 he has been a research intern at the <a target="_blank" href="https://web.archive.org/web/20161018221316/https://www.deri.ie/users/evangelos-kalampokis">Digital Enterprise Research Institute (DERI)</a>, 
                      the largest Semantic Web Research centre worldwide. He has served as a proposal evaluator and project reviewer for the European Commission under the Horizon Europe framework programme. </p>
-                     <p>Since 2016 he has been teaching Information Systems, Business Intelligence, and Artificial Intelligence at the Business Administration department of the University of Macedonia, Greece and the Hellenic Open University. Evangelos Kalampokis has published in high impact journals including <a target="_blank" href="https://doi.org/10.1371/journal.pdig.0000604">PLOS Digital Health</a> (Web of Science 2025 IF: 7.7), <a target="_blank" href="http://dx.doi.org/10.1108/IntR-06-2012-0114">Internet Research</a> (Web of Science 2025 IF: 7.2), <a target="_blank" href="https://doi.org/10.1016/j.bdr.2022.100355">Big Data Research</a> (Web of Science 2025 IF: 4.6), <a target="_blank" href="http://dx.doi.org/10.1109/MIS.2016.82">IEEE Intelligent Systems</a> (Web of Science 2025 IF: 4.5), <a target="_blank" href="https://doi.org/10.1016/j.websem.2018.11.002">Journal of Web Semantics</a> (Web of Science 2025 IF: 3.2), and the <a target="_blank" href="http://dx.doi.org/10.1016/j.jbi.2014.03.002">Journal of Biomedical Informatics</a> (Web of Science 2025 IF: 5.9). In total, he has published more than 100 papers in international journals and proceedings of international conferences and workshops. </p>
+                     <p>Since 2016 he has been teaching Information Systems, Business Intelligence, and Artificial Intelligence at the Business Administration department of the University of Macedonia, Greece, and from 2017 to 2024 he also taught at the Hellenic Open University. Evangelos Kalampokis has published in high impact journals including <a target="_blank" href="https://doi.org/10.1371/journal.pdig.0000604">PLOS Digital Health</a> (Web of Science 2025 IF: 7.7), <a target="_blank" href="http://dx.doi.org/10.1108/IntR-06-2012-0114">Internet Research</a> (Web of Science 2025 IF: 7.2), <a target="_blank" href="https://doi.org/10.1016/j.bdr.2022.100355">Big Data Research</a> (Web of Science 2025 IF: 4.6), <a target="_blank" href="http://dx.doi.org/10.1109/MIS.2016.82">IEEE Intelligent Systems</a> (Web of Science 2025 IF: 4.5), <a target="_blank" href="https://doi.org/10.1016/j.websem.2018.11.002">Journal of Web Semantics</a> (Web of Science 2025 IF: 3.2), and the <a target="_blank" href="http://dx.doi.org/10.1016/j.jbi.2014.03.002">Journal of Biomedical Informatics</a> (Web of Science 2025 IF: 5.9). In total, he has published more than 100 papers in international journals and proceedings of international conferences and workshops. </p>
 			<p>Since 2018 he has organized the "AI, Data Analytics & Automated Decision Making" track at the annual <a target="_blank" href="https://dgsociety.org/">IFIP EGOV-CeDEM-ePart</a> conference. He also organized the "Explainable Artificial Intelligence in the Public Sector" track at the <a target="_blank" href="https://xaiworldconference.com">International Conference on eXplainable Artificial Intelligence (xAI 2023)</a>. From 2014 to 2019 he co-chaired the <a target="_blank" href="http://semstats.org">International Workshop on Semantic Statistics</a>, which was co-located with the International Semantic Web Conference.</p>
                 </div>
             </div>
@@ -164,11 +171,10 @@
   
    </ul>
 			
+                    <p><a href="full-publications.html" class="btn btn-primary">View Complete List of Publications</a></p>
                 </div>
             </div>
         </div>
-
-    <a href="full-publications.html" class="btn btn-primary mt-3">View Complete List of Publications</a>
 
     </section>
 
@@ -184,11 +190,10 @@
 			<li><a target="_blank" href="https://cordis.europa.eu/project/id/101178806">AI4Deliberation</a> Artificial Intelligence for Institutionalised, Multimodal, Gamified, Mass Democratic Deliberations <i>HORIZON-CL2-2024-DEMOCRACY-01 No 101178806</i> (2024-2027)</li>
 			<li><a target="_blank" href="https://cordis.europa.eu/project/id/101187937">AIOLIA</a> Operationalizing AI Ethics for Learning and Practice: A Global Approach <i>HORIZON-WIDERA-2024-ERA-01 No 101187937</i> (2025-2028)</li>
 			</ul>
+                    <p><a href="completed-projects.html" class="btn btn-primary">View Completed Projects</a></p>
                 </div>
             </div>
         </div>
-
-    <a href="completed-projects.html" class="btn btn-primary mt-3">View Completed Projects</a>
 
     </section> 
 
@@ -289,6 +294,8 @@
 
         <p class="text-center">
         <br>
+<a class="js-email" data-user="ekal" data-domain="uom.edu.gr" data-icon="1"><img alt="Email" width="25" height="25" src="/figures/email.svg" /></a> 
+
 <a target="_blank" href="https://x.com/kalampokis"><img alt="X" width="25" height="25" src="/figures/x-logo.svg" /></a> 
 
 <a target="_blank" href="http://www.linkedin.com/in/kalampokis"><img alt="LinkedIn" width="25" height="25" src="/figures/linkedin.jpg" /></a> 
@@ -306,7 +313,7 @@
 <!-- <span id='badgeCont840511' style='width:26px'><script src='http://labs.researcherid.com/mashlets?el=badgeCont840511&mashlet=badge&showTitle=false&className=a&rid=K-3302-2012&size=small'></script></span> -->
         
         </p>
-        <p class="text-right">&copy; Dr. Evangelos Kalampokis</p>
+        <p class="text-right">&copy; <span class="year">2026</span> Dr. Evangelos Kalampokis</p>
       </div>
   </div>
   </div>
@@ -321,6 +328,14 @@
     <!-- Scrolling Nav JavaScript -->
     <script src="js/jquery.easing.min.js"></script>
     <script src="js/scrolling-nav.js"></script>
+    <script>document.querySelectorAll(".year").forEach(function(e){e.textContent=new Date().getFullYear();});</script>
+    <script>
+      document.querySelectorAll(".js-email").forEach(function(e){
+        var addr = e.getAttribute("data-user") + "@" + e.getAttribute("data-domain");
+        e.href = "mailto:" + addr;
+        if (!e.getAttribute("data-icon")) e.textContent = addr;
+      });
+    </script>
 
 </body>
 
