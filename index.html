@@ -22,8 +22,11 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/scrolling-nav.css?v=6" rel="stylesheet">
+    <link href="css/scrolling-nav.css?v=8" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="/figures/favicon.svg">
+    <!-- Footer icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -102,10 +105,11 @@
               <p><i class="icon-caret-right"></i>Asst. Professor<br>
               Business Administration Dept., University of Macedonia, Greece<sup><a target="_blank" href="http://www.uom.gr/ekal">1</a></sup></p>
               <br>
-		 <a href="https://orcid.org/0000-0003-4416-8764" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon">orcid.org/0000-0003-4416-8764</a>
-		 &nbsp;&middot;&nbsp; <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-		 <!-- Email is assembled by script below so it does not appear whole in the page source -->
-		 <a class="js-email" data-user="ekal" data-domain="uom.edu.gr">ekal [at] uom [dot] edu [dot] gr</a>
+		 <p class="intro-links">
+		   <a target="_blank" href="https://orcid.org/0000-0003-4416-8764"><i class="ai ai-orcid" aria-hidden="true"></i>orcid.org/0000-0003-4416-8764</a>
+		   <!-- Email is assembled by script below so it does not appear whole in the page source -->
+		   <a class="js-email" data-user="ekal" data-domain="uom.edu.gr" data-label="1"><i class="fa-solid fa-envelope" aria-hidden="true"></i><span>ekal [at] uom [dot] edu [dot] gr</span></a>
+		 </p>
 	     </div>
 	   </div>
   </div>
@@ -292,26 +296,15 @@
 	<div class="container">
       <div class="row">
 
-        <p class="text-center">
-        <br>
-<a class="js-email" data-user="ekal" data-domain="uom.edu.gr" data-icon="1"><img alt="Email" width="25" height="25" src="/figures/email.svg" /></a> 
-
-<a target="_blank" href="https://x.com/kalampokis"><img alt="X" width="25" height="25" src="/figures/x-logo.svg" /></a> 
-
-<a target="_blank" href="http://www.linkedin.com/in/kalampokis"><img alt="LinkedIn" width="25" height="25" src="/figures/linkedin.jpg" /></a> 
-
-<a target="_blank" href="http://www.slideshare.net/kalampokis"><img alt="slideshare" width="25" height="25" src="/figures/slide.jpg" /></a> 
-
-<a target="_blank" href="http://flickr.com/kalampokis"><img alt="Flickr" width="25" height="25" src="/figures/flickr.jpg" /></a> 
-
-<a target="_blank" href="https://scholar.google.gr/citations?user=FE1-OV0AAAAJ&hl=en"><img alt="Google Scholar" width="24" height="24" src="/figures/googlescholar.jpg" /></a> 
-
-<a target="_blank" href="https://www.researchgate.net/profile/Evangelos_Kalampokis"><img alt="ResearchGate" width="25" height="25" src="/figures/researchgate.png" /></a> 
-
-<a target="_blank" href="http://dblp.uni-trier.de/pers/hd/k/Kalampokis:Evangelos"><img alt="DBLP" width="25" height="25" src="/figures/dblp-logo.png" /></a> 
-
-<!-- <span id='badgeCont840511' style='width:26px'><script src='http://labs.researcherid.com/mashlets?el=badgeCont840511&mashlet=badge&showTitle=false&className=a&rid=K-3302-2012&size=small'></script></span> -->
-        
+        <p class="text-center social-links">
+          <a class="js-email" data-user="ekal" data-domain="uom.edu.gr" data-icon="1" title="Email" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+          <a target="_blank" href="https://orcid.org/0000-0003-4416-8764" title="ORCID" aria-label="ORCID" class="orcid"><i class="ai ai-orcid"></i></a>
+          <a target="_blank" href="https://scholar.google.gr/citations?user=FE1-OV0AAAAJ&hl=en" title="Google Scholar" aria-label="Google Scholar" class="scholar"><i class="ai ai-google-scholar"></i></a>
+          <a target="_blank" href="https://www.scopus.com/authid/detail.uri?authorId=24766142200" title="Scopus" aria-label="Scopus" class="scopus"><i class="ai ai-scopus"></i></a>
+          <a target="_blank" href="http://dblp.uni-trier.de/pers/hd/k/Kalampokis:Evangelos" title="DBLP" aria-label="DBLP" class="dblp"><i class="ai ai-dblp"></i></a>
+          <a target="_blank" href="https://www.researchgate.net/profile/Evangelos_Kalampokis" title="ResearchGate" aria-label="ResearchGate" class="researchgate"><i class="ai ai-researchgate"></i></a>
+          <a target="_blank" href="https://www.linkedin.com/in/kalampokis" title="LinkedIn" aria-label="LinkedIn" class="linkedin"><i class="fa-brands fa-linkedin"></i></a>
+          <a target="_blank" href="https://x.com/kalampokis" title="X" aria-label="X" class="x"><i class="fa-brands fa-x-twitter"></i></a>
         </p>
         <p class="text-right">&copy; <span class="year">2026</span> Dr. Evangelos Kalampokis</p>
       </div>
@@ -333,7 +326,8 @@
       document.querySelectorAll(".js-email").forEach(function(e){
         var addr = e.getAttribute("data-user") + "@" + e.getAttribute("data-domain");
         e.href = "mailto:" + addr;
-        if (!e.getAttribute("data-icon")) e.textContent = addr;
+        if (e.getAttribute("data-label")) e.querySelector("span").textContent = addr;
+        else if (!e.getAttribute("data-icon")) e.textContent = addr;
       });
     </script>
 

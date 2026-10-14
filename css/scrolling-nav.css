@@ -142,3 +142,44 @@ of those sections to manage the look and feel of the site. */
 .contact-section > .container h2 {
     text-align: center;
 }
+
+/* Footer icons: one muted style, brand colour on hover */
+.social-links {
+    margin-top: 10px;
+}
+
+.social-links a {
+    display: inline-block;
+    margin: 0 7px;
+    font-size: 22px;
+    line-height: 1;
+    color: #999;
+    cursor: pointer;
+    transition: color .2s;
+}
+
+.social-links a:hover,
+.social-links a:focus { text-decoration: none; color: #337ab7; }
+.social-links a.orcid:hover        { color: #a6ce39; }
+.social-links a.scholar:hover      { color: #4285f4; }
+.social-links a.scopus:hover       { color: #e9711c; }
+.social-links a.dblp:hover         { color: #004f9f; }
+.social-links a.researchgate:hover { color: #00ccbb; }
+.social-links a.linkedin:hover     { color: #0a66c2; }
+.social-links a.x:hover            { color: #000; }
+
+/* ORCID and email under the name, matching the footer icons */
+.intro-links a {
+    display: inline-block;
+    margin: 0 10px;
+    white-space: nowrap;
+}
+
+.intro-links a i {
+    margin-right: 6px;
+    font-size: 17px;
+    vertical-align: -2px;
+    color: #999;
+}
+
+.intro-links a:hover i { color: #337ab7; }
