@@ -135,3 +135,10 @@ of those sections to manage the look and feel of the site. */
 .course-page .mat-tag.notebook    { background: #FDE8D4; color: #B35A0E; }
 .course-page .mat-tag.datacamp    { background: #DDF7E8; color: #0E6B44; }
 .course-page .mat-tag.reading     { background: #EDEEF3; color: #5A6385; }
+
+/* Main section headings centred (About stays left with its text) */
+.services-section > .container h2,
+.about-section > .container h2,
+.contact-section > .container h2 {
+    text-align: center;
+}
