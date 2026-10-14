@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Εισαγωγή στην Python · Εβδομάδα 3</title>
+<meta name="description" content="Διαδραστικός οδηγός μάθησης: Εισαγωγή στην Python (μεταβλητές, τύποι, λίστες, συναρτήσεις, μέθοδοι, πακέτα). Προγραμματισμός για Επιχειρηματική Αναλυτική, Εβδομάδα 3.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2F6B; --text:#26314F; --gray:#5A6385; --blue:#7895F9; --lblue:#B9C8FC; --pale:#EEF1FE;
+    --orange:#F5821F; --peach:#FDE8D4; --green:#1e7a4c; --lgreen:#E3F3EA; --red:#B23A3A; --lred:#FBE4E4;
+    --code:#141E3C; --codefg:#F4F6FF; --comment:#9FB3E8; --mono:'JetBrains Mono',Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pale);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+  a{color:var(--green)}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 16px 80px;display:flex;flex-direction:column;gap:22px}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--gray);text-transform:uppercase}
+  h1{margin:6px 0 0;font-family:Georgia,serif;font-weight:700;font-size:38px;line-height:1.1;color:var(--navy)}
+  h2{margin:0;font-family:Georgia,serif;font-size:28px;color:var(--navy)}
+  h3{margin:18px 0 6px;font-family:Georgia,serif;font-size:20px;color:var(--navy)}
+  p{margin:0 0 10px;font-size:17px}
+  .lead{font-size:19px;max-width:800px}
+  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px}
+  .stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 12px;background:var(--navy);color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px;opacity:.55}
+  .stepper button.active{opacity:1;outline:3px solid var(--orange)}
+  .stepper button.done{opacity:.9;background:var(--green)}
+  .stepper button span.n{font-family:var(--mono);font-weight:700;font-size:14px}
+  .stepper button span.l{font-size:13px}
+  section.step{display:none;flex-direction:column;gap:14px;background:#fff;border-radius:12px;padding:22px 22px 26px;box-shadow:0 1px 3px rgba(27,47,107,.08)}
+  section.step.active{display:flex}
+  code{font-family:var(--mono);background:var(--pale);padding:1px 5px;border-radius:4px;color:var(--navy);font-size:.95em}
+  .en{color:var(--gray);font-style:italic}
+  .box{border-radius:8px;padding:12px 16px;font-size:16px}
+  .tip{background:var(--peach)} .tip b{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .note{background:var(--pale)} .note b{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  /* runnable code */
+  .runner{border-radius:10px;overflow:hidden;border:2px solid var(--navy);background:var(--code)}
+  .runner .bar{display:flex;align-items:center;gap:10px;padding:6px 12px;background:#0E1630;color:var(--lblue);font-family:var(--mono);font-size:12px}
+  .runner .bar .spacer{flex:1}
+  .runner textarea{width:100%;display:block;border:0;outline:0;resize:vertical;min-height:120px;padding:12px 14px;background:var(--code);color:var(--codefg);font-family:var(--mono);font-size:16px;line-height:1.5;tab-size:4}
+  .runner .out{background:var(--pale);color:var(--navy);font-family:var(--mono);font-size:15px;padding:10px 14px;white-space:pre-wrap;min-height:34px;border-top:1px solid var(--lblue)}
+  .runner .out.err{color:var(--red);background:var(--lred)}
+  .runner .out:empty::before{content:"— πάτησε «Τρέξε» ή Ctrl+Enter —";color:var(--gray);font-style:italic;font-family:Arial}
+  .btn{font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--green);color:#fff;font-weight:bold}
+  .btn.secondary{background:transparent;border:2px solid var(--lblue);color:var(--lblue);font-weight:normal}
+  .btn.navy{background:var(--navy)}
+  .btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+  .btn:disabled{opacity:.5;cursor:default}
+  /* quiz */
+  .quiz{background:var(--pale);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .quiz .q{font-weight:bold;color:var(--navy)}
+  .quiz pre{margin:0;font-family:var(--mono);font-size:15px;background:var(--code);color:var(--codefg);padding:10px 14px;border-radius:8px;white-space:pre-wrap}
+  .quiz .opts{display:grid;gap:6px}
+  .quiz .opts button{text-align:left;font:inherit;font-size:16px;padding:9px 12px;border-radius:8px;border:1px solid var(--lblue);background:#fff;color:var(--navy);cursor:pointer;font-family:var(--mono)}
+  .quiz .opts button.ok{background:var(--lgreen);border-color:var(--green)}
+  .quiz .opts button.bad{background:var(--lred);border-color:var(--red)}
+  .quiz .fb{min-height:20px;font-size:15px}
+  .quiz .fb.ok{color:var(--green);font-weight:bold} .quiz .fb.bad{color:var(--red)}
+  /* exercise */
+  .exercise{border:2px dashed var(--orange);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#fff}
+  .exercise .title{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--orange);text-transform:uppercase}
+  .exercise .result{font-size:15px;min-height:20px}
+  .exercise .result.ok{color:var(--green);font-weight:bold} .exercise .result.bad{color:var(--red)}
+  .exercise details{font-size:15px} .exercise summary{cursor:pointer;color:var(--navy)}
+  /* list visualizer */
+  .viz{display:flex;flex-direction:column;gap:10px;background:var(--pale);border-radius:10px;padding:14px 16px}
+  .viz input{font-family:var(--mono);font-size:20px;padding:8px 12px;border:2px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy);width:100%;max-width:360px}
+  .cells{display:flex;gap:8px;flex-wrap:wrap}
+  .cell{display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--mono)}
+  .cell .i{font-size:12px;color:var(--navy);background:var(--lblue);border-radius:10px;padding:1px 10px}
+  .cell .v{width:62px;height:52px;display:flex;align-items:center;justify-content:center;background:var(--code);color:#fff;font-weight:bold;font-size:20px;border-radius:6px}
+  .cell.hit .v{background:var(--orange)}
+  .cell .ni{font-size:12px;color:var(--navy);background:var(--peach);border:1px solid var(--orange);border-radius:10px;padding:1px 10px}
+  .viz .res{font-family:var(--mono);font-size:17px;color:var(--navy);min-height:24px}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+  .status{font-family:var(--mono);font-size:12px;color:var(--gray)}
+  .status.ready{color:var(--green)}
+  table.t{border-collapse:collapse;width:100%;font-size:15px}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:bold}
+  table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue)} table.t td:first-child, table.t td.m{font-family:var(--mono);color:var(--navy)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:700px){.grid2{grid-template-columns:1fr} h1{font-size:30px}}
+  footer{font-size:13px;color:var(--gray);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="kicker">Προγραμματισμός για Επιχειρηματική Αναλυτική · Εβδομάδα 3 · <span id="pyStatus" class="status">φόρτωση Python…</span></div>
+    <h1>Εισαγωγή στην Python</h1>
+    <p class="lead" style="margin-top:10px">Ένας διαδραστικός οδηγός για την τάξη και το σπίτι. Ο κώδικας τρέχει μέσα στον browser σου: άλλαξέ τον, πάτησε <b>Τρέξε</b> (ή Ctrl+Enter) και δες τι γίνεται. Σε κάθε βήμα υπάρχουν κουίζ «τι θα τυπώσει;» και ασκήσεις που ελέγχονται αυτόματα.</p>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- ============ 1 ============ -->
+  <section class="step" data-title="Περιβάλλον &amp; σχόλια">
+    <h2>1. Το περιβάλλον της Python</h2>
+    <p>Στο DataCamp γράφεις κώδικα σε ένα <b>script</b> <span class="en">(script.py)</span> και βλέπεις το αποτέλεσμα στην <b>κονσόλα</b> <span class="en">(IPython Shell)</span>. Εδώ το παράθυρο κώδικα παίζει τον ρόλο του script και το γκρι κουτί από κάτω τον ρόλο της κονσόλας.</p>
+    <p>Η <code>print()</code> εμφανίζει μια τιμή. Ό,τι ακολουθεί το <code>#</code> είναι <b>σχόλιο</b> <span class="en">(comment)</span>: η Python το αγνοεί, είναι για τους ανθρώπους.</p>
+    <div class="runner" data-code="# Διαίρεση
+print(5 / 8)
+
+# Πρόσθεση
+print(7 + 10)
+
+# Δύναμη, υπόλοιπο, ακέραια διαίρεση
+print(4 ** 2)
+print(18 % 7)
+print(18 // 7)"></div>
+    <div class="box tip"><b>ΔΟΚΙΜΑΣΕ</b>Βάλε <code>#</code> μπροστά από την τελευταία <code>print</code> και ξανατρέξε. Μετά υπολόγισε <code>2 + 3 * 4</code> και <code>(2 + 3) * 4</code>: η προτεραιότητα είναι η μαθηματική.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="print(10 / 2)" data-opts='["5","5.0","2","Σφάλμα"]' data-ans="1" data-why="Η διαίρεση / δίνει πάντα δεκαδικό (float), ακόμη κι αν βγαίνει ακέραιος. Για ακέραια διαίρεση υπάρχει το //."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="# print(1 + 1)
+print(2 ** 3)" data-opts='["2\n8","8","6","Σφάλμα"]' data-ans="1" data-why="Η πρώτη γραμμή είναι σχόλιο και δεν εκτελείται. Το ** είναι η δύναμη: 2 στην 3η = 8."></div>
+
+    <div class="exercise" data-code="# Τύπωσε το αποτέλεσμα του 100 * 1.1 ** 7
+# (100 ευρώ με 10% τόκο για 7 χρόνια)
+" data-check="assert _out.strip() == '194.87171000000012', 'Περίμενα να τυπωθεί 194.87171000000012. Χρησιμοποίησε print(100 * 1.1 ** 7).'" data-solution="print(100 * 1.1 ** 7)">
+      <div class="title">Άσκηση 1</div>
+      <p>Υπολόγισε πόσο γίνονται 100 ευρώ με 10% ετήσιο τόκο μετά από 7 χρόνια, δηλαδή <code>100 * 1.1 ** 7</code>, και τύπωσέ το.</p>
+    </div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="step" data-title="Μεταβλητές &amp; τύποι">
+    <h2>2. Μεταβλητές και τύποι δεδομένων</h2>
+    <p>Μια <b>μεταβλητή</b> <span class="en">(variable)</span> είναι ένα όνομα που δείχνει σε μια τιμή: <code>savings = 100</code>. Το <code>=</code> σημαίνει «ανάθεση», όχι ισότητα. Τα ονόματα ξεχωρίζουν πεζά/κεφαλαία <span class="en">(case-sensitive)</span>.</p>
+    <div class="runner" data-code="# Δημιουργία μεταβλητών
+monthly_savings = 10
+num_months = 12
+
+# Υπολογισμός με μεταβλητές
+new_savings = monthly_savings * num_months
+print(new_savings)
+
+# Άλλαξε το num_months σε 24 και ξανατρέξε"></div>
+
+    <h3>Οι τέσσερις βασικοί τύποι <span class="en">(data types)</span></h3>
+    <table class="t">
+      <tr><th>Τύπος</th><th>Τι είναι</th><th>Παράδειγμα</th></tr>
+      <tr><td>int</td><td>ακέραιος <span class="en">(integer)</span></td><td class="m">x = 42</td></tr>
+      <tr><td>float</td><td>δεκαδικός <span class="en">(floating point)</span>, με τελεία</td><td class="m">y = 1.75</td></tr>
+      <tr><td>str</td><td>κείμενο <span class="en">(string)</span>, σε εισαγωγικά</td><td class="m">name = "Maria"</td></tr>
+      <tr><td>bool</td><td>λογική τιμή <span class="en">(boolean)</span>: True ή False</td><td class="m">ok = True</td></tr>
+    </table>
+    <p style="margin-top:10px">Η συνάρτηση <code>type()</code> σου λέει τον τύπο. <b>Ο τύπος καθορίζει τη συμπεριφορά</b>: το <code>+</code> προσθέτει αριθμούς αλλά <i>ενώνει</i> strings.</p>
+    <div class="runner" data-code="savings = 100
+height = 1.79
+name = &quot;Maria&quot;
+ok = True
+print(type(savings), type(height), type(name), type(ok))
+
+# Ο ίδιος τελεστής, διαφορετική συμπεριφορά
+print(2 + 3)
+print(&quot;ab&quot; + &quot;cd&quot;)
+print(True + False)
+print(&quot;I said &quot; * 2)
+
+# Μετατροπή τύπων (type conversion)
+print(&quot;I started with $&quot; + str(savings))
+print(int(&quot;42&quot;) + 1)
+print(float(&quot;3.14&quot;) * 2)"></div>
+    <div class="box tip"><b>ΔΟΚΙΜΑΣΕ</b>Γράψε <code>print("total: " + 3)</code>. Διάβασε το μήνυμα σφάλματος: η Python δεν ξέρει αν θες πρόσθεση ή ένωση. Διόρθωσέ το με <code>str(3)</code>.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = &quot;5&quot;
+y = 2
+print(x * y)" data-opts='["10","55","\"5\" * 2","Σφάλμα"]' data-ans="1" data-why="Το x είναι string (έχει εισαγωγικά). String * ακέραιος σημαίνει επανάληψη: &quot;5&quot; δύο φορές = &quot;55&quot;."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="print(type(3 / 1))" data-opts='["<class &#39;int&#39;>","<class &#39;float&#39;>","3.0","Σφάλμα"]' data-ans="1" data-why="Η / επιστρέφει πάντα float, άρα 3 / 1 = 3.0 και ο τύπος είναι float."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="a = 7
+A = 2
+print(a + A)" data-opts='["9","14","Σφάλμα: η A δεν υπάρχει","7"]' data-ans="0" data-why="Τα ονόματα είναι case-sensitive: a και A είναι δύο διαφορετικές μεταβλητές, 7 + 2 = 9."></div>
+
+    <div class="exercise" data-code="savings = 100
+growth_multiplier = 1.1
+# 1. Υπολόγισε result = savings * growth_multiplier ** 7
+# 2. Τύπωσε το κείμενο: I started with $100 and now have $194.87
+#    (χρησιμοποίησε str() και round(result, 2))
+" data-check="assert 'result' in globals(), 'Δεν βρήκα μεταβλητή result.'
+assert abs(result - 194.87171) < 0.01, 'Το result δεν έχει τη σωστή τιμή.'
+assert _out.strip() == 'I started with $100 and now have $194.87', 'Το κείμενο δεν είναι ακριβώς: I started with $100 and now have $194.87'" data-solution="result = savings * growth_multiplier ** 7
+print(&quot;I started with $&quot; + str(savings) + &quot; and now have $&quot; + str(round(result, 2)))">
+      <div class="title">Άσκηση 2</div>
+      <p>Συμπλήρωσε τον κώδικα ώστε να τυπώνει ακριβώς: <code>I started with $100 and now have $194.87</code>. Θυμήσου: αριθμός + string δίνει σφάλμα, χρειάζεσαι <code>str()</code>.</p>
+    </div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="step" data-title="Λίστες &amp; δείκτες">
+    <h2>3. Λίστες <span class="en">(lists)</span> και δείκτες <span class="en">(indexes)</span></h2>
+    <p>Μια μεταβλητή κρατά μία τιμή. Μια <b>λίστα</b> δίνει ένα όνομα σε <i>πολλές</i> τιμές: <code>areas = [11.25, 18.0, 20.0]</code>. Μπορεί να περιέχει οποιονδήποτε τύπο, ακόμη και άλλες λίστες.</p>
+    <div class="runner" data-code="# Όνομα και εμβαδό εναλλάξ
+areas = [&quot;hallway&quot;, 11.25, &quot;kitchen&quot;, 18.0,
+         &quot;living room&quot;, 20.0, &quot;bedroom&quot;, 10.75,
+         &quot;bathroom&quot;, 9.50]
+print(type(areas))
+print(len(areas))
+
+# Λίστα μέσα σε λίστα
+house = [[&quot;hallway&quot;, 11.25], [&quot;kitchen&quot;, 18.0], [&quot;bedroom&quot;, 10.75]]
+print(house[1])
+print(house[1][0])"></div>
+
+    <h3>Δείκτες: η αρίθμηση ξεκινά από το 0</h3>
+    <p>Το πρώτο στοιχείο έχει δείκτη <code>0</code>, το δεύτερο <code>1</code> κ.ο.κ. Αρνητικοί δείκτες μετρούν από το τέλος: <code>-1</code> είναι το τελευταίο. Πληκτρολόγησε μια έκφραση και δες ποια στοιχεία επιλέγει:</p>
+    <div class="viz" data-list='["a","b","c","d","e"]' data-init="x[1]"></div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="areas = [&quot;hallway&quot;, 11.25, &quot;kitchen&quot;, 18.0, &quot;living room&quot;, 20.0]
+print(areas[1])" data-opts='["hallway","11.25","kitchen","18.0"]' data-ans="1" data-why="Ο δείκτης 1 είναι το ΔΕΥΤΕΡΟ στοιχείο, γιατί η αρίθμηση ξεκινά από το 0."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="areas = [&quot;hallway&quot;, 11.25, &quot;kitchen&quot;, 18.0, &quot;living room&quot;, 20.0]
+print(areas[-2])" data-opts='["18.0","living room","20.0","Σφάλμα"]' data-ans="1" data-why="Το -1 είναι το τελευταίο (20.0), το -2 το προτελευταίο: &quot;living room&quot;."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="house = [[&quot;hallway&quot;, 11.25], [&quot;kitchen&quot;, 18.0]]
+print(house[-1][1])" data-opts='["kitchen","18.0","[\"kitchen\", 18.0]","11.25"]' data-ans="1" data-why="house[-1] είναι η τελευταία εσωτερική λίστα [&quot;kitchen&quot;, 18.0]· από αυτήν το [1] είναι το 18.0."></div>
+
+    <div class="exercise" data-code="areas = [&quot;hallway&quot;, 11.25, &quot;kitchen&quot;, 18.0,
+         &quot;living room&quot;, 20.0, &quot;bedroom&quot;, 10.75,
+         &quot;bathroom&quot;, 9.50]
+# 1. Τύπωσε το δεύτερο στοιχείο της areas
+# 2. Τύπωσε το τελευταίο στοιχείο (με αρνητικό δείκτη)
+# 3. Τύπωσε το εμβαδό του living room
+" data-check="lines = _out.strip().split('\n')
+assert lines == ['11.25', '9.5', '20.0'], 'Περίμενα τρεις γραμμές: 11.25, 9.5 και 20.0. Πήρα: ' + ' | '.join(lines)
+assert 'areas[-1]' in _src, 'Για το τελευταίο στοιχείο χρησιμοποίησε αρνητικό δείκτη: areas[-1].'" data-solution="print(areas[1])
+print(areas[-1])
+print(areas[5])">
+      <div class="title">Άσκηση 3</div>
+      <p>Τύπωσε με τη σειρά: το δεύτερο στοιχείο, το τελευταίο στοιχείο (με αρνητικό δείκτη) και το εμβαδό του living room.</p>
+    </div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="step" data-title="Slicing &amp; αλλαγές">
+    <h2>4. Τμήματα λίστας <span class="en">(slicing)</span> και αλλαγές</h2>
+    <p>Με <code>my_list[start:end]</code> παίρνεις πολλά στοιχεία: ο <b>start περιλαμβάνεται</b>, ο <b>end όχι</b>. Αν παραλείψεις το start ξεκινά από την αρχή, αν παραλείψεις το end πάει ως το τέλος. Δοκίμασε <code>x[1:3]</code>, <code>x[:2]</code>, <code>x[2:]</code>, <code>x[-2:]</code>:</p>
+    <div class="viz" data-list='["a","b","c","d","e"]' data-init="x[1:3]"></div>
+
+    <h3>Αλλαγή, προσθήκη, διαγραφή</h3>
+    <div class="runner" data-code="x = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]
+
+# Αλλαγή στοιχείου και τμήματος
+x[1] = &quot;r&quot;
+x[2:] = [&quot;s&quot;, &quot;t&quot;]
+print(x)
+
+# Προσθήκη με + (νέα λίστα) και διαγραφή με del
+y = x + [&quot;e&quot;, &quot;f&quot;]
+print(y)
+del(x[1])
+print(x)
+
+# Προσοχή: y = x ΔΕΝ αντιγράφει τη λίστα
+a = [1, 2, 3]
+b = a          # ίδια λίστα, δεύτερο όνομα
+b[0] = 99
+print(a)
+c = list(a)    # πραγματικό αντίγραφο
+c[0] = 0
+print(a)"></div>
+    <div class="box note"><b>ΓΙΑΤΙ ΕΧΕΙ ΣΗΜΑΣΙΑ</b>Το <code>b = a</code> δίνει δεύτερο όνομα στην <i>ίδια</i> λίστα, οπότε μια αλλαγή μέσω του b φαίνεται και στο a. Για ανεξάρτητο αντίγραφο γράψε <code>list(a)</code> ή <code>a[:]</code>. Είναι από τις πιο συχνές πηγές «μυστήριων» σφαλμάτων.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]
+print(x[1:3])" data-opts='["[\"b\", \"c\", \"d\"]","[\"b\", \"c\"]","[\"a\", \"b\", \"c\"]","[\"c\"]"]' data-ans="1" data-why="Από τον δείκτη 1 (b) μέχρι, αλλά όχι μαζί με, τον δείκτη 3 (d): [&quot;b&quot;, &quot;c&quot;]."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]
+print(x[:2] + x[2:])" data-opts='["[\"a\", \"b\", \"c\", \"d\"]","[\"a\", \"b\"]","[\"c\", \"d\"]","Σφάλμα"]' data-ans="0" data-why="x[:2] είναι τα δύο πρώτα, x[2:] τα υπόλοιπα· το + τα ενώνει ξανά σε ολόκληρη τη λίστα."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]
+del(x[0])
+print(x[0])" data-opts='["a","b","Σφάλμα","[\"b\", \"c\", \"d\"]"]' data-ans="1" data-why="Μετά τη διαγραφή του &quot;a&quot;, όλα μετακινούνται μία θέση: το x[0] είναι τώρα το &quot;b&quot;."></div>
+
+    <div class="exercise" data-code="areas = [&quot;hallway&quot;, 11.25, &quot;kitchen&quot;, 18.0,
+         &quot;living room&quot;, 20.0, &quot;bedroom&quot;, 10.75,
+         &quot;bathroom&quot;, 9.50]
+# 1. downstairs: τα 6 πρώτα στοιχεία (παράλειψε τον δείκτη start)
+# 2. upstairs: τα 4 τελευταία (παράλειψε τον δείκτη end)
+# 3. Άλλαξε το εμβαδό του bathroom σε 10.50 μέσα στην areas
+# 4. Τύπωσε downstairs, upstairs και areas
+" data-check="assert downstairs == ['hallway', 11.25, 'kitchen', 18.0, 'living room', 20.0], 'Το downstairs δεν είναι τα 6 πρώτα στοιχεία.'
+assert upstairs == ['bedroom', 10.75, 'bathroom', 9.5], 'Το upstairs πρέπει να είναι τα 4 τελευταία στοιχεία της αρχικής λίστας.'
+assert areas[-1] == 10.5, 'Το τελευταίο στοιχείο της areas πρέπει να γίνει 10.5.'
+assert 'areas[:6]' in _src.replace(' ', ''), 'Για το downstairs γράψε areas[:6] (χωρίς start).'
+assert 'areas[6:]' in _src.replace(' ', ''), 'Για το upstairs γράψε areas[6:] (χωρίς end).'" data-solution="downstairs = areas[:6]
+upstairs = areas[6:]
+areas[-1] = 10.50
+print(downstairs)
+print(upstairs)
+print(areas)">
+      <div class="title">Άσκηση 4</div>
+      <p>Φτιάξε τις λίστες <code>downstairs</code> και <code>upstairs</code> με την απλούστερη γραφή του slicing, άλλαξε το εμβαδό του μπάνιου σε 10.50 και τύπωσε τα αποτελέσματα. (Πρόσεξε: το upstairs φτιάξ' το <i>πριν</i> αλλάξεις την areas, ή σκέψου τι θα περιέχει αν το φτιάξεις μετά.)</p>
+    </div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="step" data-title="Συναρτήσεις &amp; μέθοδοι">
+    <h2>5. Συναρτήσεις <span class="en">(functions)</span> και μέθοδοι <span class="en">(methods)</span></h2>
+    <p>Μια <b>συνάρτηση</b> είναι έτοιμος κώδικας με όνομα: <code>output = function_name(input)</code>. Ήδη ξέρεις τις <code>print()</code> και <code>type()</code>. Άλλες χρήσιμες: <code>len()</code>, <code>max()</code>, <code>round()</code>, <code>sorted()</code>, <code>help()</code>.</p>
+    <div class="runner" data-code="var1 = [1, 2, 3, 4]
+var2 = True
+print(type(var1))
+print(len(var1))
+print(int(var2))
+
+# Πολλαπλά ορίσματα: sorted(iterable, key=None, reverse=False)
+first = [11.25, 18.0, 20.0]
+second = [10.75, 9.50]
+full = first + second
+full_sorted = sorted(full, reverse=True)
+print(full_sorted)
+
+# round() με ένα ή δύο ορίσματα
+print(round(1.68, 1))
+print(round(1.68))"></div>
+
+    <h3>Μέθοδοι: συναρτήσεις που «ανήκουν» σε αντικείμενα</h3>
+    <p>Κάθε τιμή στην Python είναι <b>αντικείμενο</b> <span class="en">(object)</span> και κάθε τύπος έχει τις δικές του μεθόδους. Καλούνται με τελεία: <code>sister.upper()</code>, <code>fam.index("emma")</code>.</p>
+    <div class="runner" data-code="sister = &quot;liz&quot;
+print(sister.upper())
+print(sister.count(&quot;z&quot;))
+
+fam = [&quot;liz&quot;, 1.73, &quot;emma&quot;, 1.68, &quot;mom&quot;, 1.71]
+print(fam.index(&quot;emma&quot;))
+print(fam.count(1.73))
+
+# Κάποιες μέθοδοι ΑΛΛΑΖΟΥΝ το αντικείμενο
+fam.append(&quot;dad&quot;)
+fam.append(1.89)
+print(fam)
+fam.reverse()
+print(fam)
+
+# ...και άλλες επιστρέφουν νέα τιμή χωρίς να το αλλάξουν
+print(sister)   # παραμένει liz"></div>
+    <div class="box tip"><b>ΣΥΧΝΟ ΛΑΘΟΣ</b><code>fam = fam.append("anna")</code> κάνει τη <code>fam</code> ίση με <code>None</code>, γιατί η <code>append()</code> δεν επιστρέφει τίποτα· αλλάζει τη λίστα επί τόπου. Γράψε απλώς <code>fam.append("anna")</code>. Δοκίμασέ το παραπάνω για να δεις τι γίνεται.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = [3, 1, 2]
+y = sorted(x)
+print(x, y)" data-opts='["[1, 2, 3] [1, 2, 3]","[3, 1, 2] [1, 2, 3]","[3, 1, 2] None","Σφάλμα"]' data-ans="1" data-why="Η sorted() είναι συνάρτηση που ΕΠΙΣΤΡΕΦΕΙ νέα ταξινομημένη λίστα· η x δεν αλλάζει."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = [3, 1, 2]
+y = x.append(4)
+print(y)" data-opts='["[3, 1, 2, 4]","4","None","Σφάλμα"]' data-ans="2" data-why="Η append() αλλάζει την x επί τόπου και δεν επιστρέφει τίποτα, δηλαδή None."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="name = &quot;maria&quot;
+name.upper()
+print(name)" data-opts='["MARIA","maria","Maria","Σφάλμα"]' data-ans="1" data-why="Η upper() επιστρέφει ΝΕΟ string με κεφαλαία, δεν αλλάζει το name. Για να το κρατήσεις: name = name.upper()."></div>
+
+    <div class="exercise" data-code="areas = [11.25, 18.0, 20.0, 10.75, 9.50]
+# 1. Τύπωσε τη θέση (δείκτη) του 20.0 μέσα στην areas
+# 2. Πρόσθεσε στο τέλος τα 24.5 και 15.45 (δύο κλήσεις append)
+# 3. Αντίστρεψε τη σειρά της λίστας
+# 4. Τύπωσε την areas
+" data-check="assert areas == [15.45, 24.5, 9.5, 10.75, 20.0, 18.0, 11.25], 'Η τελική areas πρέπει να είναι [15.45, 24.5, 9.5, 10.75, 20.0, 18.0, 11.25]. Πήρα: ' + str(areas)
+assert _out.strip().split('\n')[0] == '2', 'Η πρώτη γραμμή της εξόδου πρέπει να είναι η θέση του 20.0, δηλαδή 2 (χρησιμοποίησε areas.index(20.0)).'
+assert '.reverse()' in _src, 'Χρησιμοποίησε τη μέθοδο reverse().'" data-solution="print(areas.index(20.0))
+areas.append(24.5)
+areas.append(15.45)
+areas.reverse()
+print(areas)">
+      <div class="title">Άσκηση 5</div>
+      <p>Χρησιμοποίησε τις μεθόδους λίστας <code>index()</code>, <code>append()</code> και <code>reverse()</code> σύμφωνα με τα σχόλια.</p>
+    </div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="step" data-title="Πακέτα">
+    <h2>6. Πακέτα <span class="en">(packages)</span></h2>
+    <p>Ένα πακέτο είναι μια συλλογή από έτοιμες συναρτήσεις, μεθόδους και τύπους. Για ανάλυση δεδομένων: <b>NumPy</b> (αριθμητικοί πίνακες), <b>pandas</b> (πίνακες δεδομένων), <b>Matplotlib</b> (γραφήματα), <b>scikit-learn</b> (μηχανική μάθηση). Τα εγκαθιστάς μία φορά (<code>pip install numpy</code>) και τα <b>εισάγεις</b> <span class="en">(import)</span> σε κάθε script.</p>
+    <table class="t">
+      <tr><th>Τρόπος</th><th>Πώς το καλείς μετά</th><th>Σχόλιο</th></tr>
+      <tr><td>import numpy</td><td class="m">numpy.array([1, 2])</td><td>πλήρες όνομα, μακρύ</td></tr>
+      <tr><td>import numpy as np</td><td class="m">np.array([1, 2])</td><td><b>η συνήθης πρακτική</b> (ψευδώνυμο, alias)</td></tr>
+      <tr><td>from numpy import array</td><td class="m">array([1, 2])</td><td>σύντομο, αλλά κρύβει από πού ήρθε</td></tr>
+    </table>
+    <p style="margin-top:10px">Εδώ στον browser υπάρχει το πακέτο <code>math</code> της βασικής Python, και μπορεί να φορτωθεί και το NumPy (πατώντας «Τρέξε» την πρώτη φορά θα αργήσει λίγα δευτερόλεπτα).</p>
+    <div class="runner" data-code="# Από τη βασική Python
+import math
+r = 0.43
+C = 2 * math.pi * r
+A = math.pi * r ** 2
+print(&quot;Circumference: &quot; + str(C))
+print(&quot;Area: &quot; + str(A))
+
+# Μόνο μία συνάρτηση
+from math import radians
+print(radians(180))
+
+# NumPy: πράξεις σε ολόκληρη λίστα με μία γραμμή (εβδομάδα 4)
+import numpy as np
+heights = [1.73, 1.68, 1.71, 1.89]
+np_heights = np.array(heights)
+print(np_heights * 100)"></div>
+
+    <div class="quiz" data-q="Ποια γραμμή είναι σωστή για να καλέσεις τη συνάρτηση sqrt μετά από import math;" data-code="import math" data-opts='["print(sqrt(16))","print(math.sqrt(16))","print(math sqrt 16)","print(sqrt.math(16))"]' data-ans="1" data-why="Με import math οι συναρτήσεις καλούνται με το πρόθεμα math. : math.sqrt(16). Το σκέτο sqrt() θα δούλευε μόνο με from math import sqrt."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="from math import pi
+print(round(pi, 2))" data-opts='["3.14","3","3.1415926","Σφάλμα: pi δεν ορίστηκε"]' data-ans="0" data-why="Το from math import pi φέρνει μόνο το pi, που το χρησιμοποιείς χωρίς πρόθεμα. round(pi, 2) = 3.14."></div>
+
+    <div class="exercise" data-code="# Υπολόγισε την απόσταση που διανύει η Σελήνη σε 12 βαθμούς τροχιάς
+# Τύπος: dist = r * phi, όπου phi οι βαθμοί σε ακτίνια (radians)
+r = 192500
+# 1. Εισήγαγε το radians από το math
+# 2. Υπολόγισε dist = r * radians(12)
+# 3. Τύπωσε το dist
+" data-check="assert abs(dist - 40317.10572106901) < 0.01, 'Το dist πρέπει να είναι περίπου 40317.1.'
+assert 'import' in _src and 'radians' in _src, 'Χρειάζεται import της radians από το math.'" data-solution="from math import radians
+dist = r * radians(12)
+print(dist)">
+      <div class="title">Άσκηση 6</div>
+      <p>Χρησιμοποίησε το πακέτο <code>math</code> για να μετατρέψεις 12 μοίρες σε ακτίνια και υπολόγισε την απόσταση <code>dist = r * radians(12)</code>.</p>
+    </div>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="step" data-title="Τελικό κουίζ">
+    <h2>7. Τελικό κουίζ</h2>
+    <p>Δέκα ερωτήσεις από όλη την εβδομάδα. Σκέψου πρώτα, μετά απάντησε· αν αμφιβάλλεις, άνοιξε το παράθυρο κώδικα στο τέλος και δοκίμασέ το.</p>
+    <div class="quiz" data-q="1. Τι θα τυπώσει;" data-code="print(7 // 2, 7 % 2, 7 / 2)" data-opts='["3 1 3.5","3.5 1 3","3 1 3","3 0 3.5"]' data-ans="0" data-why="// ακέραια διαίρεση = 3, % υπόλοιπο = 1, / κανονική διαίρεση = 3.5."></div>
+    <div class="quiz" data-q="2. Τι θα τυπώσει;" data-code="x = &quot;3&quot; + &quot;4&quot;
+print(x)" data-opts='["7","34","\"34\"","Σφάλμα"]' data-ans="1" data-why="Δύο strings με + ενώνονται: &quot;34&quot;. Η print δεν δείχνει τα εισαγωγικά."></div>
+    <div class="quiz" data-q="3. Ποιος είναι ο τύπος του True + 1;" data-code="print(type(True + 1))" data-opts='["<class &#39;bool&#39;>","<class &#39;int&#39;>","<class &#39;str&#39;>","Σφάλμα"]' data-ans="1" data-why="Το True μετρά ως 1 στις πράξεις, άρα True + 1 = 2, ακέραιος."></div>
+    <div class="quiz" data-q="4. Τι θα τυπώσει;" data-code="x = [10, 20, 30, 40, 50]
+print(x[-1] - x[0])" data-opts='["40","-40","50","10"]' data-ans="0" data-why="x[-1] είναι 50 και x[0] είναι 10: 50 - 10 = 40."></div>
+    <div class="quiz" data-q="5. Τι θα τυπώσει;" data-code="x = [10, 20, 30, 40, 50]
+print(x[1:4])" data-opts='["[20, 30, 40]","[20, 30, 40, 50]","[10, 20, 30, 40]","[30, 40]"]' data-ans="0" data-why="Δείκτες 1, 2, 3 (ο 4 εξαιρείται): [20, 30, 40]."></div>
+    <div class="quiz" data-q="6. Τι θα τυπώσει;" data-code="x = [10, 20, 30, 40, 50]
+print(len(x[:3]))" data-opts='["3","2","4","[10, 20, 30]"]' data-ans="0" data-why="x[:3] είναι [10, 20, 30] και το μήκος του είναι 3."></div>
+    <div class="quiz" data-q="7. Τι θα τυπώσει;" data-code="x = [[1, 2], [3, 4]]
+print(x[1][0])" data-opts='["1","2","3","[3, 4]"]' data-ans="2" data-why="x[1] είναι [3, 4], και το [0] του είναι το 3."></div>
+    <div class="quiz" data-q="8. Τι θα τυπώσει;" data-code="a = [1, 2, 3]
+b = a
+b.append(4)
+print(len(a))" data-opts='["3","4","Σφάλμα","None"]' data-ans="1" data-why="Το b = a δεν αντιγράφει: a και b είναι η ίδια λίστα, άρα το append φαίνεται και στο a."></div>
+    <div class="quiz" data-q="9. Ποια πρόταση είναι σωστή;" data-code="fam = [&quot;liz&quot;, 1.73]
+fam.index(&quot;liz&quot;)   # α
+len(fam)           # β" data-opts='["Η α είναι μέθοδος, η β συνάρτηση","Η α είναι συνάρτηση, η β μέθοδος","Και οι δύο είναι μέθοδοι","Και οι δύο είναι συναρτήσεις"]' data-ans="0" data-why="Η μέθοδος καλείται με τελεία πάνω στο αντικείμενο (fam.index), η συνάρτηση παίρνει το αντικείμενο ως όρισμα (len(fam))."></div>
+    <div class="quiz" data-q="10. Τι θα τυπώσει;" data-code="import math as m
+print(m.floor(3.7))" data-opts='["3","4","3.7","Σφάλμα: το m δεν ορίστηκε"]' data-ans="0" data-why="Το import math as m δίνει ψευδώνυμο m· η floor στρογγυλοποιεί προς τα κάτω: 3."></div>
+    <div id="finalScore" class="box note" style="display:none"></div>
+    <h3>Δοκιμαστήριο</h3>
+    <div class="runner" data-code="# Ελεύθερος χώρος για πειράματα
+x = [10, 20, 30, 40, 50]
+print(x[1:4])"></div>
+    <div class="box tip"><b>ΓΙΑ ΤΟ ΣΠΙΤΙ</b>Ολοκλήρωσε τα κεφάλαια 1–3 του <a href="https://app.datacamp.com/learn/courses/intro-to-python-for-data-science" target="_blank" rel="noopener">Introduction to Python</a> στο DataCamp. Επόμενη εβδομάδα: NumPy.</div>
+  </section>
+
+  <div class="nav">
+    <button class="btn outline" id="prevBtn">← Προηγούμενο</button>
+    <button class="btn navy" id="nextBtn">Επόμενο βήμα →</button>
+  </div>
+  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Το υλικό βασίζεται στο μάθημα «Introduction to Python» του DataCamp. Ο κώδικας εκτελείται στον browser με <a href="https://pyodide.org" target="_blank" rel="noopener">Pyodide</a>.</footer>
+</div>
+
+<script>
+(function(){
+  // ---------- storage helpers ----------
+  const KEY='bap-week3-python';
+  let state={step:0,quiz:{},ex:{}};
+  try{const s=localStorage.getItem(KEY); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  // ---------- stepper ----------
+  const steps=[...document.querySelectorAll('section.step')];
+  const stepper=document.getElementById('stepper');
+  steps.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.innerHTML='<span class="n">'+(i+1)+'</span><span class="l">'+s.dataset.title+'</span>';
+    b.onclick=()=>go(i);
+    stepper.appendChild(b);
+  });
+  function go(i){
+    state.step=i; save();
+    steps.forEach((s,j)=>s.classList.toggle('active',j===i));
+    [...stepper.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+    document.getElementById('prevBtn').disabled=i===0;
+    document.getElementById('nextBtn').disabled=i===steps.length-1;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.getElementById('prevBtn').onclick=()=>go(Math.max(0,state.step-1));
+  document.getElementById('nextBtn').onclick=()=>go(Math.min(steps.length-1,state.step+1));
+
+  // ---------- pyodide ----------
+  let pyodide=null, loading=null;
+  const statusEl=document.getElementById('pyStatus');
+  function loadPy(){
+    if(pyodide) return Promise.resolve(pyodide);
+    if(loading) return loading;
+    statusEl.textContent='φόρτωση Python…';
+    loading=new Promise((res,rej)=>{
+      const s=document.createElement('script');
+      s.src='https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+      s.onload=async()=>{
+        try{
+          pyodide=await loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/'});
+          statusEl.textContent='Python έτοιμη ✓'; statusEl.classList.add('ready');
+          res(pyodide);
+        }catch(e){statusEl.textContent='η Python δεν φορτώθηκε'; rej(e);}
+      };
+      s.onerror=()=>{statusEl.textContent='η Python δεν φορτώθηκε (έλεγξε τη σύνδεση)'; rej(new Error('load'));};
+      document.head.appendChild(s);
+    });
+    return loading;
+  }
+  async function runPython(src){
+    const py=await loadPy();
+    if(/^\s*import numpy|^\s*from numpy/m.test(src)){ try{ await py.loadPackage('numpy'); }catch(e){} }
+    let out='';
+    py.setStdout({batched:(t)=>{out+=t+'\n';}});
+    py.setStderr({batched:(t)=>{out+=t+'\n';}});
+    const ns=py.globals.get('dict')();
+    let err=null;
+    try{ await py.runPythonAsync(src,{globals:ns}); }
+    catch(e){ err=String(e.message||e); }
+    return {out,err,ns};
+  }
+  function fmtErr(e){
+    // keep only the last meaningful lines of a Python traceback
+    const lines=e.trim().split('\n');
+    const last=lines.filter(l=>!/^\s*File |^\s*\^|^Traceback|^\s*$|pyodide|_pyodide/.test(l));
+    return last.slice(-3).join('\n');
+  }
+
+  // ---------- runners ----------
+  document.querySelectorAll('.runner').forEach(r=>{
+    const code=r.dataset.code;
+    r.innerHTML='<div class="bar"><span>script.py</span><span class="spacer"></span><button class="btn secondary reset">Επαναφορά</button><button class="btn run">▶ Τρέξε</button></div><textarea spellcheck="false"></textarea><div class="out"></div>';
+    const ta=r.querySelector('textarea'), out=r.querySelector('.out');
+    ta.value=code; ta.rows=Math.max(4,code.split('\n').length+1);
+    ta.addEventListener('keydown',e=>{
+      if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();run();}
+      if(e.key==='Tab'){e.preventDefault();const s=ta.selectionStart;ta.value=ta.value.slice(0,s)+'    '+ta.value.slice(ta.selectionEnd);ta.selectionStart=ta.selectionEnd=s+4;}
+    });
+    r.querySelector('.reset').onclick=()=>{ta.value=code;out.textContent='';out.classList.remove('err');};
+    const btn=r.querySelector('.run');
+    async function run(){
+      btn.disabled=true; out.classList.remove('err'); out.textContent='…';
+      try{
+        const res=await runPython(ta.value);
+        out.textContent=(res.out+(res.err?fmtErr(res.err):'')).trimEnd();
+        if(res.err) out.classList.add('err');
+        if(!out.textContent) out.textContent='(καμία έξοδος — μήπως ξέχασες το print;)';
+      }catch(e){out.textContent='Η Python δεν είναι διαθέσιμη: '+e; out.classList.add('err');}
+      btn.disabled=false;
+    }
+    btn.onclick=run;
+  });
+
+  // ---------- quizzes ----------
+  const quizzes=[...document.querySelectorAll('.quiz')];
+  quizzes.forEach((q,qi)=>{
+    const opts=JSON.parse(q.dataset.opts), ans=+q.dataset.ans;
+    q.innerHTML='<div class="q">'+q.dataset.q+'</div>'+(q.dataset.code?'<pre></pre>':'')+'<div class="opts"></div><div class="fb"></div>';
+    if(q.dataset.code) q.querySelector('pre').textContent=q.dataset.code;
+    const box=q.querySelector('.opts'), fb=q.querySelector('.fb');
+    opts.forEach((o,i)=>{
+      const b=document.createElement('button'); b.textContent=o;
+      b.onclick=()=>{
+        [...box.children].forEach(c=>c.classList.remove('ok','bad'));
+        if(i===ans){b.classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why; state.quiz[qi]=true;}
+        else{b.classList.add('bad'); fb.className='fb bad'; fb.textContent='Όχι ακριβώς. '+q.dataset.why; state.quiz[qi]=false;}
+        save(); updateDone(); finalScore();
+      };
+      box.appendChild(b);
+    });
+    if(state.quiz[qi]===true){box.children[ans].classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why;}
+  });
+  function finalScore(){
+    const sec=steps[steps.length-1]; const qs=[...sec.querySelectorAll('.quiz')];
+    const idx=qs.map(q=>quizzes.indexOf(q)); const done=idx.filter(i=>state.quiz[i]!==undefined).length;
+    const ok=idx.filter(i=>state.quiz[i]===true).length;
+    const el=document.getElementById('finalScore');
+    if(done===qs.length){el.style.display='block'; el.innerHTML='<b>ΑΠΟΤΕΛΕΣΜΑ</b>Σωστές απαντήσεις: '+ok+' / '+qs.length+(ok===qs.length?' — άψογα!':ok>=7?' — πολύ καλά, ξαναδές τις λάθος.':' — ξαναδιάβασε τα βήματα 2–5 και ξαναπροσπάθησε.');}
+  }
+  finalScore();
+
+  // ---------- exercises ----------
+  const exs=[...document.querySelectorAll('.exercise')];
+  exs.forEach((ex,ei)=>{
+    const code=ex.dataset.code, check=ex.dataset.check, sol=ex.dataset.solution;
+    const wrap=document.createElement('div');
+    wrap.innerHTML='<div class="runner"><div class="bar"><span>script.py</span><span class="spacer"></span><button class="btn secondary reset">Επαναφορά</button><button class="btn run">✔ Έλεγξε</button></div><textarea spellcheck="false"></textarea><div class="out"></div></div><div class="result"></div><details><summary>Δείξε μια λύση</summary><pre class="solpre"></pre></details>';
+    ex.appendChild(wrap);
+    const ta=wrap.querySelector('textarea'), out=wrap.querySelector('.out'), res=wrap.querySelector('.result'), btn=wrap.querySelector('.run');
+    ta.value=code; ta.rows=Math.max(5,code.split('\n').length+2);
+    wrap.querySelector('.solpre').textContent=sol;
+    Object.assign(wrap.querySelector('.solpre').style,{fontFamily:'var(--mono)',fontSize:'14px',background:'var(--pale)',padding:'10px 12px',borderRadius:'8px',whiteSpace:'pre-wrap',margin:'6px 0 0'});
+    ta.addEventListener('keydown',e=>{ if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();run();}
+      if(e.key==='Tab'){e.preventDefault();const s=ta.selectionStart;ta.value=ta.value.slice(0,s)+'    '+ta.value.slice(ta.selectionEnd);ta.selectionStart=ta.selectionEnd=s+4;}});
+    wrap.querySelector('.reset').onclick=()=>{ta.value=code;out.textContent='';out.classList.remove('err');res.textContent='';res.className='result';};
+    async function run(){
+      btn.disabled=true; out.classList.remove('err'); out.textContent='…'; res.className='result'; res.textContent='';
+      try{
+        const py=await loadPy();
+        const src=ta.value;
+        const r=await runPython(src);
+        out.textContent=(r.out+(r.err?fmtErr(r.err):'')).trimEnd();
+        if(r.err){out.classList.add('err'); res.className='result bad'; res.textContent='Ο κώδικας έβγαλε σφάλμα. Διάβασε το μήνυμα και διόρθωσέ τον.'; state.ex[ei]=false;}
+        else{
+          r.ns.set('_out',r.out); r.ns.set('_src',src);
+          try{ await py.runPythonAsync(check,{globals:r.ns}); res.className='result ok'; res.textContent='Σωστά! Η άσκηση ολοκληρώθηκε.'; state.ex[ei]=true; }
+          catch(e){ const m=String(e.message||e); const am=m.match(/AssertionError: ([^\n]*)/); res.className='result bad'; res.textContent=am?am[1]:'Δεν είναι ακόμη σωστό: '+fmtErr(m); state.ex[ei]=false; }
+        }
+      }catch(e){out.textContent='Η Python δεν είναι διαθέσιμη: '+e; out.classList.add('err');}
+      save(); updateDone(); btn.disabled=false;
+    }
+    btn.onclick=run;
+    if(state.ex[ei]===true){res.className='result ok'; res.textContent='Ολοκληρωμένη ✓ (μπορείς να την ξανακάνεις)';}
+  });
+
+  function updateDone(){
+    steps.forEach((s,i)=>{
+      const qs=[...s.querySelectorAll('.quiz')].map(q=>quizzes.indexOf(q));
+      const es=[...s.querySelectorAll('.exercise')].map(e=>exs.indexOf(e));
+      const all=qs.every(i=>state.quiz[i]===true)&&es.every(i=>state.ex[i]===true)&&(qs.length+es.length)>0;
+      stepper.children[i].classList.toggle('done',all);
+    });
+  }
+
+  // ---------- list visualizer ----------
+  document.querySelectorAll('.viz').forEach(v=>{
+    const list=JSON.parse(v.dataset.list), n=list.length;
+    v.innerHTML='<div style="font-family:var(--mono);font-size:17px;color:var(--navy)">x = '+JSON.stringify(list).replace(/,/g,', ')+'</div><input spellcheck="false" autocomplete="off"><div class="cells"></div><div class="res"></div>';
+    const inp=v.querySelector('input'), cells=v.querySelector('.cells'), res=v.querySelector('.res');
+    list.forEach((it,i)=>{const c=document.createElement('div');c.className='cell';c.innerHTML='<span class="i">'+i+'</span><span class="v">'+JSON.stringify(it)+'</span><span class="ni">'+(i-n)+'</span>';cells.appendChild(c);});
+    function evalExpr(e){
+      e=e.replace(/\s+/g,'');
+      let m=e.match(/^x\[(-?\d+)\]$/);
+      if(m){let i=+m[1]; const j=i<0?i+n:i; if(j<0||j>=n) return {err:'IndexError: list index out of range — ο δείκτης '+i+' δεν υπάρχει (η λίστα έχει '+n+' στοιχεία, δείκτες 0…'+(n-1)+' ή -1…-'+n+')'}; return {sel:[j],val:JSON.stringify(list[j]).replace(/"/g,"'")};}
+      m=e.match(/^x\[(-?\d*):(-?\d*)\]$/);
+      if(m){let a=m[1]===''?0:+m[1], b=m[2]===''?n:+m[2]; if(a<0)a+=n; if(b<0)b+=n; a=Math.max(0,Math.min(n,a)); b=Math.max(0,Math.min(n,b)); const sel=[]; for(let k=a;k<b;k++)sel.push(k); return {sel,val:'['+sel.map(k=>JSON.stringify(list[k]).replace(/"/g,"'")).join(', ')+']'};}
+      if(e==='x') return {sel:list.map((_,i)=>i),val:'['+list.map(k=>"'"+k+"'").join(', ')+']'};
+      return {err:'Γράψε κάτι σαν x[2], x[-1], x[1:3], x[:2] ή x[2:]'};
+    }
+    function upd(){
+      const r=evalExpr(inp.value);
+      [...cells.children].forEach((c,i)=>c.classList.toggle('hit',!!(r.sel&&r.sel.includes(i))));
+      res.style.color=r.err?'var(--red)':'var(--navy)'; res.textContent=r.err?r.err:'→ '+r.val;
+    }
+    inp.oninput=upd; inp.value=v.dataset.init; upd();
+  });
+
+  updateDone();
+  go(Math.min(state.step||0,steps.length-1));
+  // warm up python in the background
+  loadPy().catch(()=>{});
+})();
+</script>
+</body>
+</html>
