@@ -128,31 +128,31 @@ print(2 ** 3)" data-opts='["2\n8","8","6","Σφάλμα"]' data-ans="1" data-why
   <!-- ============ 2 ============ -->
   <section class="step" data-title="Μεταβλητές &amp; τύποι">
     <h2>2. Μεταβλητές και τύποι δεδομένων</h2>
-    <p>Μια <b>μεταβλητή</b> <span class="en">(variable)</span> είναι ένα όνομα που δείχνει σε μια τιμή: <code>savings = 100</code>. Το <code>=</code> σημαίνει «ανάθεση», όχι ισότητα. Τα ονόματα ξεχωρίζουν πεζά/κεφαλαία <span class="en">(case-sensitive)</span>.</p>
+    <p>Μια <b>μεταβλητή</b> <span class="en">(variable)</span> είναι ένα όνομα που δείχνει σε μια τιμή: <code>revenue = 1250</code>. Το <code>=</code> σημαίνει «ανάθεση», όχι ισότητα. Τα ονόματα ξεχωρίζουν πεζά/κεφαλαία <span class="en">(case-sensitive)</span>.</p>
     <div class="runner" data-code="# Δημιουργία μεταβλητών
-monthly_savings = 10
-num_months = 12
+unit_price = 25.5
+quantity = 12
 
 # Υπολογισμός με μεταβλητές
-new_savings = monthly_savings * num_months
-print(new_savings)
+total = unit_price * quantity
+print(total)
 
-# Άλλαξε το num_months σε 24 και ξανατρέξε"></div>
+# Άλλαξε το quantity σε 24 και ξανατρέξε"></div>
 
     <h3>Οι τέσσερις βασικοί τύποι <span class="en">(data types)</span></h3>
     <table class="t">
       <tr><th>Τύπος</th><th>Τι είναι</th><th>Παράδειγμα</th></tr>
-      <tr><td>int</td><td>ακέραιος <span class="en">(integer)</span></td><td class="m">x = 42</td></tr>
-      <tr><td>float</td><td>δεκαδικός <span class="en">(floating point)</span>, με τελεία</td><td class="m">y = 1.75</td></tr>
-      <tr><td>str</td><td>κείμενο <span class="en">(string)</span>, σε εισαγωγικά</td><td class="m">name = "Maria"</td></tr>
-      <tr><td>bool</td><td>λογική τιμή <span class="en">(boolean)</span>: True ή False</td><td class="m">ok = True</td></tr>
+      <tr><td>int</td><td>ακέραιος <span class="en">(integer)</span></td><td class="m">stock = 42</td></tr>
+      <tr><td>float</td><td>δεκαδικός <span class="en">(floating point)</span>, με τελεία</td><td class="m">price = 25.5</td></tr>
+      <tr><td>str</td><td>κείμενο <span class="en">(string)</span>, σε εισαγωγικά</td><td class="m">product = "Laptop"</td></tr>
+      <tr><td>bool</td><td>λογική τιμή <span class="en">(boolean)</span>: True ή False</td><td class="m">in_stock = True</td></tr>
     </table>
     <p style="margin-top:10px">Η συνάρτηση <code>type()</code> σου λέει τον τύπο. <b>Ο τύπος καθορίζει τη συμπεριφορά</b>: το <code>+</code> προσθέτει αριθμούς αλλά <i>ενώνει</i> strings.</p>
-    <div class="runner" data-code="savings = 100
-height = 1.79
-name = &quot;Maria&quot;
-ok = True
-print(type(savings), type(height), type(name), type(ok))
+    <div class="runner" data-code="stock = 42
+price = 25.5
+product = &quot;Laptop&quot;
+in_stock = True
+print(type(stock), type(price), type(product), type(in_stock))
 
 # Ο ίδιος τελεστής, διαφορετική συμπεριφορά
 print(2 + 3)
@@ -161,18 +161,18 @@ print(True + False)
 print(&quot;I said &quot; * 2)
 
 # Μετατροπή τύπων (type conversion)
-print(&quot;I started with $&quot; + str(savings))
-print(int(&quot;42&quot;) + 1)
-print(float(&quot;3.14&quot;) * 2)"></div>
+print(&quot;Stock: &quot; + str(stock))
+print(int(&quot;42&quot;) - 1)
+print(float(&quot;19.9&quot;) * 2)"></div>
     <div class="box tip"><b>ΔΟΚΙΜΑΣΕ</b>Γράψε <code>print("total: " + 3)</code>. Διάβασε το μήνυμα σφάλματος: η Python δεν ξέρει αν θες πρόσθεση ή ένωση. Διόρθωσέ το με <code>str(3)</code>.</div>
 
     <h3>Κείμενο με τιμές μέσα: f-strings</h3>
     <p>Αντί για αλυσίδες από <code>+</code> και <code>str()</code>, γράφεις <code>f"...{μεταβλητή}..."</code>. Μέσα στα άγκιστρα μπορείς να ζητήσεις μορφοποίηση: <code>{x:.2f}</code> δύο δεκαδικά, <code>{x:,}</code> διαχωριστικό χιλιάδων, <code>{x:.1%}</code> ποσοστό.</p>
-    <div class="runner" data-code="savings = 100
-result = savings * 1.1 ** 7
+    <div class="runner" data-code="revenue = 1250
+result = revenue * 1.08 ** 5   # 8% αύξηση για 5 χρόνια
 sales = 1250000
 share = 0.24
-print(f&quot;Now I have ${result:.2f}&quot;)
+print(f&quot;In 5 years: {result:.2f}&quot;)
 print(f&quot;Sales: {sales:,} euros&quot;)
 print(f&quot;Market share: {share:.1%}&quot;)"></div>
     <h3>Συγκρίσεις: από πού έρχονται τα True και False</h3>
@@ -199,130 +199,129 @@ print(f&quot;Price: {price:.1f}&quot;)" data-opts='["Price: 19.99","Price: 20.0"
     <div class="quiz" data-q="Τι θα τυπώσει;" data-code="a = 5
 print(a == 5 and a &gt; 10)" data-opts='["True","False","5","Σφάλμα"]' data-ans="1" data-why="a == 5 είναι True αλλά a &gt; 10 είναι False· το and χρειάζεται και τα δύο αληθή."></div>
 
-    <div class="exercise" data-code="savings = 100
-growth_multiplier = 1.1
-# 1. Υπολόγισε result = savings * growth_multiplier ** 7
-# 2. Τύπωσε το κείμενο: I started with $100 and now have $194.87
+    <div class="exercise" data-code="revenue = 1250
+growth = 1.08
+# 1. Υπολόγισε result = revenue * growth ** 5
+# 2. Τύπωσε το κείμενο: Revenue 1250 now, 1836.66 in 5 years
 #    (με str() και round(result, 2), ή με f-string: {result:.2f})
 " data-check="assert 'result' in globals(), 'Δεν βρήκα μεταβλητή result.'
-assert abs(result - 194.87171) < 0.01, 'Το result δεν έχει τη σωστή τιμή.'
-assert _out.strip() == 'I started with $100 and now have $194.87', 'Το κείμενο δεν είναι ακριβώς: I started with $100 and now have $194.87'" data-solution="result = savings * growth_multiplier ** 7
-print(&quot;I started with $&quot; + str(savings) + &quot; and now have $&quot; + str(round(result, 2)))">
+assert abs(result - 1836.66) < 0.01, 'Το result δεν έχει τη σωστή τιμή (περίπου 1836.66).'
+assert _out.strip() == 'Revenue 1250 now, 1836.66 in 5 years', 'Το κείμενο δεν είναι ακριβώς: Revenue 1250 now, 1836.66 in 5 years'" data-solution="result = revenue * growth ** 5
+print(f&quot;Revenue {revenue} now, {result:.2f} in 5 years&quot;)">
       <div class="title">Άσκηση 2</div>
-      <p>Συμπλήρωσε τον κώδικα ώστε να τυπώνει ακριβώς: <code>I started with $100 and now have $194.87</code>. Θυμήσου: αριθμός + string δίνει σφάλμα, χρειάζεσαι <code>str()</code>.</p>
+      <p>Τα έσοδα είναι 1250 και αυξάνονται 8% τον χρόνο. Συμπλήρωσε τον κώδικα ώστε να τυπώνει ακριβώς: <code>Revenue 1250 now, 1836.66 in 5 years</code>. Θυμήσου: αριθμός + string δίνει σφάλμα, χρειάζεσαι <code>str()</code> ή f-string.</p>
     </div>
   </section>
 
   <!-- ============ 3 ============ -->
   <section class="step" data-title="Λίστες &amp; δείκτες">
     <h2>3. Λίστες <span class="en">(lists)</span> και δείκτες <span class="en">(indexes)</span></h2>
-    <p>Μια μεταβλητή κρατά μία τιμή. Μια <b>λίστα</b> δίνει ένα όνομα σε <i>πολλές</i> τιμές: <code>areas = [11.25, 18.0, 20.0]</code>. Μπορεί να περιέχει οποιονδήποτε τύπο, ακόμη και άλλες λίστες.</p>
-    <div class="runner" data-code="# Όνομα και εμβαδό εναλλάξ
-areas = [&quot;hallway&quot;, 11.25, &quot;kitchen&quot;, 18.0,
-         &quot;living room&quot;, 20.0, &quot;bedroom&quot;, 10.75,
-         &quot;bathroom&quot;, 9.50]
-print(type(areas))
-print(len(areas))
+    <p>Μια μεταβλητή κρατά μία τιμή. Μια <b>λίστα</b> δίνει ένα όνομα σε <i>πολλές</i> τιμές: <code>sales = [1200, 1550, 1000]</code>. Μπορεί να περιέχει οποιονδήποτε τύπο, ακόμη και άλλες λίστες.</p>
+    <div class="runner" data-code="# Προϊόν και τιμή εναλλάξ
+products = [&quot;laptop&quot;, 899.0, &quot;mouse&quot;, 19.9,
+            &quot;monitor&quot;, 249.0, &quot;keyboard&quot;, 45.0,
+            &quot;webcam&quot;, 59.0]
+print(type(products))
+print(len(products))
 
-# Λίστα μέσα σε λίστα
-house = [[&quot;hallway&quot;, 11.25], [&quot;kitchen&quot;, 18.0], [&quot;bedroom&quot;, 10.75]]
-print(house[1])
-print(house[1][0])"></div>
+# Λίστα μέσα σε λίστα: ένας κατάλογος
+catalog = [[&quot;laptop&quot;, 899.0], [&quot;mouse&quot;, 19.9], [&quot;monitor&quot;, 249.0]]
+print(catalog[1])
+print(catalog[1][0])"></div>
 
     <h3>Χρήσιμα εργαλεία: len, in, sum, max</h3>
-    <div class="runner" data-code="areas = [11.25, 18.0, 20.0, 10.75, 9.50]
-print(len(areas))
-print(20.0 in areas)
-print(25.0 in areas)
-print(sum(areas), max(areas), min(areas))
-print(sum(areas) / len(areas))   # μέσος όρος"></div>
+    <div class="runner" data-code="sales = [1200, 1550, 1000, 1800, 1650]   # 5 μήνες
+print(len(sales))
+print(1800 in sales)
+print(2000 in sales)
+print(sum(sales), max(sales), min(sales))
+print(sum(sales) / len(sales))   # μέσος όρος"></div>
 
     <h3>Δείκτες: η αρίθμηση ξεκινά από το 0</h3>
     <p>Το πρώτο στοιχείο έχει δείκτη <code>0</code>, το δεύτερο <code>1</code> κ.ο.κ. Αρνητικοί δείκτες μετρούν από το τέλος: <code>-1</code> είναι το τελευταίο. Πληκτρολόγησε μια έκφραση και δες ποια στοιχεία επιλέγει:</p>
-    <div class="viz" data-list='["a","b","c","d","e"]' data-init="x[1]"></div>
+    <div class="viz" data-list='["Q1","Q2","Q3","Q4"]' data-init="x[1]"></div>
 
-    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="areas = [&quot;hallway&quot;, 11.25, &quot;kitchen&quot;, 18.0, &quot;living room&quot;, 20.0]
-print(areas[1])" data-opts='["hallway","11.25","kitchen","18.0"]' data-ans="1" data-why="Ο δείκτης 1 είναι το ΔΕΥΤΕΡΟ στοιχείο, γιατί η αρίθμηση ξεκινά από το 0."></div>
-    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="areas = [&quot;hallway&quot;, 11.25, &quot;kitchen&quot;, 18.0, &quot;living room&quot;, 20.0]
-print(areas[-2])" data-opts='["18.0","living room","20.0","Σφάλμα"]' data-ans="1" data-why="Το -1 είναι το τελευταίο (20.0), το -2 το προτελευταίο: &quot;living room&quot;."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="products = [&quot;laptop&quot;, 899.0, &quot;mouse&quot;, 19.9, &quot;monitor&quot;, 249.0]
+print(products[1])" data-opts='["laptop","899.0","mouse","19.9"]' data-ans="1" data-why="Ο δείκτης 1 είναι το ΔΕΥΤΕΡΟ στοιχείο, γιατί η αρίθμηση ξεκινά από το 0."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="products = [&quot;laptop&quot;, 899.0, &quot;mouse&quot;, 19.9, &quot;monitor&quot;, 249.0]
+print(products[-2])" data-opts='["19.9","monitor","249.0","Σφάλμα"]' data-ans="1" data-why="Το -1 είναι το τελευταίο (249.0), το -2 το προτελευταίο: &quot;monitor&quot;."></div>
     <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = [3, 8, 1]
 print(len(x) + max(x))" data-opts='["12","11","4","[3, 8, 1, 8]"]' data-ans="1" data-why="len(x) είναι 3 και max(x) είναι 8: 3 + 8 = 11."></div>
-    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="house = [[&quot;hallway&quot;, 11.25], [&quot;kitchen&quot;, 18.0]]
-print(house[-1][1])" data-opts='["kitchen","18.0","[\"kitchen\", 18.0]","11.25"]' data-ans="1" data-why="house[-1] είναι η τελευταία εσωτερική λίστα [&quot;kitchen&quot;, 18.0]· από αυτήν το [1] είναι το 18.0."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="catalog = [[&quot;laptop&quot;, 899.0], [&quot;mouse&quot;, 19.9]]
+print(catalog[-1][1])" data-opts='["mouse","19.9","[\"mouse\", 19.9]","899.0"]' data-ans="1" data-why="catalog[-1] είναι η τελευταία εσωτερική λίστα [&quot;mouse&quot;, 19.9]· από αυτήν το [1] είναι το 19.9."></div>
 
-    <div class="exercise" data-code="areas = [&quot;hallway&quot;, 11.25, &quot;kitchen&quot;, 18.0,
-         &quot;living room&quot;, 20.0, &quot;bedroom&quot;, 10.75,
-         &quot;bathroom&quot;, 9.50]
-# 1. Τύπωσε το δεύτερο στοιχείο της areas
+    <div class="exercise" data-code="products = [&quot;laptop&quot;, 899.0, &quot;mouse&quot;, 19.9,
+            &quot;monitor&quot;, 249.0, &quot;keyboard&quot;, 45.0,
+            &quot;webcam&quot;, 59.0]
+# 1. Τύπωσε το δεύτερο στοιχείο της products
 # 2. Τύπωσε το τελευταίο στοιχείο (με αρνητικό δείκτη)
-# 3. Τύπωσε το εμβαδό του living room
+# 3. Τύπωσε την τιμή του monitor
 " data-check="lines = _out.strip().split('\n')
-assert lines == ['11.25', '9.5', '20.0'], 'Περίμενα τρεις γραμμές: 11.25, 9.5 και 20.0. Πήρα: ' + ' | '.join(lines)
-assert 'areas[-1]' in _src, 'Για το τελευταίο στοιχείο χρησιμοποίησε αρνητικό δείκτη: areas[-1].'" data-solution="print(areas[1])
-print(areas[-1])
-print(areas[5])">
+assert lines == ['899.0', '59.0', '249.0'], 'Περίμενα τρεις γραμμές: 899.0, 59.0 και 249.0. Πήρα: ' + ' | '.join(lines)
+assert 'products[-1]' in _src, 'Για το τελευταίο στοιχείο χρησιμοποίησε αρνητικό δείκτη: products[-1].'" data-solution="print(products[1])
+print(products[-1])
+print(products[5])">
       <div class="title">Άσκηση 3</div>
-      <p>Τύπωσε με τη σειρά: το δεύτερο στοιχείο, το τελευταίο στοιχείο (με αρνητικό δείκτη) και το εμβαδό του living room.</p>
+      <p>Τύπωσε με τη σειρά: το δεύτερο στοιχείο, το τελευταίο στοιχείο (με αρνητικό δείκτη) και την τιμή του monitor.</p>
     </div>
   </section>
 
   <!-- ============ 4 ============ -->
   <section class="step" data-title="Slicing &amp; αλλαγές">
     <h2>4. Τμήματα λίστας <span class="en">(slicing)</span> και αλλαγές</h2>
-    <p>Με <code>my_list[start:end]</code> παίρνεις πολλά στοιχεία: ο <b>start περιλαμβάνεται</b>, ο <b>end όχι</b>. Αν παραλείψεις το start ξεκινά από την αρχή, αν παραλείψεις το end πάει ως το τέλος. Δοκίμασε <code>x[1:3]</code>, <code>x[:2]</code>, <code>x[2:]</code>, <code>x[-2:]</code>:</p>
-    <div class="viz" data-list='["a","b","c","d","e"]' data-init="x[1:3]"></div>
+    <p>Με <code>my_list[start:end]</code> παίρνεις πολλά στοιχεία: ο <b>start περιλαμβάνεται</b>, ο <b>end όχι</b>. Αν παραλείψεις το start ξεκινά από την αρχή, αν παραλείψεις το end πάει ως το τέλος. Δοκίμασε <code>x[1:3]</code>, <code>x[:3]</code> (πρώτο τρίμηνο), <code>x[3:]</code> (δεύτερο τρίμηνο), <code>x[-2:]</code>:</p>
+    <div class="viz" data-list='["Jan","Feb","Mar","Apr","May","Jun"]' data-init="x[1:3]"></div>
 
     <h3>Αλλαγή, προσθήκη, διαγραφή</h3>
-    <div class="runner" data-code="x = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]
+    <div class="runner" data-code="sales = [1200, 1550, 1000, 1800]
 
 # Αλλαγή στοιχείου και τμήματος
-x[1] = &quot;r&quot;
-x[2:] = [&quot;s&quot;, &quot;t&quot;]
-print(x)
+sales[1] = 1600               # διόρθωση Φεβρουαρίου
+sales[2:] = [1100, 1900]      # Μάρτιος και Απρίλιος μαζί
+print(sales)
 
 # Προσθήκη με + (νέα λίστα) και διαγραφή με del
-y = x + [&quot;e&quot;, &quot;f&quot;]
-print(y)
-del(x[1])
-print(x)
+year = sales + [1650, 1400]
+print(year)
+del(sales[1])
+print(sales)
 
-# Προσοχή: y = x ΔΕΝ αντιγράφει τη λίστα
-a = [1, 2, 3]
-b = a          # ίδια λίστα, δεύτερο όνομα
-b[0] = 99
-print(a)
-c = list(a)    # πραγματικό αντίγραφο
-c[0] = 0
-print(a)"></div>
-    <div class="box note"><b>ΓΙΑΤΙ ΕΧΕΙ ΣΗΜΑΣΙΑ</b>Το <code>b = a</code> δίνει δεύτερο όνομα στην <i>ίδια</i> λίστα, οπότε μια αλλαγή μέσω του b φαίνεται και στο a. Για ανεξάρτητο αντίγραφο γράψε <code>list(a)</code> ή <code>a[:]</code>. Είναι από τις πιο συχνές πηγές «μυστήριων» σφαλμάτων.</div>
+# Προσοχή: backup = sales ΔΕΝ αντιγράφει τη λίστα
+sales = [1200, 1550, 1000]
+backup = sales          # ίδια λίστα, δεύτερο όνομα
+backup[0] = 0
+print(sales)
+copy = list(sales)      # πραγματικό αντίγραφο
+copy[1] = 0
+print(sales)"></div>
+    <div class="box note"><b>ΓΙΑΤΙ ΕΧΕΙ ΣΗΜΑΣΙΑ</b>Το <code>backup = sales</code> δίνει δεύτερο όνομα στην <i>ίδια</i> λίστα, οπότε μια αλλαγή μέσω του backup φαίνεται και στο sales. Για ανεξάρτητο αντίγραφο γράψε <code>list(sales)</code> ή <code>sales[:]</code>. Είναι από τις πιο συχνές πηγές «μυστήριων» σφαλμάτων.</div>
 
-    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]
-print(x[1:3])" data-opts='["[\"b\", \"c\", \"d\"]","[\"b\", \"c\"]","[\"a\", \"b\", \"c\"]","[\"c\"]"]' data-ans="1" data-why="Από τον δείκτη 1 (b) μέχρι, αλλά όχι μαζί με, τον δείκτη 3 (d): [&quot;b&quot;, &quot;c&quot;]."></div>
-    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]
-print(x[:2] + x[2:])" data-opts='["[\"a\", \"b\", \"c\", \"d\"]","[\"a\", \"b\"]","[\"c\", \"d\"]","Σφάλμα"]' data-ans="0" data-why="x[:2] είναι τα δύο πρώτα, x[2:] τα υπόλοιπα· το + τα ενώνει ξανά σε ολόκληρη τη λίστα."></div>
-    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;]
-del(x[0])
-print(x[0])" data-opts='["a","b","Σφάλμα","[\"b\", \"c\", \"d\"]"]' data-ans="1" data-why="Μετά τη διαγραφή του &quot;a&quot;, όλα μετακινούνται μία θέση: το x[0] είναι τώρα το &quot;b&quot;."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="q = [&quot;Q1&quot;, &quot;Q2&quot;, &quot;Q3&quot;, &quot;Q4&quot;]
+print(q[1:3])" data-opts='["[\"Q2\", \"Q3\", \"Q4\"]","[\"Q2\", \"Q3\"]","[\"Q1\", \"Q2\", \"Q3\"]","[\"Q3\"]"]' data-ans="1" data-why="Από τον δείκτη 1 (Q2) μέχρι, αλλά όχι μαζί με, τον δείκτη 3 (Q4): [&quot;Q2&quot;, &quot;Q3&quot;]."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="q = [&quot;Q1&quot;, &quot;Q2&quot;, &quot;Q3&quot;, &quot;Q4&quot;]
+print(q[:2] + q[2:])" data-opts='["[\"Q1\", \"Q2\", \"Q3\", \"Q4\"]","[\"Q1\", \"Q2\"]","[\"Q3\", \"Q4\"]","Σφάλμα"]' data-ans="0" data-why="q[:2] είναι το πρώτο εξάμηνο, q[2:] το δεύτερο· το + τα ενώνει ξανά σε ολόκληρη τη λίστα."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="q = [&quot;Q1&quot;, &quot;Q2&quot;, &quot;Q3&quot;, &quot;Q4&quot;]
+del(q[0])
+print(q[0])" data-opts='["Q1","Q2","Σφάλμα","[\"Q2\", \"Q3\", \"Q4\"]"]' data-ans="1" data-why="Μετά τη διαγραφή του &quot;Q1&quot;, όλα μετακινούνται μία θέση: το q[0] είναι τώρα το &quot;Q2&quot;."></div>
 
-    <div class="exercise" data-code="areas = [&quot;hallway&quot;, 11.25, &quot;kitchen&quot;, 18.0,
-         &quot;living room&quot;, 20.0, &quot;bedroom&quot;, 10.75,
-         &quot;bathroom&quot;, 9.50]
-# 1. downstairs: τα 6 πρώτα στοιχεία (παράλειψε τον δείκτη start)
-# 2. upstairs: τα 4 τελευταία (παράλειψε τον δείκτη end)
-# 3. Άλλαξε το εμβαδό του bathroom σε 10.50 μέσα στην areas
-# 4. Τύπωσε downstairs, upstairs και areas
-" data-check="assert downstairs == ['hallway', 11.25, 'kitchen', 18.0, 'living room', 20.0], 'Το downstairs δεν είναι τα 6 πρώτα στοιχεία.'
-assert upstairs == ['bedroom', 10.75, 'bathroom', 9.5], 'Το upstairs πρέπει να είναι τα 4 τελευταία στοιχεία της αρχικής λίστας.'
-assert areas[-1] == 10.5, 'Το τελευταίο στοιχείο της areas πρέπει να γίνει 10.5.'
-assert 'areas[:6]' in _src.replace(' ', ''), 'Για το downstairs γράψε areas[:6] (χωρίς start).'
-assert 'areas[6:]' in _src.replace(' ', ''), 'Για το upstairs γράψε areas[6:] (χωρίς end).'" data-solution="downstairs = areas[:6]
-upstairs = areas[6:]
-areas[-1] = 10.50
-print(downstairs)
-print(upstairs)
-print(areas)">
+    <div class="exercise" data-code="sales = [1200, 1550, 1000, 1800, 1650, 1400,
+         1900, 2100, 1700, 1600, 2300, 2800]   # 12 μήνες
+# 1. h1: οι 6 πρώτοι μήνες (παράλειψε τον δείκτη start)
+# 2. h2: οι 6 τελευταίοι (παράλειψε τον δείκτη end)
+# 3. Διόρθωσε τον Δεκέμβριο (τελευταίο στοιχείο) σε 3000 μέσα στην sales
+# 4. Τύπωσε h1, h2 και sales
+" data-check="assert h1 == [1200, 1550, 1000, 1800, 1650, 1400], 'Το h1 δεν είναι οι 6 πρώτοι μήνες.'
+assert h2 == [1900, 2100, 1700, 1600, 2300, 2800], 'Το h2 πρέπει να είναι οι 6 τελευταίοι μήνες της αρχικής λίστας.'
+assert sales[-1] == 3000, 'Το τελευταίο στοιχείο της sales πρέπει να γίνει 3000.'
+assert 'sales[:6]' in _src.replace(' ', ''), 'Για το h1 γράψε sales[:6] (χωρίς start).'
+assert 'sales[6:]' in _src.replace(' ', ''), 'Για το h2 γράψε sales[6:] (χωρίς end).'" data-solution="h1 = sales[:6]
+h2 = sales[6:]
+sales[-1] = 3000
+print(h1)
+print(h2)
+print(sales)">
       <div class="title">Άσκηση 4</div>
-      <p>Φτιάξε τις λίστες <code>downstairs</code> και <code>upstairs</code> με την απλούστερη γραφή του slicing, άλλαξε το εμβαδό του μπάνιου σε 10.50 και τύπωσε τα αποτελέσματα. (Πρόσεξε: το upstairs φτιάξ' το <i>πριν</i> αλλάξεις την areas, ή σκέψου τι θα περιέχει αν το φτιάξεις μετά.)</p>
+      <p>Φτιάξε τις λίστες <code>h1</code> (πρώτο εξάμηνο) και <code>h2</code> (δεύτερο εξάμηνο) με την απλούστερη γραφή του slicing, διόρθωσε τον Δεκέμβριο σε 3000 και τύπωσε τα αποτελέσματα. (Πρόσεξε: το h2 φτιάξ' το <i>πριν</i> αλλάξεις την sales, ή σκέψου τι θα περιέχει αν το φτιάξεις μετά.)</p>
     </div>
   </section>
 
@@ -330,43 +329,43 @@ print(areas)">
   <section class="step" data-title="Συναρτήσεις &amp; μέθοδοι">
     <h2>5. Συναρτήσεις <span class="en">(functions)</span> και μέθοδοι <span class="en">(methods)</span></h2>
     <p>Μια <b>συνάρτηση</b> είναι έτοιμος κώδικας με όνομα: <code>output = function_name(input)</code>. Ήδη ξέρεις τις <code>print()</code> και <code>type()</code>. Άλλες χρήσιμες: <code>len()</code>, <code>max()</code>, <code>round()</code>, <code>sorted()</code>, <code>help()</code>.</p>
-    <div class="runner" data-code="var1 = [1, 2, 3, 4]
-var2 = True
-print(type(var1))
-print(len(var1))
-print(int(var2))
+    <div class="runner" data-code="orders = [12, 7, 30, 5]
+is_vip = True
+print(type(orders))
+print(len(orders))
+print(int(is_vip))
 
 # Πολλαπλά ορίσματα: sorted(iterable, key=None, reverse=False)
-first = [11.25, 18.0, 20.0]
-second = [10.75, 9.50]
-full = first + second
-full_sorted = sorted(full, reverse=True)
-print(full_sorted)
+online = [1200, 1550, 1000]
+store = [980, 1310]
+total_sales = online + store
+ranked = sorted(total_sales, reverse=True)
+print(ranked)
 
 # round() με ένα ή δύο ορίσματα
-print(round(1.68, 1))
-print(round(1.68))"></div>
+print(round(19.99, 1))
+print(round(19.99))"></div>
 
     <h3>Μέθοδοι: συναρτήσεις που «ανήκουν» σε αντικείμενα</h3>
-    <p>Κάθε τιμή στην Python είναι <b>αντικείμενο</b> <span class="en">(object)</span> και κάθε τύπος έχει τις δικές του μεθόδους. Καλούνται με τελεία: <code>sister.upper()</code>, <code>fam.index("emma")</code>.</p>
-    <div class="runner" data-code="sister = &quot;liz&quot;
-print(sister.upper())
-print(sister.count(&quot;z&quot;))
+    <p>Κάθε τιμή στην Python είναι <b>αντικείμενο</b> <span class="en">(object)</span> και κάθε τύπος έχει τις δικές του μεθόδους. Καλούνται με τελεία: <code>city.upper()</code>, <code>customers.index("nikos")</code>.</p>
+    <div class="runner" data-code="city = &quot;thessaloniki&quot;
+print(city.upper())
+print(city.count(&quot;s&quot;))
 
-fam = [&quot;liz&quot;, 1.73, &quot;emma&quot;, 1.68, &quot;mom&quot;, 1.71]
-print(fam.index(&quot;emma&quot;))
-print(fam.count(1.73))
+customers = [&quot;anna&quot;, 1200.0, &quot;nikos&quot;, 1550.0, &quot;maria&quot;, 980.0]
+print(customers.index(&quot;nikos&quot;))
+print(customers.count(1200.0))
 
 # Κάποιες μέθοδοι ΑΛΛΑΖΟΥΝ το αντικείμενο
-fam.append(&quot;dad&quot;)
-fam.append(1.89)
-print(fam)
-fam.reverse()
-print(fam)
+customers.append(&quot;giorgos&quot;)
+customers.append(1310.0)
+print(customers)
+customers.reverse()
+print(customers)
 
 # ...και άλλες επιστρέφουν νέα τιμή χωρίς να το αλλάξουν
-print(sister)   # παραμένει liz"></div>
-    <div class="box tip"><b>ΣΥΧΝΟ ΛΑΘΟΣ</b><code>fam = fam.append("anna")</code> κάνει τη <code>fam</code> ίση με <code>None</code>, γιατί η <code>append()</code> δεν επιστρέφει τίποτα· αλλάζει τη λίστα επί τόπου. Γράψε απλώς <code>fam.append("anna")</code>. Δοκίμασέ το παραπάνω για να δεις τι γίνεται.</div>
+print(city)   # παραμένει thessaloniki"></div>
+    <div class="box tip"><b>ΣΥΧΝΟ ΛΑΘΟΣ</b><code>customers = customers.append("giorgos")</code> κάνει τη <code>customers</code> ίση με <code>None</code>, γιατί η <code>append()</code> δεν επιστρέφει τίποτα· αλλάζει τη λίστα επί τόπου. Γράψε απλώς <code>customers.append("giorgos")</code>. Δοκίμασέ το παραπάνω για να δεις τι γίνεται.</div>
 
     <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = [3, 1, 2]
 y = sorted(x)
@@ -374,22 +373,22 @@ print(x, y)" data-opts='["[1, 2, 3] [1, 2, 3]","[3, 1, 2] [1, 2, 3]","[3, 1, 2] 
     <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = [3, 1, 2]
 y = x.append(4)
 print(y)" data-opts='["[3, 1, 2, 4]","4","None","Σφάλμα"]' data-ans="2" data-why="Η append() αλλάζει την x επί τόπου και δεν επιστρέφει τίποτα, δηλαδή None."></div>
-    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="name = &quot;maria&quot;
-name.upper()
-print(name)" data-opts='["MARIA","maria","Maria","Σφάλμα"]' data-ans="1" data-why="Η upper() επιστρέφει ΝΕΟ string με κεφαλαία, δεν αλλάζει το name. Για να το κρατήσεις: name = name.upper()."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="city = &quot;athens&quot;
+city.upper()
+print(city)" data-opts='["ATHENS","athens","Athens","Σφάλμα"]' data-ans="1" data-why="Η upper() επιστρέφει ΝΕΟ string με κεφαλαία, δεν αλλάζει το city. Για να το κρατήσεις: city = city.upper()."></div>
 
-    <div class="exercise" data-code="areas = [11.25, 18.0, 20.0, 10.75, 9.50]
-# 1. Τύπωσε τη θέση (δείκτη) του 20.0 μέσα στην areas
-# 2. Πρόσθεσε στο τέλος τα 24.5 και 15.45 (δύο κλήσεις append)
+    <div class="exercise" data-code="sales = [1200, 1550, 1000, 1800, 1650]
+# 1. Τύπωσε τη θέση (δείκτη) του 1800 μέσα στην sales
+# 2. Πρόσθεσε στο τέλος τα 1400 και 1900 (δύο κλήσεις append)
 # 3. Αντίστρεψε τη σειρά της λίστας
-# 4. Τύπωσε την areas
-" data-check="assert areas == [15.45, 24.5, 9.5, 10.75, 20.0, 18.0, 11.25], 'Η τελική areas πρέπει να είναι [15.45, 24.5, 9.5, 10.75, 20.0, 18.0, 11.25]. Πήρα: ' + str(areas)
-assert _out.strip().split('\n')[0] == '2', 'Η πρώτη γραμμή της εξόδου πρέπει να είναι η θέση του 20.0, δηλαδή 2 (χρησιμοποίησε areas.index(20.0)).'
-assert '.reverse()' in _src, 'Χρησιμοποίησε τη μέθοδο reverse().'" data-solution="print(areas.index(20.0))
-areas.append(24.5)
-areas.append(15.45)
-areas.reverse()
-print(areas)">
+# 4. Τύπωσε την sales
+" data-check="assert sales == [1900, 1400, 1650, 1800, 1000, 1550, 1200], 'Η τελική sales πρέπει να είναι [1900, 1400, 1650, 1800, 1000, 1550, 1200]. Πήρα: ' + str(sales)
+assert _out.strip().split('\n')[0] == '3', 'Η πρώτη γραμμή της εξόδου πρέπει να είναι η θέση του 1800, δηλαδή 3 (χρησιμοποίησε sales.index(1800)).'
+assert '.reverse()' in _src, 'Χρησιμοποίησε τη μέθοδο reverse().'" data-solution="print(sales.index(1800))
+sales.append(1400)
+sales.append(1900)
+sales.reverse()
+print(sales)">
       <div class="title">Άσκηση 5</div>
       <p>Χρησιμοποίησε τις μεθόδους λίστας <code>index()</code>, <code>append()</code> και <code>reverse()</code> σύμφωνα με τα σχόλια.</p>
     </div>
@@ -408,38 +407,37 @@ print(areas)">
     <p style="margin-top:10px">Εδώ στον browser υπάρχει το πακέτο <code>math</code> της βασικής Python, και μπορεί να φορτωθεί και το NumPy (πατώντας «Τρέξε» την πρώτη φορά θα αργήσει λίγα δευτερόλεπτα).</p>
     <div class="runner" data-code="# Από τη βασική Python
 import math
-r = 0.43
-C = 2 * math.pi * r
-A = math.pi * r ** 2
-print(&quot;Circumference: &quot; + str(C))
-print(&quot;Area: &quot; + str(A))
+items = 1250
+per_box = 48
+print(math.ceil(items / per_box))    # πόσα κουτιά χρειάζονται
+print(math.sqrt(144))
 
 # Μόνο μία συνάρτηση
-from math import radians
-print(radians(180))
+from math import floor
+print(floor(19.99))
 
 # NumPy: πράξεις σε ολόκληρη λίστα με μία γραμμή (εβδομάδα 4)
 import numpy as np
-heights = [1.73, 1.68, 1.71, 1.89]
-np_heights = np.array(heights)
-print(np_heights * 100)"></div>
+prices = [19.9, 249.0, 45.0, 59.0]
+np_prices = np.array(prices)
+print(np_prices * 1.24)   # με ΦΠΑ 24%"></div>
 
     <div class="quiz" data-q="Ποια γραμμή είναι σωστή για να καλέσεις τη συνάρτηση sqrt μετά από import math;" data-code="import math" data-opts='["print(sqrt(16))","print(math.sqrt(16))","print(math sqrt 16)","print(sqrt.math(16))"]' data-ans="1" data-why="Με import math οι συναρτήσεις καλούνται με το πρόθεμα math. : math.sqrt(16). Το σκέτο sqrt() θα δούλευε μόνο με from math import sqrt."></div>
     <div class="quiz" data-q="Τι θα τυπώσει;" data-code="from math import pi
 print(round(pi, 2))" data-opts='["3.14","3","3.1415926","Σφάλμα: pi δεν ορίστηκε"]' data-ans="0" data-why="Το from math import pi φέρνει μόνο το pi, που το χρησιμοποιείς χωρίς πρόθεμα. round(pi, 2) = 3.14."></div>
 
-    <div class="exercise" data-code="# Υπολόγισε την απόσταση που διανύει η Σελήνη σε 12 βαθμούς τροχιάς
-# Τύπος: dist = r * phi, όπου phi οι βαθμοί σε ακτίνια (radians)
-r = 192500
-# 1. Εισήγαγε το radians από το math
-# 2. Υπολόγισε dist = r * radians(12)
-# 3. Τύπωσε το dist
-" data-check="assert abs(dist - 40317.10572106901) < 0.01, 'Το dist πρέπει να είναι περίπου 40317.1.'
-assert 'import' in _src and 'radians' in _src, 'Χρειάζεται import της radians από το math.'" data-solution="from math import radians
-dist = r * radians(12)
-print(dist)">
+    <div class="exercise" data-code="# Πόσα κουτιά χρειάζονται για να σταλούν 1250 τεμάχια, αν κάθε κουτί χωρά 48;
+items = 1250
+per_box = 48
+# 1. Εισήγαγε το ceil από το math (στρογγυλοποίηση προς τα πάνω)
+# 2. Υπολόγισε boxes = ceil(items / per_box)
+# 3. Τύπωσε το boxes
+" data-check="assert boxes == 27, 'Το boxes πρέπει να είναι 27.'
+assert 'import' in _src and 'ceil' in _src, 'Χρειάζεται import της ceil από το math.'" data-solution="from math import ceil
+boxes = ceil(items / per_box)
+print(boxes)">
       <div class="title">Άσκηση 6</div>
-      <p>Χρησιμοποίησε το πακέτο <code>math</code> για να μετατρέψεις 12 μοίρες σε ακτίνια και υπολόγισε την απόσταση <code>dist = r * radians(12)</code>.</p>
+      <p>Χρησιμοποίησε τη <code>ceil()</code> του πακέτου <code>math</code> (στρογγυλοποίηση προς τα πάνω) για να υπολογίσεις πόσα κουτιά χρειάζονται: 1250 / 48 = 26.04, άρα 27 κουτιά.</p>
     </div>
   </section>
 
@@ -449,18 +447,18 @@ print(dist)">
     <p>Ένα μήνυμα σφάλματος <span class="en">(traceback)</span> διαβάζεται <b>από κάτω προς τα πάνω</b>: η τελευταία γραμμή λέει <i>τι</i> (τον τύπο και την αιτία), οι γραμμές από πάνω λένε <i>πού</i> (σε ποια γραμμή κώδικα). Τα τέσσερα που θα δεις πρώτα:</p>
     <table class="t">
       <tr><th>Σφάλμα</th><th>Τι σημαίνει</th><th>Παράδειγμα</th></tr>
-      <tr><td>NameError</td><td>Όνομα που δεν έχει οριστεί (ή γράφτηκε αλλιώς)</td><td class="m">print(saving)</td></tr>
+      <tr><td>NameError</td><td>Όνομα που δεν έχει οριστεί (ή γράφτηκε αλλιώς)</td><td class="m">print(revenu)</td></tr>
       <tr><td>TypeError</td><td>Πράξη ανάμεσα σε ασύμβατους τύπους</td><td class="m">"total: " + 3</td></tr>
       <tr><td>IndexError</td><td>Δείκτης που δεν υπάρχει στη λίστα</td><td class="m">[1, 2, 3][3]</td></tr>
       <tr><td>SyntaxError</td><td>Η γραμμή δεν διαβάζεται: λείπει παρένθεση ή εισαγωγικό</td><td class="m">print("hello"</td></tr>
     </table>
-    <p style="margin-top:10px">Τρέξε τον παρακάτω κώδικα, διάβασε το μήνυμα, και διόρθωσε <b>ένα σφάλμα τη φορά</b> μέχρι να τυπώσει <code>Savings: 100</code> και <code>9.5</code>.</p>
-    <div class="runner" data-code="savings = 100
-label = &quot;Savings: &quot;
-print(label + savings)
+    <p style="margin-top:10px">Τρέξε τον παρακάτω κώδικα, διάβασε το μήνυμα, και διόρθωσε <b>ένα σφάλμα τη φορά</b> μέχρι να τυπώσει <code>Revenue: 1250</code> και <code>1650</code>.</p>
+    <div class="runner" data-code="revenue = 1250
+label = &quot;Revenue: &quot;
+print(label + revenue)
 
-areas = [11.25, 18.0, 20.0, 10.75, 9.50]
-print(areas[5])"></div>
+sales = [1200, 1550, 1000, 1800, 1650]
+print(sales[5])"></div>
     <div class="quiz" data-q="Ποιο σφάλμα θα εμφανιστεί;" data-code="total = 10
 print(Total)" data-opts='["NameError","TypeError","SyntaxError","Κανένα, τυπώνει 10"]' data-ans="0" data-why="Το Total με κεφαλαίο δεν έχει οριστεί· τα ονόματα είναι case-sensitive: NameError: name &#39;Total&#39; is not defined."></div>
     <div class="quiz" data-q="Ποιο σφάλμα θα εμφανιστεί;" data-code="x = [10, 20, 30]
@@ -503,9 +501,9 @@ print(x[1][0])" data-opts='["1","2","3","[3, 4]"]' data-ans="2" data-why="x[1] �
 b = a
 b.append(4)
 print(len(a))" data-opts='["3","4","Σφάλμα","None"]' data-ans="1" data-why="Το b = a δεν αντιγράφει: a και b είναι η ίδια λίστα, άρα το append φαίνεται και στο a."></div>
-    <div class="quiz" data-q="9. Ποια πρόταση είναι σωστή;" data-code="fam = [&quot;liz&quot;, 1.73]
-fam.index(&quot;liz&quot;)   # α
-len(fam)           # β" data-opts='["Η α είναι μέθοδος, η β συνάρτηση","Η α είναι συνάρτηση, η β μέθοδος","Και οι δύο είναι μέθοδοι","Και οι δύο είναι συναρτήσεις"]' data-ans="0" data-why="Η μέθοδος καλείται με τελεία πάνω στο αντικείμενο (fam.index), η συνάρτηση παίρνει το αντικείμενο ως όρισμα (len(fam))."></div>
+    <div class="quiz" data-q="9. Ποια πρόταση είναι σωστή;" data-code="customers = [&quot;anna&quot;, 1200.0]
+customers.index(&quot;anna&quot;)   # α
+len(customers)             # β" data-opts='["Η α είναι μέθοδος, η β συνάρτηση","Η α είναι συνάρτηση, η β μέθοδος","Και οι δύο είναι μέθοδοι","Και οι δύο είναι συναρτήσεις"]' data-ans="0" data-why="Η μέθοδος καλείται με τελεία πάνω στο αντικείμενο (customers.index), η συνάρτηση παίρνει το αντικείμενο ως όρισμα (len(customers))."></div>
     <div class="quiz" data-q="10. Τι θα τυπώσει;" data-code="import math as m
 print(m.floor(3.7))" data-opts='["3","4","3.7","Σφάλμα: το m δεν ορίστηκε"]' data-ans="0" data-why="Το import math as m δίνει ψευδώνυμο m· η floor στρογγυλοποιεί προς τα κάτω: 3."></div>
     <div class="quiz" data-q="11. Τι θα τυπώσει;" data-code="n = 3
