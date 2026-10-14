@@ -103,6 +103,9 @@
               Business Administration Dept., University of Macedonia, Greece<sup><a target="_blank" href="http://www.uom.gr/ekal">1</a></sup></p>
               <br>
 		 <a href="https://orcid.org/0000-0003-4416-8764" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon">orcid.org/0000-0003-4416-8764</a>
+		 &nbsp;&middot;&nbsp; <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+		 <!-- Email is assembled by script below so it does not appear whole in the page source -->
+		 <a class="js-email" data-user="ekal" data-domain="uom.edu.gr">ekal [at] uom [dot] edu [dot] gr</a>
 	     </div>
 	   </div>
   </div>
@@ -291,6 +294,8 @@
 
         <p class="text-center">
         <br>
+<a class="js-email" data-user="ekal" data-domain="uom.edu.gr" data-icon="1"><img alt="Email" width="25" height="25" src="/figures/email.svg" /></a> 
+
 <a target="_blank" href="https://x.com/kalampokis"><img alt="X" width="25" height="25" src="/figures/x-logo.svg" /></a> 
 
 <a target="_blank" href="http://www.linkedin.com/in/kalampokis"><img alt="LinkedIn" width="25" height="25" src="/figures/linkedin.jpg" /></a> 
@@ -324,6 +329,13 @@
     <script src="js/jquery.easing.min.js"></script>
     <script src="js/scrolling-nav.js"></script>
     <script>document.querySelectorAll(".year").forEach(function(e){e.textContent=new Date().getFullYear();});</script>
+    <script>
+      document.querySelectorAll(".js-email").forEach(function(e){
+        var addr = e.getAttribute("data-user") + "@" + e.getAttribute("data-domain");
+        e.href = "mailto:" + addr;
+        if (!e.getAttribute("data-icon")) e.textContent = addr;
+      });
+    </script>
 
 </body>
 
