@@ -22,7 +22,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/scrolling-nav.css?v=7" rel="stylesheet">
+    <link href="css/scrolling-nav.css?v=8" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="/figures/favicon.svg">
     <!-- Footer icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -105,10 +105,11 @@
               <p><i class="icon-caret-right"></i>Asst. Professor<br>
               Business Administration Dept., University of Macedonia, Greece<sup><a target="_blank" href="http://www.uom.gr/ekal">1</a></sup></p>
               <br>
-		 <a href="https://orcid.org/0000-0003-4416-8764" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon">orcid.org/0000-0003-4416-8764</a>
-		 &nbsp;&middot;&nbsp; <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-		 <!-- Email is assembled by script below so it does not appear whole in the page source -->
-		 <a class="js-email" data-user="ekal" data-domain="uom.edu.gr">ekal [at] uom [dot] edu [dot] gr</a>
+		 <p class="intro-links">
+		   <a target="_blank" href="https://orcid.org/0000-0003-4416-8764"><i class="ai ai-orcid" aria-hidden="true"></i>orcid.org/0000-0003-4416-8764</a>
+		   <!-- Email is assembled by script below so it does not appear whole in the page source -->
+		   <a class="js-email" data-user="ekal" data-domain="uom.edu.gr" data-label="1"><i class="fa-solid fa-envelope" aria-hidden="true"></i><span>ekal [at] uom [dot] edu [dot] gr</span></a>
+		 </p>
 	     </div>
 	   </div>
   </div>
@@ -325,7 +326,8 @@
       document.querySelectorAll(".js-email").forEach(function(e){
         var addr = e.getAttribute("data-user") + "@" + e.getAttribute("data-domain");
         e.href = "mailto:" + addr;
-        if (!e.getAttribute("data-icon")) e.textContent = addr;
+        if (e.getAttribute("data-label")) e.querySelector("span").textContent = addr;
+        else if (!e.getAttribute("data-icon")) e.textContent = addr;
       });
     </script>
 
