@@ -85,7 +85,7 @@
   .sim input[type=range]{width:160px}
   .sim .mono{font-family:var(--mono)}
   .meter{display:flex;flex-direction:column;gap:6px}
-  .meter .row{display:grid;grid-template-columns:200px 1fr 70px;gap:10px;align-items:center;font-size:15px}
+  .meter .row{display:grid;grid-template-columns:260px 1fr 70px;gap:10px;align-items:center;font-size:15px}
   .meter .bar{height:22px;background:#fff;border-radius:6px;overflow:hidden;border:1px solid var(--lblue)}
   .meter .bar i{display:block;height:100%;background:var(--blue)} .meter .row.ml .bar i{background:var(--orange)} .meter .row.base .bar i{background:var(--lblue)}
   .meter .v{font-family:var(--mono);text-align:right;color:var(--navy)}
@@ -397,9 +397,9 @@
   function row(cls,label,v){return '<div class="row '+cls+'"><span>'+label+'</span><div class="bar"><i style="width:'+(v*100).toFixed(1)+'%"></i></div><span class="v">'+(v*100).toFixed(1)+'%</span></div>';}
   function drawMeter(){
     const ra=ruleAcc();
-    meter.innerHTML=row('base','Χωρίς μοντέλο («κανείς δεν ακυρώνει»)',base)+row('','Ο κανόνας σου',ra)+(mlAcc!==null?row('ml','Το μοντέλο της μηχανής',mlAcc):'');
+    meter.innerHTML=row('base','Αφετηρία (baseline): αν προβλέψεις «κανείς δεν ακυρώνει»',base)+row('','Ο κανόνας σου',ra)+(mlAcc!==null?row('ml','Το μοντέλο της μηχανής',mlAcc):'');
     const dif=mlAcc!==null?'<div style="font-size:14px;color:var(--gray)">'+(ra>=mlAcc?'Μπράβο, ο κανόνας σου φτάνει ή ξεπερνά το μοντέλο. Σκέψου πόσες δοκιμές χρειάστηκες.':'Το μοντέλο προηγείται κατά '+((mlAcc-ra)*100).toFixed(1)+' μονάδες. Σε 200 κρατήσεις είναι '+Math.round((mlAcc-ra)*200)+' περισσότερες σωστές προβλέψεις.')+'</div>':'';
-    meter.innerHTML+=dif;
+    meter.innerHTML+='<div style="font-size:14px;color:var(--gray)">Η αφετηρία είναι το ποσοστό των κρατήσεων δοκιμής που τελικά ήρθαν ('+Math.round(base*200)+' στις 200). Κάθε μοντέλο κρίνεται από το πόσο την ξεπερνά, όχι από το ποσοστό του.</div>'+dif;
   }
   ['rLead','rLeadV','rOta','rDep','rFor','rMode'].forEach(id=>document.getElementById(id).oninput=drawMeter);
   drawMeter();
