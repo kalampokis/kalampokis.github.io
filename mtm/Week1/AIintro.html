@@ -85,7 +85,7 @@
   .sim input[type=range]{width:160px}
   .sim .mono{font-family:var(--mono)}
   .meter{display:flex;flex-direction:column;gap:6px}
-  .meter .row{display:grid;grid-template-columns:260px 1fr 70px;gap:10px;align-items:center;font-size:15px}
+  .meter .row{display:grid;grid-template-columns:300px 1fr 70px;gap:10px;align-items:center;font-size:15px}
   .meter .bar{height:22px;background:#fff;border-radius:6px;overflow:hidden;border:1px solid var(--lblue)}
   .meter .bar i{display:block;height:100%;background:var(--blue)} .meter .row.ml .bar i{background:var(--orange)} .meter .row.base .bar i{background:var(--lblue)}
   .meter .v{font-family:var(--mono);text-align:right;color:var(--navy)}
@@ -383,23 +383,23 @@
   const data=gen(600), train=data.slice(0,400), test=data.slice(400);
   const base=test.filter(r=>r.y===0).length/test.length;
   const meter=document.getElementById('meter');
-  let mlAcc=null, mlW=null;
+  let mlAcc=null, mlW=null, lastFlagged=0, mlFlagged=0;
   function ruleAcc(){
     const useL=rLead.checked, L=+rLeadV.value, useO=rOta.checked, useD=rDep.checked, useF=rFor.checked, mode=rMode.value;
     rLeadT.textContent=L;
-    let ok=0; test.forEach(r=>{
+    let ok=0, flagged=0; test.forEach(r=>{
       const conds=[]; if(useL)conds.push(r.lead>L); if(useO)conds.push(r.ota===1); if(useD)conds.push(r.dep===0); if(useF)conds.push(r.frn===1);
       const pred=conds.length===0?0:(mode==='and'?conds.every(x=>x):conds.some(x=>x))?1:0;
-      if(pred===r.y) ok++;
+      if(pred===1) flagged++; if(pred===r.y) ok++;
     });
-    return ok/test.length;
+    lastFlagged=flagged; return ok/test.length;
   }
   function row(cls,label,v){return '<div class="row '+cls+'"><span>'+label+'</span><div class="bar"><i style="width:'+(v*100).toFixed(1)+'%"></i></div><span class="v">'+(v*100).toFixed(1)+'%</span></div>';}
   function drawMeter(){
     const ra=ruleAcc();
-    meter.innerHTML=row('base','Αφετηρία (baseline): αν προβλέψεις «κανείς δεν ακυρώνει»',base)+row('','Ο κανόνας σου',ra)+(mlAcc!==null?row('ml','Το μοντέλο της μηχανής',mlAcc):'');
+    meter.innerHTML='<div style="font-weight:bold;color:var(--navy)">Ακρίβεια: ποσοστό σωστών προβλέψεων στις 200 κρατήσεις δοκιμής</div>'+row('base','Αφετηρία: «καμία δεν ακυρώνεται» (σημαδεύει 0 από 200)',base)+row('','Ο κανόνας σου (σημαδεύει '+lastFlagged+' από 200 ως ακυρώσεις)',ra)+(mlAcc!==null?row('ml','Το μοντέλο της μηχανής (σημαδεύει '+mlFlagged+' από 200)',mlAcc):'');
     const dif=mlAcc!==null?'<div style="font-size:14px;color:var(--gray)">'+(ra>=mlAcc?'Μπράβο, ο κανόνας σου φτάνει ή ξεπερνά το μοντέλο. Σκέψου πόσες δοκιμές χρειάστηκες.':'Το μοντέλο προηγείται κατά '+((mlAcc-ra)*100).toFixed(1)+' μονάδες. Σε 200 κρατήσεις είναι '+Math.round((mlAcc-ra)*200)+' περισσότερες σωστές προβλέψεις.')+'</div>':'';
-    meter.innerHTML+='<div style="font-size:14px;color:var(--gray)">Η αφετηρία είναι το ποσοστό των κρατήσεων δοκιμής που τελικά ήρθαν ('+Math.round(base*200)+' στις 200). Κάθε μοντέλο κρίνεται από το πόσο την ξεπερνά, όχι από το ποσοστό του.</div>'+dif;
+    meter.innerHTML+='<div style="font-size:14px;color:var(--gray)">Στις 200 κρατήσεις δοκιμής, οι '+Math.round(base*200)+' ήρθαν και οι '+Math.round((1-base)*200)+' ακυρώθηκαν. Αν προβλέψεις «καμία ακύρωση», πέφτεις μέσα στις '+Math.round(base*200)+', δηλαδή '+Math.round(base*100)+'%. Αυτή είναι η αφετηρία που πρέπει να ξεπεράσει κάθε κανόνας ή μοντέλο.</div>'+dif;
   }
   ['rLead','rLeadV','rOta','rDep','rFor','rMode'].forEach(id=>document.getElementById(id).oninput=drawMeter);
   drawMeter();
@@ -412,7 +412,7 @@
       train.forEach(r=>{const x=feats(r); const p=1/(1+Math.exp(-(w.reduce((s,wi,i)=>s+wi*x[i],0)+b))); const e=p-r.y; x.forEach((xi,i)=>gw[i]+=e*xi); gb+=e;});
       w=w.map((wi,i)=>wi-lr*gw[i]/train.length); b-=lr*gb/train.length;
     }
-    let ok=0; test.forEach(r=>{const x=feats(r); const p=1/(1+Math.exp(-(w.reduce((s,wi,i)=>s+wi*x[i],0)+b))); if((p>0.5?1:0)===r.y) ok++;});
+    let ok=0; mlFlagged=0; test.forEach(r=>{const x=feats(r); const p=1/(1+Math.exp(-(w.reduce((s,wi,i)=>s+wi*x[i],0)+b))); const pr=p>0.5?1:0; if(pr===1) mlFlagged++; if(pr===r.y) ok++;});
     mlAcc=ok/test.length; mlW=w; drawMeter();
     document.getElementById('trainInfo').textContent='Εκπαιδεύτηκε σε 400 κρατήσεις, μετρήθηκε σε 200. Το μοντέλο ακύρωσε όσους είχαν πιθανότητα > 50%.';
     const names=['lead time','κανάλι OTA','προκαταβολή','πελάτης εξωτερικού','τιμή'];
