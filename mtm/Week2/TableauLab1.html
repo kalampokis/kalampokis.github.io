@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tableau 1: Από τις κρατήσεις στο πρώτο γράφημα · Εβδομάδα 2</title>
+<meta name="description" content="Οδηγός εργαστηρίου Tableau με δεδομένα κρατήσεων ξενοδοχείων: σύνδεση με τα δεδομένα, διαστάσεις και μέτρα, πρώτα γραφήματα, χάρτης, υπολογιζόμενο πεδίο, πρώτο dashboard. Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις, Εβδομάδα 2.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2F6B; --text:#26314F; --gray:#5A6385; --blue:#7895F9; --lblue:#B9C8FC; --pale:#EEF1FE;
+    --orange:#F5821F; --peach:#FDE8D4; --green:#1e7a4c; --lgreen:#E3F3EA; --red:#B23A3A; --lred:#FBE4E4;
+    --code:#141E3C; --codefg:#F4F6FF; --mono:'JetBrains Mono',Consolas,monospace;
+    --dim:#4E79A7; --mea:#59A14F;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pale);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+  a{color:var(--green)}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 16px 80px;display:flex;flex-direction:column;gap:22px}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--gray);text-transform:uppercase}
+  h1{margin:6px 0 0;font-family:Georgia,serif;font-weight:700;font-size:38px;line-height:1.1;color:var(--navy)}
+  h2{margin:0;font-family:Georgia,serif;font-size:28px;color:var(--navy)}
+  h3{margin:18px 0 6px;font-family:Georgia,serif;font-size:20px;color:var(--navy)}
+  p{margin:0 0 10px;font-size:17px}
+  .lead{font-size:19px;max-width:800px}
+  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:8px}
+  .stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 12px;background:var(--navy);color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px;opacity:.55}
+  .stepper button.active{opacity:1;outline:3px solid var(--orange)}
+  .stepper button.done{opacity:.9;background:var(--green)}
+  .stepper button span.n{font-family:var(--mono);font-weight:700;font-size:14px}
+  .stepper button span.l{font-size:13px}
+  section.step{display:none;flex-direction:column;gap:14px;background:#fff;border-radius:12px;padding:22px 22px 26px;box-shadow:0 1px 3px rgba(27,47,107,.08)}
+  section.step.active{display:flex}
+  code{font-family:var(--mono);background:var(--pale);padding:1px 5px;border-radius:4px;color:var(--navy);font-size:.95em}
+  .en{color:var(--gray);font-style:italic}
+  .box{border-radius:8px;padding:12px 16px;font-size:16px}
+  .tip{background:var(--peach)} .tip b{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .note{background:var(--pale)} .note b{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .warn{background:var(--lred)} .warn b{color:var(--red);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .btn{font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--green);color:#fff;font-weight:bold}
+  .btn.navy{background:var(--navy)} .btn.orange{background:var(--orange)}
+  .btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+  .btn:disabled{opacity:.5;cursor:default}
+  /* pills for Tableau fields */
+  .pill{display:inline-block;font-family:var(--mono);font-size:13px;padding:2px 10px;border-radius:12px;color:#fff;background:var(--dim);white-space:nowrap}
+  .pill.m{background:var(--mea)}
+  .ui{font-family:var(--mono);font-size:.92em;color:var(--navy);background:#fff;border:1px solid var(--lblue);border-radius:4px;padding:1px 6px;white-space:nowrap}
+  /* steps list */
+  ol.todo{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px;counter-reset:s}
+  ol.todo li{position:relative;padding:10px 14px 10px 50px;background:var(--pale);border-radius:8px;font-size:16px;counter-increment:s}
+  ol.todo li::before{content:counter(s);position:absolute;left:12px;top:9px;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--mono);font-weight:bold;font-size:14px;display:flex;align-items:center;justify-content:center}
+  /* checkpoint */
+  .check{border:2px dashed var(--orange);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#fff}
+  .check .title{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--orange);text-transform:uppercase}
+  .check .q{font-weight:bold;color:var(--navy);font-size:16px}
+  .check .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .check input{font:inherit;font-family:var(--mono);font-size:17px;padding:7px 10px;border:2px solid var(--navy);border-radius:8px;width:180px;background:#fff;color:var(--navy)}
+  .check select{font:inherit;font-size:16px;padding:7px 10px;border:2px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy)}
+  .check .unit{color:var(--gray);font-size:15px}
+  .check .result{font-size:15px;min-height:20px}
+  .check .result.ok{color:var(--green);font-weight:bold} .check .result.bad{color:var(--red)}
+  .check details{font-size:15px} .check summary{cursor:pointer;color:var(--navy)}
+  /* quiz */
+  .quiz{background:var(--pale);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .quiz .q{font-weight:bold;color:var(--navy)}
+  .quiz .opts{display:grid;gap:6px}
+  .quiz .opts button{text-align:left;font:inherit;font-size:16px;padding:9px 12px;border-radius:8px;border:1px solid var(--lblue);background:#fff;color:var(--navy);cursor:pointer}
+  .quiz .opts button.ok{background:var(--lgreen);border-color:var(--green)}
+  .quiz .opts button.bad{background:var(--lred);border-color:var(--red)}
+  .quiz .fb{min-height:20px;font-size:15px}
+  .quiz .fb.ok{color:var(--green);font-weight:bold} .quiz .fb.bad{color:var(--red)}
+  table.t{border-collapse:collapse;width:100%;font-size:15px}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:bold}
+  table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue);vertical-align:top} table.t td.m{font-family:var(--mono);color:var(--navy);white-space:nowrap}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .calc{font-family:var(--mono);font-size:15px;background:var(--code);color:var(--codefg);padding:12px 14px;border-radius:8px;white-space:pre-wrap;line-height:1.5}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+  .checklist label{display:flex;gap:10px;align-items:flex-start;font-size:16px;padding:8px 10px;background:var(--pale);border-radius:8px;margin-bottom:6px;cursor:pointer}
+  .checklist input{margin-top:4px;width:18px;height:18px}
+  @media (max-width:700px){.grid2{grid-template-columns:1fr} h1{font-size:30px}}
+  footer{font-size:13px;color:var(--gray);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="kicker">Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις · Εβδομάδα 2 · Εργαστήριο Tableau 1/3</div>
+    <h1>Από τις κρατήσεις στο πρώτο γράφημα</h1>
+    <p class="lead" style="margin-top:10px">Οδηγός εργαστηρίου σε 8 βήματα (το πρώτο γίνεται στο σπίτι, πριν το μάθημα). Δουλεύεις στο Tableau με τις πραγματικές κρατήσεις δύο ξενοδοχείων (119.388 κρατήσεις, 2015–2017) και σε κάθε βήμα υπάρχει ένα <b>checkpoint</b>: γράφεις τον αριθμό που βλέπεις στο Tableau και η σελίδα σου λέει αν είσαι στον σωστό δρόμο. Η πρόοδός σου αποθηκεύεται στον browser.</p>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- ============ 0 ============ -->
+  <section class="step" data-title="Πριν το εργαστήριο">
+    <h2>1. Πριν το εργαστήριο: εγκατάσταση και δεδομένα</h2>
+    <p>Το εργαστήριο γίνεται στον δικό σου υπολογιστή. Χρειάζεσαι δύο πράγματα <b>πριν</b> έρθεις στην τάξη, γιατί η άδεια του Tableau θέλει 1–2 μέρες για να εγκριθεί.</p>
+    <h3>Α. Tableau</h3>
+    <div class="grid2">
+      <div class="box note"><b>ΠΡΟΤΕΙΝΟΜΕΝΟ · TABLEAU DESKTOP</b>Δωρεάν για φοιτητές για έναν χρόνο μέσω του προγράμματος <a href="https://www.tableau.com/academic/students" target="_blank" rel="noopener">Tableau for Students</a>. Κάνεις αίτηση με το ακαδημαϊκό σου email (uom.gr) και, όταν εγκριθεί, κατεβάζεις το Tableau Desktop και βάζεις το κλειδί. Αποθηκεύει τοπικά (.twbx) και συνδέεται με οτιδήποτε.</div>
+      <div class="box note"><b>ΕΝΑΛΛΑΚΤΙΚΑ · TABLEAU PUBLIC</b>Δωρεάν για όλους, χωρίς αίτηση: <a href="https://public.tableau.com/app/discover" target="_blank" rel="noopener">public.tableau.com</a>. Έχει σχεδόν ίδιο περιβάλλον, αλλά αποθηκεύει <b>μόνο δημόσια</b> στο cloud της Tableau. Για το εργαστήριο είναι μια χαρά, για πραγματικά δεδομένα επιχείρησης όχι.</div>
+    </div>
+    <h3>Β. Τα δεδομένα</h3>
+    <p>Κατέβασε το αρχείο <a href="data/hotel_bookings.csv" download><b>hotel_bookings.csv</b></a> (18 MB) και αποθήκευσέ το σε έναν φάκελο που θα βρίσκεις εύκολα, π.χ. <code>Έγγραφα/MTM/Tableau</code>. Είναι οι κρατήσεις δύο ξενοδοχείων στην Πορτογαλία, ενός resort στο Algarve και ενός city hotel στη Λισαβόνα, από τον Ιούλιο 2015 ως τον Αύγουστο 2017: ένα από τα πιο γνωστά ανοικτά datasets ξενοδοχείων <span class="en">(Antonio, de Almeida &amp; Nunes, 2019)</span>, ελαφρά καθαρισμένο για το μάθημα.</p>
+    <h3>Λεξικό δεδομένων <span class="en">(data dictionary)</span></h3>
+    <table class="t">
+      <tr><th>Στήλη</th><th>Τι σημαίνει</th></tr>
+      <tr><td class="m">Booking ID</td><td>Αύξων αριθμός κράτησης. Μετράμε κρατήσεις μετρώντας αυτά.</td></tr>
+      <tr><td class="m">Hotel</td><td>Resort Hotel (Algarve) ή City Hotel (Λισαβόνα)</td></tr>
+      <tr><td class="m">Canceled</td><td>Yes αν η κράτηση ακυρώθηκε, No αν ο πελάτης ήρθε</td></tr>
+      <tr><td class="m">Arrival Date / Year / Month</td><td>Ημερομηνία άφιξης, και χωριστά έτος και μήνας</td></tr>
+      <tr><td class="m">Lead Time (days)</td><td>Πόσες μέρες πριν την άφιξη έγινε η κράτηση</td></tr>
+      <tr><td class="m">Nights, Weekend Nights</td><td>Διανυκτερεύσεις συνολικά και Σαββατοκύριακου</td></tr>
+      <tr><td class="m">Adults, Children, Guests</td><td>Ενήλικες, παιδιά, σύνολο ατόμων</td></tr>
+      <tr><td class="m">Meal</td><td>Bed &amp; Breakfast, Half Board, Full Board, Self Catering</td></tr>
+      <tr><td class="m">Country</td><td>Χώρα προέλευσης του πελάτη</td></tr>
+      <tr><td class="m">Market Segment</td><td>Online TA, Offline TA/TO, Direct, Groups, Corporate, Complementary, Aviation</td></tr>
+      <tr><td class="m">Distribution Channel</td><td>TA/TO (τουριστικά γραφεία και tour operators), Direct, Corporate, GDS</td></tr>
+      <tr><td class="m">Repeated Guest</td><td>Yes αν ο πελάτης έχει ξαναμείνει</td></tr>
+      <tr><td class="m">Deposit Type</td><td>No Deposit, Non Refund (μη επιστρέψιμη προκαταβολή), Refundable</td></tr>
+      <tr><td class="m">Customer Type</td><td>Transient (μεμονωμένος), Transient-Party, Contract, Group</td></tr>
+      <tr><td class="m">Room Type</td><td>Κωδικός τύπου δωματίου που κρατήθηκε (A–L)</td></tr>
+      <tr><td class="m">ADR</td><td><b>Average Daily Rate</b>: μέση τιμή ανά διανυκτέρευση, σε ευρώ. Ο βασικός δείκτης τιμής στα ξενοδοχεία.</td></tr>
+      <tr><td class="m">Revenue</td><td>ADR × Nights: τα έσοδα της κράτησης. Για τις ακυρωμένες, τα έσοδα που χάθηκαν.</td></tr>
+      <tr><td class="m">Special Requests</td><td>Αριθμός ειδικών αιτημάτων (ψηλός όροφος, δίδυμα κρεβάτια…)</td></tr>
+      <tr><td class="m">Reservation Status</td><td>Check-Out, Canceled, No-Show</td></tr>
+    </table>
+    <h3>Έτοιμος;</h3>
+    <div class="checklist" id="prep">
+      <label><input type="checkbox" data-k="lic"> Έκανα αίτηση για Tableau for Students (ή εγκατέστησα Tableau Public)</label>
+      <label><input type="checkbox" data-k="inst"> Το Tableau ανοίγει στον υπολογιστή μου</label>
+      <label><input type="checkbox" data-k="data"> Κατέβασα το hotel_bookings.csv και ξέρω πού το αποθήκευσα</label>
+    </div>
+  </section>
+
+  <!-- ============ 1 ============ -->
+  <section class="step" data-title="Σύνδεση">
+    <h2>2. Σύνδεση με τα δεδομένα: διαστάσεις και μέτρα</h2>
+    <p>Το Tableau δεν «ανοίγει» αρχεία όπως το Excel· <b>συνδέεται</b> σε πηγές δεδομένων <span class="en">(data sources)</span>: αρχεία, βάσεις, cloud. Το πρώτο πράγμα που βλέπεις είναι η σελίδα <span class="ui">Data Source</span>, όπου ελέγχεις ότι κατάλαβε σωστά τις στήλες.</p>
+    <ol class="todo">
+      <li>Άνοιξε το Tableau. Στην αρχική οθόνη, στο <span class="ui">Connect › To a File</span>, διάλεξε <span class="ui">Text file</span> και βρες το <code>hotel_bookings.csv</code>.</li>
+      <li>Στη σελίδα <span class="ui">Data Source</span> βλέπεις τις στήλες και τις πρώτες γραμμές. Πάνω από κάθε στήλη υπάρχει ένα εικονίδιο τύπου: <b>Abc</b> κείμενο, <b>#</b> αριθμός, <b>📅</b> ημερομηνία, <b>🌐</b> γεωγραφία.</li>
+      <li>Έλεγξε ότι το <span class="ui">Arrival Date</span> έχει εικονίδιο ημερομηνίας και το <span class="ui">Country</span> υδρόγειο. Αν όχι, κάνε κλικ στο εικονίδιο και άλλαξε τον τύπο.</li>
+      <li>Κάνε κλικ στο <span class="ui">Sheet 1</span> κάτω αριστερά. Αυτό είναι το <b>φύλλο εργασίας</b> <span class="en">(worksheet)</span>, όπου φτιάχνονται τα γραφήματα.</li>
+    </ol>
+    <h3>Το πιο σημαντικό πράγμα σε όλο το Tableau</h3>
+    <p>Στο αριστερό πάνελ <span class="ui">Data</span> τα πεδία χωρίζονται σε δύο χρώματα:</p>
+    <div class="grid2">
+      <div class="box note"><b>ΜΠΛΕ · ΔΙΑΣΤΑΣΕΙΣ (DIMENSIONS)</b>Κατηγορίες που <b>τεμαχίζουν</b> τα δεδομένα: <span class="pill">Hotel</span> <span class="pill">Country</span> <span class="pill">Market Segment</span> <span class="pill">Arrival Date</span>. Απαντούν στο «ανά τι;».</div>
+      <div class="box note"><b>ΠΡΑΣΙΝΟ · ΜΕΤΡΑ (MEASURES)</b>Αριθμοί που <b>αθροίζονται</b>: <span class="pill m">ADR</span> <span class="pill m">Revenue</span> <span class="pill m">Nights</span> <span class="pill m">Lead Time (days)</span>. Απαντούν στο «πόσο;». Το Tableau τα αθροίζει αυτόματα (SUM) αν δεν του πεις αλλιώς (AVG, COUNT…).</div>
+    </div>
+    <p>Κάθε γράφημα είναι ένας συνδυασμός: <b>ένα ή περισσότερα μέτρα, ανά μία ή περισσότερες διαστάσεις</b>. «Έσοδα ανά μήνα», «κρατήσεις ανά χώρα», «μέση τιμή ανά ξενοδοχείο και μήνα».</p>
+    <div class="box tip"><b>ΠΡΟΣΟΧΗ</b>Το <span class="pill m">Booking ID</span> είναι αριθμός, οπότε το Tableau το βάζει στα μέτρα. Αθροίζοντάς το όμως δεν βγαίνει τίποτα χρήσιμο. Το χρησιμοποιούμε με <b>COUNT</b> για να μετράμε κρατήσεις. Σύρε το στις διαστάσεις (drag στο μπλε τμήμα) ή απλώς άλλαξε την aggregation σε Count όταν το χρειάζεσαι.</div>
+    <div class="check" data-answer="119388" data-tol="0" data-unit="κρατήσεις" data-hint="Στο Sheet 1 σύρε το Booking ID στο Rows, κάνε δεξί κλικ πάνω στο pill και άλλαξε το Measure σε Count. Ή κοίτα κάτω αριστερά στη σελίδα Data Source: δείχνει τον αριθμό γραμμών.">
+      <div class="title">Checkpoint 1</div>
+      <div class="q">Πόσες κρατήσεις έχει το αρχείο;</div>
+    </div>
+    <div class="quiz" data-q="Θέλεις ένα γράφημα «μέσος χρόνος lead time ανά τμήμα αγοράς». Τι είναι τι;" data-opts='["Lead Time = διάσταση, Market Segment = μέτρο","Lead Time = μέτρο με AVG, Market Segment = διάσταση","Και τα δύο διαστάσεις","Και τα δύο μέτρα"]' data-ans="1" data-why="Το Market Segment τεμαχίζει (ανά τι;), το Lead Time μετριέται (πόσο;). Και επειδή θέλουμε μέσο όρο, αλλάζουμε την aggregation από SUM σε AVG."></div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="step" data-title="Πρώτο γράφημα">
+    <h2>3. Το πρώτο γράφημα: κρατήσεις και ακυρώσεις ανά ξενοδοχείο</h2>
+    <p>Στο Tableau φτιάχνεις γραφήματα σέρνοντας πεδία σε <b>ράφια</b> <span class="en">(shelves)</span>: <span class="ui">Columns</span> (οριζόντιος άξονας), <span class="ui">Rows</span> (κάθετος) και την κάρτα <span class="ui">Marks</span> (χρώμα, μέγεθος, ετικέτα).</p>
+    <ol class="todo">
+      <li>Σύρε το <span class="pill">Hotel</span> στο <span class="ui">Columns</span>.</li>
+      <li>Σύρε το <span class="pill m">Booking ID</span> στο <span class="ui">Rows</span>. Κάνε δεξί κλικ στο pill που εμφανίστηκε › <span class="ui">Measure › Count</span>. Βλέπεις δύο μπάρες.</li>
+      <li>Σύρε το <span class="pill">Canceled</span> πάνω στο <span class="ui">Color</span> της κάρτας Marks. Οι μπάρες χωρίζονται σε δύο χρώματα.</li>
+      <li>Σύρε ξανά το <span class="pill m">Booking ID</span> πάνω στο <span class="ui">Label</span> (και πάλι Count), για να φανούν οι αριθμοί.</li>
+      <li>Κάνε διπλό κλικ στον τίτλο <span class="ui">Sheet 1</span> κάτω και ονόμασέ το <code>Κρατήσεις ανά ξενοδοχείο</code>. Κάθε φύλλο που φτιάχνεις θα το χρησιμοποιήσουμε στο dashboard.</li>
+    </ol>
+    <div class="box tip"><b>ΔΟΚΙΜΑΣΕ</b>Πάτησε <span class="ui">Show Me</span> πάνω δεξιά. Σου δείχνει ποια είδη γραφημάτων ταιριάζουν στα πεδία που έχεις επιλέξει. Δοκίμασε «stacked bar» και «side-by-side bar». Μετά γύρνα στο αρχικό με Ctrl+Z.</div>
+    <div class="check" data-answer="33101" data-tol="0" data-unit="ακυρωμένες κρατήσεις" data-hint="Κοίτα την ετικέτα στο κομμάτι «Yes» της μπάρας του City Hotel. Αν δεν φαίνεται, πέρασε το ποντίκι από πάνω: το tooltip δείχνει τον αριθμό.">
+      <div class="title">Checkpoint 2</div>
+      <div class="q">Πόσες κρατήσεις του City Hotel ακυρώθηκαν;</div>
+    </div>
+    <div class="check" data-answer="41.7" data-tol="0.3" data-unit="%" data-hint="Δεξί κλικ στο Count pill στο Label › Quick Table Calculation › Percent of Total. Μετά δεξί κλικ ξανά › Compute Using › Cell ή Table (down), ώστε το ποσοστό να υπολογίζεται μέσα σε κάθε ξενοδοχείο. Εναλλακτικά υπολόγισέ το από τους δύο αριθμούς.">
+      <div class="title">Checkpoint 3</div>
+      <div class="q">Τι ποσοστό των κρατήσεων του City Hotel ακυρώθηκε;</div>
+    </div>
+    <p>Σύγκρινέ το με το Resort Hotel. Το city hotel χάνει πάνω από 4 στις 10 κρατήσεις, το resort λιγότερο από 3 στις 10. Γιατί; Κράτα την ερώτηση· θα την απαντήσουμε με δεδομένα στο βήμα 7.</p>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="step" data-title="Εποχικότητα">
+    <h2>4. Εποχικότητα: αφίξεις ανά μήνα</h2>
+    <p>Ο χρόνος είναι η πιο σημαντική διάσταση στον τουρισμό. Το Tableau καταλαβαίνει τις ημερομηνίες και σου επιτρέπει να αλλάζεις επίπεδο: έτος, τρίμηνο, μήνας, εβδομάδα, ημέρα.</p>
+    <ol class="todo">
+      <li>Νέο φύλλο: κλικ στο εικονίδιο <span class="ui">New Worksheet</span> κάτω (ή Ctrl+M).</li>
+      <li>Σύρε το <span class="pill">Arrival Date</span> στο <span class="ui">Columns</span>. Εμφανίζεται ως <code>YEAR(Arrival Date)</code>. Κάνε κλικ στο μικρό <b>+</b> πάνω στο pill για να «ανοίξει» σε τρίμηνα, ξανά για μήνες. Βγάλε το QUARTER σέρνοντάς το έξω.</li>
+      <li>Σύρε το <span class="pill m">Booking ID</span> στο <span class="ui">Rows</span>, Count. Έχεις μια χρονοσειρά 26 μηνών.</li>
+      <li>Σύρε το <span class="pill">Hotel</span> στο <span class="ui">Color</span>. Δύο γραμμές.</li>
+      <li>Τώρα το αντίστροφο: βγάλε το YEAR και άφησε μόνο το MONTH. Δεξί κλικ στο pill: διάλεξε το <b>Month</b> από την <b>πάνω</b> ομάδα (η «discrete» ομάδα, που δίνει Ιανουάριος…Δεκέμβριος ανεξαρτήτως έτους). Τώρα βλέπεις την εποχικότητα: όλα τα έτη μαζί, ανά μήνα.</li>
+      <li>Ονόμασε το φύλλο <code>Εποχικότητα</code>.</li>
+    </ol>
+    <div class="box note"><b>ΔΥΟ ΕΙΔΗ ΗΜΕΡΟΜΗΝΙΑΣ</b>Στο μενού του pill υπάρχουν δύο ομάδες Year/Quarter/Month. Η πάνω (μπλε, <b>discrete</b>) δίνει κατηγορίες: «Αύγουστος» όλων των ετών μαζί. Η κάτω (πράσινη, <b>continuous</b>) δίνει μια συνεχή γραμμή χρόνου: «Αύγουστος 2016». Για εποχικότητα θέλεις την πρώτη, για τάση (trend) τη δεύτερη.</div>
+    <div class="check" data-answer="13877" data-tol="0" data-unit="αφίξεις" data-hint="Με MONTH (discrete) στο Columns και Count στο Rows, χωρίς Hotel στο Color, πέρασε το ποντίκι πάνω από τον Αύγουστο. Αν έχεις το Hotel στο Color, πρόσθεσε τα δύο νούμερα.">
+      <div class="title">Checkpoint 4</div>
+      <div class="q">Πόσες αφίξεις έχουν συνολικά οι Αύγουστοι (και τα τρία έτη μαζί);</div>
+    </div>
+    <div class="quiz" data-q="Στο γράφημα ανά μήνα, το Resort Hotel έχει πολύ πιο έντονη εποχικότητα από το City Hotel. Ποια είναι η πιθανότερη εξήγηση;" data-opts='["Το City Hotel έχει περισσότερα δωμάτια","Το resort ζει από τις διακοπές (καλοκαίρι), το city hotel και από επαγγελματικά ταξίδια και συνέδρια όλο τον χρόνο","Τα δεδομένα του resort είναι ελλιπή","Ο Αύγουστος έχει περισσότερες μέρες"]' data-ans="1" data-why="Το city hotel έχει πιο ομαλή ζήτηση γιατί συνδυάζει αναψυχή και business travel. Αυτό επηρεάζει τα πάντα: τιμολόγηση, προσωπικό, κανάλια διανομής."></div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="step" data-title="Χάρτης">
+    <h2>5. Από πού έρχονται οι πελάτες: ο χάρτης</h2>
+    <p>Το Tableau αναγνωρίζει ονόματα χωρών, πόλεων και ταχυδρομικούς κώδικες και τα τοποθετεί μόνο του στον χάρτη. Χρειάζεται σύνδεση στο internet για το υπόβαθρο.</p>
+    <ol class="todo">
+      <li>Νέο φύλλο. Κάνε <b>διπλό κλικ</b> στο <span class="pill">Country</span>. Αν έχει αναγνωριστεί ως γεωγραφικό πεδίο, εμφανίζεται αμέσως χάρτης με μία κουκκίδα ανά χώρα.</li>
+      <li>Σύρε το <span class="pill m">Booking ID</span> (Count) στο <span class="ui">Size</span>. Οι κουκκίδες μεγαλώνουν ανάλογα με τις κρατήσεις.</li>
+      <li>Σύρε το <span class="pill">Canceled</span> στο <span class="ui">Color</span>; Όχι, θα γίνει χάος. Σύρε αντίθετα το <span class="pill m">ADR</span> στο <span class="ui">Color</span> και άλλαξέ το σε <b>Average</b>: ποιες αγορές πληρώνουν περισσότερο;</li>
+      <li>Ονόμασε το φύλλο <code>Αγορές προέλευσης</code>.</li>
+      <li>Νέο φύλλο για το ίδιο ερώτημα σε μπάρες: <span class="pill">Country</span> στο Rows, <span class="pill m">Booking ID</span> Count στο Columns. Πάτησε το κουμπί <span class="ui">Sort descending</span> στη γραμμή εργαλείων.</li>
+      <li>Σύρε το <span class="pill">Country</span> στο <span class="ui">Filters</span> › καρτέλα <span class="ui">Top</span> › By field › Top 10 by Count of Booking ID. Ονόμασέ το <code>Top 10 αγορές</code>.</li>
+    </ol>
+    <div class="box tip"><b>ΑΝ Ο ΧΑΡΤΗΣ ΔΕΝ ΒΓΑΙΝΕΙ</b>Κάνε δεξί κλικ στο Country στο πάνελ Data › <span class="ui">Geographic Role › Country/Region</span>. Αν κάτω δεξιά λέει «X unknown», κλικ εκεί: η τιμή «Unknown» δεν είναι χώρα, αγνόησέ την.</div>
+    <div class="check" data-select='["Πορτογαλία","Ηνωμένο Βασίλειο","Γαλλία","Ισπανία","Γερμανία"]' data-answer="2" data-hint="Στο φύλλο Top 10 αγορές, ταξινομημένο φθίνουσα: Portugal, United Kingdom, France, Spain, Germany…">
+      <div class="title">Checkpoint 5</div>
+      <div class="q">Ποια είναι η τρίτη μεγαλύτερη αγορά προέλευσης;</div>
+    </div>
+    <div class="check" data-answer="10415" data-tol="0" data-unit="κρατήσεις" data-hint="Πέρασε το ποντίκι πάνω από τη μπάρα της Γαλλίας στο Top 10.">
+      <div class="title">Checkpoint 6</div>
+      <div class="q">Πόσες κρατήσεις ήρθαν από αυτή τη χώρα;</div>
+    </div>
+    <p>Σχεδόν 4 στις 10 κρατήσεις είναι από την Πορτογαλία. Κράτα το κι αυτό για το βήμα 7: η εγχώρια αγορά έχει πολύ διαφορετική συμπεριφορά από τις ξένες.</p>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="step" data-title="Τιμή &amp; έσοδα">
+    <h2>6. Τιμή και έσοδα: ADR ανά μήνα</h2>
+    <p>Ο <b>ADR</b> <span class="en">(Average Daily Rate)</span> είναι η μέση τιμή που πληρώθηκε ανά διανυκτέρευση. Μαζί με την πληρότητα είναι οι δύο αριθμοί που κοιτάζει κάθε revenue manager κάθε πρωί. Εδώ θέλουμε <b>μέσο όρο</b>, όχι άθροισμα.</p>
+    <ol class="todo">
+      <li>Νέο φύλλο. <span class="pill">Arrival Date</span> στο Columns ως MONTH (discrete, όπως στο βήμα 4).</li>
+      <li>Σύρε το <span class="pill m">ADR</span> στο Rows. Εμφανίζεται ως <code>SUM(ADR)</code>: λάθος. Δεξί κλικ › <span class="ui">Measure › Average</span>.</li>
+      <li><span class="pill">Hotel</span> στο Color. Στην κάρτα Marks άλλαξε τον τύπο από Automatic σε <span class="ui">Line</span>.</li>
+      <li>Σύρε το <span class="pill m">ADR</span> και στο <span class="ui">Label</span>, Average, και από το μενού του Label διάλεξε να δείχνει μόνο min/max αν γεμίζει πολύ.</li>
+      <li>Ονόμασε το φύλλο <code>Μέση τιμή ανά μήνα</code>.</li>
+      <li>Ακόμη ένα φύλλο, πολύ απλό: <span class="pill">Hotel</span> στο Rows, <span class="pill m">Revenue</span> (SUM) στο Columns, <span class="pill">Canceled</span> στο Color. Τα έσοδα που μπήκαν και τα έσοδα που χάθηκαν. Ονόμασέ το <code>Έσοδα</code>.</li>
+    </ol>
+    <div class="check" data-answer="186.79" data-tol="0.5" data-unit="€" data-hint="Στο φύλλο Μέση τιμή ανά μήνα, με AVG(ADR), πέρασε το ποντίκι πάνω από το σημείο του Resort Hotel στον Αύγουστο. Αν βλέπεις γύρω στα 140, έχεις ξεχάσει το Hotel στο Color και βλέπεις τον μέσο όρο και των δύο.">
+      <div class="title">Checkpoint 7</div>
+      <div class="q">Ποιος είναι ο μέσος ADR του Resort Hotel τον Αύγουστο;</div>
+    </div>
+    <div class="check" data-answer="26.0" data-tol="0.1" data-unit="εκατ. €" data-hint="Στο φύλλο Έσοδα, άθροισε τις μπάρες «No» των δύο ξενοδοχείων (ή βγάλε το Hotel και άφησε μόνο το Canceled). Γράψε τον αριθμό σε εκατομμύρια με ένα δεκαδικό, π.χ. 12.3.">
+      <div class="title">Checkpoint 8</div>
+      <div class="q">Πόσα έσοδα πραγματοποιήθηκαν συνολικά (κρατήσεις που δεν ακυρώθηκαν);</div>
+    </div>
+    <p>Και πόσα χάθηκαν από ακυρώσεις; Περίπου 16,7 εκατ. ευρώ, δηλαδή σχεδόν το 40% των εσόδων που θα μπορούσαν να είχαν μπει. Αυτό το νούμερο είναι ο λόγος που υπάρχει το επόμενο βήμα.</p>
+    <div class="quiz" data-q="Τον Ιανουάριο ο ADR του Resort είναι ~49 € και τον Αύγουστο ~187 €, σχεδόν 4 φορές. Τι ΔΕΝ μπορείς να συμπεράνεις από αυτό το γράφημα μόνο του;" data-opts='["Ότι το resort έχει έντονη εποχική τιμολόγηση","Ότι τον Αύγουστο το resort βγάζει περισσότερα έσοδα από τον Ιανουάριο","Ότι τον Ιανουάριο το resort είναι γεμάτο","Ότι η διαφορά τιμής resort–city είναι μεγαλύτερη το καλοκαίρι"]' data-ans="2" data-why="Ο ADR λέει πόσο πληρώνει όποιος έρχεται, όχι πόσοι έρχονται. Για την πληρότητα χρειάζεσαι τις αφίξεις (βήμα 4) και τον αριθμό δωματίων. Γι᾽ αυτό οι revenue managers κοιτούν ADR και πληρότητα μαζί (RevPAR)."></div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="step" data-title="Υπολογιζόμενο πεδίο">
+    <h2>7. Το πρώτο υπολογιζόμενο πεδίο: ποσοστό ακυρώσεων</h2>
+    <p>Μέχρι τώρα χρησιμοποιήσαμε πεδία που υπήρχαν. Συχνά όμως ο δείκτης που θέλουμε πρέπει να <b>υπολογιστεί</b>: ποσοστό ακυρώσεων, έσοδα ανά άτομο, μέση διάρκεια διαμονής. Αυτό γίνεται με <b>υπολογιζόμενα πεδία</b> <span class="en">(calculated fields)</span>.</p>
+    <ol class="todo">
+      <li>Στο πάνελ Data, κλικ στο βελάκι δίπλα στην αναζήτηση › <span class="ui">Create Calculated Field</span>.</li>
+      <li>Όνομα: <code>Cancellation Rate</code>. Τύπος:
+        <div class="calc">SUM(IF [Canceled] = 'Yes' THEN 1 ELSE 0 END) / COUNT([Booking ID])</div>
+        Διάβασέ το: «μέτρα 1 για κάθε ακυρωμένη, άθροισε, διαίρεσε με το πλήθος των κρατήσεων». Πάτησε OK. Το νέο πεδίο εμφανίζεται στα μέτρα.</li>
+      <li>Νέο φύλλο: <span class="pill">Market Segment</span> στο Rows, <span class="pill m">Cancellation Rate</span> στο Columns. Δεξί κλικ στον άξονα › <span class="ui">Format</span> › Numbers › Percentage, 1 δεκαδικό. Sort descending.</li>
+      <li>Αντέγραψε το φύλλο (δεξί κλικ στην καρτέλα › Duplicate) και αντικατέστησε το Market Segment με το <span class="pill">Deposit Type</span>. Μετά με το <span class="pill">Repeated Guest</span>. Μετά με το <span class="pill">Country</span> (Top 10).</li>
+      <li>Ονόμασε τα φύλλα <code>Ακυρώσεις ανά τμήμα</code>, <code>Ακυρώσεις ανά προκαταβολή</code> κ.λπ.</li>
+    </ol>
+    <div class="check" data-answer="61.1" data-tol="0.2" data-unit="%" data-hint="Στο φύλλο Ακυρώσεις ανά τμήμα, η γραμμή Groups. Αν βλέπεις 0,611 αντί για 61,1%, άλλαξε τη μορφή σε Percentage.">
+      <div class="title">Checkpoint 9</div>
+      <div class="q">Ποιο είναι το ποσοστό ακυρώσεων για το τμήμα Groups;</div>
+    </div>
+    <div class="check" data-answer="99.4" data-tol="0.2" data-unit="%" data-hint="Στο φύλλο Ακυρώσεις ανά προκαταβολή, η γραμμή Non Refund.">
+      <div class="title">Checkpoint 10</div>
+      <div class="q">Ποιο είναι το ποσοστό ακυρώσεων για τις κρατήσεις με Non Refund προκαταβολή;</div>
+    </div>
+    <div class="box warn"><b>ΤΟ ΠΑΡΑΔΟΞΟ</b>Οι κρατήσεις με <b>μη επιστρέψιμη</b> προκαταβολή ακυρώνονται στο 99%; Κανονικά θα περιμέναμε το αντίθετο. Δύο πιθανές εξηγήσεις: (α) είναι κρατήσεις μέσω πρακτόρων ή γκρουπ που «κλείδωναν» δωμάτια μαζικά και μετά τις ακύρωναν, (β) το ξενοδοχείο καταχωρούσε ως «Canceled» κρατήσεις που δεν πληρώθηκαν ποτέ. Τα δεδομένα δεν μας λένε ποιο ισχύει. <b>Ένα γράφημα δείχνει τι συνέβη, όχι γιατί.</b> Αυτή είναι η δουλειά του αναλυτή: να ρωτήσει. Έλεγξε την υπόθεση (α): βάλε το Market Segment στο Color.</div>
+    <div class="quiz" data-q="Το ποσοστό ακυρώσεων της Πορτογαλίας είναι ~57%, του Ηνωμένου Βασιλείου ~20%. Ποια ενέργεια είναι η πιο λογική για το ξενοδοχείο;" data-opts='["Να σταματήσει να δέχεται Πορτογάλους","Να δει αν η διαφορά οφείλεται στο κανάλι (π.χ. οι Πορτογάλοι κλείνουν μέσω OTA με δωρεάν ακύρωση) πριν αλλάξει πολιτική","Να ανεβάσει τις τιμές για την εγχώρια αγορά","Να μειώσει τη διαφήμιση στο Ηνωμένο Βασίλειο"]' data-ans="1" data-why="Πρώτα κατανόηση, μετά ενέργεια. Οι Βρετανοί κλείνουν με πτήσεις και πακέτα που δύσκολα ακυρώνονται· οι ντόπιοι κλείνουν δύο-τρία ξενοδοχεία και διαλέγουν την τελευταία στιγμή. Η πολιτική προκαταβολής ανά κανάλι είναι το εργαλείο, όχι ο αποκλεισμός μιας αγοράς."></div>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="step" data-title="Dashboard">
+    <h2>8. Το πρώτο dashboard και το παραδοτέο</h2>
+    <p>Ένα <b>dashboard</b> συνδυάζει φύλλα σε μία οθόνη, με κοινά φίλτρα. Είναι αυτό που βλέπει ο διευθυντής, όχι τα 8 φύλλα σου.</p>
+    <ol class="todo">
+      <li>Κλικ στο εικονίδιο <span class="ui">New Dashboard</span> κάτω (δίπλα στο New Worksheet).</li>
+      <li>Αριστερά, στο <span class="ui">Size</span>, διάλεξε <span class="ui">Automatic</span> ώστε να γεμίζει την οθόνη.</li>
+      <li>Σύρε από τη λίστα <span class="ui">Sheets</span> τέσσερα φύλλα στον καμβά: <code>Κρατήσεις ανά ξενοδοχείο</code>, <code>Εποχικότητα</code>, <code>Αγορές προέλευσης</code>, <code>Ακυρώσεις ανά τμήμα</code>. Το Tableau τα τακτοποιεί σε πλέγμα· σύρε τα για 2×2.</li>
+      <li>Κλικ σε ένα φύλλο στο dashboard › το μικρό βελάκι πάνω δεξιά › <span class="ui">Filters › Hotel</span>. Εμφανίζεται ένα φίλτρο. Στο βελάκι του φίλτρου › <span class="ui">Apply to Worksheets › All Using This Data Source</span>. Τώρα ένα κλικ στο «Resort Hotel» αλλάζει και τα τέσσερα γραφήματα.</li>
+      <li>Από το <span class="ui">Objects</span> σύρε ένα <span class="ui">Text</span> στην κορυφή με τίτλο, π.χ. «Κρατήσεις 2015–2017 · Resort &amp; City Hotel» και το όνομά σου.</li>
+      <li>Αποθήκευσε: <span class="ui">File › Save As</span> › <code>Επώνυμο_Tableau1.twbx</code> (packaged workbook, περιέχει και τα δεδομένα). Στο Tableau Public: <span class="ui">File › Save to Tableau Public</span>.</li>
+    </ol>
+    <h3>Παραδοτέο (μέχρι το επόμενο μάθημα)</h3>
+    <div class="box note"><b>ΤΙ ΑΝΕΒΑΖΕΙΣ ΣΤΟ eCLASS</b>
+      1. Το αρχείο <code>.twbx</code> (ή το link του Tableau Public).<br>
+      2. Μία εικόνα του dashboard (<span class="ui">Dashboard › Export Image</span>).<br>
+      3. Τρεις προτάσεις, στα ελληνικά: ένα εύρημα από τα δεδομένα που σε εξέπληξε, μία ερώτηση που θα έκανες στον διευθυντή του ξενοδοχείου, και ένα γράφημα που θα ήθελες να φτιάξεις και δεν ξέρεις ακόμη πώς.
+    </div>
+    <div class="check" data-select='["1","2","3","4","5 ή περισσότερα"]' data-answer="3" data-hint="Τέσσερα φύλλα σε 2×2, όπως στο βήμα 3 της λίστας.">
+      <div class="title">Checkpoint 11</div>
+      <div class="q">Πόσα φύλλα έχει το dashboard σου;</div>
+    </div>
+    <div class="quiz" data-q="Ο διευθυντής βλέπει το dashboard και ρωτά «γιατί ο Αύγουστος 2017 έχει λιγότερες αφίξεις από τον Αύγουστο 2016;». Τι απαντάς;" data-opts='["Το Tableau έχει λάθος","Τα δεδομένα σταματούν στα τέλη Αυγούστου 2017, οπότε ο μήνας είναι πιθανώς ελλιπής· πρέπει να το ελέγξω πριν βγάλω συμπέρασμα","Η ζήτηση έπεσε 20%","Οι Πορτογάλοι ακύρωσαν περισσότερο"]' data-ans="1" data-why="Πρώτη ερώτηση σε κάθε «πτώση» στο τέλος μιας χρονοσειράς: είναι πλήρης ο τελευταίος μήνας; Το dataset καλύπτει αφίξεις ως 31 Αυγούστου 2017, αλλά κρατήσεις που θα ακυρώνονταν ή θα άλλαζαν αργότερα δεν φαίνονται ακόμη."></div>
+    <div class="box note" id="finalScore" style="display:none"></div>
+    <h3>Την επόμενη εβδομάδα</h3>
+    <p>Εργαστήριο Tableau 2: dashboard revenue management με πληρότητα, RevPAR, lead time και ακυρώσεις ανά κανάλι, με παραμέτρους και υπολογιζόμενα πεδία. Φέρε το .twbx σου· θα χτίσουμε πάνω του.</p>
+  </section>
+
+  <div class="nav">
+    <button class="btn outline" id="prevBtn">← Προηγούμενο</button>
+    <button class="btn navy" id="nextBtn">Επόμενο →</button>
+  </div>
+  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Δεδομένα: Antonio, de Almeida &amp; Nunes (2019), Hotel booking demand datasets, <i>Data in Brief</i> 22, 41–49 (CC BY 4.0).</footer>
+</div>
+
+<script>
+(function(){
+  const KEY='mtm-week2-tableau1';
+  let state={step:0,quiz:{},check:{},prep:{}};
+  try{const s=localStorage.getItem(KEY); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  const steps=[...document.querySelectorAll('section.step')];
+  const stepper=document.getElementById('stepper');
+  steps.forEach((s,i)=>{const b=document.createElement('button'); b.innerHTML='<span class="n">'+(i+1)+'</span><span class="l">'+s.dataset.title+'</span>'; b.onclick=()=>go(i); stepper.appendChild(b);});
+  function go(i){state.step=i; save(); steps.forEach((s,j)=>s.classList.toggle('active',j===i)); [...stepper.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+    document.getElementById('prevBtn').disabled=i===0; document.getElementById('nextBtn').disabled=i===steps.length-1; window.scrollTo({top:0,behavior:'smooth'});}
+  document.getElementById('prevBtn').onclick=()=>go(Math.max(0,state.step-1));
+  document.getElementById('nextBtn').onclick=()=>go(Math.min(steps.length-1,state.step+1));
+
+  // prep checklist
+  document.querySelectorAll('#prep input').forEach(c=>{c.checked=!!state.prep[c.dataset.k]; c.onchange=()=>{state.prep[c.dataset.k]=c.checked; save(); updateDone();};});
+
+  // quizzes
+  const quizzes=[...document.querySelectorAll('.quiz')];
+  quizzes.forEach((q,qi)=>{
+    const opts=JSON.parse(q.dataset.opts), ans=+q.dataset.ans;
+    q.innerHTML='<div class="q">'+q.dataset.q+'</div><div class="opts"></div><div class="fb"></div>';
+    const box=q.querySelector('.opts'), fb=q.querySelector('.fb');
+    opts.forEach((o,i)=>{const b=document.createElement('button'); b.textContent=o;
+      b.onclick=()=>{[...box.children].forEach(c=>c.classList.remove('ok','bad'));
+        if(i===ans){b.classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why; state.quiz[qi]=true;}
+        else{b.classList.add('bad'); fb.className='fb bad'; fb.textContent='Όχι ακριβώς. '+q.dataset.why; state.quiz[qi]=false;}
+        save(); updateDone(); finalScore();};
+      box.appendChild(b);});
+    if(state.quiz[qi]===true){box.children[ans].classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why;}
+  });
+
+  // numeric / select checkpoints
+  const checks=[...document.querySelectorAll('.check')];
+  function parseNum(s){s=String(s).trim().replace(/\s/g,'').replace(/%|€/g,''); if(/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) s=s.replace(/\./g,'').replace(',','.'); else s=s.replace(',','.'); return parseFloat(s);}
+  checks.forEach((c,ci)=>{
+    const wrap=document.createElement('div');
+    if(c.dataset.select){
+      const opts=JSON.parse(c.dataset.select);
+      wrap.innerHTML='<div class="row"><select><option value="">— διάλεξε —</option>'+opts.map((o,i)=>'<option value="'+i+'">'+o+'</option>').join('')+'</select><button class="btn">✔ Έλεγξε</button></div><div class="result"></div><details><summary>Βοήθεια</summary><div>'+c.dataset.hint+'</div></details>';
+    }else{
+      wrap.innerHTML='<div class="row"><input inputmode="decimal" placeholder="αριθμός"><span class="unit">'+(c.dataset.unit||'')+'</span><button class="btn">✔ Έλεγξε</button></div><div class="result"></div><details><summary>Βοήθεια</summary><div>'+c.dataset.hint+'</div></details>';
+    }
+    c.appendChild(wrap);
+    const res=wrap.querySelector('.result'), btn=wrap.querySelector('button');
+    function check(){
+      let ok;
+      if(c.dataset.select){const v=wrap.querySelector('select').value; if(v==='')return; ok=+v===+c.dataset.answer;}
+      else{const v=parseNum(wrap.querySelector('input').value); if(isNaN(v)){res.className='result bad'; res.textContent='Γράψε έναν αριθμό.'; return;} ok=Math.abs(v-+c.dataset.answer)<=+c.dataset.tol+1e-9;}
+      res.className='result '+(ok?'ok':'bad'); res.textContent=ok?'Σωστά! Συνέχισε.':'Δεν ταιριάζει με αυτό που περιμένω. Δες τη Βοήθεια και ξαναδοκίμασε.';
+      state.check[ci]=ok; save(); updateDone(); finalScore();
+    }
+    btn.onclick=check; const inp=wrap.querySelector('input'); if(inp) inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+    if(state.check[ci]===true){res.className='result ok'; res.textContent='Ολοκληρωμένο ✓';}
+  });
+
+  function finalScore(){
+    const n=checks.length, ok=checks.filter((c,i)=>state.check[i]===true).length;
+    const el=document.getElementById('finalScore');
+    if(ok===n){el.style.display='block'; el.innerHTML='<b>ΟΛΟΚΛΗΡΩΣΗ</b>Και τα '+n+' checkpoints σωστά. Το εργαστήριο ολοκληρώθηκε· μένει το παραδοτέο.';}
+    else if(ok>0){el.style.display='block'; el.innerHTML='<b>ΠΡΟΟΔΟΣ</b>'+ok+' από '+n+' checkpoints.';}
+  }
+  function updateDone(){
+    steps.forEach((s,i)=>{
+      const qs=[...s.querySelectorAll('.quiz')].map(q=>quizzes.indexOf(q));
+      const cs=[...s.querySelectorAll('.check')].map(c=>checks.indexOf(c));
+      let extra=true; if(s.querySelector('#prep')) extra=['lic','inst','data'].every(k=>state.prep[k]);
+      const all=qs.every(i=>state.quiz[i]===true)&&cs.every(i=>state.check[i]===true)&&extra&&(qs.length+cs.length>0||s.querySelector('#prep'));
+      stepper.children[i].classList.toggle('done',all);
+    });
+  }
+  updateDone(); finalScore(); go(Math.min(state.step||0,steps.length-1));
+})();
+</script>
+</body>
+</html>
