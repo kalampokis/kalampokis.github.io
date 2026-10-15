@@ -135,8 +135,6 @@ of those sections to manage the look and feel of the site. */
 .course-page .mat-tag.notebook    { background: #FDE8D4; color: #B35A0E; }
 .course-page .mat-tag.datacamp    { background: #DDF7E8; color: #0E6B44; }
 .course-page .mat-tag.reading     { background: #EDEEF3; color: #5A6385; }
-.course-page .mat-tag.class       { background: #E3F3EA; color: #1e7a4c; }
-.course-page .mat-tag.home        { background: #FDE8D4; color: #B35A0E; }
 
 /* Main section headings centred (About stays left with its text) */
 .services-section > .container h2,
