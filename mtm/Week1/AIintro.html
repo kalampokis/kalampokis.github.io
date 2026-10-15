@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Η τεχνητή νοημοσύνη αλλάζει τον κόσμο γύρω μας · Εβδομάδα 1</title>
+<meta name="description" content="Διαδραστικός οδηγός: τεχνητή νοημοσύνη, μηχανική μάθηση και γλωσσικά μοντέλα για τουριστικές επιχειρήσεις. Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις, Εβδομάδα 1.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2F6B; --text:#26314F; --gray:#5A6385; --blue:#7895F9; --lblue:#B9C8FC; --pale:#EEF1FE;
+    --orange:#F5821F; --peach:#FDE8D4; --green:#1e7a4c; --lgreen:#E3F3EA; --red:#B23A3A; --lred:#FBE4E4;
+    --code:#141E3C; --codefg:#F4F6FF; --mono:'JetBrains Mono',Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pale);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+  a{color:var(--green)}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 16px 80px;display:flex;flex-direction:column;gap:22px}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--gray);text-transform:uppercase}
+  h1{margin:6px 0 0;font-family:Georgia,serif;font-weight:700;font-size:38px;line-height:1.1;color:var(--navy)}
+  h2{margin:0;font-family:Georgia,serif;font-size:28px;color:var(--navy)}
+  h3{margin:18px 0 6px;font-family:Georgia,serif;font-size:20px;color:var(--navy)}
+  p{margin:0 0 10px;font-size:17px}
+  .lead{font-size:19px;max-width:800px}
+  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px}
+  .stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 12px;background:var(--navy);color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px;opacity:.55}
+  .stepper button.active{opacity:1;outline:3px solid var(--orange)}
+  .stepper button.done{opacity:.9;background:var(--green)}
+  .stepper button span.n{font-family:var(--mono);font-weight:700;font-size:14px}
+  .stepper button span.l{font-size:13px}
+  section.step{display:none;flex-direction:column;gap:14px;background:#fff;border-radius:12px;padding:22px 22px 26px;box-shadow:0 1px 3px rgba(27,47,107,.08)}
+  section.step.active{display:flex}
+  code{font-family:var(--mono);background:var(--pale);padding:1px 5px;border-radius:4px;color:var(--navy);font-size:.95em}
+  .en{color:var(--gray);font-style:italic}
+  .box{border-radius:8px;padding:12px 16px;font-size:16px}
+  .tip{background:var(--peach)} .tip b{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .note{background:var(--pale)} .note b{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .btn{font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--green);color:#fff;font-weight:bold}
+  .btn.navy{background:var(--navy)}
+  .btn.orange{background:var(--orange)}
+  .btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+  .btn:disabled{opacity:.5;cursor:default}
+  /* quiz */
+  .quiz{background:var(--pale);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .quiz .q{font-weight:bold;color:var(--navy)}
+  .quiz pre{margin:0;font-family:Arial;font-size:15px;background:#fff;color:var(--text);padding:10px 14px;border-radius:8px;white-space:pre-wrap;border:1px solid var(--lblue)}
+  .quiz .opts{display:grid;gap:6px}
+  .quiz .opts button{text-align:left;font:inherit;font-size:16px;padding:9px 12px;border-radius:8px;border:1px solid var(--lblue);background:#fff;color:var(--navy);cursor:pointer}
+  .quiz .opts button.ok{background:var(--lgreen);border-color:var(--green)}
+  .quiz .opts button.bad{background:var(--lred);border-color:var(--red)}
+  .quiz .fb{min-height:20px;font-size:15px}
+  .quiz .fb.ok{color:var(--green);font-weight:bold} .quiz .fb.bad{color:var(--red)}
+  /* sorter */
+  .sorter{display:flex;flex-direction:column;gap:10px}
+  .sorter .card{background:var(--pale);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+  .sorter .card .txt{font-size:16px}
+  .sorter .card .choices{display:flex;gap:6px;flex-wrap:wrap}
+  .sorter .card .choices button{font:inherit;font-size:14px;padding:6px 12px;border-radius:20px;border:1px solid var(--lblue);background:#fff;color:var(--navy);cursor:pointer}
+  .sorter .card .choices button.ok{background:var(--lgreen);border-color:var(--green);font-weight:bold}
+  .sorter .card .choices button.bad{background:var(--lred);border-color:var(--red)}
+  .sorter .card .why{font-size:14px;color:var(--gray);min-height:0}
+  .sorter .card .why.ok{color:var(--green)} .sorter .card .why.bad{color:var(--red)}
+  .sorter .score{font-family:var(--mono);font-size:14px;color:var(--navy)}
+  /* painter */
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .gallery figure{margin:0;background:var(--pale);border-radius:10px;padding:10px;text-align:center}
+  .gallery img{max-width:100%;max-height:260px;border-radius:6px}
+  .gallery figcaption{font-weight:bold;color:var(--navy);margin-top:6px}
+  .painter{display:flex;flex-direction:column;gap:12px;align-items:center;background:var(--pale);border-radius:10px;padding:16px}
+  .painter img{max-height:340px;max-width:100%;border-radius:8px;box-shadow:0 2px 8px rgba(27,47,107,.2)}
+  .painter .ask{font-weight:bold;color:var(--navy);font-size:18px}
+  .painter .choices{display:flex;gap:10px}
+  .painter .choices button{font:inherit;font-size:16px;padding:9px 18px;border-radius:8px;border:2px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;font-weight:bold}
+  .painter .choices button.ok{background:var(--lgreen);border-color:var(--green)}
+  .painter .choices button.bad{background:var(--lred);border-color:var(--red)}
+  .painter .fb{min-height:22px;font-size:15px}
+  .painter .fb.ok{color:var(--green);font-weight:bold} .painter .fb.bad{color:var(--red)}
+  .dots{display:flex;gap:6px}
+  .dots span{width:14px;height:14px;border-radius:50%;background:var(--lblue)} .dots span.ok{background:var(--green)} .dots span.bad{background:var(--red)} .dots span.cur{outline:3px solid var(--orange)}
+  /* simulator */
+  .sim{background:var(--pale);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px}
+  .sim .rule{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:16px}
+  .sim .rule label{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--lblue);border-radius:8px;padding:6px 10px}
+  .sim input[type=range]{width:160px}
+  .sim .mono{font-family:var(--mono)}
+  .meter{display:flex;flex-direction:column;gap:6px}
+  .meter .row{display:grid;grid-template-columns:200px 1fr 70px;gap:10px;align-items:center;font-size:15px}
+  .meter .bar{height:22px;background:#fff;border-radius:6px;overflow:hidden;border:1px solid var(--lblue)}
+  .meter .bar i{display:block;height:100%;background:var(--blue)} .meter .row.ml .bar i{background:var(--orange)} .meter .row.base .bar i{background:var(--lblue)}
+  .meter .v{font-family:var(--mono);text-align:right;color:var(--navy)}
+  table.t{border-collapse:collapse;width:100%;font-size:15px}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:bold}
+  table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue)} table.t td.m{font-family:var(--mono);color:var(--navy)}
+  /* next word */
+  .nw{background:var(--pale);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:12px}
+  .nw .text{background:#fff;border:1px solid var(--lblue);border-radius:8px;padding:12px 14px;font-size:19px;min-height:60px;line-height:1.5}
+  .nw .text .last{background:var(--peach);border-radius:4px;padding:0 4px}
+  .nw .cands{display:flex;flex-direction:column;gap:4px}
+  .nw .cand{display:grid;grid-template-columns:130px 1fr 60px;gap:8px;align-items:center;font-size:15px}
+  .nw .cand .bar{height:18px;background:#fff;border-radius:4px;overflow:hidden;border:1px solid var(--lblue)} .nw .cand .bar i{display:block;height:100%;background:var(--blue)}
+  .nw .cand.pick .bar i{background:var(--orange)} .nw .cand.pick{font-weight:bold;color:var(--navy)}
+  .nw .cand .v{font-family:var(--mono);text-align:right}
+  .nw .ctrl{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:15px}
+  /* prompt builder */
+  .pb{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .pb label{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--gray)}
+  .pb select,.pb input{font:inherit;font-size:15px;padding:7px 9px;border:1px solid var(--lblue);border-radius:6px;background:#fff;color:var(--text)}
+  .prompt{background:var(--code);color:var(--codefg);font-family:var(--mono);font-size:14px;padding:12px 14px;border-radius:8px;white-space:pre-wrap;line-height:1.5}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:700px){.grid2,.pb,.gallery{grid-template-columns:1fr} h1{font-size:30px} .meter .row{grid-template-columns:120px 1fr 60px} .nw .cand{grid-template-columns:100px 1fr 50px}}
+  footer{font-size:13px;color:var(--gray);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="kicker">Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις · Εβδομάδα 1</div>
+    <h1>Η τεχνητή νοημοσύνη αλλάζει τον κόσμο γύρω μας</h1>
+    <p class="lead" style="margin-top:10px">Ένας διαδραστικός οδηγός για την τάξη και το σπίτι, σε 7 βήματα. Κάθε βήμα έχει μια δραστηριότητα (παιχνίδι, προσομοίωση ή κουίζ) που δείχνει στην πράξη κάτι από τη διάλεξη: τι είναι η τεχνητή νοημοσύνη, πώς μαθαίνει μια μηχανή από δεδομένα, πώς «σκέφτεται» ένα γλωσσικό μοντέλο και τι σημαίνουν όλα αυτά για μια τουριστική επιχείρηση. Η πρόοδός σου αποθηκεύεται στον browser.</p>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- ============ 1 ============ -->
+  <section class="step" data-title="AI ή κανόνες;">
+    <h2>1. Είναι τεχνητή νοημοσύνη ή απλώς κανόνες;</h2>
+    <p>Η λέξη «AI» μπαίνει σήμερα παντού. Η διαφορά που μετράει είναι: <b>ποιος έγραψε τους κανόνες</b>. Στον <b>κλασικό προγραμματισμό</b> <span class="en">(classical programming)</span> ένας άνθρωπος γράφει τους κανόνες και ο υπολογιστής τους εφαρμόζει. Στη <b>μηχανική μάθηση</b> <span class="en">(machine learning)</span> ο υπολογιστής ανακαλύπτει τους κανόνες μόνος του μέσα από παραδείγματα.</p>
+    <p>Για καθεμία από τις παρακάτω λειτουργίες μιας τουριστικής επιχείρησης, διάλεξε τι κρύβεται από πίσω.</p>
+    <div class="sorter" data-key="s1" data-cats='["Κανόνες γραμμένοι από άνθρωπο","Μάθηση από δεδομένα (AI)"]' data-items='[
+      ["Το PMS στέλνει αυτόματα email με οδηγίες άφιξης δύο μέρες πριν το check-in.",0,"Ένας απλός κανόνας «αν σήμερα = άφιξη − 2, στείλε email». Χρήσιμο, αλλά όχι AI."],
+      ["Η Booking.com εμφανίζει διαφορετική σειρά ξενοδοχείων σε κάθε χρήστη, ανάλογα με το ιστορικό του.",1,"Σύστημα συστάσεων (recommender system) εκπαιδευμένο σε εκατομμύρια κλικ και κρατήσεις."],
+      ["Το σύστημα τιμολόγησης ανεβαίνει 10% όταν η πληρότητα ξεπεράσει το 80%.",0,"Ένα κατώφλι (threshold) που όρισε ο revenue manager. Δυναμική τιμολόγηση, αλλά με κανόνα."],
+      ["Το σύστημα εκτιμά για κάθε νέα κράτηση την πιθανότητα να ακυρωθεί, με βάση 30 χαρακτηριστικά.",1,"Μοντέλο πρόβλεψης που έμαθε από χιλιάδες παλιές κρατήσεις ποιες ακυρώθηκαν."],
+      ["Ο υπολογισμός του ΦΠΑ και του φόρου διαμονής στο τιμολόγιο.",0,"Νομοθετημένοι κανόνες, απόλυτα γνωστοί. Εδώ η μηχανική μάθηση θα ήταν λάθος επιλογή."],
+      ["Οι κριτικές των πελατών μεταφράζονται αυτόματα σε 20 γλώσσες.",1,"Μηχανική μετάφραση με νευρωνικά δίκτυα (deep learning), εκπαιδευμένα σε δισεκατομμύρια προτάσεις."],
+      ["Το self check-in αναγνωρίζει το πρόσωπο του πελάτη και το ταιριάζει με το διαβατήριο.",1,"Υπολογιστική όραση (computer vision): το σύστημα έμαθε να συγκρίνει πρόσωπα από εκατομμύρια εικόνες."],
+      ["Το chatbot απαντά «Η πισίνα λειτουργεί 8:00–20:00» όταν ο πελάτης ρωτήσει για το ωράριο.",1,"Για να καταλάβει την ερώτηση, όπως κι αν διατυπωθεί, χρειάζεται γλωσσικό μοντέλο. Η ίδια η απάντηση μπορεί να έρχεται από έναν πίνακα με κανόνες."]
+    ]'></div>
+    <div class="box note"><b>ΤΟ ΚΡΙΤΗΡΙΟ</b>Αν μπορείς να γράψεις τον κανόνα σε μία πρόταση («αν Χ τότε Υ»), είναι κλασικός προγραμματισμός. Αν ο κανόνας είναι «κάτι που βγαίνει από χιλιάδες παραδείγματα και δεν μπορεί να το περιγράψει πλήρως κανείς», είναι μηχανική μάθηση.</div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="step" data-title="Μάντεψε τον ζωγράφο">
+    <h2>2. Μάντεψε τον ζωγράφο: πώς μαθαίνει ο εγκέφαλος (και η μηχανή)</h2>
+    <p>Θα σου δείξουμε μόνο <b>δύο</b> πίνακες με το όνομα του ζωγράφου. Αυτό είναι το <b>σύνολο εκπαίδευσης</b> <span class="en">(training set)</span>. Μετά θα δεις <b>πέντε</b> πίνακες χωρίς όνομα, το <b>σύνολο δοκιμής</b> <span class="en">(test set)</span>, και θα απαντήσεις ποιος τους ζωγράφισε.</p>
+    <div class="gallery">
+      <figure><img src="img/monet_train.png" alt="Πίνακας του Claude Monet"><figcaption>Claude Monet</figcaption></figure>
+      <figure><img src="img/vangogh_train.png" alt="Πίνακας του Vincent van Gogh"><figcaption>Vincent van Gogh</figcaption></figure>
+    </div>
+    <div class="painter" id="painter"></div>
+    <h3>Τι μόλις έκανες</h3>
+    <p>Με δύο μόνο παραδείγματα, έφτιαξες στο μυαλό σου μια «φόρμουλα»: ο Monet έχει απαλά χρώματα και θολές άκρες, ο Van Gogh έντονα χρώματα και παχιές, στροβιλιζόμενες πινελιές. Μετά την εφάρμοσες σε εικόνες που δεν είχες ξαναδεί. Δεν ήσουν 100% σίγουρος, αλλά αρκετά.</p>
+    <p>Η μηχανική μάθηση κάνει ακριβώς το ίδιο: μαθαίνει μια φόρμουλα, το <b>μοντέλο</b> <span class="en">(model)</span>, από το σύνολο εκπαίδευσης, και την εφαρμόζει σε νέα δεδομένα για να κάνει <b>προβλέψεις</b>. Τη δοκιμάζουμε σε δεδομένα που δεν έχει ξαναδεί, για να δούμε αν έμαθε πραγματικά ή απλώς αποστήθισε.</p>
+    <div class="quiz" data-q="Ένα ξενοδοχείο εκπαιδεύει μοντέλο πρόβλεψης ακυρώσεων με τις κρατήσεις του 2023–2025 και το δοκιμάζει… στις ίδιες κρατήσεις. Το μοντέλο πετυχαίνει 99%. Τι συμπεραίνεις;" data-opts='["Το μοντέλο είναι εξαιρετικό, μπορεί να μπει σε παραγωγή","Δεν ξέρουμε τίποτα: το δοκίμασε σε δεδομένα που είχε ήδη δει","Η ακρίβεια είναι πολύ χαμηλή για ξενοδοχείο","Χρειάζεται περισσότερα δεδομένα εκπαίδευσης"]' data-ans="1" data-why="Η δοκιμή πρέπει να γίνεται σε δεδομένα που το μοντέλο δεν είδε στην εκπαίδευση (test set). Αλλιώς μετράμε πόσο καλά αποστήθισε, όχι πόσο καλά θα προβλέψει τις αυριανές κρατήσεις."></div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="step" data-title="Κανόνες ή μάθηση;">
+    <h2>3. Ποιος πελάτης θα ακυρώσει; Γράψε εσύ τον κανόνα, μετά άσε τη μηχανή</h2>
+    <p>Έχεις 600 κρατήσεις ενός ξενοδοχείου (προσομοιωμένες, αλλά με ρεαλιστικά μοτίβα). Για καθεμία ξέρεις: πόσες μέρες πριν έγινε <span class="en">(lead time)</span>, το κανάλι (OTA ή απευθείας), αν δόθηκε προκαταβολή, αν ο πελάτης είναι από το εξωτερικό, και την τιμή. Ξέρεις επίσης αν τελικά <b>ακυρώθηκε</b>.</p>
+    <p>Οι πρώτες 400 είναι το <b>σύνολο εκπαίδευσης</b>. Οι υπόλοιπες 200 είναι το <b>σύνολο δοκιμής</b>: εκεί μετράμε την <b>ακρίβεια</b> <span class="en">(accuracy)</span>, δηλαδή σε τι ποσοστό κρατήσεων η πρόβλεψη ήταν σωστή.</p>
+    <div class="sim" id="sim">
+      <div><b>Βήμα Α · Ο δικός σου κανόνας.</b> «Προβλέπω ακύρωση αν…»</div>
+      <div class="rule">
+        <label><input type="checkbox" id="rLead" checked> lead time &gt; <input type="range" id="rLeadV" min="0" max="300" value="90"> <span class="mono" id="rLeadT">90</span> μέρες</label>
+        <label><input type="checkbox" id="rOta"> κανάλι = OTA</label>
+        <label><input type="checkbox" id="rDep"> χωρίς προκαταβολή</label>
+        <label><input type="checkbox" id="rFor"> πελάτης εξωτερικού</label>
+        <label>συνδυασμός: <select id="rMode"><option value="and">ΚΑΙ (όλα)</option><option value="or">Ή (οποιοδήποτε)</option></select></label>
+      </div>
+      <div class="meter" id="meter"></div>
+      <div><b>Βήμα Β · Άσε τη μηχανή να βρει τον κανόνα.</b> Θα εκπαιδεύσουμε ένα απλό μοντέλο (λογιστική παλινδρόμηση, <span class="en">logistic regression</span>) στις 400 κρατήσεις εκπαίδευσης και θα το μετρήσουμε στις ίδιες 200 δοκιμής.</div>
+      <div><button class="btn orange" id="trainBtn">▶ Εκπαίδευσε το μοντέλο</button> <span id="trainInfo" style="font-size:14px;color:var(--gray)"></span></div>
+      <div id="weights"></div>
+      <details style="font-size:15px"><summary style="cursor:pointer;color:var(--navy)">Δείξε μου 10 κρατήσεις από τα δεδομένα</summary><div id="sample" style="margin-top:8px;overflow:auto"></div></details>
+    </div>
+    <div class="box tip"><b>ΔΟΚΙΜΑΣΕ</b>Προσπάθησε να ξεπεράσεις τη μηχανή αλλάζοντας το κατώφλι και τους συνδυασμούς. Πόσο κοντά φτάνεις; Πόση ώρα σου πήρε; Τώρα φαντάσου 30 χαρακτηριστικά αντί για 4.</div>
+    <div class="quiz" data-q="Το μοντέλο προβλέπει ακύρωση με πιθανότητα 70% για μια κράτηση 3 δωματίων τον Αύγουστο. Τι ΔΕΝ πρέπει να κάνει το ξενοδοχείο;" data-opts='["Να στείλει μια φιλική υπενθύμιση με ένα μικρό κίνητρο","Να ακυρώσει μόνο του την κράτηση για να δώσει τα δωμάτια αλλού","Να υπολογίσει πόσο overbooking αντέχει με βάση όλες τις πιθανότητες","Να ζητήσει επιβεβαίωση ή προκαταβολή"]' data-ans="1" data-why="Η πρόβλεψη είναι πιθανότητα, όχι γεγονός: 3 στις 10 τέτοιες κρατήσεις θα έρθουν κανονικά. Το μοντέλο ενημερώνει την απόφαση, δεν την παίρνει."></div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="step" data-title="Η επόμενη λέξη">
+    <h2>4. Πώς «σκέφτεται» ένα γλωσσικό μοντέλο: μία λέξη τη φορά</h2>
+    <p>Ένα <b>μεγάλο γλωσσικό μοντέλο</b> <span class="en">(Large Language Model, LLM)</span>, όπως αυτά πίσω από το ChatGPT ή το Claude, κάνει στον πυρήνα του ένα πράγμα: δεδομένου του κειμένου μέχρι τώρα, υπολογίζει για <b>κάθε λέξη</b> πόσο πιθανή είναι να ακολουθεί, διαλέγει μία, την προσθέτει, και ξαναρχίζει.</p>
+    <p>Η παρακάτω μικρογραφία έχει μάθει «προτάσεις ξενοδοχείων» από ελάχιστα παραδείγματα. Πάτησε <b>Επόμενη λέξη</b> και παρακολούθησε τις πιθανότητες. Το πραγματικό μοντέλο κάνει το ίδιο με λεξιλόγιο 100.000+ λέξεων και δισεκατομμύρια παραμέτρους.</p>
+    <div class="nw" id="nw">
+      <div class="text" id="nwText"></div>
+      <div class="cands" id="nwCands"></div>
+      <div class="ctrl">
+        <button class="btn navy" id="nwNext">Επόμενη λέξη →</button>
+        <button class="btn outline" id="nwAuto">Μέχρι το τέλος</button>
+        <button class="btn outline" id="nwReset">Από την αρχή</button>
+        <label>«Θερμοκρασία» <span class="en">(temperature)</span> <input type="range" id="nwTemp" min="0" max="150" value="100"> <span class="mono" id="nwTempV">1.0</span></label>
+      </div>
+    </div>
+    <div class="box tip"><b>ΔΟΚΙΜΑΣΕ</b>Βάλε θερμοκρασία 0 και τρέξε «Μέχρι το τέλος» τρεις φορές. Μετά βάλε 1.5 και ξανά τρεις φορές. Τι παρατηρείς; Γιατί ένα ξενοδοχείο θα ήθελε χαμηλή θερμοκρασία σε chatbot κρατήσεων και υψηλή σε brainstorming για διαφημιστικά σλόγκαν;</div>
+    <div class="quiz" data-q="Γιατί ένα γλωσσικό μοντέλο μπορεί να γράψει με απόλυτη σιγουριά ότι «το μουσείο είναι ανοιχτό Δευτέρα 9–17», ενώ είναι κλειστό;" data-opts='["Γιατί κάποιος το προγραμμάτισε λάθος","Γιατί διαλέγει λέξεις που είναι πιθανές με βάση το κείμενο, όχι λέξεις που έχει ελέγξει ότι είναι αληθινές","Γιατί δεν μιλάει καλά ελληνικά","Γιατί τα μουσεία αλλάζουν συχνά ωράρια"]' data-ans="1" data-why="Αυτό είναι η «ψευδαίσθηση» (hallucination): «ανοιχτό Δευτέρα 9–17» είναι μια πολύ πιθανή συνέχεια για φράση που μιλά για μουσείο. Το μοντέλο δεν έχει μηχανισμό αλήθειας, μόνο πιθανότητας."></div>
+    <div class="quiz" data-q="Με θερμοκρασία 0 το μοντέλο δίνει πάντα την ίδια απάντηση στο ίδιο prompt. Γιατί;" data-opts='["Γιατί αποστηθίζει την απάντηση","Γιατί διαλέγει πάντα την πιο πιθανή λέξη, άρα η διαδρομή δεν αλλάζει","Γιατί σταματά να μαθαίνει","Γιατί η θερμοκρασία 0 απενεργοποιεί το μοντέλο"]' data-ans="1" data-why="Στη θερμοκρασία 0 δεν υπάρχει τυχαιότητα στην επιλογή: πάντα η πιο πιθανή λέξη. Με υψηλότερη θερμοκρασία δίνεται ευκαιρία και σε λιγότερο πιθανές λέξεις, άρα περισσότερη ποικιλία αλλά και περισσότερα λάθη."></div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="step" data-title="Το prompt">
+    <h2>5. Το prompt: ρόλος, πλαίσιο, στόχος, μορφή</h2>
+    <p>Αφού το μοντέλο συνεχίζει το κείμενο που του δίνεις, η ποιότητα της απάντησης εξαρτάται από το κείμενο που του δίνεις: το <b>prompt</b>. Ένα καλό prompt λέει στο μοντέλο <b>ποιος</b> μιλάει, <b>σε ποια κατάσταση</b>, <b>τι θέλει</b> να βγει και <b>σε ποια μορφή</b>.</p>
+    <p>Σύνθεσε ένα prompt για μια πραγματική ανάγκη του ξενοδοχείου και αντέγραψέ το σε όποιο εργαλείο χρησιμοποιείς (ChatGPT, Claude, Gemini). Μετά άλλαξε μία επιλογή τη φορά και δες πόσο αλλάζει η απάντηση.</p>
+    <div class="pb">
+      <label>Ρόλος <select id="pRole"><option>ο υπεύθυνος ενός boutique ξενοδοχείου 20 δωματίων στη Χαλκιδική</option><option>ο revenue manager ενός city hotel 150 δωματίων στη Θεσσαλονίκη</option><option>ο ιδιοκτήτης ενός γραφείου εισερχόμενου τουρισμού</option><option>ο υπεύθυνος μάρκετινγκ ενός οργανισμού διαχείρισης προορισμού (DMO)</option></select></label>
+      <label>Πλαίσιο <select id="pCtx"><option>Ένας πελάτης άφησε κριτική 6/10 στο Booking: θόρυβος από το μπαρ μέχρι τα μεσάνυχτα και αργό check-in.</option><option>Έχουμε 40% πληρότητα για το τριήμερο της 28ης Οκτωβρίου και 10 μέρες περιθώριο.</option><option>Ανοίγουμε νέο spa τον Μάιο και θέλουμε να το ανακοινώσουμε σε παλιούς πελάτες.</option><option>Γερμανός tour operator ζητά προσφορά για γκρουπ 30 ατόμων, 4 νύχτες, Σεπτέμβριο.</option></select></label>
+      <label>Στόχος <select id="pGoal"><option>Γράψε δημόσια απάντηση 80–100 λέξεων, ευγενική, χωρίς δικαιολογίες, με μία συγκεκριμένη διορθωτική ενέργεια.</option><option>Πρότεινε 3 εναλλακτικές ενέργειες με αναμενόμενο αποτέλεσμα και ρίσκο για καθεμία.</option><option>Γράψε email 120 λέξεων με ένα σαφές κάλεσμα σε δράση.</option><option>Φτιάξε λίστα 10 ερωτήσεων που πρέπει να απαντήσουμε πριν δώσουμε τιμή.</option></select></label>
+      <label>Μορφή <select id="pFmt"><option>Στα ελληνικά και στα αγγλικά, χωρίς emoji.</option><option>Ως πίνακας με στήλες: ενέργεια, κόστος, ρίσκο.</option><option>Σε απλή γλώσσα, χωρίς ορολογία, με τίτλο.</option><option>Σε 5 bullets το πολύ.</option></select></label>
+      <label style="grid-column:1/-1">Δικά σου δεδομένα (προαιρετικά): <input id="pData" placeholder="π.χ. Πολιτική ακύρωσης: δωρεάν έως 7 μέρες πριν. Μέση τιμή Οκτωβρίου: 95 €."></label>
+    </div>
+    <div class="prompt" id="pOut"></div>
+    <div><button class="btn navy" id="pCopy">Αντιγραφή του prompt</button> <span id="pCopied" style="font-size:14px;color:var(--green)"></span></div>
+    <div class="box note"><b>ΤΟ ΤΕΛΕΥΤΑΙΟ ΒΗΜΑ ΕΙΝΑΙ ΠΑΝΤΑ ΑΝΘΡΩΠΙΝΟ</b>Ό,τι βγάλει το μοντέλο το διαβάζει κάποιος πριν φτάσει στον πελάτη. Το μοντέλο προτείνει· δεν αποφασίζει, δεν δεσμεύει την επιχείρηση και δεν ξέρει τις πολιτικές σου αν δεν του τις δώσεις.</div>
+    <div class="quiz" data-q="Ποια από τις παρακάτω προτάσεις σε απάντηση chatbot ξενοδοχείου πρέπει ΟΠΩΣΔΗΠΟΤΕ να ελεγχθεί από άνθρωπο πριν σταλεί;" data-code="«Σας ευχαριστούμε για το μήνυμα! Το ξενοδοχείο μας βρίσκεται 5 λεπτά από την παραλία. Η ακύρωση είναι δωρεάν έως 24 ώρες πριν την άφιξη. Θα χαρούμε να σας φιλοξενήσουμε.»" data-opts='["«Σας ευχαριστούμε για το μήνυμα!»","«βρίσκεται 5 λεπτά από την παραλία»","«Η ακύρωση είναι δωρεάν έως 24 ώρες πριν την άφιξη»","«Θα χαρούμε να σας φιλοξενήσουμε»"]' data-ans="2" data-why="Η πολιτική ακύρωσης είναι δέσμευση με νομικές και οικονομικές συνέπειες. Το 2024 η Air Canada υποχρεώθηκε από δικαστήριο να τηρήσει μια πολιτική επιστροφής χρημάτων που είχε επινοήσει το chatbot της. Η απόσταση από την παραλία θέλει επίσης έλεγχο, αλλά το κόστος ενός λάθους εκεί είναι μικρότερο."></div>
+    <div class="quiz" data-q="Ποιο από τα παρακάτω ΔΕΝ πρέπει να βάλεις ποτέ σε ένα δημόσιο εργαλείο AI;" data-opts='["Το κείμενο μιας δημόσιας κριτικής από το Booking","Τη λίστα με ονόματα, email και αριθμούς διαβατηρίου των αφίξεων της εβδομάδας","Την περιγραφή των δωματίων από το site σας","Το μενού του εστιατορίου"]' data-ans="1" data-why="Προσωπικά δεδομένα πελατών (GDPR). Ό,τι ανεβαίνει σε δημόσιο εργαλείο μπορεί να αποθηκευτεί ή να χρησιμοποιηθεί για εκπαίδευση. Για τέτοια δεδομένα χρειάζονται εργαλεία με συμβόλαιο επεξεργασίας δεδομένων, ή απλώς δεν ανεβαίνουν."></div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="step" data-title="Τρεις κατηγορίες">
+    <h2>6. Πρόβλεψη, αυτοματοποίηση ή δημιουργία;</h2>
+    <p>Σχεδόν κάθε εφαρμογή AI σε μια τουριστική επιχείρηση ανήκει σε μία από τρεις κατηγορίες: <b>πρόβλεψη</b> <span class="en">(prediction)</span>, όπου το σύστημα εκτιμά κάτι που δεν ξέρουμε ακόμη· <b>αυτοματοποίηση</b> <span class="en">(automation)</span>, όπου εκτελεί μια εργασία που έκανε άνθρωπος· <b>δημιουργία</b> <span class="en">(generation)</span>, όπου παράγει νέο περιεχόμενο. Η διάκριση βοηθά να καταλάβεις τι δεδομένα χρειάζεται και τι μπορεί να πάει στραβά.</p>
+    <div class="sorter" data-key="s6" data-cats='["Πρόβλεψη","Αυτοματοποίηση","Δημιουργία"]' data-items='[
+      ["Εκτίμηση της ζήτησης ανά ημέρα για τους επόμενους τρεις μήνες",0,"Κλασική πρόβλεψη: ιστορικό κρατήσεων + εκδηλώσεις + καιρός → αριθμός δωματίων."],
+      ["Chatbot που απαντά 24/7 σε ερωτήσεις για το ωράριο, το πάρκινγκ και το πρωινό",1,"Αυτοματοποιεί την εργασία της reception. Χρησιμοποιεί γλωσσικό μοντέλο, αλλά ο σκοπός είναι η αυτοματοποίηση."],
+      ["Περιγραφές 40 δωματίων σε 12 γλώσσες για το νέο site",2,"Παράγει κείμενο που δεν υπήρχε: generative AI."],
+      ["Δυναμική τιμολόγηση που αλλάζει την τιμή κάθε βράδυ",0,"Στην καρδιά της είναι μια πρόβλεψη: πόση ζήτηση θα υπάρξει σε κάθε τιμή. Η αλλαγή της τιμής είναι η απόφαση που ακολουθεί."],
+      ["Αυτόματη ταξινόμηση των email σε «κράτηση», «παράπονο», «προσφορά για γκρουπ»",1,"Αυτοματοποίηση μιας επαναλαμβανόμενης εργασίας. Τεχνικά είναι ταξινόμηση κειμένου, αλλά ο σκοπός είναι να μην το κάνει άνθρωπος."],
+      ["Εικόνα για το Instagram: το ξενοδοχείο την ώρα του ηλιοβασιλέματος, με χιόνι",2,"Παραγωγή εικόνας (image generation). Προσοχή: αν δείχνει κάτι που δεν υπάρχει, είναι παραπλανητική διαφήμιση."],
+      ["Ποιοι πελάτες του προγράμματος πιστότητας είναι πιθανό να μην ξανάρθουν (churn)",0,"Πρόβλεψη συμπεριφοράς με βάση το ιστορικό διαμονών."],
+      ["Σύνοψη 2.000 κριτικών του τελευταίου έτους σε μία σελίδα με τα 5 κύρια θέματα",2,"Παράγει νέο κείμενο (τη σύνοψη) από υπάρχον. Συχνά συνδυάζεται με ανάλυση συναισθήματος, που είναι πρόβλεψη."],
+      ["Self check-in με αναγνώριση διαβατηρίου στο lobby",1,"Αυτοματοποίηση του check-in. Από κάτω υπάρχει υπολογιστική όραση."]
+    ]'></div>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="step" data-title="Κουίζ">
+    <h2>7. Κουίζ γνώσεων</h2>
+    <p>Δέκα ερωτήσεις πάνω στη διάλεξη. Στο τέλος βλέπεις το σκορ σου.</p>
+    <div class="quiz" data-q="Το 2006 οι μεγαλύτερες εταιρείες του κόσμου ήταν πετρελαϊκές, βιομηχανικές και τράπεζες. Το 2023 οι επτά πρώτες είναι τεχνολογικές. Τι έχουν κοινό οι επτά;" data-opts='["Έχουν τα περισσότερα εργοστάσια","Συλλέγουν δεδομένα και τα μετατρέπουν σε αποφάσεις με αλγόριθμους, μέσα από πλατφόρμες","Είναι όλες αμερικανικές","Πουλάνε τα φθηνότερα προϊόντα"]' data-ans="1" data-why="Δεδομένα + αλγόριθμοι + πλατφόρμα. Το ίδιο μοντέλο ακολουθούν στον τουρισμό η Booking Holdings, η Expedia Group και η Airbnb."></div>
+    <div class="quiz" data-q="Σύμφωνα με τον ορισμό της Ομάδας Εμπειρογνωμόνων της ΕΕ, η τεχνητή νοημοσύνη είναι συστήματα που…" data-opts='["μιμούνται τον ανθρώπινο εγκέφαλο με νευρώνες","αναλύουν το περιβάλλον τους και αναλαμβάνουν δράσεις, με κάποιον βαθμό αυτονομίας, για να πετύχουν στόχους","μπορούν να συνομιλούν σε φυσική γλώσσα","εκπαιδεύονται στο διαδίκτυο"]' data-ans="1" data-why="Οι τρεις λέξεις-κλειδιά: ανάλυση (δεδομένα), δράση, αυτονομία. Δεν απαιτείται ούτε συνομιλία ούτε «εγκέφαλος»."></div>
+    <div class="quiz" data-q="Ποια είναι η σωστή σχέση μεταξύ των εννοιών;" data-opts='["Η AI είναι υποσύνολο της μηχανικής μάθησης","Η βαθιά μάθηση είναι υποσύνολο της μηχανικής μάθησης, που είναι υποσύνολο της AI","Η generative AI είναι κάτι διαφορετικό από τη βαθιά μάθηση","Μηχανική μάθηση και AI είναι το ίδιο πράγμα"]' data-ans="1" data-why="Οι ομόκεντροι κύκλοι: AI ⊃ μηχανική μάθηση ⊃ βαθιά μάθηση ⊃ generative AI και γλωσσικά μοντέλα."></div>
+    <div class="quiz" data-q="Τι είναι απαραίτητο για να εφαρμόσουμε μηχανική μάθηση σε ένα επιχειρησιακό πρόβλημα;" data-opts='["Ένας υπερυπολογιστής","Ένα καλά ορισμένο ερώτημα, ιστορικά δεδομένα με παραδείγματα, και μια απόφαση που θα αλλάξει με την πρόβλεψη","Ένα chatbot","Άδεια από την Αρχή Προστασίας Δεδομένων"]' data-ans="1" data-why="Χωρίς ερώτημα δεν ξέρεις τι να προβλέψεις, χωρίς παραδείγματα δεν μαθαίνει το μοντέλο, και χωρίς απόφαση που αλλάζει η πρόβλεψη είναι άχρηστη."></div>
+    <div class="quiz" data-q="Ποιο από τα παρακάτω ΔΕΝ είναι καλή περίπτωση για μηχανική μάθηση;" data-opts='["Πρόβλεψη ακυρώσεων","Υπολογισμός φόρου διαμονής ανά κατηγορία ξενοδοχείου","Ανάλυση συναισθήματος σε κριτικές","Εκτίμηση ζήτησης ανά ημέρα"]' data-ans="1" data-why="Ο φόρος διαμονής ορίζεται από νόμο με λίγους, σταθερούς κανόνες. Η μηχανική μάθηση χρειάζεται για προβλήματα που δεν ξέρουμε να περιγράψουμε πλήρως με κανόνες και για τα οποία έχουμε πολλά δεδομένα."></div>
+    <div class="quiz" data-q="Τι κάνει, στον πυρήνα του, ένα μεγάλο γλωσσικό μοντέλο (LLM);" data-opts='["Αναζητά την απάντηση στο Google","Προβλέπει την επόμενη λέξη με βάση το κείμενο μέχρι τώρα, ξανά και ξανά","Ελέγχει αν κάθε πρόταση είναι αληθινή","Αποθηκεύει όλες τις σελίδες του διαδικτύου"]' data-ans="1" data-why="Η πρόβλεψη της επόμενης λέξης, επαναλαμβανόμενη χιλιάδες φορές. Γι᾽ αυτό γράφει τόσο πειστικά και γι᾽ αυτό μπορεί να κάνει λάθη με αυτοπεποίθηση."></div>
+    <div class="quiz" data-q="Το ChatGPT είναι…" data-opts='["το ίδιο το γλωσσικό μοντέλο","μια εφαρμογή συνομιλίας χτισμένη πάνω σε ένα μοντέλο GPT","μια μηχανή αναζήτησης","ένα σύστημα κρατήσεων"]' data-ans="1" data-why="Το μοντέλο λέγεται GPT (σε διάφορες εκδόσεις). Το ChatGPT είναι η εφαρμογή chat που το χρησιμοποιεί, όπως το chatbot ενός ξενοδοχείου μπορεί να χρησιμοποιεί το ίδιο μοντέλο με δικά του δεδομένα."></div>
+    <div class="quiz" data-q="Τι είναι το RAG (Retrieval-Augmented Generation) με απλά λόγια;" data-opts='["Ένα μοντέλο που εκπαιδεύεται ξανά κάθε μέρα","Πριν απαντήσει, το μοντέλο «διαβάζει» τα σχετικά έγγραφα της επιχείρησης (FAQ, πολιτικές, τιμές) και απαντά με βάση αυτά","Ένα φίλτρο που σβήνει τις λάθος απαντήσεις","Μια μέθοδος μετάφρασης"]' data-ans="1" data-why="Έτσι χτίζονται τα chatbots ξενοδοχείων: το ίδιο γενικό μοντέλο, συν τα δικά σας δεδομένα την ώρα της ερώτησης. Μειώνει (δεν μηδενίζει) τις ψευδαισθήσεις."></div>
+    <div class="quiz" data-q="Σύμφωνα με τον Κανονισμό της ΕΕ για την AI (EU AI Act), ένα chatbot εξυπηρέτησης πελατών ξενοδοχείου ανήκει στην κατηγορία…" data-opts='["απαράδεκτου κινδύνου: απαγορεύεται","υψηλού κινδύνου: χρειάζεται πιστοποίηση","περιορισμένου κινδύνου: υποχρέωση διαφάνειας, ο χρήστης πρέπει να ξέρει ότι μιλά με μηχανή","ελάχιστου κινδύνου: καμία υποχρέωση"]' data-ans="2" data-why="Τα chatbots έχουν υποχρέωση διαφάνειας. Υψηλού κινδύνου είναι π.χ. συστήματα για προσλήψεις, πίστωση ή συνοριακό έλεγχο. Ο Κανονισμός είναι σε ισχύ από τον Αύγουστο του 2024, με σταδιακή εφαρμογή."></div>
+    <div class="quiz" data-q="Ένα boutique ξενοδοχείο 20 δωματίων θέλει να αξιοποιήσει την AI. Ποια είναι η ρεαλιστικότερη στρατηγική;" data-opts='["Να προσλάβει ομάδα data scientists και να χτίσει δικά του μοντέλα","Να χρησιμοποιήσει την AI που ήδη υπάρχει μέσα στα εργαλεία του (PMS, channel manager, Google, Meta) και generative AI για περιεχόμενο και εξυπηρέτηση, κρατώντας τον έλεγχο στον άνθρωπο","Να περιμένει μέχρι να ωριμάσει η τεχνολογία","Να αντικαταστήσει τη reception με chatbot"]' data-ans="1" data-why="Η μικρή επιχείρηση αγοράζει ή νοικιάζει AI, δεν τη χτίζει. Το πλεονέκτημά της παραμένει ο άνθρωπος, η τοπική γνώση και η σχέση με τον πελάτη. Η μεγάλη αλυσίδα ή OTA, με εκατομμύρια κρατήσεις, χτίζει δικά της μοντέλα."></div>
+    <div class="box note" id="finalScore" style="display:none"></div>
+    <h3>Πριν φύγεις</h3>
+    <p>Σκέψου μια επιχείρηση που ξέρεις καλά (όπου δουλεύεις, δούλεψες ή μένεις κοντά). Γράψε σε δύο γραμμές: <b>ποια μία λειτουργία</b> θα αυτοματοποιούσες πρώτη με AI, και <b>ποια μία</b> δεν θα έδινες ποτέ σε μηχανή. Θα το συζητήσουμε στο επόμενο μάθημα.</p>
+  </section>
+
+  <div class="nav">
+    <button class="btn outline" id="prevBtn">← Προηγούμενο</button>
+    <button class="btn navy" id="nextBtn">Επόμενο →</button>
+  </div>
+  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Οι πίνακες των Monet και Van Gogh είναι δημόσιο κτήμα. Τα δεδομένα κρατήσεων στο βήμα 3 είναι προσομοιωμένα.</footer>
+</div>
+
+<script>
+(function(){
+  // ---------- storage ----------
+  const KEY='mtm-week1-ai';
+  let state={step:0,quiz:{},sort:{},painter:{}};
+  try{const s=localStorage.getItem(KEY); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  // ---------- stepper ----------
+  const steps=[...document.querySelectorAll('section.step')];
+  const stepper=document.getElementById('stepper');
+  steps.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.innerHTML='<span class="n">'+(i+1)+'</span><span class="l">'+s.dataset.title+'</span>';
+    b.onclick=()=>go(i);
+    stepper.appendChild(b);
+  });
+  function go(i){
+    state.step=i; save();
+    steps.forEach((s,j)=>s.classList.toggle('active',j===i));
+    [...stepper.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+    document.getElementById('prevBtn').disabled=i===0;
+    document.getElementById('nextBtn').disabled=i===steps.length-1;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.getElementById('prevBtn').onclick=()=>go(Math.max(0,state.step-1));
+  document.getElementById('nextBtn').onclick=()=>go(Math.min(steps.length-1,state.step+1));
+
+  // ---------- quizzes ----------
+  const quizzes=[...document.querySelectorAll('.quiz')];
+  quizzes.forEach((q,qi)=>{
+    const opts=JSON.parse(q.dataset.opts), ans=+q.dataset.ans;
+    q.innerHTML='<div class="q">'+q.dataset.q+'</div>'+(q.dataset.code?'<pre></pre>':'')+'<div class="opts"></div><div class="fb"></div>';
+    if(q.dataset.code) q.querySelector('pre').textContent=q.dataset.code;
+    const box=q.querySelector('.opts'), fb=q.querySelector('.fb');
+    opts.forEach((o,i)=>{
+      const b=document.createElement('button'); b.textContent=o;
+      b.onclick=()=>{
+        [...box.children].forEach(c=>c.classList.remove('ok','bad'));
+        if(i===ans){b.classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why; state.quiz[qi]=true;}
+        else{b.classList.add('bad'); fb.className='fb bad'; fb.textContent='Όχι ακριβώς. '+q.dataset.why; state.quiz[qi]=false;}
+        save(); updateDone(); finalScore();
+      };
+      box.appendChild(b);
+    });
+    if(state.quiz[qi]===true){box.children[ans].classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why;}
+  });
+  function finalScore(){
+    const sec=steps[steps.length-1]; const qs=[...sec.querySelectorAll('.quiz')];
+    const idx=qs.map(q=>quizzes.indexOf(q)); const done=idx.filter(i=>state.quiz[i]!==undefined).length;
+    const ok=idx.filter(i=>state.quiz[i]===true).length;
+    const el=document.getElementById('finalScore');
+    if(done===qs.length){el.style.display='block'; el.innerHTML='<b>ΑΠΟΤΕΛΕΣΜΑ</b>Σωστές απαντήσεις: '+ok+' / '+qs.length+(ok===qs.length?' — άψογα!':ok>=7?' — πολύ καλά, ξαναδές τις λάθος.':' — ξαναδές τα βήματα 1–6 και ξαναπροσπάθησε.');}
+  }
+
+  // ---------- sorters ----------
+  const sorters=[...document.querySelectorAll('.sorter')];
+  sorters.forEach(so=>{
+    const key=so.dataset.key, cats=JSON.parse(so.dataset.cats), items=JSON.parse(so.dataset.items);
+    state.sort[key]=state.sort[key]||{};
+    const sc=document.createElement('div'); sc.className='score';
+    items.forEach((it,i)=>{
+      const c=document.createElement('div'); c.className='card';
+      c.innerHTML='<div class="txt">'+it[0]+'</div><div class="choices"></div><div class="why"></div>';
+      const ch=c.querySelector('.choices'), why=c.querySelector('.why');
+      cats.forEach((cat,ci)=>{
+        const b=document.createElement('button'); b.textContent=cat;
+        b.onclick=()=>{
+          [...ch.children].forEach(x=>x.classList.remove('ok','bad'));
+          const ok=ci===it[1]; b.classList.add(ok?'ok':'bad');
+          if(!ok) ch.children[it[1]].classList.add('ok');
+          why.className='why '+(ok?'ok':'bad'); why.textContent=(ok?'Σωστά. ':'Όχι: «'+cats[it[1]]+'». ')+it[2];
+          state.sort[key][i]=ok; save(); upd(); updateDone();
+        };
+        ch.appendChild(b);
+      });
+      if(state.sort[key][i]!==undefined){ch.children[it[1]].classList.add('ok'); why.className='why ok'; why.textContent=it[2];}
+      so.appendChild(c);
+    });
+    so.appendChild(sc);
+    function upd(){const v=Object.values(state.sort[key]); sc.textContent=v.length?'Σωστές με την πρώτη: '+v.filter(x=>x).length+' / '+items.length+(v.length===items.length?' · ολοκληρώθηκε':''):'';}
+    upd();
+  });
+  function sorterDone(so){const key=so.dataset.key, n=JSON.parse(so.dataset.items).length; return Object.keys(state.sort[key]||{}).length===n;}
+
+  // ---------- painter game ----------
+  const P=[['img/p1.png','gogh','Έναστρη νύχτα πάνω από τον Ροδανό, 1888'],['img/p2.png','monet','San Giorgio Maggiore το σούρουπο, 1908'],['img/p3.png','monet','Γυναίκα με ομπρέλα, 1875'],['img/p4.png','gogh','Ηλιοτρόπια, 1888'],['img/p5.png','gogh','Ελαιόδεντρα με κίτρινο ουρανό, 1889']];
+  const NAMES={monet:'Claude Monet',gogh:'Vincent van Gogh'};
+  const pg=document.getElementById('painter');
+  function renderPainter(){
+    const a=state.painter; const answered=Object.keys(a).length;
+    let cur=0; while(cur<P.length && a[cur]!==undefined) cur++;
+    pg.innerHTML='<div class="dots">'+P.map((p,i)=>'<span class="'+(a[i]===undefined?'':(a[i]?'ok':'bad'))+(i===cur?' cur':'')+'"></span>').join('')+'</div>';
+    if(cur<P.length){
+      pg.innerHTML+='<div class="ask">Πίνακας #'+(cur+1)+' · Ποιος είναι ο ζωγράφος;</div><img src="'+P[cur][0]+'" alt="Πίνακας #'+(cur+1)+'"><div class="choices"><button data-v="monet">Monet</button><button data-v="gogh">Van Gogh</button></div><div class="fb"></div>';
+      pg.querySelectorAll('.choices button').forEach(b=>b.onclick=()=>{
+        const ok=b.dataset.v===P[cur][1]; b.classList.add(ok?'ok':'bad');
+        const fb=pg.querySelector('.fb'); fb.className='fb '+(ok?'ok':'bad'); fb.textContent=(ok?'Σωστά! ':'Όχι, είναι '+NAMES[P[cur][1]]+'. ')+P[cur][2];
+        pg.querySelectorAll('.choices button').forEach(x=>x.disabled=true);
+        state.painter[cur]=ok; save(); updateDone();
+        setTimeout(renderPainter,1400);
+      });
+    }else{
+      const ok=Object.values(a).filter(x=>x).length;
+      pg.innerHTML+='<div class="ask">Βρήκες '+ok+' στους 5</div><div style="font-size:15px;text-align:center">'+P.map((p,i)=>'#'+(i+1)+' '+NAMES[p[1]]).join(' · ')+'</div><div style="font-size:15px;max-width:600px;text-align:center">'+(ok>=4?'Με μόνο δύο παραδείγματα εκπαίδευσης. Αυτό είναι μάθηση από δεδομένα.':'Δύο παραδείγματα είναι λίγα· με περισσότερα θα τα πήγαινες καλύτερα. Το ίδιο ισχύει για τη μηχανή.')+'</div><button class="btn outline" id="pAgain">Παίξε ξανά</button>';
+      pg.querySelector('#pAgain').onclick=()=>{state.painter={}; save(); renderPainter(); updateDone();};
+    }
+  }
+  renderPainter();
+
+  // ---------- cancellation simulator ----------
+  let seed=20261015; function rnd(){seed=(seed*1664525+1013904223)%4294967296; return seed/4294967296;}
+  function gen(n){const rows=[]; for(let i=0;i<n;i++){
+    const ota=rnd()<0.6?1:0, dep=rnd()<0.3?1:0, frn=rnd()<0.55?1:0;
+    const lead=Math.round(Math.pow(rnd(),1.4)*300), price=Math.round(60+rnd()*140);
+    const z=-2.3+0.008*lead+1.5*ota-3*dep+1.0*frn+0.018*(price-130);
+    const p=1/(1+Math.exp(-z)); rows.push({lead,ota,dep,frn,price,y:rnd()<p?1:0});
+  } return rows;}
+  const data=gen(600), train=data.slice(0,400), test=data.slice(400);
+  const base=test.filter(r=>r.y===0).length/test.length;
+  const meter=document.getElementById('meter');
+  let mlAcc=null, mlW=null;
+  function ruleAcc(){
+    const useL=rLead.checked, L=+rLeadV.value, useO=rOta.checked, useD=rDep.checked, useF=rFor.checked, mode=rMode.value;
+    rLeadT.textContent=L;
+    let ok=0; test.forEach(r=>{
+      const conds=[]; if(useL)conds.push(r.lead>L); if(useO)conds.push(r.ota===1); if(useD)conds.push(r.dep===0); if(useF)conds.push(r.frn===1);
+      const pred=conds.length===0?0:(mode==='and'?conds.every(x=>x):conds.some(x=>x))?1:0;
+      if(pred===r.y) ok++;
+    });
+    return ok/test.length;
+  }
+  function row(cls,label,v){return '<div class="row '+cls+'"><span>'+label+'</span><div class="bar"><i style="width:'+(v*100).toFixed(1)+'%"></i></div><span class="v">'+(v*100).toFixed(1)+'%</span></div>';}
+  function drawMeter(){
+    const ra=ruleAcc();
+    meter.innerHTML=row('base','Χωρίς μοντέλο («κανείς δεν ακυρώνει»)',base)+row('','Ο κανόνας σου',ra)+(mlAcc!==null?row('ml','Το μοντέλο της μηχανής',mlAcc):'');
+    const dif=mlAcc!==null?'<div style="font-size:14px;color:var(--gray)">'+(ra>=mlAcc?'Μπράβο, ο κανόνας σου φτάνει ή ξεπερνά το μοντέλο. Σκέψου πόσες δοκιμές χρειάστηκες.':'Το μοντέλο προηγείται κατά '+((mlAcc-ra)*100).toFixed(1)+' μονάδες. Σε 200 κρατήσεις είναι '+Math.round((mlAcc-ra)*200)+' περισσότερες σωστές προβλέψεις.')+'</div>':'';
+    meter.innerHTML+=dif;
+  }
+  ['rLead','rLeadV','rOta','rDep','rFor','rMode'].forEach(id=>document.getElementById(id).oninput=drawMeter);
+  drawMeter();
+  document.getElementById('trainBtn').onclick=()=>{
+    // logistic regression, gradient descent, standardized features
+    const feats=r=>[r.lead/100,r.ota,r.dep,r.frn,(r.price-130)/50];
+    let w=[0,0,0,0,0], b=0; const lr=0.1;
+    for(let ep=0;ep<400;ep++){
+      const gw=[0,0,0,0,0]; let gb=0;
+      train.forEach(r=>{const x=feats(r); const p=1/(1+Math.exp(-(w.reduce((s,wi,i)=>s+wi*x[i],0)+b))); const e=p-r.y; x.forEach((xi,i)=>gw[i]+=e*xi); gb+=e;});
+      w=w.map((wi,i)=>wi-lr*gw[i]/train.length); b-=lr*gb/train.length;
+    }
+    let ok=0; test.forEach(r=>{const x=feats(r); const p=1/(1+Math.exp(-(w.reduce((s,wi,i)=>s+wi*x[i],0)+b))); if((p>0.5?1:0)===r.y) ok++;});
+    mlAcc=ok/test.length; mlW=w; drawMeter();
+    document.getElementById('trainInfo').textContent='Εκπαιδεύτηκε σε 400 κρατήσεις, μετρήθηκε σε 200. Το μοντέλο ακύρωσε όσους είχαν πιθανότητα > 50%.';
+    const names=['lead time','κανάλι OTA','προκαταβολή','πελάτης εξωτερικού','τιμή'];
+    const order=w.map((wi,i)=>[Math.abs(wi),i]).sort((a,b)=>b[0]-a[0]);
+    document.getElementById('weights').innerHTML='<div style="font-size:15px"><b>Τι «έμαθε» το μοντέλο</b> (ποιο χαρακτηριστικό βαραίνει περισσότερο και προς τα πού):</div><table class="t"><tr><th>Χαρακτηριστικό</th><th>Επίδραση στην ακύρωση</th></tr>'+order.map(([a,i])=>'<tr><td>'+names[i]+'</td><td class="m">'+(w[i]>0?'▲ αυξάνει':'▼ μειώνει')+' ('+w[i].toFixed(2)+')</td></tr>').join('')+'</table><div style="font-size:14px;color:var(--gray);margin-top:6px">Κανείς δεν του είπε ότι η προκαταβολή μειώνει τις ακυρώσεις. Το βρήκε από τα παραδείγματα. Αυτή είναι η διαφορά από τον κανόνα που έγραψες εσύ.</div>';
+    state.trained=true; save(); updateDone();
+  };
+  document.getElementById('sample').innerHTML='<table class="t"><tr><th>#</th><th>lead time</th><th>κανάλι</th><th>προκαταβολή</th><th>προέλευση</th><th>τιμή</th><th>ακυρώθηκε;</th></tr>'+train.slice(0,10).map((r,i)=>'<tr><td class="m">'+(i+1)+'</td><td class="m">'+r.lead+'</td><td>'+(r.ota?'OTA':'απευθείας')+'</td><td>'+(r.dep?'ναι':'όχι')+'</td><td>'+(r.frn?'εξωτερικό':'Ελλάδα')+'</td><td class="m">'+r.price+' €</td><td>'+(r.y?'<b style="color:var(--red)">ναι</b>':'όχι')+'</td></tr>').join('')+'</table>';
+
+  // ---------- next word ----------
+  const START=['Το','ξενοδοχείο','βρίσκεται','50','μέτρα','από','την'];
+  const M={
+    'την':[['παραλία',.46],['θάλασσα',.27],['πλατεία',.09],['αγορά',.06],['είσοδο',.04],['Ακρόπολη',.03],['μαρίνα',.05]],
+    'παραλία':[['και',.45],['του',.2],['με',.2],['.',.15]],
+    'θάλασσα':[['και',.5],['με',.25],['.',.25]],
+    'πλατεία':[['και',.4],['της',.3],['.',.3]],
+    'αγορά':[['και',.5],['της',.3],['.',.2]],
+    'είσοδο':[['του',.6],['της',.4]],
+    'Ακρόπολη':[['και',.5],['.',.5]],
+    'μαρίνα':[['και',.5],['.',.5]],
+    'και':[['διαθέτει',.5],['προσφέρει',.3],['απέχει',.2]], 'απέχει':[['5',1]],
+    'του':[['χωριού',.5],['λιμανιού',.3],['κέντρου',.2]],
+    'της':[['πόλης',.6],['Θεσσαλονίκης',.25],['Αθήνας',.15]],
+    'με':[['θέα',.6],['δωρεάν',.4]],
+    'θέα':[['στη',.7],['στο',.3]],
+    'στη':[['θάλασσα',.6],['Χαλκιδική',.4]],
+    'στο':[['βουνό',.6],['λιμάνι',.4]],
+    'δωρεάν':[['Wi-Fi',.5],['πάρκινγκ',.3],['πρωινό',.2]],
+    'Wi-Fi':[['και',.4],['.',.6]], 'πάρκινγκ':[['και',.4],['.',.6]], 'πρωινό':[['.',1]],
+    'χωριού':[['.',.6],['και',.4]], 'λιμανιού':[['.',.6],['και',.4]], 'κέντρου':[['.',.7],['και',.3]],
+    'πόλης':[['.',.6],['και',.4]], 'Θεσσαλονίκης':[['.',1]], 'Αθήνας':[['.',1]], 'Χαλκιδική':[['.',1]], 'βουνό':[['.',1]], 'λιμάνι':[['.',1]],
+    'διαθέτει':[['πισίνα',.4],['εστιατόριο',.3],['δωρεάν',.3]],
+    'προσφέρει':[['δωρεάν',.6],['πλούσιο',.4]],
+    'πισίνα':[['και',.4],['.',.6]], 'εστιατόριο':[['με',.5],['.',.5]], 'πλούσιο':[['πρωινό',1]],
+    '5':[['λεπτά',1]], 'λεπτά':[['από',1]], 'από':[['το',.6],['την',.4]],
+    'το':[['κέντρο',.6],['αεροδρόμιο',.4]], 'κέντρο':[['.',.7],['της',.3]], 'αεροδρόμιο':[['.',1]]
+  };
+  let words=START.slice(), ended=false;
+  const nwText=document.getElementById('nwText'), nwCands=document.getElementById('nwCands'), nwTemp=document.getElementById('nwTemp');
+  function temp(){return +nwTemp.value/100;}
+  nwTemp.oninput=()=>{document.getElementById('nwTempV').textContent=temp().toFixed(1); showCands();};
+  function dist(){const last=words[words.length-1]; let c=M[last]||[['.',1]]; const T=temp();
+    if(T===0){const m=c.reduce((a,b)=>b[1]>a[1]?b:a); return c.map(x=>[x[0],x[0]===m[0]?1:0]);}
+    const z=c.map(x=>Math.pow(x[1],1/T)); const s=z.reduce((a,b)=>a+b,0); return c.map((x,i)=>[x[0],z[i]/s]);}
+  function showCands(pick){
+    if(ended){nwCands.innerHTML='<div style="font-size:14px;color:var(--gray)">Η πρόταση τελείωσε (το μοντέλο διάλεξε τελεία). Πάτησε «Από την αρχή».</div>'; return;}
+    const d=dist().sort((a,b)=>b[1]-a[1]);
+    nwCands.innerHTML='<div style="font-size:13px;color:var(--gray)">Πιθανότητες για την επόμενη λέξη:</div>'+d.map(([w,p])=>'<div class="cand'+(w===pick?' pick':'')+'"><span>'+(w==='.'?'[τελεία]':w)+'</span><div class="bar"><i style="width:'+(p*100).toFixed(1)+'%"></i></div><span class="v">'+(p*100).toFixed(0)+'%</span></div>').join('');
+  }
+  function showText(){nwText.innerHTML=words.map((w,i)=>{const isLast=i===words.length-1&&i>=START.length; const s=(w==='.'?'':' ')+w; return isLast?'<span class="last">'+s.trim()+'</span>':s;}).join('').replace(/\s\./g,'.')+(ended?'':' <span style="color:var(--orange)">▌</span>');}
+  function next(){ if(ended) return; const d=dist(); let r=Math.random(), pick=d[d.length-1][0]; for(const [w,p] of d){ if(r<p){pick=w;break;} r-=p; }
+    words.push(pick); if(pick==='.') ended=true; showText(); showCands(pick); state.nwRuns=(state.nwRuns||0)+1; save(); updateDone(); }
+  document.getElementById('nwNext').onclick=next;
+  document.getElementById('nwAuto').onclick=()=>{let k=0; (function step(){ if(!ended&&k++<25){next(); setTimeout(step,350);} })();};
+  document.getElementById('nwReset').onclick=()=>{words=START.slice(); ended=false; showText(); showCands();};
+  showText(); showCands();
+
+  // ---------- prompt builder ----------
+  const ids=['pRole','pCtx','pGoal','pFmt','pData'];
+  function buildPrompt(){
+    const v=id=>document.getElementById(id).value;
+    const t='Είσαι '+v('pRole')+'.\n\nΚατάσταση: '+v('pCtx')+'\n\nΖητούμενο: '+v('pGoal')+'\n\nΜορφή: '+v('pFmt')+(v('pData').trim()?'\n\nΔεδομένα της επιχείρησης (χρησιμοποίησε μόνο αυτά, μην υποθέσεις άλλα):\n'+v('pData').trim():'')+'\n\nΑν κάτι δεν το ξέρεις, γράψε «δεν ξέρω» αντί να το υποθέσεις.';
+    document.getElementById('pOut').textContent=t; return t;
+  }
+  ids.forEach(id=>document.getElementById(id).oninput=buildPrompt); buildPrompt();
+  document.getElementById('pCopy').onclick=async()=>{const t=buildPrompt(); try{await navigator.clipboard.writeText(t); document.getElementById('pCopied').textContent='Αντιγράφηκε ✓';}catch(e){document.getElementById('pCopied').textContent='Επίλεξε το κείμενο και αντέγραψέ το με Ctrl+C.';} state.copied=true; save(); updateDone(); setTimeout(()=>document.getElementById('pCopied').textContent='',2500);};
+
+  // ---------- done state per step ----------
+  function updateDone(){
+    steps.forEach((s,i)=>{
+      const qs=[...s.querySelectorAll('.quiz')].map(q=>quizzes.indexOf(q));
+      const ss=[...s.querySelectorAll('.sorter')];
+      let extra=true;
+      if(s.querySelector('#painter')) extra=Object.keys(state.painter).length===P.length;
+      if(s.querySelector('#sim')) extra=!!state.trained;
+      if(s.querySelector('#nw')) extra=(state.nwRuns||0)>=3;
+      const all=qs.every(i=>state.quiz[i]===true)&&ss.every(sorterDone)&&extra&&(qs.length+ss.length>0||s.querySelector('#painter,#sim,#nw'));
+      stepper.children[i].classList.toggle('done',all);
+    });
+  }
+  updateDone(); finalScore();
+  go(Math.min(state.step||0,steps.length-1));
+})();
+</script>
+</body>
+</html>
