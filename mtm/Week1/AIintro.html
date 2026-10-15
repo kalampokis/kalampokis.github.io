@@ -103,13 +103,13 @@
   .nw .cand .v{font-family:var(--mono);text-align:right}
   .nw .ctrl{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:15px}
   /* prompt builder */
-  .pb{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .pb label{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--gray)}
-  .pb select,.pb input{font:inherit;font-size:15px;padding:7px 9px;border:1px solid var(--lblue);border-radius:6px;background:#fff;color:var(--text)}
+  .pb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+  .pb label{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--gray);min-width:0}
+  .pb select,.pb input{font:inherit;font-size:15px;padding:7px 9px;border:1px solid var(--lblue);border-radius:6px;background:#fff;color:var(--text);width:100%;max-width:100%;min-width:0;text-overflow:ellipsis}
   .prompt{background:var(--code);color:var(--codefg);font-family:var(--mono);font-size:14px;padding:12px 14px;border-radius:8px;white-space:pre-wrap;line-height:1.5}
   .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media (max-width:700px){.grid2,.pb,.gallery{grid-template-columns:1fr} h1{font-size:30px} .meter .row{grid-template-columns:120px 1fr 60px} .nw .cand{grid-template-columns:100px 1fr 50px}}
+  @media (max-width:700px){.grid2,.gallery{grid-template-columns:1fr} .pb{grid-template-columns:minmax(0,1fr)} h1{font-size:30px} .meter .row{grid-template-columns:120px 1fr 60px} .nw .cand{grid-template-columns:100px 1fr 50px}}
   footer{font-size:13px;color:var(--gray);text-align:center}
 </style>
 </head>
