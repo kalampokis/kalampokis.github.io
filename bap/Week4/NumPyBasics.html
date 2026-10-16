@@ -98,146 +98,24 @@
   <div>
     <div class="kicker">Προγραμματισμός για Επιχειρηματική Αναλυτική · Εβδομάδα 4 · <span id="pyStatus" class="status">φόρτωση Python…</span></div>
     <h1>NumPy: υπολογισμοί σε ολόκληρους πίνακες</h1>
-    <p class="lead" style="margin-top:10px">Ένας διαδραστικός οδηγός για την τάξη και το σπίτι, σε 8 βήματα. Ξεκινάμε με δύο εργαλεία της βασικής Python (<code>if</code> και <code>for</code>) και μετά περνάμε στη NumPy, όπου οι ίδιες δουλειές γίνονται με μία γραμμή. Ο κώδικας τρέχει μέσα στον browser σου: άλλαξέ τον, πάτησε <b>Τρέξε</b> (ή Ctrl+Enter) και δες τι γίνεται. Την πρώτη φορά που θα τρέξεις κώδικα με NumPy θα αργήσει λίγα δευτερόλεπτα να φορτώσει.</p>
+    <p class="lead" style="margin-top:10px">Ένας διαδραστικός οδηγός για την τάξη και το σπίτι, σε 8 βήματα. Η NumPy κάνει υπολογισμούς σε ολόκληρες συλλογές τιμών με μία γραμμή· στο τέλος (βήματα 5–6) βλέπουμε και τι κάνει «από κάτω», με δύο εργαλεία της βασικής Python: <code>if</code> και <code>for</code>. Ο κώδικας τρέχει μέσα στον browser σου: άλλαξέ τον, πάτησε <b>Τρέξε</b> (ή Ctrl+Enter) και δες τι γίνεται. Την πρώτη φορά που θα τρέξεις κώδικα με NumPy θα αργήσει λίγα δευτερόλεπτα να φορτώσει.</p>
   </div>
 
   <div class="stepper" id="stepper"></div>
 
   <!-- ============ 1 ============ -->
-  <section class="step" data-title="Αποφάσεις: if">
-    <h2>1. Αποφάσεις: <span class="en">if / elif / else</span></h2>
-    <p>Μέχρι τώρα ο κώδικας έτρεχε γραμμή-γραμμή, πάντα όλος. Με το <code>if</code> λέμε «<i>αν</i> ισχύει αυτό, κάνε εκείνο». Η συνθήκη είναι μια έκφραση που δίνει <code>True</code> ή <code>False</code> (οι συγκρίσεις της εβδομάδας 3). Μετά τη συνθήκη μπαίνει <b>άνω-κάτω τελεία</b> και οι γραμμές που «ανήκουν» στο if γράφονται με <b>εσοχή</b> <span class="en">(indentation)</span>, συνήθως 4 κενά.</p>
-    <div class="runner" data-code="sales = 1650
-target = 1500
-
-if sales &gt; target:
-    print(&quot;Στόχος επιτεύχθηκε&quot;)
-else:
-    print(&quot;Κάτω από τον στόχο&quot;)
-
-# Άλλαξε το sales σε 1200 και ξανατρέξε"></div>
-    <p>Με <code>elif</code> <span class="en">(else if)</span> ελέγχουμε περισσότερες περιπτώσεις με τη σειρά. Η Python εκτελεί το <b>πρώτο</b> μπλοκ που ταιριάζει και αγνοεί τα υπόλοιπα.</p>
-    <div class="runner" data-code="order = 320
-
-if order &gt;= 500:
-    discount = 0.10
-elif order &gt;= 200:
-    discount = 0.05
-else:
-    discount = 0.0
-
-print(discount)
-print(f&quot;Τελικό ποσό: {order * (1 - discount):.2f}&quot;)"></div>
-    <div class="box tip"><b>ΔΟΚΙΜΑΣΕ</b>Βάλε <code>order = 500</code>: ταιριάζουν και οι δύο πρώτες συνθήκες, αλλά εκτελείται μόνο η πρώτη. Μετά σβήσε την εσοχή μπροστά από το <code>discount = 0.10</code> και διάβασε το σφάλμα (IndentationError).</div>
-
-    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="stock = 0
-if stock &gt; 0:
-    print(&quot;Διαθέσιμο&quot;)
-else:
-    print(&quot;Εξαντλημένο&quot;)" data-opts='["Διαθέσιμο","Εξαντλημένο","Διαθέσιμο\nΕξαντλημένο","Σφάλμα"]' data-ans="1" data-why="Το stock &gt; 0 είναι False, άρα εκτελείται το μπλοκ του else."></div>
-    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = 80
-if x &gt;= 50:
-    print(&quot;A&quot;)
-elif x &gt;= 70:
-    print(&quot;B&quot;)
-else:
-    print(&quot;C&quot;)" data-opts='["A","B","A\nB","C"]' data-ans="0" data-why="Το x &gt;= 50 είναι True, άρα τυπώνεται A και τα υπόλοιπα (elif, else) δεν ελέγχονται καν, παρότι και το x &gt;= 70 ισχύει. Η σειρά των συνθηκών έχει σημασία."></div>
-    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="price = 25
-if price &gt; 20:
-    print(&quot;ακριβό&quot;)
-print(&quot;τέλος&quot;)" data-opts='["ακριβό","ακριβό\nτέλος","τέλος","Σφάλμα"]' data-ans="1" data-why="Η δεύτερη print δεν έχει εσοχή, άρα δεν ανήκει στο if και εκτελείται πάντα."></div>
-
-    <div class="exercise" data-code="order = 750
-# Έκπτωση ανάλογα με το ποσό:
-#   από 500 και πάνω: 10%
-#   από 200 και πάνω: 5%
-#   αλλιώς: 0%
-# 1. Υπολόγισε τη μεταβλητή discount με if / elif / else
-# 2. Τύπωσε ακριβώς: Έκπτωση: 10%   (f-string με {discount:.0%})
-" data-check="assert 'discount' in globals(), 'Δεν βρήκα μεταβλητή discount.'
-assert abs(discount - 0.10) &lt; 1e-9, 'Για παραγγελία 750 η έκπτωση πρέπει να είναι 0.10.'
-assert 'elif' in _src, 'Χρησιμοποίησε if / elif / else για τις τρεις περιπτώσεις.'
-assert _out.strip() == 'Έκπτωση: 10%', 'Περίμενα να τυπωθεί ακριβώς: Έκπτωση: 10%'" data-solution="if order &gt;= 500:
-    discount = 0.10
-elif order &gt;= 200:
-    discount = 0.05
-else:
-    discount = 0.0
-print(f&quot;Έκπτωση: {discount:.0%}&quot;)">
-      <div class="title">Άσκηση 1</div>
-      <p>Γράψε τους τρεις κανόνες έκπτωσης με <code>if / elif / else</code> και τύπωσε <code>Έκπτωση: 10%</code>. Άλλαξε μετά το <code>order</code> σε 150 και 320 για να δεις ότι δουλεύει και στις άλλες περιπτώσεις.</p>
-    </div>
-  </section>
-
-  <!-- ============ 2 ============ -->
-  <section class="step" data-title="Επαναλήψεις: for">
-    <h2>2. Επαναλήψεις: <span class="en">for</span></h2>
-    <p>Ο βρόχος <code>for</code> εκτελεί το ίδιο μπλοκ κώδικα <b>για κάθε στοιχείο</b> μιας λίστας. Σε κάθε γύρο η μεταβλητή (εδώ <code>s</code>) παίρνει το επόμενο στοιχείο. Και εδώ: άνω-κάτω τελεία και εσοχή.</p>
-    <div class="runner" data-code="sales = [1200, 1550, 1000, 1800]
-
-for s in sales:
-    print(s * 1.24)
-
-print(&quot;Τέλος&quot;)   # χωρίς εσοχή: τρέχει μία φορά, στο τέλος"></div>
-    <h3>Το μοτίβο του «συσσωρευτή» <span class="en">(accumulator)</span></h3>
-    <p>Πολύ συχνά θέλουμε να μαζέψουμε κάτι μέσα στον βρόχο: ένα σύνολο, ένα πλήθος. Ξεκινάμε μια μεταβλητή από το 0 και την ενημερώνουμε σε κάθε γύρο. Συνδυάζοντας <code>for</code> με <code>if</code> μετράμε πόσα στοιχεία ικανοποιούν μια συνθήκη.</p>
-    <div class="runner" data-code="sales = [1200, 1550, 1000, 1800, 1650, 1400]
-target = 1500
-
-total = 0
-above = 0
-for s in sales:
-    total = total + s
-    if s &gt; target:
-        above = above + 1
-
-print(total)
-print(total / len(sales))
-print(above)"></div>
-    <div class="box note"><b>ΓΙΑΤΙ ΤΟ ΜΑΘΑΙΝΟΥΜΕ</b>Για να καταλάβεις τι κάνει η NumPy. Τα τρία παραπάνω αποτελέσματα στη NumPy είναι <code>np.sum(sales)</code>, <code>np.mean(sales)</code> και <code>np.sum(sales &gt; target)</code>: μία γραμμή το καθένα, χωρίς βρόχο. Οι βρόχοι είναι χρήσιμοι, αλλά στην ανάλυση δεδομένων τους γράφουμε σπάνια.</div>
-
-    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="for x in [1, 2, 3]:
-    print(x * 10)" data-opts='["10 20 30","10\n20\n30","60","[10, 20, 30]"]' data-ans="1" data-why="Το μπλοκ τρέχει τρεις φορές, μία print ανά γύρο, άρα τρεις γραμμές."></div>
-    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="count = 0
-for p in [19.9, 249.0, 45.0, 59.0]:
-    if p &gt; 50:
-        count = count + 1
-print(count)" data-opts='["1","2","3","4"]' data-ans="1" data-why="Πάνω από 50 είναι το 249.0 και το 59.0: δύο στοιχεία."></div>
-    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="total = 0
-for s in [100, 200]:
-    total = total + s
-    print(total)" data-opts='["300","100\n300","100\n200","300\n300"]' data-ans="1" data-why="Η print είναι ΜΕΣΑ στον βρόχο (έχει εσοχή), άρα τυπώνει το ενδιάμεσο σύνολο σε κάθε γύρο: 100 και μετά 300."></div>
-
-    <div class="exercise" data-code="sales = [1200, 1550, 1000, 1800, 1650, 1400,
-         1900, 2100, 1700, 1600, 2300, 2800]
-target = 1750
-# 1. Με έναν βρόχο for, μέτρησε πόσοι μήνες έχουν πωλήσεις πάνω από τον στόχο
-#    (μεταβλητή above)
-# 2. Στον ίδιο βρόχο, υπολόγισε το σύνολο του έτους (μεταβλητή total)
-# 3. Τύπωσε above και μετά total (δύο γραμμές)
-" data-check="assert 'for' in _src, 'Χρησιμοποίησε βρόχο for.'
-assert above == 5, 'Το above πρέπει να είναι 5 (Apr, Jul, Aug, Nov, Dec).'
-assert total == 21000, 'Το total πρέπει να είναι 21000.'
-assert _out.strip().split('\n') == ['5', '21000'], 'Περίμενα δύο γραμμές: 5 και 21000.'" data-solution="above = 0
-total = 0
-for s in sales:
-    total = total + s
-    if s &gt; target:
-        above = above + 1
-print(above)
-print(total)">
-      <div class="title">Άσκηση 2</div>
-      <p>Συνδύασε <code>for</code> και <code>if</code> με δύο συσσωρευτές. Κράτα τον κώδικα: στο βήμα 5 θα κάνεις το ίδιο με NumPy σε δύο γραμμές.</p>
-    </div>
-  </section>
-
-  <!-- ============ 3 ============ -->
   <section class="step" data-title="Πίνακες NumPy">
-    <h2>3. Πίνακες NumPy <span class="en">(arrays)</span></h2>
+    <h2>1. Πίνακες NumPy <span class="en">(arrays)</span></h2>
     <p>Οι λίστες της Python δεν ξέρουν μαθηματικά: <code>prices * 2</code> <i>επαναλαμβάνει</i> τη λίστα και <code>prices * 1.24</code> δίνει σφάλμα. Δοκίμασέ το:</p>
     <div class="runner" data-code="prices = [899.0, 19.9, 249.0]
 print(prices * 2)
 print(prices * 1.24)"></div>
+    <p>Ο μόνος τρόπος με λίστες είναι ο κουραστικός: μια επανάληψη που περνά από κάθε στοιχείο (θα δούμε τον βρόχο <code>for</code> αναλυτικά στο βήμα 6· εδώ απλώς παρατήρησε πόσες γραμμές χρειάζεται).</p>
+    <div class="runner" data-code="prices = [899.0, 19.9, 249.0]
+with_vat = []
+for p in prices:
+    with_vat.append(p * 1.24)
+print(with_vat)"></div>
     <p>Η <b>NumPy</b> <span class="en">(Numeric Python)</span> προσφέρει έναν νέο τύπο, τον <b>πίνακα</b> <span class="en">(ndarray)</span>, που φτιάχνεται από μια λίστα με <code>np.array()</code>. Οι πράξεις εφαρμόζονται σε <b>κάθε στοιχείο</b> ξεχωριστά <span class="en">(element-wise)</span>, χωρίς βρόχο.</p>
     <div class="runner" data-code="import numpy as np
 
@@ -304,14 +182,14 @@ np_costs = np.array(costs)
 profit = (np_prices - np_costs) * np_quantities
 print(profit)
 print(np.sum(profit))">
-      <div class="title">Άσκηση 3</div>
+      <div class="title">Άσκηση 1</div>
       <p>Κέρδος ανά προϊόν με πράξεις ανάμεσα σε πίνακες, και συνολικό κέρδος. Θυμήσου: με λίστες η αφαίρεση δεν δουλεύει καν.</p>
     </div>
   </section>
 
-  <!-- ============ 4 ============ -->
+  <!-- ============ 2 ============ -->
   <section class="step" data-title="Φίλτρα">
-    <h2>4. Επιλογή και φίλτρα <span class="en">(boolean filtering)</span></h2>
+    <h2>2. Επιλογή και φίλτρα <span class="en">(boolean filtering)</span></h2>
     <p>Δείκτες και slicing δουλεύουν <b>ακριβώς όπως στις λίστες</b>: <code>sales[0]</code>, <code>sales[-1]</code>, <code>sales[:3]</code>, <code>sales[6:]</code>. Το καινούργιο είναι ότι μια σύγκριση σε πίνακα δίνει <b>πίνακα από True/False</b>, και αυτόν τον πίνακα μπορείς να τον βάλεις μέσα στις αγκύλες για να <b>κρατήσεις μόνο τα στοιχεία όπου είναι True</b>.</p>
     <div class="runner" data-code="import numpy as np
 
@@ -326,7 +204,7 @@ print(sales[sales &gt; 1500])     # το ίδιο, σε μία γραμμή"></d
     <p>Πληκτρολόγησε μια συνθήκη και δες ποια στοιχεία «περνούν» το φίλτρο. Δοκίμασε <code>x &gt; 1500</code>, <code>x &lt;= 1200</code>, <code>x == 1800</code>, <code>(x &gt; 1500) &amp; (x &lt; 2000)</code>, <code>(x &lt; 1200) | (x &gt; 2200)</code>:</p>
     <div class="viz maskviz" data-list='[1200,1550,1000,1800,1650,1400,1900,2100,1700,1600,2300,2800]' data-init="x &gt; 1500"></div>
     <h3>Μέτρημα και ποσοστά με boolean πίνακες</h3>
-    <p>Αφού το True μετρά ως 1: <code>np.sum(sales &gt; 1500)</code> είναι <i>πόσοι</i> μήνες ξεπέρασαν το 1500 και <code>np.mean(sales &gt; 1500)</code> το <i>ποσοστό</i> τους. Αυτό είναι ακριβώς ο βρόχος <code>for</code> + <code>if</code> του βήματος 2, σε μία γραμμή.</p>
+    <p>Αφού το True μετρά ως 1: <code>np.sum(sales &gt; 1500)</code> είναι <i>πόσοι</i> μήνες ξεπέρασαν το 1500 και <code>np.mean(sales &gt; 1500)</code> το <i>ποσοστό</i> τους. Στο βήμα 6 θα δεις ότι «από κάτω» αυτό είναι ένας βρόχος με ένα <code>if</code> και έναν μετρητή· εδώ είναι μία γραμμή.</p>
     <div class="runner" data-code="import numpy as np
 
 sales = np.array([1200, 1550, 1000, 1800, 1650, 1400,
@@ -371,14 +249,14 @@ assert lines[1] == '3', 'Η δεύτερη γραμμή πρέπει να είν
 assert lines[2] == &quot;['Apr' 'May' 'Jul' 'Sep' 'Oct']&quot;, &quot;Η τρίτη γραμμή πρέπει να είναι ['Apr' 'May' 'Jul' 'Sep' 'Oct']. Θυμήσου παρενθέσεις και &amp;.&quot;" data-solution="print(months[sales &lt; 1500])
 print(np.sum(sales &gt;= 2000))
 print(months[(sales &gt;= 1600) &amp; (sales &lt;= 1900)])">
-      <div class="title">Άσκηση 4</div>
+      <div class="title">Άσκηση 2</div>
       <p>Το πιο χρήσιμο κόλπο της εβδομάδας: φίλτρο που φτιάχνεται από έναν πίνακα (<code>sales</code>) και εφαρμόζεται σε άλλον (<code>months</code>). Δουλεύει γιατί έχουν το ίδιο μήκος και την ίδια σειρά.</p>
     </div>
   </section>
 
-  <!-- ============ 5 ============ -->
+  <!-- ============ 3 ============ -->
   <section class="step" data-title="Στατιστικά">
-    <h2>5. Στατιστικά με μία γραμμή</h2>
+    <h2>3. Στατιστικά με μία γραμμή</h2>
     <p>Η NumPy έχει έτοιμες συναρτήσεις για ό,τι θα υπολόγιζες με βρόχο: <code>np.sum()</code>, <code>np.mean()</code> (μέσος όρος), <code>np.median()</code> (διάμεσος), <code>np.min()</code>, <code>np.max()</code>, <code>np.std()</code> (τυπική απόκλιση). Η <code>np.argmax()</code> δίνει τη <i>θέση</i> του μεγίστου, κάτι πολύ χρήσιμο όταν έχεις έναν δεύτερο πίνακα με ονόματα.</p>
     <div class="runner" data-code="import numpy as np
 
@@ -434,13 +312,12 @@ months = np.array([&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&
 sales = np.array([1200, 1550, 1000, 1800, 1650, 1400,
                   1900, 2100, 1700, 1600, 2300, 2800])
 target = 1750
-# Η Άσκηση 2 ξανά, χωρίς βρόχο. Τύπωσε σε τέσσερις γραμμές:
+# Τύπωσε σε τέσσερις γραμμές:
 # 1. πόσοι μήνες ξεπέρασαν τον στόχο
 # 2. το σύνολο του έτους
 # 3. το όνομα του χειρότερου μήνα (np.argmin)
 # 4. το κείμενο: Μέσος μήνας: 1750 (f-string με {...:.0f})
 " data-check="lines = _out.strip().split('\n')
-assert 'for' not in _src, 'Χωρίς βρόχο for αυτή τη φορά!'
 assert len(lines) == 4, 'Περίμενα τέσσερις γραμμές εξόδου.'
 assert lines[0] == '5', 'Πρώτη γραμμή: 5 (np.sum(sales &gt; target)).'
 assert lines[1] == '21000', 'Δεύτερη γραμμή: 21000 (np.sum(sales)).'
@@ -449,14 +326,14 @@ assert lines[3] == 'Μέσος μήνας: 1750', 'Τέταρτη γραμμή �
 print(np.sum(sales))
 print(months[np.argmin(sales)])
 print(f&quot;Μέσος μήνας: {np.mean(sales):.0f}&quot;)">
-      <div class="title">Άσκηση 5</div>
-      <p>Ό,τι έκανες με βρόχο στην Άσκηση 2, τώρα με NumPy. Σύγκρινε τους δύο κώδικες στο τέλος.</p>
+      <div class="title">Άσκηση 3</div>
+      <p>Τέσσερις ερωτήσεις του διευθυντή, τέσσερις γραμμές NumPy. Κράτα τον κώδικα: στο βήμα 6 θα τον ξαναγράψεις με βρόχο για να δεις τι κάνει η NumPy από κάτω.</p>
     </div>
   </section>
 
-  <!-- ============ 6 ============ -->
+  <!-- ============ 4 ============ -->
   <section class="step" data-title="2D πίνακες">
-    <h2>6. Πίνακες δύο διαστάσεων <span class="en">(2D arrays)</span></h2>
+    <h2>4. Πίνακες δύο διαστάσεων <span class="en">(2D arrays)</span></h2>
     <p>Από λίστα από λίστες φτιάχνεται πίνακας με <b>γραμμές και στήλες</b>: ένας μικρός πίνακας δεδομένων. Το <code>.shape</code> δίνει (γραμμές, στήλες). Εδώ: κάθε γραμμή ένα προϊόν, στήλη 0 η τιμή, στήλη 1 η ποσότητα.</p>
     <div class="runner" data-code="import numpy as np
 
@@ -536,8 +413,136 @@ profit = (price - cost) * qty
 print(profit)
 print(round(np.mean(price), 2))
 print(np.argmax(profit))">
+      <div class="title">Άσκηση 4</div>
+      <p>Η Άσκηση 1 ξανά, αλλά τα δεδομένα είναι τώρα σε έναν 2D πίνακα, όπως θα έρχονται από ένα αρχείο. Πρώτα «κόβεις» στήλες, μετά υπολογίζεις.</p>
+    </div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="step" data-title="Αποφάσεις: if">
+    <h2>5. Αποφάσεις: <span class="en">if / elif / else</span></h2>
+    <p>Τα δύο τελευταία βήματα κοιτούν «κάτω από το καπό» της NumPy: πώς θα έκανες τα ίδια με τη βασική Python. Μέχρι τώρα ο κώδικας έτρεχε γραμμή-γραμμή, πάντα όλος. Με το <code>if</code> λέμε «<i>αν</i> ισχύει αυτό, κάνε εκείνο». Η συνθήκη είναι μια έκφραση που δίνει <code>True</code> ή <code>False</code> (οι συγκρίσεις της εβδομάδας 3). Μετά τη συνθήκη μπαίνει <b>άνω-κάτω τελεία</b> και οι γραμμές που «ανήκουν» στο if γράφονται με <b>εσοχή</b> <span class="en">(indentation)</span>, συνήθως 4 κενά.</p>
+    <div class="runner" data-code="sales = 1650
+target = 1500
+
+if sales &gt; target:
+    print(&quot;Στόχος επιτεύχθηκε&quot;)
+else:
+    print(&quot;Κάτω από τον στόχο&quot;)
+
+# Άλλαξε το sales σε 1200 και ξανατρέξε"></div>
+    <p>Με <code>elif</code> <span class="en">(else if)</span> ελέγχουμε περισσότερες περιπτώσεις με τη σειρά. Η Python εκτελεί το <b>πρώτο</b> μπλοκ που ταιριάζει και αγνοεί τα υπόλοιπα.</p>
+    <div class="runner" data-code="order = 320
+
+if order &gt;= 500:
+    discount = 0.10
+elif order &gt;= 200:
+    discount = 0.05
+else:
+    discount = 0.0
+
+print(discount)
+print(f&quot;Τελικό ποσό: {order * (1 - discount):.2f}&quot;)"></div>
+    <div class="box tip"><b>ΔΟΚΙΜΑΣΕ</b>Βάλε <code>order = 500</code>: ταιριάζουν και οι δύο πρώτες συνθήκες, αλλά εκτελείται μόνο η πρώτη. Μετά σβήσε την εσοχή μπροστά από το <code>discount = 0.10</code> και διάβασε το σφάλμα (IndentationError).</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="stock = 0
+if stock &gt; 0:
+    print(&quot;Διαθέσιμο&quot;)
+else:
+    print(&quot;Εξαντλημένο&quot;)" data-opts='["Διαθέσιμο","Εξαντλημένο","Διαθέσιμο\nΕξαντλημένο","Σφάλμα"]' data-ans="1" data-why="Το stock &gt; 0 είναι False, άρα εκτελείται το μπλοκ του else."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = 80
+if x &gt;= 50:
+    print(&quot;A&quot;)
+elif x &gt;= 70:
+    print(&quot;B&quot;)
+else:
+    print(&quot;C&quot;)" data-opts='["A","B","A\nB","C"]' data-ans="0" data-why="Το x &gt;= 50 είναι True, άρα τυπώνεται A και τα υπόλοιπα (elif, else) δεν ελέγχονται καν, παρότι και το x &gt;= 70 ισχύει. Η σειρά των συνθηκών έχει σημασία."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="price = 25
+if price &gt; 20:
+    print(&quot;ακριβό&quot;)
+print(&quot;τέλος&quot;)" data-opts='["ακριβό","ακριβό\nτέλος","τέλος","Σφάλμα"]' data-ans="1" data-why="Η δεύτερη print δεν έχει εσοχή, άρα δεν ανήκει στο if και εκτελείται πάντα."></div>
+
+    <div class="exercise" data-code="order = 750
+# Έκπτωση ανάλογα με το ποσό:
+#   από 500 και πάνω: 10%
+#   από 200 και πάνω: 5%
+#   αλλιώς: 0%
+# 1. Υπολόγισε τη μεταβλητή discount με if / elif / else
+# 2. Τύπωσε ακριβώς: Έκπτωση: 10%   (f-string με {discount:.0%})
+" data-check="assert 'discount' in globals(), 'Δεν βρήκα μεταβλητή discount.'
+assert abs(discount - 0.10) &lt; 1e-9, 'Για παραγγελία 750 η έκπτωση πρέπει να είναι 0.10.'
+assert 'elif' in _src, 'Χρησιμοποίησε if / elif / else για τις τρεις περιπτώσεις.'
+assert _out.strip() == 'Έκπτωση: 10%', 'Περίμενα να τυπωθεί ακριβώς: Έκπτωση: 10%'" data-solution="if order &gt;= 500:
+    discount = 0.10
+elif order &gt;= 200:
+    discount = 0.05
+else:
+    discount = 0.0
+print(f&quot;Έκπτωση: {discount:.0%}&quot;)">
+      <div class="title">Άσκηση 5</div>
+      <p>Γράψε τους τρεις κανόνες έκπτωσης με <code>if / elif / else</code> και τύπωσε <code>Έκπτωση: 10%</code>. Άλλαξε μετά το <code>order</code> σε 150 και 320 για να δεις ότι δουλεύει και στις άλλες περιπτώσεις.</p>
+    </div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="step" data-title="Επαναλήψεις: for">
+    <h2>6. Επαναλήψεις: <span class="en">for</span></h2>
+    <p>Ο βρόχος <code>for</code> εκτελεί το ίδιο μπλοκ κώδικα <b>για κάθε στοιχείο</b> μιας λίστας. Σε κάθε γύρο η μεταβλητή (εδώ <code>s</code>) παίρνει το επόμενο στοιχείο. Και εδώ: άνω-κάτω τελεία και εσοχή.</p>
+    <div class="runner" data-code="sales = [1200, 1550, 1000, 1800]
+
+for s in sales:
+    print(s * 1.24)
+
+print(&quot;Τέλος&quot;)   # χωρίς εσοχή: τρέχει μία φορά, στο τέλος"></div>
+    <h3>Το μοτίβο του «συσσωρευτή» <span class="en">(accumulator)</span></h3>
+    <p>Πολύ συχνά θέλουμε να μαζέψουμε κάτι μέσα στον βρόχο: ένα σύνολο, ένα πλήθος. Ξεκινάμε μια μεταβλητή από το 0 και την ενημερώνουμε σε κάθε γύρο. Συνδυάζοντας <code>for</code> με <code>if</code> μετράμε πόσα στοιχεία ικανοποιούν μια συνθήκη.</p>
+    <div class="runner" data-code="sales = [1200, 1550, 1000, 1800, 1650, 1400]
+target = 1500
+
+total = 0
+above = 0
+for s in sales:
+    total = total + s
+    if s &gt; target:
+        above = above + 1
+
+print(total)
+print(total / len(sales))
+print(above)"></div>
+    <div class="box note"><b>ΑΥΤΟ ΚΑΝΕΙ Η NUMPY ΑΠΟ ΚΑΤΩ</b>Τα τρία παραπάνω αποτελέσματα τα έγραψες ήδη ως <code>np.sum(sales)</code>, <code>np.mean(sales)</code> και <code>np.sum(sales &gt; target)</code>. Η NumPy τρέχει τον ίδιο βρόχο, αλλά σε C και για όλα τα στοιχεία μαζί. Οι βρόχοι είναι χρήσιμοι για να καταλαβαίνεις τι γίνεται, αλλά στην ανάλυση δεδομένων τους γράφουμε σπάνια.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="for x in [1, 2, 3]:
+    print(x * 10)" data-opts='["10 20 30","10\n20\n30","60","[10, 20, 30]"]' data-ans="1" data-why="Το μπλοκ τρέχει τρεις φορές, μία print ανά γύρο, άρα τρεις γραμμές."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="count = 0
+for p in [19.9, 249.0, 45.0, 59.0]:
+    if p &gt; 50:
+        count = count + 1
+print(count)" data-opts='["1","2","3","4"]' data-ans="1" data-why="Πάνω από 50 είναι το 249.0 και το 59.0: δύο στοιχεία."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="total = 0
+for s in [100, 200]:
+    total = total + s
+    print(total)" data-opts='["300","100\n300","100\n200","300\n300"]' data-ans="1" data-why="Η print είναι ΜΕΣΑ στον βρόχο (έχει εσοχή), άρα τυπώνει το ενδιάμεσο σύνολο σε κάθε γύρο: 100 και μετά 300."></div>
+
+    <div class="exercise" data-code="sales = [1200, 1550, 1000, 1800, 1650, 1400,
+         1900, 2100, 1700, 1600, 2300, 2800]
+target = 1750
+# 1. Με έναν βρόχο for, μέτρησε πόσοι μήνες έχουν πωλήσεις πάνω από τον στόχο
+#    (μεταβλητή above)
+# 2. Στον ίδιο βρόχο, υπολόγισε το σύνολο του έτους (μεταβλητή total)
+# 3. Τύπωσε above και μετά total (δύο γραμμές)
+" data-check="assert 'for' in _src, 'Χρησιμοποίησε βρόχο for.'
+assert above == 5, 'Το above πρέπει να είναι 5 (Apr, Jul, Aug, Nov, Dec).'
+assert total == 21000, 'Το total πρέπει να είναι 21000.'
+assert _out.strip().split('\n') == ['5', '21000'], 'Περίμενα δύο γραμμές: 5 και 21000.'" data-solution="above = 0
+total = 0
+for s in sales:
+    total = total + s
+    if s &gt; target:
+        above = above + 1
+print(above)
+print(total)">
       <div class="title">Άσκηση 6</div>
-      <p>Η Άσκηση 3 ξανά, αλλά τα δεδομένα είναι τώρα σε έναν 2D πίνακα, όπως θα έρχονται από ένα αρχείο. Πρώτα «κόβεις» στήλες, μετά υπολογίζεις.</p>
+      <p>Η Άσκηση 3 «ανάποδα»: ό,τι έκανες με <code>np.sum(sales &gt; target)</code> και <code>np.sum(sales)</code>, τώρα με <code>for</code>, <code>if</code> και δύο συσσωρευτές. Σύγκρινε τους δύο κώδικες στο τέλος.</p>
     </div>
   </section>
 
@@ -782,7 +787,7 @@ print(np.mean(x, axis=1))"></div>
     const idx=qs.map(q=>quizzes.indexOf(q)); const done=idx.filter(i=>state.quiz[i]!==undefined).length;
     const ok=idx.filter(i=>state.quiz[i]===true).length;
     const el=document.getElementById('finalScore');
-    if(done===qs.length){el.style.display='block'; el.innerHTML='<b>ΑΠΟΤΕΛΕΣΜΑ</b>Σωστές απαντήσεις: '+ok+' / '+qs.length+(ok===qs.length?' — άψογα!':ok>=8?' — πολύ καλά, ξαναδές τις λάθος.':' — ξαναδιάβασε τα βήματα 1–7 και ξαναπροσπάθησε.');}
+    if(done===qs.length){el.style.display='block'; el.innerHTML='<b>ΑΠΟΤΕΛΕΣΜΑ</b>Σωστές απαντήσεις: '+ok+' / '+qs.length+(ok===qs.length?' — άψογα!':ok>=8?' — πολύ καλά, ξαναδές τις λάθος.':' — ξαναδιάβασε τα βήματα 1–6 και ξαναπροσπάθησε.');}
   }
   finalScore();
 
