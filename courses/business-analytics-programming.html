@@ -91,7 +91,9 @@
                             <li class="list-group-item"><a href="https://app.datacamp.com/learn/courses/intro-to-python-for-data-science" target="_blank" rel="noopener"><span class="mat-tag datacamp">DataCamp</span>Introduction to Python, chapters 2&ndash;3</a></li>
                         </ul>
                     </div>
-                    <div class="panel panel-default">
+                    <!-- Week 4 is published automatically on the date in data-show-after (see script at the bottom);
+                         remove the attribute and the "hidden" to show it unconditionally. -->
+                    <div class="panel panel-default" hidden data-show-after="2026-10-22T08:00:00+03:00" data-prev-week="week3">
                         <div class="panel-heading"><a class="week-toggle" data-toggle="collapse" href="#week4"><h4>Week 4 &middot; NumPy and control flow</h4></a></div>
                         <ul id="week4" class="list-group collapse in">
                             <li class="list-group-item"><a href="../bap/Week4/NumPyBasics.html" target="_blank" rel="noopener"><span class="mat-tag interactive">Interactive</span>NumPy Basics</a></li>
@@ -117,6 +119,15 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="../js/bootstrap.min.js"></script>
     <script>document.querySelectorAll(".year").forEach(function(e){e.textContent=new Date().getFullYear();});</script>
+    <script>
+    // Scheduled publishing: a panel with data-show-after="<ISO date>" stays hidden until that moment.
+    // Until then, the panel named in data-prev-week is shown expanded instead.
+    document.querySelectorAll("[data-show-after]").forEach(function(panel){
+      if (Date.now() >= Date.parse(panel.getAttribute("data-show-after"))) { panel.removeAttribute("hidden"); return; }
+      var prev = document.getElementById(panel.getAttribute("data-prev-week"));
+      if (prev) { prev.classList.add("in"); var t = document.querySelector('a[href="#' + prev.id + '"]'); if (t) t.classList.remove("collapsed"); }
+    });
+    </script>
 
 </body>
 
