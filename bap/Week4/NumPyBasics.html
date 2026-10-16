@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NumPy και ροή ελέγχου · Εβδομάδα 4</title>
+<meta name="description" content="Διαδραστικός οδηγός μάθησης: if/for, πίνακες NumPy, boolean φίλτρα, στατιστικά, 2D πίνακες. Προγραμματισμός για Επιχειρηματική Αναλυτική, Εβδομάδα 4.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2F6B; --text:#26314F; --gray:#5A6385; --blue:#7895F9; --lblue:#B9C8FC; --pale:#EEF1FE;
+    --orange:#F5821F; --peach:#FDE8D4; --green:#1e7a4c; --lgreen:#E3F3EA; --red:#B23A3A; --lred:#FBE4E4;
+    --code:#141E3C; --codefg:#F4F6FF; --comment:#9FB3E8; --mono:'JetBrains Mono',Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pale);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+  a{color:var(--green)}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 16px 80px;display:flex;flex-direction:column;gap:22px}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--gray);text-transform:uppercase}
+  h1{margin:6px 0 0;font-family:Georgia,serif;font-weight:700;font-size:38px;line-height:1.1;color:var(--navy)}
+  h2{margin:0;font-family:Georgia,serif;font-size:28px;color:var(--navy)}
+  h3{margin:18px 0 6px;font-family:Georgia,serif;font-size:20px;color:var(--navy)}
+  p{margin:0 0 10px;font-size:17px}
+  .lead{font-size:19px;max-width:800px}
+  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px}
+  .stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 12px;background:var(--navy);color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px;opacity:.55}
+  .stepper button.active{opacity:1;outline:3px solid var(--orange)}
+  .stepper button.done{opacity:.9;background:var(--green)}
+  .stepper button span.n{font-family:var(--mono);font-weight:700;font-size:14px}
+  .stepper button span.l{font-size:13px}
+  section.step{display:none;flex-direction:column;gap:14px;background:#fff;border-radius:12px;padding:22px 22px 26px;box-shadow:0 1px 3px rgba(27,47,107,.08)}
+  section.step.active{display:flex}
+  code{font-family:var(--mono);background:var(--pale);padding:1px 5px;border-radius:4px;color:var(--navy);font-size:.95em}
+  .en{color:var(--gray);font-style:italic}
+  .box{border-radius:8px;padding:12px 16px;font-size:16px}
+  .tip{background:var(--peach)} .tip b{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .note{background:var(--pale)} .note b{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  /* runnable code */
+  .runner{border-radius:10px;overflow:hidden;border:2px solid var(--navy);background:var(--code)}
+  .runner .bar{display:flex;align-items:center;gap:10px;padding:6px 12px;background:#0E1630;color:var(--lblue);font-family:var(--mono);font-size:12px}
+  .runner .bar .spacer{flex:1}
+  .runner textarea{width:100%;display:block;border:0;outline:0;resize:vertical;min-height:120px;padding:12px 14px;background:var(--code);color:var(--codefg);font-family:var(--mono);font-size:16px;line-height:1.5;tab-size:4}
+  .runner .out{background:var(--pale);color:var(--navy);font-family:var(--mono);font-size:15px;padding:10px 14px;white-space:pre-wrap;min-height:34px;border-top:1px solid var(--lblue)}
+  .runner .out.err{color:var(--red);background:var(--lred)}
+  .runner .out:empty::before{content:"— πάτησε «Τρέξε» ή Ctrl+Enter —";color:var(--gray);font-style:italic;font-family:Arial}
+  .btn{font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--green);color:#fff;font-weight:bold}
+  .btn.secondary{background:transparent;border:2px solid var(--lblue);color:var(--lblue);font-weight:normal}
+  .btn.navy{background:var(--navy)}
+  .btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+  .btn:disabled{opacity:.5;cursor:default}
+  /* quiz */
+  .quiz{background:var(--pale);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .quiz .q{font-weight:bold;color:var(--navy)}
+  .quiz pre{margin:0;font-family:var(--mono);font-size:15px;background:var(--code);color:var(--codefg);padding:10px 14px;border-radius:8px;white-space:pre-wrap}
+  .quiz .opts{display:grid;gap:6px}
+  .quiz .opts button{text-align:left;font:inherit;font-size:16px;padding:9px 12px;border-radius:8px;border:1px solid var(--lblue);background:#fff;color:var(--navy);cursor:pointer;font-family:var(--mono);white-space:pre-wrap}
+  .quiz .opts button.ok{background:var(--lgreen);border-color:var(--green)}
+  .quiz .opts button.bad{background:var(--lred);border-color:var(--red)}
+  .quiz .fb{min-height:20px;font-size:15px}
+  .quiz .fb.ok{color:var(--green);font-weight:bold} .quiz .fb.bad{color:var(--red)}
+  /* exercise */
+  .exercise{border:2px dashed var(--orange);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#fff}
+  .exercise .title{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--orange);text-transform:uppercase}
+  .exercise .result{font-size:15px;min-height:20px}
+  .exercise .result.ok{color:var(--green);font-weight:bold} .exercise .result.bad{color:var(--red)}
+  .exercise details{font-size:15px} .exercise summary{cursor:pointer;color:var(--navy)}
+  /* visualizers */
+  .viz{display:flex;flex-direction:column;gap:10px;background:var(--pale);border-radius:10px;padding:14px 16px}
+  .viz input{font-family:var(--mono);font-size:20px;padding:8px 12px;border:2px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy);width:100%;max-width:420px}
+  .cells{display:flex;gap:8px;flex-wrap:wrap}
+  .cell{display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--mono)}
+  .cell .i{font-size:12px;color:var(--navy);background:var(--lblue);border-radius:10px;padding:1px 10px}
+  .cell .v{width:62px;height:52px;display:flex;align-items:center;justify-content:center;background:var(--code);color:#fff;font-weight:bold;font-size:18px;border-radius:6px}
+  .cell.hit .v{background:var(--orange)}
+  .cell.off .v{opacity:.35}
+  .cell .b{font-size:12px;font-family:var(--mono);color:var(--gray)}
+  .cell.hit .b{color:var(--orange);font-weight:bold}
+  .viz .res{font-family:var(--mono);font-size:17px;color:var(--navy);min-height:24px;white-space:pre-wrap}
+  .grid2d{display:inline-grid;gap:6px;align-items:center;align-self:flex-start;max-width:100%;overflow-x:auto}
+  .grid2d .hd{font-family:var(--mono);font-size:12px;color:var(--navy);background:var(--lblue);border-radius:10px;padding:1px 0;text-align:center}
+  .grid2d .rh{font-family:var(--mono);font-size:12px;color:var(--navy);background:var(--lblue);border-radius:10px;padding:1px 10px;text-align:center}
+  .grid2d .c{width:78px;height:46px;display:flex;align-items:center;justify-content:center;background:var(--code);color:#fff;font-family:var(--mono);font-weight:bold;font-size:17px;border-radius:6px}
+  .grid2d .c.hit{background:var(--orange)}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+  .status{font-family:var(--mono);font-size:12px;color:var(--gray)}
+  .status.ready{color:var(--green)}
+  table.t{border-collapse:collapse;width:100%;font-size:15px}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:bold}
+  table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue)} table.t td:first-child, table.t td.m{font-family:var(--mono);color:var(--navy)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:700px){.grid2{grid-template-columns:1fr} h1{font-size:30px}}
+  footer{font-size:13px;color:var(--gray);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="kicker">Προγραμματισμός για Επιχειρηματική Αναλυτική · Εβδομάδα 4 · <span id="pyStatus" class="status">φόρτωση Python…</span></div>
+    <h1>NumPy: υπολογισμοί σε ολόκληρους πίνακες</h1>
+    <p class="lead" style="margin-top:10px">Ένας διαδραστικός οδηγός για την τάξη και το σπίτι, σε 8 βήματα. Ξεκινάμε με δύο εργαλεία της βασικής Python (<code>if</code> και <code>for</code>) και μετά περνάμε στη NumPy, όπου οι ίδιες δουλειές γίνονται με μία γραμμή. Ο κώδικας τρέχει μέσα στον browser σου: άλλαξέ τον, πάτησε <b>Τρέξε</b> (ή Ctrl+Enter) και δες τι γίνεται. Την πρώτη φορά που θα τρέξεις κώδικα με NumPy θα αργήσει λίγα δευτερόλεπτα να φορτώσει.</p>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- ============ 1 ============ -->
+  <section class="step" data-title="Αποφάσεις: if">
+    <h2>1. Αποφάσεις: <span class="en">if / elif / else</span></h2>
+    <p>Μέχρι τώρα ο κώδικας έτρεχε γραμμή-γραμμή, πάντα όλος. Με το <code>if</code> λέμε «<i>αν</i> ισχύει αυτό, κάνε εκείνο». Η συνθήκη είναι μια έκφραση που δίνει <code>True</code> ή <code>False</code> (οι συγκρίσεις της εβδομάδας 3). Μετά τη συνθήκη μπαίνει <b>άνω-κάτω τελεία</b> και οι γραμμές που «ανήκουν» στο if γράφονται με <b>εσοχή</b> <span class="en">(indentation)</span>, συνήθως 4 κενά.</p>
+    <div class="runner" data-code="sales = 1650
+target = 1500
+
+if sales &gt; target:
+    print(&quot;Στόχος επιτεύχθηκε&quot;)
+else:
+    print(&quot;Κάτω από τον στόχο&quot;)
+
+# Άλλαξε το sales σε 1200 και ξανατρέξε"></div>
+    <p>Με <code>elif</code> <span class="en">(else if)</span> ελέγχουμε περισσότερες περιπτώσεις με τη σειρά. Η Python εκτελεί το <b>πρώτο</b> μπλοκ που ταιριάζει και αγνοεί τα υπόλοιπα.</p>
+    <div class="runner" data-code="order = 320
+
+if order &gt;= 500:
+    discount = 0.10
+elif order &gt;= 200:
+    discount = 0.05
+else:
+    discount = 0.0
+
+print(discount)
+print(f&quot;Τελικό ποσό: {order * (1 - discount):.2f}&quot;)"></div>
+    <div class="box tip"><b>ΔΟΚΙΜΑΣΕ</b>Βάλε <code>order = 500</code>: ταιριάζουν και οι δύο πρώτες συνθήκες, αλλά εκτελείται μόνο η πρώτη. Μετά σβήσε την εσοχή μπροστά από το <code>discount = 0.10</code> και διάβασε το σφάλμα (IndentationError).</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="stock = 0
+if stock &gt; 0:
+    print(&quot;Διαθέσιμο&quot;)
+else:
+    print(&quot;Εξαντλημένο&quot;)" data-opts='["Διαθέσιμο","Εξαντλημένο","Διαθέσιμο\nΕξαντλημένο","Σφάλμα"]' data-ans="1" data-why="Το stock &gt; 0 είναι False, άρα εκτελείται το μπλοκ του else."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="x = 80
+if x &gt;= 50:
+    print(&quot;A&quot;)
+elif x &gt;= 70:
+    print(&quot;B&quot;)
+else:
+    print(&quot;C&quot;)" data-opts='["A","B","A\nB","C"]' data-ans="0" data-why="Το x &gt;= 50 είναι True, άρα τυπώνεται A και τα υπόλοιπα (elif, else) δεν ελέγχονται καν, παρότι και το x &gt;= 70 ισχύει. Η σειρά των συνθηκών έχει σημασία."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="price = 25
+if price &gt; 20:
+    print(&quot;ακριβό&quot;)
+print(&quot;τέλος&quot;)" data-opts='["ακριβό","ακριβό\nτέλος","τέλος","Σφάλμα"]' data-ans="1" data-why="Η δεύτερη print δεν έχει εσοχή, άρα δεν ανήκει στο if και εκτελείται πάντα."></div>
+
+    <div class="exercise" data-code="order = 750
+# Έκπτωση ανάλογα με το ποσό:
+#   από 500 και πάνω: 10%
+#   από 200 και πάνω: 5%
+#   αλλιώς: 0%
+# 1. Υπολόγισε τη μεταβλητή discount με if / elif / else
+# 2. Τύπωσε ακριβώς: Έκπτωση: 10%   (f-string με {discount:.0%})
+" data-check="assert 'discount' in globals(), 'Δεν βρήκα μεταβλητή discount.'
+assert abs(discount - 0.10) &lt; 1e-9, 'Για παραγγελία 750 η έκπτωση πρέπει να είναι 0.10.'
+assert 'elif' in _src, 'Χρησιμοποίησε if / elif / else για τις τρεις περιπτώσεις.'
+assert _out.strip() == 'Έκπτωση: 10%', 'Περίμενα να τυπωθεί ακριβώς: Έκπτωση: 10%'" data-solution="if order &gt;= 500:
+    discount = 0.10
+elif order &gt;= 200:
+    discount = 0.05
+else:
+    discount = 0.0
+print(f&quot;Έκπτωση: {discount:.0%}&quot;)">
+      <div class="title">Άσκηση 1</div>
+      <p>Γράψε τους τρεις κανόνες έκπτωσης με <code>if / elif / else</code> και τύπωσε <code>Έκπτωση: 10%</code>. Άλλαξε μετά το <code>order</code> σε 150 και 320 για να δεις ότι δουλεύει και στις άλλες περιπτώσεις.</p>
+    </div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="step" data-title="Επαναλήψεις: for">
+    <h2>2. Επαναλήψεις: <span class="en">for</span></h2>
+    <p>Ο βρόχος <code>for</code> εκτελεί το ίδιο μπλοκ κώδικα <b>για κάθε στοιχείο</b> μιας λίστας. Σε κάθε γύρο η μεταβλητή (εδώ <code>s</code>) παίρνει το επόμενο στοιχείο. Και εδώ: άνω-κάτω τελεία και εσοχή.</p>
+    <div class="runner" data-code="sales = [1200, 1550, 1000, 1800]
+
+for s in sales:
+    print(s * 1.24)
+
+print(&quot;Τέλος&quot;)   # χωρίς εσοχή: τρέχει μία φορά, στο τέλος"></div>
+    <h3>Το μοτίβο του «συσσωρευτή» <span class="en">(accumulator)</span></h3>
+    <p>Πολύ συχνά θέλουμε να μαζέψουμε κάτι μέσα στον βρόχο: ένα σύνολο, ένα πλήθος. Ξεκινάμε μια μεταβλητή από το 0 και την ενημερώνουμε σε κάθε γύρο. Συνδυάζοντας <code>for</code> με <code>if</code> μετράμε πόσα στοιχεία ικανοποιούν μια συνθήκη.</p>
+    <div class="runner" data-code="sales = [1200, 1550, 1000, 1800, 1650, 1400]
+target = 1500
+
+total = 0
+above = 0
+for s in sales:
+    total = total + s
+    if s &gt; target:
+        above = above + 1
+
+print(total)
+print(total / len(sales))
+print(above)"></div>
+    <div class="box note"><b>ΓΙΑΤΙ ΤΟ ΜΑΘΑΙΝΟΥΜΕ</b>Για να καταλάβεις τι κάνει η NumPy. Τα τρία παραπάνω αποτελέσματα στη NumPy είναι <code>np.sum(sales)</code>, <code>np.mean(sales)</code> και <code>np.sum(sales &gt; target)</code>: μία γραμμή το καθένα, χωρίς βρόχο. Οι βρόχοι είναι χρήσιμοι, αλλά στην ανάλυση δεδομένων τους γράφουμε σπάνια.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="for x in [1, 2, 3]:
+    print(x * 10)" data-opts='["10 20 30","10\n20\n30","60","[10, 20, 30]"]' data-ans="1" data-why="Το μπλοκ τρέχει τρεις φορές, μία print ανά γύρο, άρα τρεις γραμμές."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="count = 0
+for p in [19.9, 249.0, 45.0, 59.0]:
+    if p &gt; 50:
+        count = count + 1
+print(count)" data-opts='["1","2","3","4"]' data-ans="1" data-why="Πάνω από 50 είναι το 249.0 και το 59.0: δύο στοιχεία."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="total = 0
+for s in [100, 200]:
+    total = total + s
+    print(total)" data-opts='["300","100\n300","100\n200","300\n300"]' data-ans="1" data-why="Η print είναι ΜΕΣΑ στον βρόχο (έχει εσοχή), άρα τυπώνει το ενδιάμεσο σύνολο σε κάθε γύρο: 100 και μετά 300."></div>
+
+    <div class="exercise" data-code="sales = [1200, 1550, 1000, 1800, 1650, 1400,
+         1900, 2100, 1700, 1600, 2300, 2800]
+target = 1750
+# 1. Με έναν βρόχο for, μέτρησε πόσοι μήνες έχουν πωλήσεις πάνω από τον στόχο
+#    (μεταβλητή above)
+# 2. Στον ίδιο βρόχο, υπολόγισε το σύνολο του έτους (μεταβλητή total)
+# 3. Τύπωσε above και μετά total (δύο γραμμές)
+" data-check="assert 'for' in _src, 'Χρησιμοποίησε βρόχο for.'
+assert above == 5, 'Το above πρέπει να είναι 5 (Apr, Jul, Aug, Nov, Dec).'
+assert total == 21000, 'Το total πρέπει να είναι 21000.'
+assert _out.strip().split('\n') == ['5', '21000'], 'Περίμενα δύο γραμμές: 5 και 21000.'" data-solution="above = 0
+total = 0
+for s in sales:
+    total = total + s
+    if s &gt; target:
+        above = above + 1
+print(above)
+print(total)">
+      <div class="title">Άσκηση 2</div>
+      <p>Συνδύασε <code>for</code> και <code>if</code> με δύο συσσωρευτές. Κράτα τον κώδικα: στο βήμα 5 θα κάνεις το ίδιο με NumPy σε δύο γραμμές.</p>
+    </div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="step" data-title="Πίνακες NumPy">
+    <h2>3. Πίνακες NumPy <span class="en">(arrays)</span></h2>
+    <p>Οι λίστες της Python δεν ξέρουν μαθηματικά: <code>prices * 2</code> <i>επαναλαμβάνει</i> τη λίστα και <code>prices * 1.24</code> δίνει σφάλμα. Δοκίμασέ το:</p>
+    <div class="runner" data-code="prices = [899.0, 19.9, 249.0]
+print(prices * 2)
+print(prices * 1.24)"></div>
+    <p>Η <b>NumPy</b> <span class="en">(Numeric Python)</span> προσφέρει έναν νέο τύπο, τον <b>πίνακα</b> <span class="en">(ndarray)</span>, που φτιάχνεται από μια λίστα με <code>np.array()</code>. Οι πράξεις εφαρμόζονται σε <b>κάθε στοιχείο</b> ξεχωριστά <span class="en">(element-wise)</span>, χωρίς βρόχο.</p>
+    <div class="runner" data-code="import numpy as np
+
+prices = [899.0, 19.9, 249.0, 45.0, 59.0]
+np_prices = np.array(prices)
+
+print(np_prices)
+print(type(np_prices))
+print(np_prices * 1.24)      # με ΦΠΑ 24%, για όλα μαζί"></div>
+    <p>Πράξη ανάμεσα σε <b>δύο πίνακες</b> ίδιου μήκους γίνεται στοιχείο προς στοιχείο: πρώτο με πρώτο, δεύτερο με δεύτερο. Έτσι υπολογίζουμε π.χ. τα έσοδα ανά προϊόν.</p>
+    <div class="runner" data-code="import numpy as np
+
+prices = np.array([899.0, 19.9, 249.0, 45.0, 59.0])
+quantities = np.array([12, 150, 30, 80, 45])
+
+revenue = prices * quantities
+print(revenue)
+print(revenue + 100)
+print(prices &gt; 50)"></div>
+    <h3>Ένας τύπος ανά πίνακα</h3>
+    <p>Σε αντίθεση με τη λίστα, ο πίνακας NumPy περιέχει στοιχεία <b>ενός μόνο τύπου</b>. Αν δώσεις μείγμα, η NumPy τα μετατρέπει όλα στον «ευρύτερο» τύπο. Το <code>.dtype</code> σου λέει ποιον. Αυτό είναι που κάνει τις πράξεις γρήγορες, και είναι ο λόγος που για πραγματικούς πίνακες δεδομένων (με κείμενο <i>και</i> αριθμούς) θα χρειαστούμε το pandas την επόμενη εβδομάδα.</p>
+    <div class="runner" data-code="import numpy as np
+
+print(np.array([1, 2, 3]).dtype)
+print(np.array([1, 2.5, 3]))
+print(np.array([1, &quot;two&quot;, True]))
+
+# Λίστα + λίστα vs πίνακας + πίνακας
+a = [1, 2, 3]
+b = [4, 5, 6]
+print(a + b)
+print(np.array(a) + np.array(b))"></div>
+    <div class="box tip"><b>ΠΡΟΣΟΧΗ</b>Το <code>+</code> σε λίστες <i>ενώνει</i>, σε πίνακες NumPy <i>προσθέτει</i>. Ίδιο σύμβολο, άλλος τύπος, άλλη συμπεριφορά, όπως είδαμε και με τα strings. Το <code>type()</code> παραμένει ο πρώτος σου φίλος.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([10, 20, 30])
+print(x * 2)" data-opts='["[20 40 60]","[10 20 30 10 20 30]","[10, 20, 30, 10, 20, 30]","Σφάλμα"]' data-ans="0" data-why="Σε πίνακα NumPy το * 2 πολλαπλασιάζει κάθε στοιχείο. (Σε λίστα θα την επαναλάμβανε.) Σημείωσε και τη μορφή: η NumPy τυπώνει χωρίς κόμματα."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="import numpy as np
+a = np.array([1, 2, 3])
+b = np.array([10, 20, 30])
+print(a + b)" data-opts='["[1 2 3 10 20 30]","[11 22 33]","[11, 22, 33]","66"]' data-ans="1" data-why="Στοιχείο προς στοιχείο: 1+10, 2+20, 3+30."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([1, 2.0, 3])
+print(x.dtype)" data-opts='["int64","float64","object","Σφάλμα: μεικτοί τύποι"]' data-ans="1" data-why="Ένας τύπος ανά πίνακα: το 2.0 «τραβά» όλα τα στοιχεία σε float64."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([True, False, True])
+print(x.sum())" data-opts='["2","True","[1 0 1]","Σφάλμα"]' data-ans="0" data-why="Το True μετρά ως 1 και το False ως 0, άρα το άθροισμα είναι το πλήθος των True. Θα το χρησιμοποιήσουμε πολύ στα φίλτρα."></div>
+
+    <div class="exercise" data-code="import numpy as np
+
+prices = [899.0, 19.9, 249.0, 45.0, 59.0]
+quantities = [12, 150, 30, 80, 45]
+costs = [650.0, 8.0, 180.0, 25.0, 30.0]
+# 1. Μετέτρεψε τις τρεις λίστες σε πίνακες NumPy (np_prices, np_quantities, np_costs)
+# 2. Υπολόγισε το κέρδος ανά προϊόν: profit = (τιμή - κόστος) * ποσότητα
+# 3. Τύπωσε τον πίνακα profit και μετά το συνολικό κέρδος με np.sum()
+" data-check="import numpy as _np
+assert 'profit' in globals(), 'Δεν βρήκα μεταβλητή profit.'
+assert isinstance(profit, _np.ndarray), 'Το profit πρέπει να είναι πίνακας NumPy, όχι λίστα.'
+assert _np.allclose(profit, [2988.0, 1785.0, 2070.0, 1600.0, 1305.0]), 'Το profit δεν είναι σωστό. Περίμενα [2988. 1785. 2070. 1600. 1305.]'
+assert _out.strip().split('\n')[-1] == '9748.0', 'Η τελευταία γραμμή πρέπει να είναι το συνολικό κέρδος: 9748.0'" data-solution="np_prices = np.array(prices)
+np_quantities = np.array(quantities)
+np_costs = np.array(costs)
+profit = (np_prices - np_costs) * np_quantities
+print(profit)
+print(np.sum(profit))">
+      <div class="title">Άσκηση 3</div>
+      <p>Κέρδος ανά προϊόν με πράξεις ανάμεσα σε πίνακες, και συνολικό κέρδος. Θυμήσου: με λίστες η αφαίρεση δεν δουλεύει καν.</p>
+    </div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="step" data-title="Φίλτρα">
+    <h2>4. Επιλογή και φίλτρα <span class="en">(boolean filtering)</span></h2>
+    <p>Δείκτες και slicing δουλεύουν <b>ακριβώς όπως στις λίστες</b>: <code>sales[0]</code>, <code>sales[-1]</code>, <code>sales[:3]</code>, <code>sales[6:]</code>. Το καινούργιο είναι ότι μια σύγκριση σε πίνακα δίνει <b>πίνακα από True/False</b>, και αυτόν τον πίνακα μπορείς να τον βάλεις μέσα στις αγκύλες για να <b>κρατήσεις μόνο τα στοιχεία όπου είναι True</b>.</p>
+    <div class="runner" data-code="import numpy as np
+
+sales = np.array([1200, 1550, 1000, 1800, 1650, 1400,
+                  1900, 2100, 1700, 1600, 2300, 2800])
+
+print(sales[:3])
+high = sales &gt; 1500
+print(high)
+print(sales[high])
+print(sales[sales &gt; 1500])     # το ίδιο, σε μία γραμμή"></div>
+    <p>Πληκτρολόγησε μια συνθήκη και δες ποια στοιχεία «περνούν» το φίλτρο. Δοκίμασε <code>x &gt; 1500</code>, <code>x &lt;= 1200</code>, <code>x == 1800</code>, <code>(x &gt; 1500) &amp; (x &lt; 2000)</code>, <code>(x &lt; 1200) | (x &gt; 2200)</code>:</p>
+    <div class="viz maskviz" data-list='[1200,1550,1000,1800,1650,1400,1900,2100,1700,1600,2300,2800]' data-init="x &gt; 1500"></div>
+    <h3>Μέτρημα και ποσοστά με boolean πίνακες</h3>
+    <p>Αφού το True μετρά ως 1: <code>np.sum(sales &gt; 1500)</code> είναι <i>πόσοι</i> μήνες ξεπέρασαν το 1500 και <code>np.mean(sales &gt; 1500)</code> το <i>ποσοστό</i> τους. Αυτό είναι ακριβώς ο βρόχος <code>for</code> + <code>if</code> του βήματος 2, σε μία γραμμή.</p>
+    <div class="runner" data-code="import numpy as np
+
+sales = np.array([1200, 1550, 1000, 1800, 1650, 1400,
+                  1900, 2100, 1700, 1600, 2300, 2800])
+
+print(np.sum(sales &gt; 1500))
+print(np.mean(sales &gt; 1500))
+
+# Δύο συνθήκες μαζί: παρενθέσεις και &amp; (και) ή | (ή)
+print(sales[(sales &gt;= 1500) &amp; (sales &lt; 2000)])
+print(sales[(sales &lt; 1200) | (sales &gt; 2200)])
+print(np.logical_and(sales &gt;= 1500, sales &lt; 2000))"></div>
+    <div class="box tip"><b>ΣΥΧΝΟ ΛΑΘΟΣ</b>Τα <code>and</code> / <code>or</code> της Python δουλεύουν με <i>ένα</i> True/False, όχι με πίνακα. Γράψε <code>sales[sales &gt; 1500 and sales &lt; 2000]</code> παραπάνω: θα πάρεις <i>ValueError: The truth value of an array ... is ambiguous</i>. Σε πίνακες χρησιμοποίησε <code>&amp;</code> και <code>|</code> με παρενθέσεις γύρω από κάθε συνθήκη, ή <code>np.logical_and()</code> / <code>np.logical_or()</code>.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([5, 12, 18, 20])
+print(x &gt; 10)" data-opts='["[False  True  True  True]","[12 18 20]","True","3"]' data-ans="0" data-why="Η σύγκριση δίνει πίνακα από True/False, ένα για κάθε στοιχείο. Για να πάρεις τα στοιχεία χρειάζεσαι x[x &gt; 10]."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([5, 12, 18, 20])
+print(x[x &gt; 10])" data-opts='["[False  True  True  True]","[12 18 20]","[1 2 3]","3"]' data-ans="1" data-why="Ο boolean πίνακας μέσα στις αγκύλες κρατά μόνο τα στοιχεία όπου είναι True: 12, 18 και 20."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([5, 12, 18, 20])
+print(np.sum(x &gt; 10))" data-opts='["50","[12 18 20]","3","True"]' data-ans="2" data-why="Το άθροισμα ενός boolean πίνακα είναι το πλήθος των True: τρία στοιχεία είναι πάνω από 10."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([5, 12, 18, 20])
+print(x[(x &gt; 6) &amp; (x &lt; 19)])" data-opts='["[12 18]","[5 12 18 20]","[12]","Σφάλμα"]' data-ans="0" data-why="Και οι δύο συνθήκες μαζί: μόνο το 12 και το 18 είναι ανάμεσα σε 6 και 19."></div>
+
+    <div class="exercise" data-code="import numpy as np
+
+months = np.array([&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;,
+                   &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, &quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;])
+sales = np.array([1200, 1550, 1000, 1800, 1650, 1400,
+                  1900, 2100, 1700, 1600, 2300, 2800])
+# 1. Τύπωσε τα ΟΝΟΜΑΤΑ των μηνών με πωλήσεις κάτω από 1500
+#    (φίλτρο πάνω στη sales, εφαρμοσμένο στη months)
+# 2. Τύπωσε πόσοι μήνες είχαν πωλήσεις από 2000 και πάνω
+# 3. Τύπωσε τα ονόματα των μηνών με πωλήσεις ανάμεσα σε 1600 και 1900 (και τα δύο άκρα μέσα)
+" data-check="lines = _out.strip().split('\n')
+assert len(lines) == 3, 'Περίμενα τρεις γραμμές εξόδου.'
+assert lines[0] == &quot;['Jan' 'Mar' 'Jun']&quot;, &quot;Η πρώτη γραμμή πρέπει να είναι ['Jan' 'Mar' 'Jun']. Βάλε τη συνθήκη sales &lt; 1500 μέσα στις αγκύλες της months.&quot;
+assert lines[1] == '3', 'Η δεύτερη γραμμή πρέπει να είναι 3 (Aug, Nov, Dec). Χρησιμοποίησε np.sum(sales &gt;= 2000).'
+assert lines[2] == &quot;['Apr' 'May' 'Jul' 'Sep' 'Oct']&quot;, &quot;Η τρίτη γραμμή πρέπει να είναι ['Apr' 'May' 'Jul' 'Sep' 'Oct']. Θυμήσου παρενθέσεις και &amp;.&quot;" data-solution="print(months[sales &lt; 1500])
+print(np.sum(sales &gt;= 2000))
+print(months[(sales &gt;= 1600) &amp; (sales &lt;= 1900)])">
+      <div class="title">Άσκηση 4</div>
+      <p>Το πιο χρήσιμο κόλπο της εβδομάδας: φίλτρο που φτιάχνεται από έναν πίνακα (<code>sales</code>) και εφαρμόζεται σε άλλον (<code>months</code>). Δουλεύει γιατί έχουν το ίδιο μήκος και την ίδια σειρά.</p>
+    </div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="step" data-title="Στατιστικά">
+    <h2>5. Στατιστικά με μία γραμμή</h2>
+    <p>Η NumPy έχει έτοιμες συναρτήσεις για ό,τι θα υπολόγιζες με βρόχο: <code>np.sum()</code>, <code>np.mean()</code> (μέσος όρος), <code>np.median()</code> (διάμεσος), <code>np.min()</code>, <code>np.max()</code>, <code>np.std()</code> (τυπική απόκλιση). Η <code>np.argmax()</code> δίνει τη <i>θέση</i> του μεγίστου, κάτι πολύ χρήσιμο όταν έχεις έναν δεύτερο πίνακα με ονόματα.</p>
+    <div class="runner" data-code="import numpy as np
+
+months = np.array([&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;,
+                   &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, &quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;])
+sales = np.array([1200, 1550, 1000, 1800, 1650, 1400,
+                  1900, 2100, 1700, 1600, 2300, 2800])
+
+print(np.sum(sales), np.mean(sales), np.median(sales))
+print(np.min(sales), np.max(sales))
+print(np.std(sales))
+
+best = np.argmax(sales)
+print(best, months[best], sales[best])"></div>
+    <h3>Μέσος όρος ή διάμεσος;</h3>
+    <p>Ο μέσος όρος επηρεάζεται πολύ από ακραίες τιμές <span class="en">(outliers)</span>. Η διάμεσος, δηλαδή η μεσαία τιμή όταν τα ταξινομήσεις, όχι. Μία τεράστια εταιρική παραγγελία αρκεί για να «ξεγελάσει» τον μέσο όρο:</p>
+    <div class="runner" data-code="import numpy as np
+
+orders = np.array([120, 95, 110, 130, 105, 115])
+print(np.mean(orders), np.median(orders))
+
+orders = np.array([120, 95, 110, 130, 105, 115, 5000])
+print(np.mean(orders), np.median(orders))"></div>
+    <h3>Ακόμη μερικές χρήσιμες</h3>
+    <div class="runner" data-code="import numpy as np
+
+sales = np.array([1200, 1550, 1000, 1800, 1650, 1400,
+                  1900, 2100, 1700, 1600, 2300, 2800])
+
+print(np.cumsum(sales))          # σωρευτικό σύνολο (running total)
+print(np.sort(sales)[-3:])       # οι 3 καλύτεροι μήνες
+print(np.round(sales / 1000, 1)) # σε χιλιάδες, με 1 δεκαδικό
+
+# Συσχέτιση: κινούνται μαζί οι διαφημιστικές δαπάνες και οι πωλήσεις;
+ad_spend = np.array([200, 350, 150, 400, 300, 250])
+print(np.corrcoef(ad_spend, sales[:6]))"></div>
+    <div class="box note"><b>ΔΙΑΒΑΖΟΝΤΑΣ ΤΗ ΣΥΣΧΕΤΙΣΗ</b>Η <code>np.corrcoef()</code> επιστρέφει πίνακα 2×2· η τιμή εκτός διαγωνίου (0.957) είναι ο συντελεστής συσχέτισης: κοντά στο 1 σημαίνει «ανεβαίνουν μαζί», κοντά στο -1 «αντίθετα», κοντά στο 0 «καμία γραμμική σχέση». Συσχέτιση δεν σημαίνει αιτιότητα.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([3, 9, 6])
+print(np.mean(x), np.median(x))" data-opts='["6.0 6.0","6.0 9.0","6 6","18 6"]' data-ans="0" data-why="Μέσος όρος (3+9+6)/3 = 6.0. Ταξινομημένα: 3, 6, 9, μεσαίο το 6 → 6.0."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([40, 10, 70, 20])
+print(np.argmax(x))" data-opts='["70","2","3","[70]"]' data-ans="1" data-why="Η argmax επιστρέφει τη ΘΕΣΗ (δείκτη) του μεγίστου, όχι την τιμή: το 70 είναι στον δείκτη 2."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([1, 2, 3, 100])
+print(np.median(x))" data-opts='["2.5","26.5","3.0","2"]' data-ans="0" data-why="Με άρτιο πλήθος η διάμεσος είναι ο μέσος των δύο μεσαίων: (2+3)/2 = 2.5. Ο μέσος όρος θα ήταν 26.5, παρασυρμένος από το 100."></div>
+
+    <div class="exercise" data-code="import numpy as np
+
+months = np.array([&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;,
+                   &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, &quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;])
+sales = np.array([1200, 1550, 1000, 1800, 1650, 1400,
+                  1900, 2100, 1700, 1600, 2300, 2800])
+target = 1750
+# Η Άσκηση 2 ξανά, χωρίς βρόχο. Τύπωσε σε τέσσερις γραμμές:
+# 1. πόσοι μήνες ξεπέρασαν τον στόχο
+# 2. το σύνολο του έτους
+# 3. το όνομα του χειρότερου μήνα (np.argmin)
+# 4. το κείμενο: Μέσος μήνας: 1750 (f-string με {...:.0f})
+" data-check="lines = _out.strip().split('\n')
+assert 'for' not in _src, 'Χωρίς βρόχο for αυτή τη φορά!'
+assert len(lines) == 4, 'Περίμενα τέσσερις γραμμές εξόδου.'
+assert lines[0] == '5', 'Πρώτη γραμμή: 5 (np.sum(sales &gt; target)).'
+assert lines[1] == '21000', 'Δεύτερη γραμμή: 21000 (np.sum(sales)).'
+assert lines[2] == 'Mar', 'Τρίτη γραμμή: Mar (months[np.argmin(sales)]).'
+assert lines[3] == 'Μέσος μήνας: 1750', 'Τέταρτη γραμμή ακριβώς: Μέσος μήνας: 1750'" data-solution="print(np.sum(sales &gt; target))
+print(np.sum(sales))
+print(months[np.argmin(sales)])
+print(f&quot;Μέσος μήνας: {np.mean(sales):.0f}&quot;)">
+      <div class="title">Άσκηση 5</div>
+      <p>Ό,τι έκανες με βρόχο στην Άσκηση 2, τώρα με NumPy. Σύγκρινε τους δύο κώδικες στο τέλος.</p>
+    </div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="step" data-title="2D πίνακες">
+    <h2>6. Πίνακες δύο διαστάσεων <span class="en">(2D arrays)</span></h2>
+    <p>Από λίστα από λίστες φτιάχνεται πίνακας με <b>γραμμές και στήλες</b>: ένας μικρός πίνακας δεδομένων. Το <code>.shape</code> δίνει (γραμμές, στήλες). Εδώ: κάθε γραμμή ένα προϊόν, στήλη 0 η τιμή, στήλη 1 η ποσότητα.</p>
+    <div class="runner" data-code="import numpy as np
+
+catalog = np.array([[899.0, 12],
+                    [19.9, 150],
+                    [249.0, 30],
+                    [45.0, 80],
+                    [59.0, 45]])
+
+print(catalog.shape)
+print(catalog)"></div>
+    <p>Η επιλογή γίνεται με <code>[γραμμή, στήλη]</code>, και σε κάθε θέση μπορείς να βάλεις δείκτη ή slice. Το <code>:</code> μόνο του σημαίνει «όλα». Δοκίμασε <code>x[0]</code>, <code>x[0, 1]</code>, <code>x[:, 0]</code>, <code>x[1:3, 1]</code>, <code>x[-1, :]</code>:</p>
+    <div class="viz viz2d" data-rows='[[899.0,12],[19.9,150],[249.0,30],[45.0,80],[59.0,45]]' data-rowlabels='["laptop","mouse","monitor","keyboard","webcam"]' data-collabels='["τιμή","ποσότητα"]' data-init="x[:, 0]"></div>
+    <h3>Στήλες ως πίνακες: υπολογισμοί σε όλο τον πίνακα</h3>
+    <p>Το <code>catalog[:, 0]</code> είναι ένας κανονικός 1D πίνακας (όλες οι τιμές), άρα όλα όσα έμαθες ισχύουν. Οι συναρτήσεις όπως <code>np.sum()</code> και <code>np.mean()</code> δέχονται και όρισμα <code>axis</code>: <code>axis=0</code> σημαίνει «κατά μήκος των γραμμών», δηλαδή <b>ένα αποτέλεσμα ανά στήλη</b>, και <code>axis=1</code> ένα αποτέλεσμα <b>ανά γραμμή</b>.</p>
+    <div class="runner" data-code="import numpy as np
+
+catalog = np.array([[899.0, 12],
+                    [19.9, 150],
+                    [249.0, 30],
+                    [45.0, 80],
+                    [59.0, 45]])
+
+revenue = catalog[:, 0] * catalog[:, 1]
+print(revenue)
+print(catalog[revenue &gt; 3000])     # φίλτρο σε γραμμές!
+
+# Γραμμές: τρίμηνα · Στήλες: online, κατάστημα
+q_sales = np.array([[1200, 980],
+                    [1800, 1310],
+                    [1900, 1450],
+                    [2300, 1700]])
+print(np.sum(q_sales))
+print(np.sum(q_sales, axis=0))   # ανά κανάλι
+print(np.sum(q_sales, axis=1))   # ανά τρίμηνο"></div>
+    <div class="box note"><b>ΠΡΟΣ ΤΟ PANDAS</b>Ο 2D πίνακας είναι ήδη «πίνακας δεδομένων», αλλά χωρίς ονόματα στηλών (πρέπει να θυμάσαι ότι η στήλη 1 είναι η ποσότητα) και με έναν μόνο τύπο (δεν χωρούν τα ονόματα των προϊόντων δίπλα στις τιμές). Το pandas λύνει ακριβώς αυτά τα δύο, και θα το δούμε την επόμενη εβδομάδα.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([[1, 2, 3],
+              [4, 5, 6]])
+print(x.shape)" data-opts='["(2, 3)","(3, 2)","6","2"]' data-ans="0" data-why="Δύο γραμμές, τρεις στήλες: (2, 3). Πάντα (γραμμές, στήλες)."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([[1, 2, 3],
+              [4, 5, 6]])
+print(x[1, 2])" data-opts='["2","6","[4 5 6]","3"]' data-ans="1" data-why="Γραμμή 1 (η δεύτερη), στήλη 2 (η τρίτη): 6."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([[1, 2, 3],
+              [4, 5, 6]])
+print(x[:, 1])" data-opts='["[4 5 6]","[2 5]","[1 2 3]","5"]' data-ans="1" data-why="Όλες οι γραμμές, στήλη 1 (η μεσαία): [2 5]."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([[1, 2, 3],
+              [4, 5, 6]])
+print(np.sum(x, axis=0))" data-opts='["[5 7 9]","[ 6 15]","21","[1 2 3 4 5 6]"]' data-ans="0" data-why="axis=0 δίνει ένα αποτέλεσμα ανά στήλη: 1+4, 2+5, 3+6. Με axis=1 θα ήταν [ 6 15], ένα ανά γραμμή."></div>
+
+    <div class="exercise" data-code="import numpy as np
+
+# Γραμμές: προϊόντα (laptop, mouse, monitor, keyboard, webcam)
+# Στήλες: τιμή, ποσότητα, κόστος
+catalog = np.array([[899.0, 12, 650.0],
+                    [19.9, 150, 8.0],
+                    [249.0, 30, 180.0],
+                    [45.0, 80, 25.0],
+                    [59.0, 45, 30.0]])
+# 1. Πάρε τις τρεις στήλες σε μεταβλητές price, qty, cost (με [:, i])
+# 2. Υπολόγισε profit = (price - cost) * qty και τύπωσέ το
+# 3. Τύπωσε τη μέση τιμή των προϊόντων, στρογγυλεμένη σε 2 δεκαδικά: round(np.mean(...), 2)
+# 4. Τύπωσε τον ΑΡΙΘΜΟ της γραμμής με το μεγαλύτερο κέρδος (np.argmax)
+" data-check="import numpy as _np
+lines = _out.strip().split('\n')
+assert 'profit' in globals() and _np.allclose(profit, [2988.0, 1785.0, 2070.0, 1600.0, 1305.0]), 'Το profit πρέπει να είναι [2988. 1785. 2070. 1600. 1305.]. Χρησιμοποίησε τις στήλες catalog[:, 0], catalog[:, 1], catalog[:, 2].'
+assert len(lines) == 3, 'Περίμενα τρεις γραμμές εξόδου.'
+assert lines[1] == '254.38', 'Η δεύτερη γραμμή πρέπει να είναι η μέση τιμή με 2 δεκαδικά: 254.38'
+assert lines[2] == '0', 'Η τρίτη γραμμή πρέπει να είναι 0: το laptop (γραμμή 0) έχει το μεγαλύτερο κέρδος.'" data-solution="price = catalog[:, 0]
+qty = catalog[:, 1]
+cost = catalog[:, 2]
+profit = (price - cost) * qty
+print(profit)
+print(round(np.mean(price), 2))
+print(np.argmax(profit))">
+      <div class="title">Άσκηση 6</div>
+      <p>Η Άσκηση 3 ξανά, αλλά τα δεδομένα είναι τώρα σε έναν 2D πίνακα, όπως θα έρχονται από ένα αρχείο. Πρώτα «κόβεις» στήλες, μετά υπολογίζεις.</p>
+    </div>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="step" data-title="Σφάλματα">
+    <h2>7. Τα σφάλματα της NumPy</h2>
+    <p>Στα τέσσερα της εβδομάδας 3 (NameError, TypeError, IndexError, SyntaxError) προστίθενται δύο που θα δεις συχνά με πίνακες, και τα δύο <code>ValueError</code>:</p>
+    <table class="t">
+      <tr><th>Μήνυμα</th><th>Τι σημαίνει</th><th>Διόρθωση</th></tr>
+      <tr><td>operands could not be broadcast together with shapes (3,) (2,)</td><td>Πράξη ανάμεσα σε πίνακες διαφορετικού μήκους</td><td>Έλεγξε τα <code>.shape</code>: λείπει ή περισσεύει τιμή</td></tr>
+      <tr><td>The truth value of an array ... is ambiguous</td><td>Χρησιμοποίησες <code>and</code> / <code>or</code> / <code>if</code> πάνω σε ολόκληρο πίνακα</td><td><code>&amp;</code> / <code>|</code> με παρενθέσεις, ή <code>np.logical_and()</code></td></tr>
+      <tr><td>NameError: name 'np' is not defined</td><td>Ξέχασες το import</td><td><code>import numpy as np</code> στην αρχή του script</td></tr>
+      <tr><td>IndexError: index 5 is out of bounds for axis 0 with size 5</td><td>Δείκτης εκτός ορίων (η NumPy σου λέει και τη διάσταση)</td><td>5 στοιχεία = δείκτες 0 έως 4</td></tr>
+    </table>
+    <p style="margin-top:10px">Τρέξε, διάβασε, διόρθωσε ένα σφάλμα τη φορά:</p>
+    <div class="runner" data-code="import numpy as np
+
+prices = np.array([899.0, 19.9, 249.0])
+quantities = np.array([12, 150])
+print(prices * quantities)
+
+sales = np.array([1200, 1550, 1000, 1800])
+print(sales[sales &gt; 1000 and sales &lt; 1700])"></div>
+    <div class="quiz" data-q="Ποιο σφάλμα θα εμφανιστεί;" data-code="import numpy as np
+a = np.array([1, 2, 3])
+b = np.array([1, 2])
+print(a - b)" data-opts='["ValueError (shapes)","TypeError","IndexError","Κανένα, τυπώνει [0 0 3]"]' data-ans="0" data-why="Πράξη στοιχείο προς στοιχείο χρειάζεται ίδιο μήκος: (3,) και (2,) δεν ταιριάζουν → ValueError: operands could not be broadcast together."></div>
+    <div class="quiz" data-q="Ποιο σφάλμα θα εμφανιστεί;" data-code="import numpy as np
+x = np.array([5, 12, 8])
+print(x[x &gt; 6 or x &lt; 3])" data-opts='["ValueError (ambiguous)","SyntaxError","Κανένα, τυπώνει [12 8]","NameError"]' data-ans="0" data-why="Το or δουλεύει με ένα True/False, όχι με πίνακα. Σωστό: x[(x &gt; 6) | (x &lt; 3)]."></div>
+    <div class="exercise" data-code="# Ο κώδικας έχει τρία σφάλματα. Διόρθωσέ τα ώστε να τυπώνει: [650 700 550]
+sales = np.array([1200, 1550, 1000, 1800, 1650, 1400])
+costs = np.array([800, 900, 700, 1000, 950])   # ο Ιούνιος είχε κόστος 850
+profit = sales - costs
+print(profit[profit &gt; 500 and profit &lt; 800])
+" data-check="assert _out.strip() == '[650 700 550]', 'Περίμενα να τυπωθεί [650 700 550]. Έλεγξε: import, 6 τιμές κόστους, &amp; με παρενθέσεις.'
+assert 'import numpy' in _src, 'Λείπει το import numpy as np.'" data-solution="import numpy as np
+sales = np.array([1200, 1550, 1000, 1800, 1650, 1400])
+costs = np.array([800, 900, 700, 1000, 950, 850])
+profit = sales - costs
+print(profit[(profit &gt; 500) &amp; (profit &lt; 800)])">
+      <div class="title">Άσκηση 7</div>
+      <p>Τρία σφάλματα, τρεις διορθώσεις: ένα NameError, ένα ValueError για shapes και ένα ValueError για το <code>and</code>. Πάτησε «Έλεγξε», διάβασε το μήνυμα, διόρθωσε, ξαναπάτησε.</p>
+    </div>
+  </section>
+
+  <!-- ============ 8 ============ -->
+  <section class="step" data-title="Τελικό κουίζ">
+    <h2>8. Τελικό κουίζ</h2>
+    <p>Δώδεκα ερωτήσεις από όλη την εβδομάδα. Σκέψου πρώτα, μετά απάντησε· αν αμφιβάλλεις, άνοιξε το παράθυρο κώδικα στο τέλος και δοκίμασέ το.</p>
+    <div class="quiz" data-q="1. Τι θα τυπώσει;" data-code="x = 15
+if x &gt; 10:
+    print(&quot;μεγάλο&quot;)
+elif x &gt; 5:
+    print(&quot;μεσαίο&quot;)" data-opts='["μεγάλο","μεσαίο","μεγάλο\nμεσαίο","Τίποτα"]' data-ans="0" data-why="Η πρώτη συνθήκη ισχύει, άρα τρέχει μόνο το πρώτο μπλοκ."></div>
+    <div class="quiz" data-q="2. Τι θα τυπώσει;" data-code="n = 0
+for x in [3, 8, 1]:
+    if x &gt; 2:
+        n = n + x
+print(n)" data-opts='["11","12","2","3"]' data-ans="0" data-why="Προστίθενται μόνο τα στοιχεία πάνω από 2: 3 + 8 = 11."></div>
+    <div class="quiz" data-q="3. Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([2, 4, 6])
+print(x / 2)" data-opts='["[1. 2. 3.]","[1 2 3]","[1, 2, 3]","Σφάλμα"]' data-ans="0" data-why="Η διαίρεση δίνει πάντα float, άρα ο πίνακας γίνεται float και τυπώνεται με τελείες: [1. 2. 3.]."></div>
+    <div class="quiz" data-q="4. Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([2, 4, 6])
+y = np.array([1, 1, 1])
+print(x - y)" data-opts='["[1 3 5]","[2 4 6 1 1 1]","9","Σφάλμα"]' data-ans="0" data-why="Στοιχείο προς στοιχείο: 2-1, 4-1, 6-1."></div>
+    <div class="quiz" data-q="5. Ποιος είναι ο τύπος;" data-code="import numpy as np
+x = np.array([1, 2, 3])
+print(type(x))" data-opts='["<class &#39;list&#39;>","<class &#39;numpy.ndarray&#39;>","<class &#39;int&#39;>","int64"]' data-ans="1" data-why="Ο πίνακας NumPy είναι δικός του τύπος: numpy.ndarray (n-dimensional array). Το int64 είναι το dtype των στοιχείων, όχι ο τύπος του πίνακα."></div>
+    <div class="quiz" data-q="6. Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([1200, 1550, 1000, 1800])
+print(x[x &gt;= 1550])" data-opts='["[1550 1800]","[False  True False  True]","[1 3]","2"]' data-ans="0" data-why="Το boolean φίλτρο κρατά τα στοιχεία όπου η συνθήκη είναι True: 1550 και 1800."></div>
+    <div class="quiz" data-q="7. Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([1200, 1550, 1000, 1800])
+print(np.mean(x &gt; 1100))" data-opts='["0.75","3","1387.5","[1200 1550 1800]"]' data-ans="0" data-why="Το x &gt; 1100 είναι [True True False True]· ο μέσος όρος ενός boolean πίνακα είναι το ποσοστό των True: 3/4 = 0.75."></div>
+    <div class="quiz" data-q="8. Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([5, 1, 9, 3])
+print(x[np.argmax(x)])" data-opts='["2","9","3","[9]"]' data-ans="1" data-why="Η argmax δίνει τη θέση του μεγίστου (2) και το x[2] είναι το 9. Ισοδύναμο με np.max(x)."></div>
+    <div class="quiz" data-q="9. Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([[10, 20],
+              [30, 40],
+              [50, 60]])
+print(x[2, 0])" data-opts='["20","50","[50 60]","30"]' data-ans="1" data-why="Γραμμή 2 (η τρίτη), στήλη 0 (η πρώτη): 50."></div>
+    <div class="quiz" data-q="10. Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([[10, 20],
+              [30, 40],
+              [50, 60]])
+print(x[:, 1].sum())" data-opts='["120","90","[20 40 60]","210"]' data-ans="0" data-why="Στήλη 1 είναι [20 40 60] και το άθροισμά της 120."></div>
+    <div class="quiz" data-q="11. Τι θα τυπώσει;" data-code="import numpy as np
+x = np.array([[10, 20],
+              [30, 40],
+              [50, 60]])
+print(np.mean(x, axis=1))" data-opts='["[15. 35. 55.]","[30. 40.]","35.0","[10 20]"]' data-ans="0" data-why="axis=1 δίνει ένα αποτέλεσμα ανά γραμμή: (10+20)/2, (30+40)/2, (50+60)/2."></div>
+    <div class="quiz" data-q="12. Ποια γραμμή είναι σωστή για τα στοιχεία ανάμεσα σε 10 και 20;" data-code="import numpy as np
+x = np.array([5, 12, 18, 25])" data-opts='["x[x &gt; 10 and x &lt; 20]","x[(x &gt; 10) &amp; (x &lt; 20)]","x[x &gt; 10 &amp; x &lt; 20]","x[10 &lt; x &lt; 20]"]' data-ans="1" data-why="Σε πίνακες: &amp; αντί για and, και παρενθέσεις γύρω από κάθε συνθήκη (χωρίς αυτές το &amp; εκτελείται πρώτο και βγαίνει λάθος)."></div>
+    <div id="finalScore" class="box note" style="display:none"></div>
+    <h3>Δοκιμαστήριο</h3>
+    <div class="runner" data-code="import numpy as np
+# Ελεύθερος χώρος για πειράματα
+x = np.array([[10, 20],
+              [30, 40],
+              [50, 60]])
+print(np.mean(x, axis=1))"></div>
+    <div class="box tip"><b>ΓΙΑ ΤΟ ΣΠΙΤΙ</b>Εργασία: ολοκλήρωσε και τα 8 βήματα αυτής της σελίδας (κουίζ και ασκήσεις). DataCamp: <a href="https://app.datacamp.com/learn/courses/intro-to-python-for-data-science" target="_blank" rel="noopener">Introduction to Python</a>, κεφάλαιο 4 (NumPy). Επόμενη εβδομάδα: pandas, πίνακες δεδομένων με ονόματα στηλών.</div>
+  </section>
+
+  <div class="nav">
+    <button class="btn outline" id="prevBtn">← Προηγούμενο</button>
+    <button class="btn navy" id="nextBtn">Επόμενο βήμα →</button>
+  </div>
+  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Ο κώδικας εκτελείται στον browser με <a href="https://pyodide.org" target="_blank" rel="noopener">Pyodide</a>.</footer>
+</div>
+
+<script>
+(function(){
+  // ---------- storage helpers ----------
+  const KEY='bap-week4-numpy';
+  let state={step:0,quiz:{},ex:{}};
+  try{const s=localStorage.getItem(KEY); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  // ---------- stepper ----------
+  const steps=[...document.querySelectorAll('section.step')];
+  const stepper=document.getElementById('stepper');
+  steps.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.innerHTML='<span class="n">'+(i+1)+'</span><span class="l">'+s.dataset.title+'</span>';
+    b.onclick=()=>go(i);
+    stepper.appendChild(b);
+  });
+  function go(i){
+    state.step=i; save();
+    steps.forEach((s,j)=>s.classList.toggle('active',j===i));
+    [...stepper.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+    document.getElementById('prevBtn').disabled=i===0;
+    document.getElementById('nextBtn').disabled=i===steps.length-1;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.getElementById('prevBtn').onclick=()=>go(Math.max(0,state.step-1));
+  document.getElementById('nextBtn').onclick=()=>go(Math.min(steps.length-1,state.step+1));
+
+  // ---------- pyodide ----------
+  let pyodide=null, loading=null, numpyLoaded=false;
+  const statusEl=document.getElementById('pyStatus');
+  function loadPy(){
+    if(pyodide) return Promise.resolve(pyodide);
+    if(loading) return loading;
+    statusEl.textContent='φόρτωση Python…';
+    loading=new Promise((res,rej)=>{
+      const s=document.createElement('script');
+      s.src='https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+      s.onload=async()=>{
+        try{
+          pyodide=await loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/'});
+          statusEl.textContent='φόρτωση NumPy…';
+          try{ await pyodide.loadPackage('numpy'); numpyLoaded=true; }catch(e){}
+          statusEl.textContent=numpyLoaded?'Python + NumPy έτοιμα ✓':'Python έτοιμη ✓ (NumPy δεν φορτώθηκε)'; statusEl.classList.add('ready');
+          res(pyodide);
+        }catch(e){statusEl.textContent='η Python δεν φορτώθηκε'; rej(e);}
+      };
+      s.onerror=()=>{statusEl.textContent='η Python δεν φορτώθηκε (έλεγξε τη σύνδεση)'; rej(new Error('load'));};
+      document.head.appendChild(s);
+    });
+    return loading;
+  }
+  let chain=Promise.resolve();
+  function runPython(src){
+    // serialise runs: stdout capture is global in Pyodide
+    const p=chain.then(()=>runPythonNow(src));
+    chain=p.catch(()=>{});
+    return p;
+  }
+  async function runPythonNow(src){
+    const py=await loadPy();
+    if(!numpyLoaded && /numpy|np\./.test(src)){ try{ await py.loadPackage('numpy'); numpyLoaded=true; }catch(e){} }
+    let out='';
+    py.setStdout({batched:(t)=>{out+=t+'\n';}});
+    py.setStderr({batched:(t)=>{out+=t+'\n';}});
+    const ns=py.globals.get('dict')();
+    let err=null;
+    try{ await py.runPythonAsync(src,{globals:ns}); }
+    catch(e){ err=String(e.message||e); }
+    return {out,err,ns};
+  }
+  function fmtErr(e){
+    // show where (line in the user's code) and what (the last Error line)
+    const lines=e.trim().split('\n');
+    const where=lines.filter(l=>/File "<exec>", line \d+/.test(l)).map(l=>l.replace(/.*line (\d+).*/,'γραμμή $1')).pop();
+    let what='';
+    for(let i=lines.length-1;i>=0;i--){ if(/^[A-Za-z]*(Error|Exception|Warning)\b/.test(lines[i])){ what=lines[i]; break; } }
+    if(!what) what=lines[lines.length-1];
+    return (where?'Σφάλμα στη '+where+':\n':'')+what;
+  }
+
+  // ---------- runners ----------
+  document.querySelectorAll('.runner').forEach(r=>{
+    const code=r.dataset.code;
+    r.innerHTML='<div class="bar"><span>script.py</span><span class="spacer"></span><button class="btn secondary reset">Επαναφορά</button><button class="btn run">▶ Τρέξε</button></div><textarea spellcheck="false"></textarea><div class="out"></div>';
+    const ta=r.querySelector('textarea'), out=r.querySelector('.out');
+    ta.value=code; ta.rows=Math.max(4,code.split('\n').length+1);
+    ta.addEventListener('keydown',e=>{
+      if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();run();}
+      if(e.key==='Tab'){e.preventDefault();const s=ta.selectionStart;ta.value=ta.value.slice(0,s)+'    '+ta.value.slice(ta.selectionEnd);ta.selectionStart=ta.selectionEnd=s+4;}
+    });
+    r.querySelector('.reset').onclick=()=>{ta.value=code;out.textContent='';out.classList.remove('err');};
+    const btn=r.querySelector('.run');
+    async function run(){
+      btn.disabled=true; out.classList.remove('err'); out.textContent='…';
+      try{
+        const res=await runPython(ta.value);
+        out.textContent=(res.out+(res.err?fmtErr(res.err):'')).trimEnd();
+        if(res.err) out.classList.add('err');
+        if(!out.textContent) out.textContent='(καμία έξοδος — μήπως ξέχασες το print;)';
+      }catch(e){out.textContent='Η Python δεν είναι διαθέσιμη: '+e; out.classList.add('err');}
+      btn.disabled=false;
+    }
+    btn.onclick=run;
+  });
+
+  // ---------- quizzes ----------
+  const quizzes=[...document.querySelectorAll('.quiz')];
+  quizzes.forEach((q,qi)=>{
+    const opts=JSON.parse(q.dataset.opts), ans=+q.dataset.ans;
+    q.innerHTML='<div class="q">'+q.dataset.q+'</div>'+(q.dataset.code?'<pre></pre>':'')+'<div class="opts"></div><div class="fb"></div>';
+    if(q.dataset.code) q.querySelector('pre').textContent=q.dataset.code;
+    const box=q.querySelector('.opts'), fb=q.querySelector('.fb');
+    opts.forEach((o,i)=>{
+      const b=document.createElement('button'); b.textContent=o;
+      b.onclick=()=>{
+        [...box.children].forEach(c=>c.classList.remove('ok','bad'));
+        if(i===ans){b.classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why; state.quiz[qi]=true;}
+        else{b.classList.add('bad'); fb.className='fb bad'; fb.textContent='Όχι ακριβώς. '+q.dataset.why; state.quiz[qi]=false;}
+        save(); updateDone(); finalScore();
+      };
+      box.appendChild(b);
+    });
+    if(state.quiz[qi]===true){box.children[ans].classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why;}
+  });
+  function finalScore(){
+    const sec=steps[steps.length-1]; const qs=[...sec.querySelectorAll('.quiz')];
+    const idx=qs.map(q=>quizzes.indexOf(q)); const done=idx.filter(i=>state.quiz[i]!==undefined).length;
+    const ok=idx.filter(i=>state.quiz[i]===true).length;
+    const el=document.getElementById('finalScore');
+    if(done===qs.length){el.style.display='block'; el.innerHTML='<b>ΑΠΟΤΕΛΕΣΜΑ</b>Σωστές απαντήσεις: '+ok+' / '+qs.length+(ok===qs.length?' — άψογα!':ok>=8?' — πολύ καλά, ξαναδές τις λάθος.':' — ξαναδιάβασε τα βήματα 1–7 και ξαναπροσπάθησε.');}
+  }
+  finalScore();
+
+  // ---------- exercises ----------
+  const exs=[...document.querySelectorAll('.exercise')];
+  exs.forEach((ex,ei)=>{
+    const code=ex.dataset.code, check=ex.dataset.check, sol=ex.dataset.solution;
+    const wrap=document.createElement('div');
+    wrap.innerHTML='<div class="runner"><div class="bar"><span>script.py</span><span class="spacer"></span><button class="btn secondary reset">Επαναφορά</button><button class="btn run">✔ Έλεγξε</button></div><textarea spellcheck="false"></textarea><div class="out"></div></div><div class="result"></div><details><summary>Δείξε μια λύση</summary><pre class="solpre"></pre></details>';
+    ex.appendChild(wrap);
+    const ta=wrap.querySelector('textarea'), out=wrap.querySelector('.out'), res=wrap.querySelector('.result'), btn=wrap.querySelector('.run');
+    ta.value=code; ta.rows=Math.max(5,code.split('\n').length+2);
+    wrap.querySelector('.solpre').textContent=sol;
+    Object.assign(wrap.querySelector('.solpre').style,{fontFamily:'var(--mono)',fontSize:'14px',background:'var(--pale)',padding:'10px 12px',borderRadius:'8px',whiteSpace:'pre-wrap',margin:'6px 0 0'});
+    ta.addEventListener('keydown',e=>{ if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();run();}
+      if(e.key==='Tab'){e.preventDefault();const s=ta.selectionStart;ta.value=ta.value.slice(0,s)+'    '+ta.value.slice(ta.selectionEnd);ta.selectionStart=ta.selectionEnd=s+4;}});
+    wrap.querySelector('.reset').onclick=()=>{ta.value=code;out.textContent='';out.classList.remove('err');res.textContent='';res.className='result';};
+    async function run(){
+      btn.disabled=true; out.classList.remove('err'); out.textContent='…'; res.className='result'; res.textContent='';
+      try{
+        const py=await loadPy();
+        const src=ta.value;
+        const r=await runPython(src);
+        out.textContent=(r.out+(r.err?fmtErr(r.err):'')).trimEnd();
+        if(r.err){out.classList.add('err'); res.className='result bad'; res.textContent='Ο κώδικας έβγαλε σφάλμα. Διάβασε το μήνυμα και διόρθωσέ τον.'; state.ex[ei]=false;}
+        else{
+          r.ns.set('_out',r.out); r.ns.set('_src',src);
+          try{ await py.runPythonAsync(check,{globals:r.ns}); res.className='result ok'; res.textContent='Σωστά! Η άσκηση ολοκληρώθηκε.'; state.ex[ei]=true; }
+          catch(e){ const m=String(e.message||e); const am=m.match(/AssertionError: ([^\n]*)/); res.className='result bad'; res.textContent=am?am[1]:'Δεν είναι ακόμη σωστό: '+fmtErr(m); state.ex[ei]=false; }
+        }
+      }catch(e){out.textContent='Η Python δεν είναι διαθέσιμη: '+e; out.classList.add('err');}
+      save(); updateDone(); btn.disabled=false;
+    }
+    btn.onclick=run;
+    if(state.ex[ei]===true){res.className='result ok'; res.textContent='Ολοκληρωμένη ✓ (μπορείς την ξανακάνεις)';}
+  });
+
+  function updateDone(){
+    steps.forEach((s,i)=>{
+      const qs=[...s.querySelectorAll('.quiz')].map(q=>quizzes.indexOf(q));
+      const es=[...s.querySelectorAll('.exercise')].map(e=>exs.indexOf(e));
+      const all=qs.every(i=>state.quiz[i]===true)&&es.every(i=>state.ex[i]===true)&&(qs.length+es.length)>0;
+      stepper.children[i].classList.toggle('done',all);
+    });
+  }
+
+  // ---------- boolean mask visualizer ----------
+  document.querySelectorAll('.maskviz').forEach(v=>{
+    const list=JSON.parse(v.dataset.list), n=list.length;
+    v.innerHTML='<div style="font-family:var(--mono);font-size:16px;color:var(--navy)">x = np.array('+JSON.stringify(list).replace(/,/g,', ')+')</div><input spellcheck="false" autocomplete="off"><div class="cells"></div><div class="res"></div>';
+    const inp=v.querySelector('input'), cells=v.querySelector('.cells'), res=v.querySelector('.res');
+    list.forEach((it,i)=>{const c=document.createElement('div');c.className='cell';c.innerHTML='<span class="i">'+i+'</span><span class="v">'+it+'</span><span class="b"></span>';cells.appendChild(c);});
+    function cmp(op,a,b){switch(op){case '>':return a>b;case '>=':return a>=b;case '<':return a<b;case '<=':return a<=b;case '==':return a===b;case '!=':return a!==b;}return false;}
+    function evalSimple(e){ // "x OP n"
+      const m=e.match(/^x(>=|<=|==|!=|>|<)(-?\d+(?:\.\d+)?)$/);
+      if(!m) return null;
+      return list.map(val=>cmp(m[1],val,+m[2]));
+    }
+    function evalExpr(e){
+      e=e.replace(/\s+/g,'');
+      let r=evalSimple(e); if(r) return {mask:r};
+      let m=e.match(/^\((x[^()]*)\)([&|])\((x[^()]*)\)$/);
+      if(m){const a=evalSimple(m[1]), b=evalSimple(m[3]); if(a&&b) return {mask:a.map((p,i)=>m[2]==='&'?(p&&b[i]):(p||b[i]))};}
+      if(/^x[^()]*(and|or)/.test(e)) return {err:'ValueError: The truth value of an array ... is ambiguous — σε πίνακες χρησιμοποίησε & ή | με παρενθέσεις'};
+      if(/^x[^()]*[&|]/.test(e)) return {err:'Χρειάζονται παρενθέσεις γύρω από κάθε συνθήκη: (x > 1500) & (x < 2000)'};
+      return {err:'Γράψε κάτι σαν x > 1500, x == 1800, (x > 1500) & (x < 2000) ή (x < 1200) | (x > 2200)'};
+    }
+    function upd(){
+      const r=evalExpr(inp.value);
+      [...cells.children].forEach((c,i)=>{const hit=!!(r.mask&&r.mask[i]); c.classList.toggle('hit',hit); c.classList.toggle('off',!!r.mask&&!hit); c.querySelector('.b').textContent=r.mask?(hit?'True':'False'):'';});
+      res.style.color=r.err?'var(--red)':'var(--navy)';
+      if(r.err) res.textContent=r.err;
+      else{ const sel=list.filter((_,i)=>r.mask[i]); res.textContent='x['+inp.value.trim()+'] → ['+sel.join(' ')+']\nnp.sum('+inp.value.trim()+') → '+sel.length+'   np.mean(…) → '+(sel.length/n).toFixed(2); }
+    }
+    inp.oninput=upd; inp.value=v.dataset.init; upd();
+  });
+
+  // ---------- 2D index visualizer ----------
+  document.querySelectorAll('.viz2d').forEach(v=>{
+    const rows=JSON.parse(v.dataset.rows), R=rows.length, C=rows[0].length;
+    const rl=JSON.parse(v.dataset.rowlabels||'[]'), cl=JSON.parse(v.dataset.collabels||'[]');
+    v.innerHTML='<div style="font-family:var(--mono);font-size:16px;color:var(--navy)">x.shape → ('+R+', '+C+')</div><input spellcheck="false" autocomplete="off"><div class="grid2d" style="grid-template-columns:max-content repeat('+C+',78px)"></div><div class="res"></div>';
+    const inp=v.querySelector('input'), g=v.querySelector('.grid2d'), res=v.querySelector('.res');
+    g.appendChild(document.createElement('div'));
+    for(let j=0;j<C;j++){const h=document.createElement('div');h.className='hd';h.textContent='στήλη '+j+(cl[j]?' · '+cl[j]:'');g.appendChild(h);}
+    rows.forEach((row,i)=>{const h=document.createElement('div');h.className='rh';h.textContent=i+(rl[i]?' · '+rl[i]:'');g.appendChild(h); row.forEach((val,j)=>{const c=document.createElement('div');c.className='c';c.dataset.i=i;c.dataset.j=j;c.textContent=fmt(val);g.appendChild(c);});});
+    function fmt(v){return Number.isInteger(v)?v+'.':String(v);}
+    function parseDim(s,n){ // returns {idx:[...], scalar:bool} or null
+      s=s.trim();
+      if(s==='') return null;
+      let m=s.match(/^(-?\d+)$/); if(m){let i=+m[1]; if(i<0)i+=n; if(i<0||i>=n) return {err:'IndexError: index '+m[1]+' is out of bounds (size '+n+')'}; return {idx:[i],scalar:true};}
+      m=s.match(/^(-?\d*):(-?\d*)$/); if(m){let a=m[1]===''?0:+m[1], b=m[2]===''?n:+m[2]; if(a<0)a+=n; if(b<0)b+=n; a=Math.max(0,Math.min(n,a)); b=Math.max(0,Math.min(n,b)); const idx=[]; for(let k=a;k<b;k++)idx.push(k); return {idx,scalar:false};}
+      return {err:'Σε κάθε θέση: δείκτης (0, 2, -1) ή slice (1:3, :, 2:)'};
+    }
+    function evalExpr(e){
+      e=e.replace(/\s+/g,'');
+      const m=e.match(/^x\[([^,\]]*)(?:,([^,\]]*))?\]$/);
+      if(!m) return {err:'Γράψε κάτι σαν x[0], x[0, 1], x[:, 0] ή x[1:3, 1]'};
+      const rd=parseDim(m[1],R); if(!rd) return {err:'Λείπει ο δείκτης γραμμής'}; if(rd.err) return rd;
+      const cd=m[2]===undefined?{idx:[...Array(C).keys()],scalar:false}:parseDim(m[2],C); if(!cd) return {err:'Λείπει ο δείκτης στήλης μετά το κόμμα'}; if(cd.err) return cd;
+      let val;
+      if(rd.scalar&&cd.scalar){const v0=rows[rd.idx[0]][cd.idx[0]]; val=Number.isInteger(v0)?v0+'.0':String(v0);}
+      else if(rd.scalar) val='['+cd.idx.map(j=>fmt(rows[rd.idx[0]][j])).join(' ')+']';
+      else if(cd.scalar) val='['+rd.idx.map(i=>fmt(rows[i][cd.idx[0]])).join(' ')+']';
+      else val='[['+rd.idx.map(i=>cd.idx.map(j=>fmt(rows[i][j])).join(' ')).join(']\n [')+']]';
+      const shape=(rd.scalar&&cd.scalar)?'αριθμός (0D)':(rd.scalar||cd.scalar)?'1D πίνακας, shape ('+(rd.scalar?cd.idx.length:rd.idx.length)+',)':'2D πίνακας, shape ('+rd.idx.length+', '+cd.idx.length+')';
+      return {ri:rd.idx,ci:cd.idx,val,shape};
+    }
+    function upd(){
+      const r=evalExpr(inp.value);
+      g.querySelectorAll('.c').forEach(c=>c.classList.toggle('hit',!!(r.ri&&r.ri.includes(+c.dataset.i)&&r.ci.includes(+c.dataset.j))));
+      res.style.color=r.err?'var(--red)':'var(--navy)'; res.textContent=r.err?r.err:'→ '+r.val+'\n'+r.shape;
+    }
+    inp.oninput=upd; inp.value=v.dataset.init; upd();
+  });
+
+  updateDone();
+  go(Math.min(state.step||0,steps.length-1));
+  // warm up python (and numpy) in the background
+  loadPy().catch(()=>{});
+})();
+</script>
+</body>
+</html>
