@@ -143,8 +143,9 @@
       <figure><img src="img/az08_welcome.png" alt="Welcome to Azure: Access student benefits"><figcaption>«Access student benefits › Explore»</figcaption></figure>
       <figure><img src="img/az10_activate.png" alt="Education hub: Activate offer"><figcaption>Education › Get started › «Activate offer»</figcaption></figure>
       <figure><img src="img/az11_profile.png" alt="Προφίλ και Sign up"><figcaption>Το προφίλ και το «Sign up»</figcaption></figure>
-      <figure><img src="img/az12_credits.png" alt="Available credits $100"><figcaption>Education › Overview: τα διαθέσιμα credits</figcaption></figure>
+      <figure><img src="img/az12_credits_2026.jpg" alt="Available credits"><figcaption>Education › Overview: τα διαθέσιμα credits και πότε λήγουν (Οκτώβριος 2026)</figcaption></figure>
     </div>
+    <div class="box note"><b>ΜΕΤΑ ΑΠΟ ΕΝΑΝ ΧΡΟΝΟ</b>Τα credits λήγουν 12 μήνες μετά την ενεργοποίηση. Τότε το Education › Overview γράφει «Your free student credit has expired»: ξανακάνεις την ακαδημαϊκή επαλήθευση (ίδια φόρμα, ίδιο email) και η προσφορά ανανεώνεται με νέα credits.</div>
     <div class="box tip"><b>ΓΙΑΤΙ ΟΧΙ GOOGLE CLOUD;</b>Μπορείς να κάνεις την εργασία και σε Google Cloud (το σκριπτ του βήματος 5 τρέχει αυτούσιο). Η δωρεάν δοκιμή της Google όμως ζητά πιστωτική κάρτα, ενώ το Azure for Students όχι· γι' αυτό ο οδηγός ακολουθεί το Azure.</div>
     <div class="nav"><button class="btn outline" data-go="1">← Πίσω</button><button class="btn navy" data-go="3">Επόμενο: Εικονική μηχανή →</button></div>
   </section>
@@ -155,7 +156,7 @@
     <p>Εδώ δένει η Εβδομάδα 3 με την πράξη: νοικιάζεις μία εικονική μηχανή (IaaS) σε data center της Microsoft και μέσα της θα τρέξει το e-shop. Θέλεις το φθηνότερο μέγεθος που αντέχει το PrestaShop 9: <b>2 GB μνήμης</b>. Το 1 GB δεν φτάνει.</p>
     <ol class="steps-ol">
       <li><div>Στο portal: <b>Create a resource › Virtual machine › Create</b> (ή αναζήτηση «Virtual machines» › Create).</div></li>
-      <li><div>Στην καρτέλα <b>Basics</b> συμπλήρωσε τα παρακάτω και άφησε τα υπόλοιπα όπως είναι:</div></li>
+      <li><div>Στην καρτέλα <b>Basics</b> συμπλήρωσε τα παρακάτω και άφησε τα υπόλοιπα όπως είναι. Το Azure δοκιμάζει νέα εμφάνιση της φόρμας (preview)· τα πεδία είναι τα ίδια, απλώς αλλάζει η διάταξη.</div></li>
     </ol>
     <div class="card">
       <div class="field">
@@ -165,7 +166,7 @@
         <div>Region</div><div>(Europe) North Europe ή West Europe</div>
         <div>Availability options</div><div>No infrastructure redundancy required</div>
         <div>Image</div><div>Ubuntu Server 24.04 LTS – x64 Gen2</div>
-        <div>Size</div><div><b>Standard_B1ms</b> (1 vcpu, 2 GiB) · «See all sizes» αν δεν φαίνεται</div>
+        <div>Size</div><div><b>Standard_B1ms</b> (1 vcpu, 2 GiB) ή <b>B2als_v2</b> (2 vcpu, 4 GiB) · «See all sizes» αν δεν φαίνεται</div>
         <div>Authentication type</div><div>SSH public key, Generate new key pair (ή Password· δεν θα το χρειαστείς)</div>
         <div>Username</div><div><code>azureuser</code></div>
         <div>Public inbound ports</div><div>Allow selected ports → <b>HTTP (80)</b> και SSH (22)</div>
@@ -176,6 +177,11 @@
       <li><div>Μετά από 1–2 λεπτά: <b>Go to resource</b>. Στην οθόνη της VM σημείωσε τη <b>Public IP address</b> (π.χ. 52.158.34.20). Αυτή είναι η διεύθυνση του καταστήματός σου.</div></li>
       <li><div>Έλεγξε ότι η θύρα 80 είναι ανοιχτή: <b>Networking › Network settings</b> › στους inbound rules πρέπει να υπάρχει κανόνας για <b>HTTP (80)</b>. Αν όχι, <b>Create port rule › Inbound</b>, Service: HTTP.</div></li>
     </ol>
+    <div class="grid2">
+      <figure><img src="img/az14_vm_overview.jpg" alt="Η οθόνη της VM"><figcaption>Η οθόνη της VM: Status Running, Public IP, Size</figcaption></figure>
+      <figure><img src="img/az15_network.jpg" alt="Network settings με κανόνες HTTP και SSH"><figcaption>Networking › Network settings: κανόνες HTTP (80) και SSH (22)</figcaption></figure>
+    </div>
+    <figure><img src="img/az13_rg_resources.jpg" alt="Το resource group με τους 7 πόρους"><figcaption>Το resource group eshop-rg: μηχανή, IP, δίκτυο, δίσκος, κλειδί, όλα μαζί</figcaption></figure>
     <div class="box note"><b>ΤΙ ΚΟΣΤΙΖΕΙ</b>Η B1ms κοστίζει περίπου 0,02 $ την ώρα, δηλαδή γύρω στα 15 $ τον μήνα αν μένει συνέχεια ανοιχτή, συν 1–2 $ για δίσκο και IP. Με 100 $ credits έχεις άνετα όλο το εξάμηνο, αρκεί να τη <b>σταματάς</b> όταν δεν δουλεύεις (βήμα 6).</div>
     <div class="nav"><button class="btn outline" data-go="2">← Πίσω</button><button class="btn navy" data-go="4">Επόμενο: Εγκατάσταση PrestaShop →</button></div>
   </section>
@@ -243,17 +249,24 @@ echo ">>> 4/4 Εκκίνηση (το κατέβασμα και η εγκατάσ
 docker compose up -d
 echo "=================================================================="
 echo "  Κατάστημα (front office):  http://$IP"
-echo "  Διαχείριση (back office):  http://$IP/admin-dev"
+echo "  Διαχείριση (back office):  http://$IP/admin.../  (βρες το ακριβές όνομα: βλ. οδηγό)"
 echo "  Email: $ADMIN_MAIL"
 echo "  Περιμένετε 5-10 λεπτά πριν ανοίξετε τη διεύθυνση."
 echo "=================================================================="</div>
+    <div class="grid2">
+      <figure><img src="img/az16_runcommand.jpg" alt="Operations › Run command"><figcaption>Operations › Run command › RunShellScript</figcaption></figure>
+      <figure><img src="img/az17_runcommand_running.jpg" alt="Το σκριπτ τρέχει"><figcaption>Επικόλληση του σκριπτ και Run· «Script execution in progress»</figcaption></figure>
+    </div>
     <p style="font-size:15px;color:var(--gray)">Το ίδιο σκριπτ ως αρχείο: <a href="install-prestashop.sh" download>install-prestashop.sh</a>. Σε Google Cloud ή άλλη Ubuntu VM τρέχει με <code>sudo bash install-prestashop.sh</code>.</p>
     <h3>Τι κάνει το σκριπτ, σε μία πρόταση το καθένα</h3>
     <ul>
       <li><b>Docker</b>: ένας τρόπος να τρέχουν έτοιμα «πακέτα» λογισμικού (containers) χωρίς να εγκαθιστάς PHP, Apache και MySQL ένα-ένα.</li>
       <li><b>compose.yaml</b>: η περιγραφή των δύο containers, του PrestaShop και της βάσης MariaDB, και πώς συνδέονται.</li>
-      <li><b>PS_INSTALL_AUTO</b>: το PrestaShop εγκαθίσταται μόνο του, με χώρα Ελλάδα, τον δικό σου κωδικό διαχειριστή και φάκελο διαχείρισης <code>admin-dev</code>.</li>
+      <li><b>PS_INSTALL_AUTO</b>: το PrestaShop εγκαθίσταται μόνο του, με χώρα Ελλάδα και τον δικό σου κωδικό διαχειριστή.</li>
     </ul>
+    <h3>Βρες τη διεύθυνση του back office</h3>
+    <p>Για ασφάλεια, το PrestaShop 9 δίνει στον φάκελο διαχείρισης <b>τυχαίο όνομα</b> (π.χ. <code>admin724xf8p3…</code>), ώστε να μην τον μαντεύει κανείς. Μόλις ολοκληρωθεί η εγκατάσταση, τρέξε από το Run command το παρακάτω· τυπώνει τη διεύθυνση. <b>Σημείωσέ την</b>, θα τη χρειαστείς συνέχεια.</p>
+    <div class="codeblock" id="findadmin"><button class="copy" data-copy="findadmin">Αντιγραφή</button>A=$(ls /var/lib/docker/volumes/eshop_psdata/_data | grep '^admin' | grep -v admin-api); echo "Back office: http://$(curl -s ifconfig.me)/$A/"</div>
     <h3>Έλεγχος προόδου</h3>
     <p>Αν μετά από 10 λεπτά η διεύθυνση δεν ανοίγει, τρέξε από το ίδιο Run command το παρακάτω και διάβασε τις τελευταίες γραμμές: όσο γράφει «Installing PrestaShop» περίμενε· αν γράφει «installation failed», στείλε μου την έξοδο.</p>
     <div class="codeblock" id="check"><button class="copy" data-copy="check">Αντιγραφή</button>cd /opt/eshop &amp;&amp; docker compose ps &amp;&amp; docker compose logs --tail 20 shop</div>
@@ -271,8 +284,14 @@ echo "=================================================================="</div>
       </div>
       <div class="card">
         <h4>Η διαχείριση <span class="en">(back office)</span></h4>
-        <p>Άνοιξε <code>http://&lt;η IP σου&gt;/admin-dev</code> και μπες με το email και τον κωδικό που έβαλες στο σκριπτ. Από εδώ γίνονται όλα όσα είδαμε στην Εβδομάδα 4.</p>
+        <p>Άνοιξε τη διεύθυνση που σου έδωσε η εντολή «Βρες τη διεύθυνση του back office» (<code>http://&lt;η IP σου&gt;/admin…/</code>) και μπες με το email και τον κωδικό που έβαλες στο σκριπτ. Από εδώ γίνονται όλα όσα είδαμε στην Εβδομάδα 4.</p>
       </div>
+    </div>
+    <div class="grid2">
+      <figure><img src="img/vm_front_home.jpg" alt="Το κατάστημα στην IP της VM"><figcaption>Το κατάστημα, όπως ανοίγει στην IP της μηχανής: θέμα Hummingbird και δείγματα προϊόντων</figcaption></figure>
+      <figure><img src="img/vm_front_product.jpg" alt="Σελίδα προϊόντος"><figcaption>Σελίδα προϊόντος με παραλλαγές και έκπτωση, ίδια με του demo</figcaption></figure>
+      <figure><img src="img/vm_bo_login.jpg" alt="Σύνδεση στο back office"><figcaption>Σύνδεση στο back office με το email και τον κωδικό του σκριπτ</figcaption></figure>
+      <figure><img src="img/vm_bo_dashboard.jpg" alt="Dashboard του back office"><figcaption>Το Dashboard: PrestaShop 9.2, το δικό σου</figcaption></figure>
     </div>
     <h3>Τρία πράγματα να κάνεις αμέσως</h3>
     <ol>
@@ -283,10 +302,11 @@ echo "=================================================================="</div>
     <h3>Για να μην ξοδέψεις τα credits</h3>
     <ul>
       <li><b>Σταμάτα τη μηχανή όταν δεν δουλεύεις</b>: στην οθόνη της VM πάτησε <b>Stop</b>. Σταματημένη (deallocated) δεν χρεώνει υπολογιστικό χρόνο, μόνο τον δίσκο (κάτω από 1 $ τον μήνα). Με <b>Start</b> επανέρχεται σε 1–2 λεπτά, με το κατάστημα όπως το άφησες.</li>
-      <li><b>Auto-shutdown</b>: Operations › Auto-shutdown › ενεργοποίησε το κλείσιμο κάθε βράδυ, π.χ. στις 23:00. Έτσι δεν θα ξεχαστεί ποτέ ανοιχτή.</li>
-      <li><b>Η IP μπορεί να αλλάξει</b> μετά από Stop/Start, αν είναι δυναμική. Αν συμβεί, το κατάστημα ανοίγει κανονικά στη νέα IP (το σκριπτ το έχει ρυθμίσει να την ακολουθεί)· απλώς γράψε τη νέα στην παράδοση.</li>
+      <li><b>Auto-shutdown</b>: Operations › Auto-shutdown › Enabled: On, ώρα 11:00 PM, ζώνη (UTC+02:00) E. Europe, Save. Έτσι δεν θα ξεχαστεί ποτέ ανοιχτή.</li>
+      <li><b>Η IP μπορεί να αλλάξει</b> μετά από Stop/Start, αν είναι δυναμική (η προεπιλογή της φόρμας είναι Static, οπότε συνήθως δεν αλλάζει). Αν αλλάξει, το κατάστημα συνεχίζει να «θυμάται» την παλιά: τρέξε από το Run command <code>cd /opt/eshop &amp;&amp; docker compose exec -T db mariadb -uroot -pprestashop prestashop -e "update ps_shop_url set domain='ΝΕΑ_IP', domain_ssl='ΝΕΑ_IP'; update ps_configuration set value='ΝΕΑ_IP' where name in ('PS_SHOP_DOMAIN','PS_SHOP_DOMAIN_SSL')"</code> με τη νέα IP στη θέση του ΝΕΑ_IP.</li>
       <li><b>Μετά τη βαθμολόγηση</b> διάγραψε το resource group <code>eshop-rg</code> (σβήνει μηχανή, δίσκο, IP, όλα μαζί).</li>
     </ul>
+    <figure style="max-width:620px"><img src="img/az18_autoshutdown.jpg" alt="Auto-shutdown ρυθμισμένο στις 23:00"><figcaption>Operations › Auto-shutdown, ενεργό στις 23:00</figcaption></figure>
     <div class="box note"><b>ΕΛΕΓΧΟΣ ΚΟΣΤΟΥΣ</b>Education › Overview δείχνει τα credits που απομένουν. Cost Management › Cost analysis δείχνει τι χρεώνει τι.</div>
     <div class="nav"><button class="btn outline" data-go="4">← Πίσω</button><button class="btn navy" data-go="6">Επόμενο: Η εργασία →</button></div>
   </section>
@@ -372,7 +392,7 @@ echo "=================================================================="</div>
     <div class="progress" id="prog"></div>
     <div class="check" id="checklist">
       <label><input type="checkbox" data-k="c1"><span>Το κατάστημα ανοίγει από άλλη συσκευή (π.χ. κινητό σε 4G), όχι μόνο από τον υπολογιστή μου</span></label>
-      <label><input type="checkbox" data-k="c2"><span>Το back office ανοίγει στο <code>/admin-dev</code> και υπάρχει δεύτερος λογαριασμός SuperAdmin για τον διδάσκοντα</span></label>
+      <label><input type="checkbox" data-k="c2"><span>Ξέρω τη διεύθυνση του back office (<code>/admin…/</code>) και υπάρχει δεύτερος λογαριασμός SuperAdmin για τον διδάσκοντα</span></label>
       <label><input type="checkbox" data-k="c3"><span>Έσβησα τα δείγματα προϊόντων και κατηγοριών του PrestaShop</span></label>
       <label><input type="checkbox" data-k="c4"><span>12+ προϊόντα με φωτογραφία, περιγραφή, τιμή και απόθεμα· 2 με παραλλαγές· 6 από CSV</span></label>
       <label><input type="checkbox" data-k="c5"><span>Δύο μεταφορείς, ζώνη Ελλάδα, κλίμακες, δωρεάν μεταφορικά από ποσό</span></label>
@@ -385,7 +405,7 @@ echo "=================================================================="</div>
     <div class="nav"><button class="btn outline" data-go="6">← Πίσω</button><span></span></div>
   </section>
 
-  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Τα screenshots των βημάτων 1–3 είναι από την περσινή διαδικασία· οι οθόνες της Microsoft αλλάζουν συχνά, αλλά τα βήματα μένουν ίδια.</footer>
+  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Τα βήματα 4–6 δοκιμάστηκαν σε πραγματικό λογαριασμό Azure for Students τον Οκτώβριο του 2026· τα screenshots της εγγραφής (βήματα 1–2) είναι από την περσινή διαδικασία, που είναι ίδια.</footer>
 </div>
 
 <script>
