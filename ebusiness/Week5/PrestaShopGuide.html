@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7KW3PRQVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-R7KW3PRQVZ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Το δικό σου e-shop στο cloud · Εβδομάδα 5</title>
+<meta name="description" content="Οδηγός εργασίας: από τον λογαριασμό Azure for Students μέχρι ένα λειτουργικό ηλεκτρονικό κατάστημα με PrestaShop. Ηλεκτρονικό Επιχειρείν, Εβδομάδα 5.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2F6B; --text:#26314F; --gray:#5A6385; --blue:#7895F9; --lblue:#B9C8FC; --pale:#EEF1FE;
+    --orange:#F5821F; --peach:#FDE8D4; --green:#1e7a4c; --lgreen:#E3F3EA; --red:#B23A3A; --lred:#FBE4E4;
+    --code:#141E3C; --codefg:#F4F6FF; --mono:'JetBrains Mono',Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pale);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+  a{color:var(--green)}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 16px 80px;display:flex;flex-direction:column;gap:22px}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--gray);text-transform:uppercase}
+  h1{margin:6px 0 0;font-family:Georgia,serif;font-weight:700;font-size:38px;line-height:1.1;color:var(--navy)}
+  h2{margin:0;font-family:Georgia,serif;font-size:28px;color:var(--navy)}
+  h3{margin:18px 0 6px;font-family:Georgia,serif;font-size:20px;color:var(--navy)}
+  p{margin:0 0 10px;font-size:17px}
+  ul,ol{margin:0 0 10px;padding-left:24px;font-size:17px} li{margin-bottom:4px}
+  .lead{font-size:19px;max-width:800px}
+  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+  .stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 12px;background:var(--navy);color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px;opacity:.55}
+  .stepper button.active{opacity:1;outline:3px solid var(--orange)}
+  .stepper button.done{opacity:.9;background:var(--green)}
+  .stepper button span.n{font-family:var(--mono);font-weight:700;font-size:14px}
+  .stepper button span.l{font-size:13px}
+  section.step{display:none;flex-direction:column;gap:14px;background:#fff;border-radius:12px;padding:22px 22px 26px;box-shadow:0 1px 3px rgba(27,47,107,.08)}
+  section.step.active{display:flex}
+  code{font-family:var(--mono);background:var(--pale);padding:1px 5px;border-radius:4px;color:var(--navy);font-size:.95em}
+  .en{color:var(--gray);font-style:italic}
+  .box{border-radius:8px;padding:12px 16px;font-size:16px}
+  .tip{background:var(--peach)} .tip b{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .note{background:var(--pale)} .note b{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .warn{background:var(--lred)} .warn b{color:var(--red);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .btn{font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--green);color:#fff;font-weight:bold;text-decoration:none;display:inline-block}
+  .btn.navy{background:var(--navy)} .btn.orange{background:var(--orange)}
+  .btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+  figure{margin:0;background:var(--pale);border-radius:10px;padding:10px;text-align:center}
+  figure img{max-width:100%;border-radius:6px;box-shadow:0 1px 4px rgba(27,47,107,.15)}
+  figcaption{font-size:14px;color:var(--gray);margin-top:6px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .card{background:var(--pale);border-radius:10px;padding:14px 16px}
+  .card h4{margin:0 0 6px;font-family:Georgia,serif;font-size:17px;color:var(--navy)}
+  .card p,.card li{font-size:15px}
+  .card .path{font-family:var(--mono);font-size:13px;color:var(--navy);background:#fff;border:1px solid var(--lblue);border-radius:6px;padding:4px 8px;display:inline-block;margin:4px 0 8px}
+  .card .deliv{font-size:14px;color:var(--gray)} .card .deliv b{color:var(--green)}
+  table.t{border-collapse:collapse;width:100%;font-size:15px}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:bold}
+  table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue);vertical-align:top} table.t td.m{font-family:var(--mono);color:var(--navy);font-size:14px}
+  .codeblock{position:relative;background:var(--code);color:var(--codefg);font-family:var(--mono);font-size:13.5px;padding:14px 16px;border-radius:8px;white-space:pre;overflow-x:auto;line-height:1.5}
+  .codeblock .hl{color:#FFC98A}
+  .copy{position:absolute;top:8px;right:8px;font:inherit;font-size:12px;padding:4px 10px;border:0;border-radius:5px;background:var(--orange);color:#fff;cursor:pointer}
+  .check{display:flex;flex-direction:column;gap:6px}
+  .check label{display:flex;gap:10px;align-items:flex-start;background:var(--pale);border-radius:8px;padding:9px 12px;font-size:16px;cursor:pointer}
+  .check label input{margin-top:4px;width:18px;height:18px}
+  .check label.on{background:var(--lgreen)}
+  .progress{font-family:var(--mono);font-size:14px;color:var(--navy)}
+  .steps-ol{counter-reset:s;list-style:none;padding:0;display:flex;flex-direction:column;gap:10px}
+  .steps-ol li{display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:start}
+  .steps-ol li::before{counter-increment:s;content:counter(s);width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-family:Georgia,serif;font-weight:bold;display:flex;align-items:center;justify-content:center}
+  .field{display:grid;grid-template-columns:220px 1fr;gap:6px 12px;font-size:15px}
+  .field div:nth-child(odd){color:var(--gray)} .field div:nth-child(even){font-weight:bold;color:var(--navy)}
+  @media (max-width:700px){.grid2,.grid3{grid-template-columns:1fr} h1{font-size:30px} .field{grid-template-columns:1fr}}
+  footer{font-size:13px;color:var(--gray);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="kicker">Ηλεκτρονικό Επιχειρείν · Εβδομάδα 5 · Εργασία</div>
+    <h1>Το δικό σου e-shop στο cloud</h1>
+    <p class="lead" style="margin-top:10px">Από τον λογαριασμό στο Azure μέχρι ένα λειτουργικό ηλεκτρονικό κατάστημα με PrestaShop, σε 8 βήματα. Τα βήματα 1–6 στήνουν την υποδομή (λογαριασμός, credits, εικονική μηχανή, εγκατάσταση)· τα βήματα 7–8 είναι η ίδια η εργασία: τι φτιάχνεις μέσα στο κατάστημα και τι παραδίδεις. Η πρόοδός σου στις λίστες ελέγχου αποθηκεύεται στον browser.</p>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- ============ 1 ============ -->
+  <section class="step" data-title="Λογαριασμός Microsoft">
+    <h2>1. Λογαριασμός Microsoft με το πανεπιστημιακό email</h2>
+    <p>Όλα ξεκινούν από έναν λογαριασμό Microsoft που είναι δεμένος με το <b>@uom.edu.gr</b> email σου. Αυτό είναι που αποδεικνύει αργότερα ότι είσαι φοιτητής και ξεκλειδώνει τα δωρεάν credits. Αν έχεις ήδη λογαριασμό Microsoft με προσωπικό email (Gmail, Outlook), <b>μην τον χρησιμοποιήσεις</b>: φτιάξε καινούργιο με το πανεπιστημιακό.</p>
+    <ol class="steps-ol">
+      <li><div>Άνοιξε το <a href="https://azure.microsoft.com/en-us/free/students" target="_blank" rel="noopener">azure.microsoft.com/free/students</a> και πάτησε <b>Start free</b>. Στην οθόνη σύνδεσης διάλεξε <b>No account? Create one!</b></div></li>
+      <li><div>Δώσε το <b>@uom.edu.gr</b> email σου, όρισε κωδικό πρόσβασης, χώρα <b>Ελλάδα</b> και ημερομηνία γέννησης.</div></li>
+      <li><div>Η Microsoft στέλνει κωδικό επαλήθευσης στο πανεπιστημιακό email. Αν δεν τον δεις σε λίγα λεπτά, έλεγξε την ανεπιθύμητη αλληλογραφία στο webmail του πανεπιστημίου.</div></li>
+    </ol>
+    <div class="grid2">
+      <figure><img src="img/az01_create.png" alt="Create one → δημιουργία λογαριασμού με @uom.edu.gr"><figcaption>«No account? Create one!» και μετά το @uom.edu.gr email</figcaption></figure>
+      <figure><img src="img/az02_password.png" alt="Κωδικός και ημερομηνία γέννησης"><figcaption>Κωδικός πρόσβασης, χώρα και ημερομηνία γέννησης</figcaption></figure>
+    </div>
+    <figure style="max-width:420px"><img src="img/az03_verify_email.png" alt="Επαλήθευση email"><figcaption>Ο κωδικός επαλήθευσης έρχεται στο @uom.edu.gr</figcaption></figure>
+    <div class="box tip"><b>ΠΡΟΣΟΧΗ</b>Χρησιμοποίησε παντού το ίδιο @uom.edu.gr email: στον λογαριασμό Microsoft, στην ακαδημαϊκή επαλήθευση και στο προφίλ του Azure. Αν τα μπερδέψεις, η προσφορά για φοιτητές δεν ενεργοποιείται.</div>
+    <div class="nav"><span></span><button class="btn navy" data-go="1">Επόμενο: Ακαδημαϊκή επαλήθευση →</button></div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="step" data-title="Academic Verification">
+    <h2>2. Ακαδημαϊκή επαλήθευση <span class="en">(academic verification)</span></h2>
+    <p>Η Microsoft πρέπει να επιβεβαιώσει ότι είσαι φοιτητής σε αναγνωρισμένο ίδρυμα. Η διαδικασία γίνεται μία φορά και ισχύει για έναν χρόνο· μετά ανανεώνεται όσο είσαι ενεργός φοιτητής.</p>
+    <ol class="steps-ol">
+      <li><div>Στη φόρμα <b>Academic Verification</b> συμπλήρωσε όνομα και επώνυμο <b>όπως στα μητρώα του πανεπιστημίου</b>, χώρα <b>Greece</b>, και στο School name <b>University of Macedonia</b> (Πανεπιστήμιο Μακεδονίας, Θεσσαλονίκη).</div></li>
+      <li><div>Στο School email address βάλε ξανά το <b>@uom.edu.gr</b> email. Το πεδίο Verification code είναι προαιρετικό, άφησέ το κενό.</div></li>
+      <li><div>Λύσε το puzzle «δεν είμαι ρομπότ» και πάτησε <b>Verify academic status</b>. Θα λάβεις email από το Microsoft Academic Verification Team με σύνδεσμο επιβεβαίωσης, που λήγει σε 5 ημέρες.</div></li>
+      <li><div>Μόλις δεις το <b>Congratulations! Your academic status has been successfully verified</b>, πάτησε Continue.</div></li>
+    </ol>
+    <div class="grid2">
+      <figure><img src="img/az05_academic_form.png" alt="Φόρμα Academic Verification"><figcaption>Η φόρμα: ίδρυμα «University of Macedonia», email @uom.edu.gr</figcaption></figure>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <figure><img src="img/az06_puzzle.png" alt="Puzzle και Verify academic status"><figcaption>Puzzle και «Verify academic status»</figcaption></figure>
+        <figure><img src="img/az07_verified.png" alt="Congratulations, academic status verified"><figcaption>Η επιβεβαίωση</figcaption></figure>
+      </div>
+    </div>
+    <div class="box note"><b>ΑΝ ΚΟΛΛΗΣΕΙ</b>Αν η επαλήθευση δεν περάσει αυτόματα, η Microsoft μπορεί να ζητήσει έγγραφο (π.χ. βεβαίωση φοίτησης ή φοιτητική ταυτότητα). Ανέβασέ το από το ίδιο σημείο· παίρνει συνήθως 1–3 εργάσιμες.</div>
+    <div class="nav"><button class="btn outline" data-go="0">← Πίσω</button><button class="btn navy" data-go="2">Επόμενο: Τα 100 $ →</button></div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="step" data-title="Azure for Students">
+    <h2>3. Τα 100 $ του Azure for Students</h2>
+    <p>Το <b>Azure for Students</b> δίνει 100 $ σε credits για έναν χρόνο, <b>χωρίς πιστωτική κάρτα</b>, και περιλαμβάνει δωρεάν ποσότητες για μερικές υπηρεσίες. Τα credits είναι η «τράπεζά» σου για την εργασία: η εικονική μηχανή που θα φτιάξεις χρεώνεται από εκεί, γι' αυτό στο βήμα 6 θα δεις πώς να μην τα ξοδέψεις άσκοπα.</p>
+    <ol class="steps-ol">
+      <li><div>Μπες στο <a href="https://portal.azure.com" target="_blank" rel="noopener">portal.azure.com</a> με τον λογαριασμό σου. Στην οθόνη «Welcome to Azure» πάτησε <b>Explore</b> κάτω από το <b>Access student benefits</b>.</div></li>
+      <li><div>Αν σου ζητηθεί, αποδέξου τους όρους του <b>Azure Dev Tools for Teaching</b> (Accept and continue).</div></li>
+      <li><div>Στο <b>Education › Get started</b> πάτησε <b>Activate offer</b> στο «Redeem student credits». Συμπλήρωσε το προφίλ: Country <b>Greece</b>, όνομα, επώνυμο, το @uom.edu.gr email, τηλέφωνο· το VAT ID το αφήνεις κενό. Αποδέξου το customer agreement και πάτησε <b>Sign up</b>.</div></li>
+      <li><div>Μπορεί να ζητηθεί μία ακόμη επαλήθευση ταυτότητας με κωδικό στο email. Στο τέλος, στο <b>Education › Overview</b>, θα δεις <b>Available credits: $100 out of $100</b>. Αυτή η οθόνη είναι και ο τρόπος να παρακολουθείς πόσα έχουν μείνει.</div></li>
+    </ol>
+    <div class="grid2">
+      <figure><img src="img/az08_welcome.png" alt="Welcome to Azure: Access student benefits"><figcaption>«Access student benefits › Explore»</figcaption></figure>
+      <figure><img src="img/az10_activate.png" alt="Education hub: Activate offer"><figcaption>Education › Get started › «Activate offer»</figcaption></figure>
+      <figure><img src="img/az11_profile.png" alt="Προφίλ και Sign up"><figcaption>Το προφίλ και το «Sign up»</figcaption></figure>
+      <figure><img src="img/az12_credits.png" alt="Available credits $100"><figcaption>Education › Overview: τα διαθέσιμα credits</figcaption></figure>
+    </div>
+    <div class="box tip"><b>ΓΙΑΤΙ ΟΧΙ GOOGLE CLOUD;</b>Μπορείς να κάνεις την εργασία και σε Google Cloud (το σκριπτ του βήματος 5 τρέχει αυτούσιο). Η δωρεάν δοκιμή της Google όμως ζητά πιστωτική κάρτα, ενώ το Azure for Students όχι· γι' αυτό ο οδηγός ακολουθεί το Azure.</div>
+    <div class="nav"><button class="btn outline" data-go="1">← Πίσω</button><button class="btn navy" data-go="3">Επόμενο: Εικονική μηχανή →</button></div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="step" data-title="Εικονική μηχανή">
+    <h2>4. Η εικονική μηχανή <span class="en">(virtual machine)</span></h2>
+    <p>Εδώ δένει η Εβδομάδα 3 με την πράξη: νοικιάζεις μία εικονική μηχανή (IaaS) σε data center της Microsoft και μέσα της θα τρέξει το e-shop. Θέλεις το φθηνότερο μέγεθος που αντέχει το PrestaShop 9: <b>2 GB μνήμης</b>. Το 1 GB δεν φτάνει.</p>
+    <ol class="steps-ol">
+      <li><div>Στο portal: <b>Create a resource › Virtual machine › Create</b> (ή αναζήτηση «Virtual machines» › Create).</div></li>
+      <li><div>Στην καρτέλα <b>Basics</b> συμπλήρωσε τα παρακάτω και άφησε τα υπόλοιπα όπως είναι:</div></li>
+    </ol>
+    <div class="card">
+      <div class="field">
+        <div>Subscription</div><div>Azure for Students</div>
+        <div>Resource group</div><div>Create new → <code>eshop-rg</code></div>
+        <div>Virtual machine name</div><div><code>eshop</code></div>
+        <div>Region</div><div>(Europe) North Europe ή West Europe</div>
+        <div>Availability options</div><div>No infrastructure redundancy required</div>
+        <div>Image</div><div>Ubuntu Server 24.04 LTS – x64 Gen2</div>
+        <div>Size</div><div><b>Standard_B1ms</b> (1 vcpu, 2 GiB) · «See all sizes» αν δεν φαίνεται</div>
+        <div>Authentication type</div><div>SSH public key, Generate new key pair (ή Password· δεν θα το χρειαστείς)</div>
+        <div>Username</div><div><code>azureuser</code></div>
+        <div>Public inbound ports</div><div>Allow selected ports → <b>HTTP (80)</b> και SSH (22)</div>
+      </div>
+    </div>
+    <ol class="steps-ol" style="counter-reset:s 2">
+      <li><div>Πάτησε <b>Review + create</b> και μετά <b>Create</b>. Αν διάλεξες SSH key, πάτησε <b>Download private key and create resource</b> και κράτησε το αρχείο.</div></li>
+      <li><div>Μετά από 1–2 λεπτά: <b>Go to resource</b>. Στην οθόνη της VM σημείωσε τη <b>Public IP address</b> (π.χ. 52.158.34.20). Αυτή είναι η διεύθυνση του καταστήματός σου.</div></li>
+      <li><div>Έλεγξε ότι η θύρα 80 είναι ανοιχτή: <b>Networking › Network settings</b> › στους inbound rules πρέπει να υπάρχει κανόνας για <b>HTTP (80)</b>. Αν όχι, <b>Create port rule › Inbound</b>, Service: HTTP.</div></li>
+    </ol>
+    <div class="box note"><b>ΤΙ ΚΟΣΤΙΖΕΙ</b>Η B1ms κοστίζει περίπου 0,02 $ την ώρα, δηλαδή γύρω στα 15 $ τον μήνα αν μένει συνέχεια ανοιχτή, συν 1–2 $ για δίσκο και IP. Με 100 $ credits έχεις άνετα όλο το εξάμηνο, αρκεί να τη <b>σταματάς</b> όταν δεν δουλεύεις (βήμα 6).</div>
+    <div class="nav"><button class="btn outline" data-go="2">← Πίσω</button><button class="btn navy" data-go="4">Επόμενο: Εγκατάσταση PrestaShop →</button></div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="step" data-title="Εγκατάσταση PrestaShop">
+    <h2>5. Εγκατάσταση PrestaShop με ένα σκριπτ</h2>
+    <p>Δεν χρειάζεται να συνδεθείς με SSH. Το Azure έχει το <b>Run command</b>: του δίνεις ένα σκριπτ και το τρέχει μέσα στη μηχανή. Το σκριπτ εγκαθιστά το Docker, κατεβάζει το επίσημο PrestaShop 9 μαζί με τη βάση δεδομένων του και τα ξεκινά. Μετά το κατάστημα είναι έτοιμο, όπως ακριβώς το demo της Εβδομάδας 4, αλλά δικό σου.</p>
+    <ol class="steps-ol">
+      <li><div>Αντέγραψε το σκριπτ από κάτω (κουμπί <b>Αντιγραφή</b>) και επικόλλησέ το σε έναν επεξεργαστή κειμένου.</div></li>
+      <li><div>Άλλαξε τις <b>δύο πρώτες γραμμές</b>: το email με το οποίο θα μπαίνεις στη διαχείριση και έναν δικό σου κωδικό (τουλάχιστον 8 χαρακτήρες, χωρίς κενά ή εισαγωγικά). <b>Κράτησέ τα</b>, θα τα χρειαστείς στο επόμενο βήμα.</div></li>
+      <li><div>Στη VM: <b>Operations › Run command › RunShellScript</b>. Επικόλλησε όλο το σκριπτ στο πλαίσιο και πάτησε <b>Run</b>.</div></li>
+      <li><div>Περίμενε μέχρι να εμφανιστεί η έξοδος (2–4 λεπτά). Στο τέλος γράφει τις διευθύνσεις του καταστήματος. Η ίδια η εγκατάσταση του PrestaShop συνεχίζει στο παρασκήνιο για άλλα <b>5–10 λεπτά</b>.</div></li>
+    </ol>
+    <div class="codeblock" id="script"><button class="copy" data-copy="script">Αντιγραφή</button><span class="hl">ADMIN_MAIL="onoma@uom.edu.gr"        # το email με το οποίο θα μπαίνετε στο back office
+ADMIN_PASSWD="Allaxte-Me-2026"       # τουλάχιστον 8 χαρακτήρες, χωρίς κενά και χωρίς ' ή "</span>
+set -e
+export DEBIAN_FRONTEND=noninteractive
+echo ">>> 1/4 Εγκατάσταση Docker"
+apt-get update -y
+apt-get install -y docker.io docker-compose-v2 curl
+systemctl enable --now docker
+echo ">>> 2/4 Εύρεση δημόσιας IP"
+IP=$(curl -s -m 5 -H Metadata:true "http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/publicIpAddress?api-version=2021-02-01&amp;format=text" || true)
+if [ -z "$IP" ]; then IP=$(curl -s -m 5 -H "Metadata-Flavor: Google" "http://169.254.169.254/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" || true); fi
+if [ -z "$IP" ]; then IP=$(curl -s -m 5 https://ifconfig.me || true); fi
+echo "    IP: $IP"
+echo ">>> 3/4 Αρχείο compose"
+mkdir -p /opt/eshop &amp;&amp; cd /opt/eshop
+cat > compose.yaml &lt;&lt;EOF
+services:
+  db:
+    image: mariadb:11.4
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: prestashop
+      MARIADB_DATABASE: prestashop
+    volumes:
+      - dbdata:/var/lib/mysql
+  shop:
+    image: prestashop/prestashop:9.2-apache
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+    environment:
+      DB_SERVER: db
+      DB_USER: root
+      DB_PASSWD: prestashop
+      DB_NAME: prestashop
+      PS_INSTALL_AUTO: 1
+      PS_DOMAIN: ${IP:-localhost}
+      PS_HANDLE_DYNAMIC_DOMAIN: 1
+      PS_FOLDER_ADMIN: admin-eshop
+      PS_FOLDER_INSTALL: install-eshop
+      PS_COUNTRY: GR
+      PS_LANGUAGE: en
+      ADMIN_MAIL: $ADMIN_MAIL
+      ADMIN_PASSWD: $ADMIN_PASSWD
+    volumes:
+      - psdata:/var/www/html
+volumes:
+  dbdata:
+  psdata:
+EOF
+echo ">>> 4/4 Εκκίνηση (το κατέβασμα και η εγκατάσταση παίρνουν 5-10 λεπτά)"
+docker compose up -d
+echo "=================================================================="
+echo "  Κατάστημα (front office):  http://$IP"
+echo "  Διαχείριση (back office):  http://$IP/admin-eshop"
+echo "  Email: $ADMIN_MAIL"
+echo "  Περιμένετε 5-10 λεπτά πριν ανοίξετε τη διεύθυνση."
+echo "=================================================================="</div>
+    <p style="font-size:15px;color:var(--gray)">Το ίδιο σκριπτ ως αρχείο: <a href="install-prestashop.sh" download>install-prestashop.sh</a>. Σε Google Cloud ή άλλη Ubuntu VM τρέχει με <code>sudo bash install-prestashop.sh</code>.</p>
+    <h3>Τι κάνει το σκριπτ, σε μία πρόταση το καθένα</h3>
+    <ul>
+      <li><b>Docker</b>: ένας τρόπος να τρέχουν έτοιμα «πακέτα» λογισμικού (containers) χωρίς να εγκαθιστάς PHP, Apache και MySQL ένα-ένα.</li>
+      <li><b>compose.yaml</b>: η περιγραφή των δύο containers, του PrestaShop και της βάσης MariaDB, και πώς συνδέονται.</li>
+      <li><b>PS_INSTALL_AUTO</b>: το PrestaShop εγκαθίσταται μόνο του, με χώρα Ελλάδα, τον δικό σου κωδικό διαχειριστή και φάκελο διαχείρισης <code>admin-eshop</code>.</li>
+    </ul>
+    <h3>Έλεγχος προόδου</h3>
+    <p>Αν μετά από 10 λεπτά η διεύθυνση δεν ανοίγει, τρέξε από το ίδιο Run command το παρακάτω και διάβασε τις τελευταίες γραμμές: όσο γράφει «Installing PrestaShop» περίμενε· αν γράφει «installation failed», στείλε μου την έξοδο.</p>
+    <div class="codeblock" id="check"><button class="copy" data-copy="check">Αντιγραφή</button>cd /opt/eshop &amp;&amp; docker compose ps &amp;&amp; docker compose logs --tail 20 shop</div>
+    <div class="box warn"><b>ΑΝ ΘΕΣ ΝΑ ΞΕΚΙΝΗΣΕΙΣ ΑΠΟ ΤΗΝ ΑΡΧΗ</b>Το παρακάτω σβήνει το κατάστημα και τη βάση του οριστικά και ξαναρχίζει την εγκατάσταση με τις ίδιες ρυθμίσεις: <code>cd /opt/eshop &amp;&amp; docker compose down -v &amp;&amp; docker compose up -d</code></div>
+    <div class="nav"><button class="btn outline" data-go="3">← Πίσω</button><button class="btn navy" data-go="5">Επόμενο: Πρώτη είσοδος →</button></div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="step" data-title="Πρώτη είσοδος">
+    <h2>6. Πρώτη είσοδος και διαχείριση κόστους</h2>
+    <div class="grid2">
+      <div class="card">
+        <h4>Το κατάστημα <span class="en">(front office)</span></h4>
+        <p>Άνοιξε <code>http://&lt;η IP σου&gt;</code> στον browser. Θα δεις το αρχικό κατάστημα με τα δείγματα προϊόντων, ίδιο με το demo.prestashop.com. Ο browser θα γράφει «Μη ασφαλές», γιατί δεν υπάρχει HTTPS· για την εργασία είναι εντάξει.</p>
+      </div>
+      <div class="card">
+        <h4>Η διαχείριση <span class="en">(back office)</span></h4>
+        <p>Άνοιξε <code>http://&lt;η IP σου&gt;/admin-eshop</code> και μπες με το email και τον κωδικό που έβαλες στο σκριπτ. Από εδώ γίνονται όλα όσα είδαμε στην Εβδομάδα 4.</p>
+      </div>
+    </div>
+    <h3>Τρία πράγματα να κάνεις αμέσως</h3>
+    <ol>
+      <li><b>Όνομα καταστήματος και στοιχεία</b>: Shop Parameters › Contact › Stores (όνομα, email επικοινωνίας).</li>
+      <li><b>Ελληνικά</b>: International › Localization › Import a localization pack › Greece. Μετά International › Languages, ενεργοποίησε τα Ελληνικά και όρισέ τα προεπιλογή (Shop Parameters › General). Η γλώσσα του back office αλλάζει από το προφίλ σου, πάνω δεξιά.</li>
+      <li><b>Σβήσε τα δείγματα</b> όταν είσαι έτοιμος να βάλεις τα δικά σου: Catalog › Products › επιλογή όλων › Bulk actions › Delete, και το ίδιο στις κατηγορίες (εκτός της Home).</li>
+    </ol>
+    <h3>Για να μην ξοδέψεις τα credits</h3>
+    <ul>
+      <li><b>Σταμάτα τη μηχανή όταν δεν δουλεύεις</b>: στην οθόνη της VM πάτησε <b>Stop</b>. Σταματημένη (deallocated) δεν χρεώνει υπολογιστικό χρόνο, μόνο τον δίσκο (κάτω από 1 $ τον μήνα). Με <b>Start</b> επανέρχεται σε 1–2 λεπτά, με το κατάστημα όπως το άφησες.</li>
+      <li><b>Auto-shutdown</b>: Operations › Auto-shutdown › ενεργοποίησε το κλείσιμο κάθε βράδυ, π.χ. στις 23:00. Έτσι δεν θα ξεχαστεί ποτέ ανοιχτή.</li>
+      <li><b>Η IP μπορεί να αλλάξει</b> μετά από Stop/Start, αν είναι δυναμική. Αν συμβεί, το κατάστημα ανοίγει κανονικά στη νέα IP (το σκριπτ το έχει ρυθμίσει να την ακολουθεί)· απλώς γράψε τη νέα στην παράδοση.</li>
+      <li><b>Μετά τη βαθμολόγηση</b> διάγραψε το resource group <code>eshop-rg</code> (σβήνει μηχανή, δίσκο, IP, όλα μαζί).</li>
+    </ul>
+    <div class="box note"><b>ΕΛΕΓΧΟΣ ΚΟΣΤΟΥΣ</b>Education › Overview δείχνει τα credits που απομένουν. Cost Management › Cost analysis δείχνει τι χρεώνει τι.</div>
+    <div class="nav"><button class="btn outline" data-go="4">← Πίσω</button><button class="btn navy" data-go="6">Επόμενο: Η εργασία →</button></div>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="step" data-title="Η εργασία">
+    <h2>7. Η εργασία: από το άδειο κατάστημα στην πρώτη παραγγελία</h2>
+    <p>Διάλεξε τι θα πουλάει το κατάστημά σου (πραγματικό ή επινοημένο, αλλά συγκεκριμένο: όχι «ρούχα», αλλά «ρούχα για ορειβασία» ή «βιολογικά προϊόντα Χαλκιδικής»). Μετά, με τη σειρά που τα ρύθμιζες και στην Εβδομάδα 4, φτιάξε τα παρακάτω. Σε κάθε κάρτα βλέπεις <b>πού βρίσκεται</b> στο back office και <b>τι παραδίδεις</b>.</p>
+    <div class="grid2">
+      <div class="card"><h4>1. Ιδέα και ανταγωνισμός</h4>
+        <p>Τι πουλάς, σε ποιον, γιατί online. Βρες 2–3 ελληνικά e-shop που πουλούν κάτι αντίστοιχο και σημείωσε τι κάνουν καλά (κατηγορίες, μεταφορικά, τρόποι πληρωμής).</p>
+        <p class="deliv"><b>Παραδοτέο:</b> μισή σελίδα κειμένου με τα links.</p></div>
+      <div class="card"><h4>2. Θέμα, λογότυπο, αρχική</h4>
+        <div class="path">Design › Theme &amp; Logo</div>
+        <p>Ανέβασε λογότυπο και favicon. Άλλαξε τις εικόνες του carousel της αρχικής (Modules › Module Manager › Image slider › Configure) και το κείμενο του «Custom Text Block».</p>
+        <p class="deliv"><b>Παραδοτέο:</b> screenshot της αρχικής σελίδας.</p></div>
+      <div class="card"><h4>3. Κατηγορίες και μάρκες</h4>
+        <div class="path">Catalog › Categories · Catalog › Brands &amp; Suppliers</div>
+        <p>Τουλάχιστον <b>3 κατηγορίες με υποκατηγορίες</b> (2 επίπεδα) και <b>2 μάρκες</b>. Σχεδίασε το δέντρο στο χαρτί πριν το περάσεις.</p>
+        <p class="deliv"><b>Παραδοτέο:</b> το δέντρο κατηγοριών (screenshot ή λίστα).</p></div>
+      <div class="card"><h4>4. Προϊόντα</h4>
+        <div class="path">Catalog › Products · Advanced Parameters › Import</div>
+        <p>Τουλάχιστον <b>12 προϊόντα</b> με φωτογραφία, περιγραφή, τιμή και απόθεμα. Τα <b>2</b> με παραλλαγές (μέγεθος ή χρώμα, Combinations). Τα <b>6</b> να μπουν μαζικά από CSV (δείγμα στο Import › Download sample csv files › Products).</p>
+        <p class="deliv"><b>Παραδοτέο:</b> το CSV αρχείο και screenshot της λίστας προϊόντων.</p></div>
+      <div class="card"><h4>5. Αποστολή</h4>
+        <div class="path">Shipping › Carriers</div>
+        <p><b>Δύο μεταφορείς</b>: «Παραλαβή από το κατάστημα» (δωρεάν) και «Courier» με κόστος ανά κλίμακα βάρους ή αξίας για τη ζώνη Ελλάδα και <b>δωρεάν μεταφορικά πάνω από ένα ποσό</b> (Shipping › Preferences).</p>
+        <p class="deliv"><b>Παραδοτέο:</b> screenshot των κλιμάκων του courier.</p></div>
+      <div class="card"><h4>6. Πληρωμή</h4>
+        <div class="path">Payment › Payment Methods</div>
+        <p>Ενεργά τουλάχιστον: <b>τραπεζική κατάθεση</b> (με δικά σου στοιχεία λογαριασμού, επινοημένα) και <b>αντικαταβολή</b>. Στο Payment › Preferences περιόρισε την αντικαταβολή μόνο στην Ελλάδα.</p>
+        <p class="deliv"><b>Παραδοτέο:</b> screenshot των ενεργών τρόπων πληρωμής.</p></div>
+      <div class="card"><h4>7. Έκπτωση</h4>
+        <div class="path">Catalog › Discounts › Cart Rules</div>
+        <p>Ένας κανόνας καλαθιού με <b>κωδικό κουπονιού</b> (π.χ. 10 % με ελάχιστο ποσό) και ένας <b>κανόνας τιμών καταλόγου</b> (Catalog Price Rules) για μία κατηγορία ή μάρκα.</p>
+        <p class="deliv"><b>Παραδοτέο:</b> το όνομα του κουπονιού, για να το δοκιμάσω.</p></div>
+      <div class="card"><h4>8. Δοκιμαστική παραγγελία</h4>
+        <div class="path">Front office › Checkout · Orders</div>
+        <p>Κάνε μια αγορά ως πελάτης <b>από κινητό</b> μέχρι το τέλος, με το κουπόνι. Μετά, στο back office, άλλαξε την κατάστασή της σε «Payment accepted» και μετά «Shipped».</p>
+        <p class="deliv"><b>Παραδοτέο:</b> screenshot της παραγγελίας στο Orders με το ιστορικό καταστάσεων.</p></div>
+    </div>
+    <h3>Αναστοχασμός <span class="en">(1 σελίδα)</span></h3>
+    <p>Τι σε δυσκόλεψε περισσότερο και γιατί. Τι θα έλειπε ακόμη για να ανοίξει το κατάστημα αληθινά (π.χ. HTTPS και domain, σύνδεση με τράπεζα για κάρτες, τιμολόγηση και ΦΠΑ, πολιτική επιστροφών, GDPR, φωτογραφίες και περιγραφές για εκατοντάδες προϊόντα). Πού πήγε ο χρόνος σου: στο λογισμικό ή στο περιεχόμενο;</p>
+    <div class="box tip"><b>ΣΥΜΒΟΥΛΗ</b>Μην αφήσεις τα προϊόντα για το τέλος. Το στήσιμο της μηχανής παίρνει μία ώρα· οι φωτογραφίες και οι περιγραφές παίρνουν τις υπόλοιπες. Αυτό είναι και το μάθημα της εργασίας.</div>
+    <div class="nav"><button class="btn outline" data-go="5">← Πίσω</button><button class="btn navy" data-go="7">Επόμενο: Παράδοση →</button></div>
+  </section>
+
+  <!-- ============ 8 ============ -->
+  <section class="step" data-title="Παράδοση">
+    <h2>8. Παράδοση και βαθμολόγηση</h2>
+    <h3>Τι παραδίδεις στο Open eClass</h3>
+    <ul>
+      <li><b>Ένα PDF</b> (5–8 σελίδες) με: τη διεύθυνση του καταστήματος (<code>http://IP</code>) και του back office, το email και τον κωδικό <b>ενός δεύτερου λογαριασμού διαχειριστή</b> που φτιάχνεις για μένα (Advanced Parameters › Team › Add new employee, προφίλ SuperAdmin), την ιδέα (βήμα 1), τα screenshots των βημάτων 2–8, το όνομα του κουπονιού, και τον αναστοχασμό.</li>
+      <li><b>Το CSV</b> των προϊόντων.</li>
+      <li>Η μηχανή πρέπει να είναι <b>αναμμένη την εβδομάδα της βαθμολόγησης</b>· θα μπω στο κατάστημα και στο back office και θα κάνω μια παραγγελία με το κουπόνι σου.</li>
+    </ul>
+    <h3>Πώς βαθμολογείται</h3>
+    <table class="t">
+      <tr><th>Κριτήριο</th><th>Βάρος</th><th>Τι κοιτάζω</th></tr>
+      <tr><td>Το κατάστημα λειτουργεί online</td><td class="m">15 %</td><td>Ανοίγει στην IP, back office προσβάσιμο, λογαριασμός για τον διδάσκοντα</td></tr>
+      <tr><td>Ιδέα και ανταγωνισμός</td><td class="m">10 %</td><td>Συγκεκριμένο κοινό και προϊόν, 2–3 σωστά παραδείγματα</td></tr>
+      <tr><td>Κατάλογος: θέμα, κατηγορίες, μάρκες, προϊόντα</td><td class="m">30 %</td><td>Λογικό δέντρο, 12+ πλήρη προϊόντα, παραλλαγές, εισαγωγή από CSV</td></tr>
+      <tr><td>Αποστολή, πληρωμή, εκπτώσεις</td><td class="m">25 %</td><td>Δύο μεταφορείς με κλίμακες, δωρεάν από ποσό, δύο τρόποι πληρωμής, κουπόνι που δουλεύει</td></tr>
+      <tr><td>Δοκιμαστική παραγγελία</td><td class="m">10 %</td><td>Ολοκληρωμένη από κινητό, αλλαγές κατάστασης στο back office</td></tr>
+      <tr><td>Αναστοχασμός</td><td class="m">10 %</td><td>Τι έλειψε, πού πήγε ο χρόνος, τι θα άλλαζες</td></tr>
+    </table>
+    <h3>Λίστα ελέγχου πριν παραδώσεις</h3>
+    <div class="progress" id="prog"></div>
+    <div class="check" id="checklist">
+      <label><input type="checkbox" data-k="c1"><span>Το κατάστημα ανοίγει από άλλη συσκευή (π.χ. κινητό σε 4G), όχι μόνο από τον υπολογιστή μου</span></label>
+      <label><input type="checkbox" data-k="c2"><span>Το back office ανοίγει στο <code>/admin-eshop</code> και υπάρχει δεύτερος λογαριασμός SuperAdmin για τον διδάσκοντα</span></label>
+      <label><input type="checkbox" data-k="c3"><span>Έσβησα τα δείγματα προϊόντων και κατηγοριών του PrestaShop</span></label>
+      <label><input type="checkbox" data-k="c4"><span>12+ προϊόντα με φωτογραφία, περιγραφή, τιμή και απόθεμα· 2 με παραλλαγές· 6 από CSV</span></label>
+      <label><input type="checkbox" data-k="c5"><span>Δύο μεταφορείς, ζώνη Ελλάδα, κλίμακες, δωρεάν μεταφορικά από ποσό</span></label>
+      <label><input type="checkbox" data-k="c6"><span>Τραπεζική κατάθεση και αντικαταβολή ενεργές· η αντικαταβολή μόνο για Ελλάδα</span></label>
+      <label><input type="checkbox" data-k="c7"><span>Το κουπόνι δουλεύει σε δοκιμαστική παραγγελία από κινητό</span></label>
+      <label><input type="checkbox" data-k="c8"><span>Auto-shutdown ενεργό και η μηχανή θα είναι αναμμένη την εβδομάδα βαθμολόγησης</span></label>
+      <label><input type="checkbox" data-k="c9"><span>PDF και CSV ανεβασμένα στο Open eClass</span></label>
+    </div>
+    <div class="box note"><b>ΠΡΟΘΕΣΜΙΑ ΚΑΙ ΟΜΑΔΕΣ</b>Όπως θα ανακοινωθούν στο μάθημα και στο Open eClass.</div>
+    <div class="nav"><button class="btn outline" data-go="6">← Πίσω</button><span></span></div>
+  </section>
+
+  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Τα screenshots των βημάτων 1–3 είναι από την περσινή διαδικασία· οι οθόνες της Microsoft αλλάζουν συχνά, αλλά τα βήματα μένουν ίδια.</footer>
+</div>
+
+<script>
+(function(){
+  const KEY='ebusiness-week5-prestashop';
+  let state={step:0,check:{}};
+  try{const s=localStorage.getItem(KEY); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  const steps=[...document.querySelectorAll('section.step')];
+  const stepper=document.getElementById('stepper');
+  steps.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.innerHTML='<span class="n">'+(i+1)+'</span><span class="l">'+s.dataset.title+'</span>';
+    b.onclick=()=>go(i);
+    stepper.appendChild(b);
+  });
+  function go(i){
+    state.step=i; save();
+    steps.forEach((s,j)=>s.classList.toggle('active',j===i));
+    [...stepper.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(+b.dataset.go));
+
+  // copy buttons
+  document.querySelectorAll('.copy').forEach(b=>{
+    b.onclick=()=>{
+      const el=document.getElementById(b.dataset.copy);
+      const txt=[...el.childNodes].filter(n=>!(n.nodeType===1&&n.classList.contains('copy'))).map(n=>n.textContent).join('');
+      const done=()=>{b.textContent='Αντιγράφηκε'; setTimeout(()=>b.textContent='Αντιγραφή',1500);};
+      if(navigator.clipboard){navigator.clipboard.writeText(txt).then(done).catch(()=>{});}
+      else{const t=document.createElement('textarea'); t.value=txt; document.body.appendChild(t); t.select(); try{document.execCommand('copy'); done();}catch(e){} t.remove();}
+    };
+  });
+
+  // checklist
+  const boxes=[...document.querySelectorAll('#checklist input')];
+  const prog=document.getElementById('prog');
+  function upd(){
+    const n=boxes.filter(b=>b.checked).length;
+    prog.textContent=n+' / '+boxes.length+(n===boxes.length?' · έτοιμο για παράδοση':'');
+    boxes.forEach(b=>b.parentElement.classList.toggle('on',b.checked));
+    stepper.children[7].classList.toggle('done',n===boxes.length);
+  }
+  boxes.forEach(b=>{ b.checked=!!state.check[b.dataset.k]; b.onchange=()=>{state.check[b.dataset.k]=b.checked; save(); upd();}; });
+  upd();
+  go(Math.min(state.step||0,steps.length-1));
+})();
+</script>
+</body>
+</html>
