@@ -32,7 +32,7 @@
   p{margin:0 0 10px;font-size:17px}
   ul,ol{margin:0 0 10px;padding-left:24px;font-size:17px} li{margin-bottom:4px}
   .lead{font-size:19px;max-width:800px}
-  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px}
   .stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 12px;background:var(--navy);color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px;opacity:.55}
   .stepper button.active{opacity:1;outline:3px solid var(--orange)}
   .stepper button.done{opacity:.9;background:var(--green)}
@@ -85,7 +85,7 @@
   <div>
     <div class="kicker">Ηλεκτρονικό Επιχειρείν · Εβδομάδα 5 · Εργασία εξαμήνου</div>
     <h1>Το δικό σου e-shop στο cloud</h1>
-    <p class="lead" style="margin-top:10px">Η εργασία του εξαμήνου: από τον λογαριασμό στο Azure μέχρι ένα λειτουργικό ηλεκτρονικό κατάστημα με PrestaShop, που θα χτίζεις σταδιακά μέχρι το τέλος του εξαμήνου. Τα βήματα 1–6 στήνουν την υποδομή (λογαριασμός, credits, εικονική μηχανή, εγκατάσταση) και γίνονται μέσα στην πρώτη εβδομάδα· τα βήματα 7–8 είναι η ίδια η εργασία: τι φτιάχνεις μέσα στο κατάστημα, τα ορόσημα και τι παραδίδεις. Η πρόοδός σου στις λίστες ελέγχου αποθηκεύεται στον browser.</p>
+    <p class="lead" style="margin-top:10px">Η εργασία του εξαμήνου: από τον λογαριασμό στο Azure μέχρι ένα λειτουργικό ηλεκτρονικό κατάστημα με PrestaShop, που θα χτίζεις σταδιακά μέχρι το τέλος του εξαμήνου· συν ένα προαιρετικό βήμα 9 για domain και HTTPS. Τα βήματα 1–6 στήνουν την υποδομή (λογαριασμός, credits, εικονική μηχανή, εγκατάσταση) και γίνονται μέσα στην πρώτη εβδομάδα· τα βήματα 7–8 είναι η ίδια η εργασία: τι φτιάχνεις μέσα στο κατάστημα, τα ορόσημα και τι παραδίδεις. Η πρόοδός σου στις λίστες ελέγχου αποθηκεύεται στον browser.</p>
   </div>
 
   <div class="stepper" id="stepper"></div>
@@ -352,7 +352,7 @@ echo "=================================================================="</div>
     <p>Τι σε δυσκόλεψε περισσότερο και γιατί. Τι θα έλειπε ακόμη για να ανοίξει το κατάστημα αληθινά (π.χ. HTTPS και domain, σύνδεση με τράπεζα για κάρτες, τιμολόγηση και ΦΠΑ, πολιτική επιστροφών, GDPR, φωτογραφίες και περιγραφές για εκατοντάδες προϊόντα). Πού πήγε ο χρόνος σου: στο λογισμικό ή στο περιεχόμενο;</p>
     <h3>Προαιρετικά, για επιπλέον μονάδες <span class="en">(έως +15 %)</span></h3>
     <div class="grid3">
-      <div class="card"><h4>Domain και HTTPS</h4><p>Κατοχύρωσε ένα domain (ή χρησιμοποίησε δωρεάν υποτομέα) και δείξε το κατάστημα με λουκέτο. Δένει με την Εβδομάδα 3.</p></div>
+      <div class="card"><h4>Domain και HTTPS</h4><p>Δώσε στο κατάστημα όνομα αντί για IP και δείξε το με λουκέτο. Πώς: βήμα 9. Δένει με την Εβδομάδα 3.</p></div>
       <div class="card"><h4>Ελληνικά παντού</h4><p>Ελληνική γλώσσα στο front office, μεταφρασμένες κατηγορίες και προϊόντα, ευρώ και ΦΠΑ 24 % σωστά ρυθμισμένα.</p></div>
       <div class="card"><h4>Κανάλι πώλησης</h4><p>XML feed για Skroutz/BestPrice (με module ή δικό σου), ή σύνδεση με Facebook/Instagram ή Google από το Marketing.</p></div>
     </div>
@@ -402,8 +402,76 @@ echo "=================================================================="</div>
       <label><input type="checkbox" data-k="c9"><span>PDF και CSV ανεβασμένα στο Open eClass</span></label>
     </div>
     <div class="box note"><b>ΟΜΑΔΕΣ ΚΑΙ ΒΑΡΟΣ ΣΤΟΝ ΤΕΛΙΚΟ ΒΑΘΜΟ</b>Όπως θα ανακοινωθούν στο μάθημα και στο Open eClass.</div>
-    <div class="nav"><button class="btn outline" data-go="6">← Πίσω</button><span></span></div>
+    <div class="nav"><button class="btn outline" data-go="6">← Πίσω</button><button class="btn navy" data-go="8">Προαιρετικά: Domain και HTTPS →</button></div>
   </section>
+
+  <!-- ============ 9 ============ -->
+  <section class="step" data-title="Domain και HTTPS">
+    <h2>9. Προαιρετικά: domain και HTTPS</h2>
+    <p>Μέχρι εδώ το κατάστημα ανοίγει σε μια IP. Ένα κανονικό κατάστημα έχει <b>όνομα</b> (η Εβδομάδα 3) και <b>λουκέτο</b> (HTTPS). Και τα δύο είναι προαιρετικά για την εργασία και δίνουν επιπλέον μονάδες. Υπάρχουν τρεις δρόμοι για το όνομα, από τον πιο εύκολο στον πιο «πραγματικό».</p>
+    <div class="grid3">
+      <div class="card"><h4>Α. Το DNS name του Azure</h4><p class="deliv"><b>Δωρεάν, 1 λεπτό, χωρίς κατοχύρωση</b></p>
+        <p>Στην οθόνη της VM, δίπλα στο «DNS name: Not configured», πάτα <b>Configure</b>. Στο «DNS name label» γράψε ένα όνομα, π.χ. <code>maria-eshop</code>, και <b>Apply</b>. Το κατάστημα αποκτά τη διεύθυνση <code>maria-eshop.spaincentral.cloudapp.azure.com</code>, που δένει μόνιμα με τη μηχανή σου.</p>
+        <p>Αν το πεδίο δεν δέχεται κείμενο (μας συνέβη), άνοιξε το <b>Cloud Shell</b> (εικονίδιο τερματικού πάνω δεξιά, Bash, χωρίς storage) και δώσε: <code>az network public-ip update -g eshop-rg -n eshop-ip --dns-name maria-eshop</code></p>
+        <p>Αρκεί και με το παραπάνω για την εργασία. Δεν διδάσκει όμως την κατοχύρωση.</p></div>
+      <div class="card"><h4>Β. Δωρεάν domain για φοιτητές</h4><p class="deliv"><b>Δωρεάν για 1 χρόνο, κανονική κατοχύρωση</b></p>
+        <p>Το <a href="https://education.github.com/pack" target="_blank" rel="noopener">GitHub Student Developer Pack</a> (εγγραφή με το @uom.edu.gr, έγκριση σε 1–7 ημέρες) δίνει ένα <b>.me</b> από τη Namecheap με πιστοποιητικό SSL, ένα <b>.tech</b>, ή ένα από τη Name.com (.app, .dev, .live…).</p>
+        <p>Κατοχυρώνεις το όνομα, μπαίνεις στο DNS του καταχωρητή και φτιάχνεις εγγραφή <b>A</b> με host <code>@</code> (και μία για <code>www</code>) προς την IP της μηχανής. Μέχρι να «περάσει» το DNS: 5 λεπτά έως λίγες ώρες.</p></div>
+      <div class="card"><h4>Γ. Ένα .gr με λίγα ευρώ</h4><p class="deliv"><b>Περίπου 10–15 € για 2 χρόνια</b></p>
+        <p>Μέσω ελληνικού καταχωρητή (π.χ. Papaki, Pointer). Το .gr κατοχυρώνεται ανά διετία. Ίδια ρύθμιση DNS με το Β.</p>
+        <p>Αξίζει μόνο αν θες πραγματικά ελληνικό όνομα· για την εργασία είναι περιττό έξοδο.</p></div>
+    </div>
+    <h3>Και στις τρεις περιπτώσεις: πες το και στο PrestaShop</h3>
+    <p>Το PrestaShop «θυμάται» τη διεύθυνση με την οποία εγκαταστάθηκε (την IP) και ανακατευθύνει εκεί. Μόλις το νέο όνομα ανοίγει τη μηχανή σου, άλλαξέ το από το back office: <b>Shop Parameters › Traffic &amp; SEO › Set shop URL</b>, πεδία Shop domain και SSL domain. Ή με μία εντολή από το Run command (βάλε το δικό σου όνομα):</p>
+    <div class="codeblock" id="setdomain"><button class="copy" data-copy="setdomain">Αντιγραφή</button>D="maria-eshop.spaincentral.cloudapp.azure.com"; cd /opt/eshop &amp;&amp; docker compose exec -T db mariadb -uroot -pprestashop prestashop -e "update ps_shop_url set domain='$D', domain_ssl='$D'; update ps_configuration set value='$D' where name in ('PS_SHOP_DOMAIN','PS_SHOP_DOMAIN_SSL')"</div>
+    <h3>HTTPS: το λουκέτο, δωρεάν</h3>
+    <p>Με δικό σου όνομα (οποιοδήποτε από τα Α, Β, Γ) μπορείς να πάρεις δωρεάν πιστοποιητικό από το <b>Let's Encrypt</b>. Στο στήσιμό μας αυτό γίνεται βάζοντας μπροστά από το PrestaShop έναν μικρό server, τον <b>Caddy</b>, που ζητά το πιστοποιητικό μόνος του και το ανανεώνει αυτόματα. Δύο βήματα:</p>
+    <ol class="steps-ol">
+      <li><div>Άνοιξε τη θύρα <b>443</b> στη μηχανή: VM › Networking › Network settings › <b>Create port rule › Inbound</b>, Service: <b>HTTPS</b>, Add.</div></li>
+      <li><div>Τρέξε από το Run command το παρακάτω, αφού αλλάξεις την πρώτη γραμμή στο δικό σου όνομα. Σε 1–2 λεπτά το κατάστημα ανοίγει με <code>https://</code> και λουκέτο· το <code>http://</code> ανακατευθύνει μόνο του.</div></li>
+    </ol>
+    <div class="codeblock" id="https"><button class="copy" data-copy="https">Αντιγραφή</button><span class="hl">DOMAIN="uom-eshop-demo.spaincentral.cloudapp.azure.com"   # ΑΛΛΑΞΤΕ ΤΟ: το δικό σας όνομα</span>
+# -------------------------------------------------------------------------------------------
+set -e
+cd /opt/eshop
+# 1) Το PrestaShop ακούει μόνο τοπικά, στη θύρα 8080· μπροστά του μπαίνει ο Caddy
+sed -i 's/      - "80:80"/      - "127.0.0.1:8080:80"/' compose.yaml
+# 2) Προσθήκη του Caddy στα services (πριν από το "volumes:") και του volume του
+if ! grep -q 'image: caddy' compose.yaml; then
+python3 - &lt;&lt;'PY'
+s=open('compose.yaml').read()
+caddy='''  caddy:
+    image: caddy:2
+    restart: always
+    network_mode: host
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddydata:/data
+'''
+i=s.index('\nvolumes:\n')
+s=s[:i+1]+caddy+s[i+1:]
+if not s.rstrip().endswith('caddydata:'): s=s.rstrip('\n')+'\n  caddydata:\n'
+open('compose.yaml','w').write(s)
+PY
+fi
+cat &gt; Caddyfile &lt;&lt;EOC
+$DOMAIN {
+    reverse_proxy 127.0.0.1:8080 {
+        header_up X-Forwarded-Proto https
+    }
+}
+EOC
+# 3) Το PrestaShop μαθαίνει το νέο όνομα και ότι έχει SSL
+docker compose exec -T db mariadb -uroot -pprestashop prestashop -e "update ps_shop_url set domain='$DOMAIN', domain_ssl='$DOMAIN'; update ps_configuration set value='$DOMAIN' where name in ('PS_SHOP_DOMAIN','PS_SHOP_DOMAIN_SSL'); update ps_configuration set value='1' where name in ('PS_SSL_ENABLED','PS_SSL_ENABLED_EVERYWHERE');"
+docker compose up -d
+echo "Σε 1-2 λεπτά: https://$DOMAIN"</div>
+    <p style="font-size:15px;color:var(--gray)">Το ίδιο ως αρχείο: <a href="enable-https.sh" download>enable-https.sh</a>. Από το Cloud Shell τρέχει και με μία γραμμή, χωρίς αντιγραφή: <code>az vm run-command invoke -g eshop-rg -n eshop --command-id RunShellScript --scripts 'curl -fsSL https://kalampokis.github.io/ebusiness/Week5/enable-https.sh -o /opt/h.sh &amp;&amp; sed -i "s/^DOMAIN=.*/DOMAIN=maria-eshop.spaincentral.cloudapp.azure.com/" /opt/h.sh &amp;&amp; bash /opt/h.sh'</code></p>
+    <figure><img src="img/vm_https_home.jpg" alt="Το κατάστημα με HTTPS στο DNS name του Azure"><figcaption>Το ίδιο κατάστημα, τώρα με όνομα και λουκέτο (δοκιμάστηκε 21/10/2026)</figcaption></figure>
+    <div class="box note"><b>ΓΙΑΤΙ ΔΟΥΛΕΥΕΙ</b>Το Let's Encrypt δίνει πιστοποιητικό μόνο σε όποιον αποδείξει ότι ελέγχει το όνομα: ο Caddy απαντά σε μια «πρόκληση» στη θύρα 80 και 443 του ονόματός σου. Γι' αυτό χρειάζεται όνομα και όχι σκέτη IP, και γι' αυτό πρέπει να είναι ανοιχτή η 443.</div>
+    <div class="box tip"><b>ΑΝ ΔΕΝ ΒΓΕΙ ΛΟΥΚΕΤΟ</b>Έλεγξε με τη σειρά: ανοίγει το όνομα σε <code>http://</code>; (DNS) · είναι η 443 στους inbound rules; · τι λέει <code>cd /opt/eshop &amp;&amp; docker compose logs --tail 30 caddy</code>.</div>
+    <div class="nav"><button class="btn outline" data-go="7">← Πίσω</button><span></span></div>
+  </section>
+
 
   <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Τα βήματα 4–6 δοκιμάστηκαν σε πραγματικό λογαριασμό Azure for Students τον Οκτώβριο του 2026· τα screenshots της εγγραφής (βήματα 1–2) είναι από την περσινή διαδικασία, που είναι ίδια.</footer>
 </div>
