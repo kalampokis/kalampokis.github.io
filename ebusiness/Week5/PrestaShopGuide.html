@@ -411,7 +411,8 @@ echo "=================================================================="</div>
     <p>Μέχρι εδώ το κατάστημα ανοίγει σε μια IP. Ένα κανονικό κατάστημα έχει <b>όνομα</b> (η Εβδομάδα 3) και <b>λουκέτο</b> (HTTPS). Και τα δύο είναι προαιρετικά για την εργασία και δίνουν επιπλέον μονάδες. Υπάρχουν τρεις δρόμοι για το όνομα, από τον πιο εύκολο στον πιο «πραγματικό».</p>
     <div class="grid3">
       <div class="card"><h4>Α. Το DNS name του Azure</h4><p class="deliv"><b>Δωρεάν, 1 λεπτό, χωρίς κατοχύρωση</b></p>
-        <p>Στην οθόνη της VM, δίπλα στο «DNS name: Not configured», πάτα <b>Configure</b> (ή: ο πόρος <code>eshop-ip</code> › Configuration). Στο «DNS name label» γράψε ένα όνομα, π.χ. <code>maria-eshop</code>, και <b>Apply</b>. Το κατάστημα αποκτά τη διεύθυνση <code>maria-eshop.spaincentral.cloudapp.azure.com</code>, που δένει μόνιμα με τη μηχανή σου.</p>
+        <p>Στην οθόνη της VM, δίπλα στο «DNS name: Not configured», πάτα <b>Configure</b>. Στο «DNS name label» γράψε ένα όνομα, π.χ. <code>maria-eshop</code>, και <b>Apply</b>. Το κατάστημα αποκτά τη διεύθυνση <code>maria-eshop.spaincentral.cloudapp.azure.com</code>, που δένει μόνιμα με τη μηχανή σου.</p>
+        <p>Αν το πεδίο δεν δέχεται κείμενο (μας συνέβη), άνοιξε το <b>Cloud Shell</b> (εικονίδιο τερματικού πάνω δεξιά, Bash, χωρίς storage) και δώσε: <code>az network public-ip update -g eshop-rg -n eshop-ip --dns-name maria-eshop</code></p>
         <p>Αρκεί και με το παραπάνω για την εργασία. Δεν διδάσκει όμως την κατοχύρωση.</p></div>
       <div class="card"><h4>Β. Δωρεάν domain για φοιτητές</h4><p class="deliv"><b>Δωρεάν για 1 χρόνο, κανονική κατοχύρωση</b></p>
         <p>Το <a href="https://education.github.com/pack" target="_blank" rel="noopener">GitHub Student Developer Pack</a> (εγγραφή με το @uom.edu.gr, έγκριση σε 1–7 ημέρες) δίνει ένα <b>.me</b> από τη Namecheap με πιστοποιητικό SSL, ένα <b>.tech</b>, ή ένα από τη Name.com (.app, .dev, .live…).</p>
@@ -429,22 +430,30 @@ echo "=================================================================="</div>
       <li><div>Άνοιξε τη θύρα <b>443</b> στη μηχανή: VM › Networking › Network settings › <b>Create port rule › Inbound</b>, Service: <b>HTTPS</b>, Add.</div></li>
       <li><div>Τρέξε από το Run command το παρακάτω, αφού αλλάξεις την πρώτη γραμμή στο δικό σου όνομα. Σε 1–2 λεπτά το κατάστημα ανοίγει με <code>https://</code> και λουκέτο· το <code>http://</code> ανακατευθύνει μόνο του.</div></li>
     </ol>
-    <div class="codeblock" id="https"><button class="copy" data-copy="https">Αντιγραφή</button># ---- Προαιρετικό: HTTPS με Caddy (Let's Encrypt). ΑΛΛΑΞΕ το DOMAIN.
-<span class="hl">DOMAIN="uom-eshop-demo.spaincentral.cloudapp.azure.com"   # το δικό σου όνομα</span>
+    <div class="codeblock" id="https"><button class="copy" data-copy="https">Αντιγραφή</button><span class="hl">DOMAIN="uom-eshop-demo.spaincentral.cloudapp.azure.com"   # ΑΛΛΑΞΤΕ ΤΟ: το δικό σας όνομα</span>
+# -------------------------------------------------------------------------------------------
+set -e
 cd /opt/eshop
-# 1) το PrestaShop να ακούει μόνο τοπικά στη θύρα 8080
+# 1) Το PrestaShop ακούει μόνο τοπικά, στη θύρα 8080· μπροστά του μπαίνει ο Caddy
 sed -i 's/      - "80:80"/      - "127.0.0.1:8080:80"/' compose.yaml
-# 2) Caddy: παίρνει μόνο του πιστοποιητικό και προωθεί στο PrestaShop
-grep -q 'image: caddy' compose.yaml || cat &gt;&gt; compose.yaml &lt;&lt;EOC
-  caddy:
+# 2) Προσθήκη του Caddy στα services (πριν από το "volumes:") και του volume του
+if ! grep -q 'image: caddy' compose.yaml; then
+python3 - &lt;&lt;'PY'
+s=open('compose.yaml').read()
+caddy='''  caddy:
     image: caddy:2
     restart: always
     network_mode: host
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddydata:/data
-EOC
-grep -q '^  caddydata:' compose.yaml || echo '  caddydata:' &gt;&gt; compose.yaml
+'''
+i=s.index('\nvolumes:\n')
+s=s[:i+1]+caddy+s[i+1:]
+if not s.rstrip().endswith('caddydata:'): s=s.rstrip('\n')+'\n  caddydata:\n'
+open('compose.yaml','w').write(s)
+PY
+fi
 cat &gt; Caddyfile &lt;&lt;EOC
 $DOMAIN {
     reverse_proxy 127.0.0.1:8080 {
@@ -452,12 +461,12 @@ $DOMAIN {
     }
 }
 EOC
-# 3) το PrestaShop να ξέρει το νέο όνομα και ότι έχει SSL
+# 3) Το PrestaShop μαθαίνει το νέο όνομα και ότι έχει SSL
 docker compose exec -T db mariadb -uroot -pprestashop prestashop -e "update ps_shop_url set domain='$DOMAIN', domain_ssl='$DOMAIN'; update ps_configuration set value='$DOMAIN' where name in ('PS_SHOP_DOMAIN','PS_SHOP_DOMAIN_SSL'); update ps_configuration set value='1' where name in ('PS_SSL_ENABLED','PS_SSL_ENABLED_EVERYWHERE');"
 docker compose up -d
-echo "Σε 1-2 λεπτά: https://$DOMAIN"
-</div>
-    <p style="font-size:15px;color:var(--gray)">Το ίδιο ως αρχείο: <a href="enable-https.sh" download>enable-https.sh</a>.</p>
+echo "Σε 1-2 λεπτά: https://$DOMAIN"</div>
+    <p style="font-size:15px;color:var(--gray)">Το ίδιο ως αρχείο: <a href="enable-https.sh" download>enable-https.sh</a>. Από το Cloud Shell τρέχει και με μία γραμμή, χωρίς αντιγραφή: <code>az vm run-command invoke -g eshop-rg -n eshop --command-id RunShellScript --scripts 'curl -fsSL https://kalampokis.github.io/ebusiness/Week5/enable-https.sh -o /opt/h.sh &amp;&amp; sed -i "s/^DOMAIN=.*/DOMAIN=maria-eshop.spaincentral.cloudapp.azure.com/" /opt/h.sh &amp;&amp; bash /opt/h.sh'</code></p>
+    <figure><img src="img/vm_https_home.jpg" alt="Το κατάστημα με HTTPS στο DNS name του Azure"><figcaption>Το ίδιο κατάστημα, τώρα με όνομα και λουκέτο (δοκιμάστηκε 21/10/2026)</figcaption></figure>
     <div class="box note"><b>ΓΙΑΤΙ ΔΟΥΛΕΥΕΙ</b>Το Let's Encrypt δίνει πιστοποιητικό μόνο σε όποιον αποδείξει ότι ελέγχει το όνομα: ο Caddy απαντά σε μια «πρόκληση» στη θύρα 80 και 443 του ονόματός σου. Γι' αυτό χρειάζεται όνομα και όχι σκέτη IP, και γι' αυτό πρέπει να είναι ανοιχτή η 443.</div>
     <div class="box tip"><b>ΑΝ ΔΕΝ ΒΓΕΙ ΛΟΥΚΕΤΟ</b>Έλεγξε με τη σειρά: ανοίγει το όνομα σε <code>http://</code>; (DNS) · είναι η 443 στους inbound rules; · τι λέει <code>cd /opt/eshop &amp;&amp; docker compose logs --tail 30 caddy</code>.</div>
     <div class="nav"><button class="btn outline" data-go="7">← Πίσω</button><span></span></div>
