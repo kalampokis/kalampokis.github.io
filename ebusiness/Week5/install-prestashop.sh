@@ -51,9 +51,6 @@ services:
       DB_NAME: prestashop
       PS_INSTALL_AUTO: 1
       PS_DOMAIN: ${IP:-localhost}
-      PS_HANDLE_DYNAMIC_DOMAIN: 1
-      PS_FOLDER_ADMIN: admin-eshop
-      PS_FOLDER_INSTALL: install-eshop
       PS_COUNTRY: GR
       PS_LANGUAGE: en
       ADMIN_MAIL: $ADMIN_MAIL
@@ -71,7 +68,7 @@ docker compose up -d
 echo
 echo "=================================================================="
 echo "  Κατάστημα (front office):  http://$IP"
-echo "  Διαχείριση (back office):  http://$IP/admin-eshop"
+echo "  Διαχείριση (back office):  http://$IP/admin-dev"
 echo "  Email: $ADMIN_MAIL"
 echo "  Περιμένετε 5-10 λεπτά πριν ανοίξετε τη διεύθυνση."
 echo "=================================================================="
