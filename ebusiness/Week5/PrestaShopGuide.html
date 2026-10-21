@@ -229,9 +229,6 @@ services:
       DB_NAME: prestashop
       PS_INSTALL_AUTO: 1
       PS_DOMAIN: ${IP:-localhost}
-      PS_HANDLE_DYNAMIC_DOMAIN: 1
-      PS_FOLDER_ADMIN: admin-eshop
-      PS_FOLDER_INSTALL: install-eshop
       PS_COUNTRY: GR
       PS_LANGUAGE: en
       ADMIN_MAIL: $ADMIN_MAIL
@@ -246,7 +243,7 @@ echo ">>> 4/4 Εκκίνηση (το κατέβασμα και η εγκατάσ
 docker compose up -d
 echo "=================================================================="
 echo "  Κατάστημα (front office):  http://$IP"
-echo "  Διαχείριση (back office):  http://$IP/admin-eshop"
+echo "  Διαχείριση (back office):  http://$IP/admin-dev"
 echo "  Email: $ADMIN_MAIL"
 echo "  Περιμένετε 5-10 λεπτά πριν ανοίξετε τη διεύθυνση."
 echo "=================================================================="</div>
@@ -255,7 +252,7 @@ echo "=================================================================="</div>
     <ul>
       <li><b>Docker</b>: ένας τρόπος να τρέχουν έτοιμα «πακέτα» λογισμικού (containers) χωρίς να εγκαθιστάς PHP, Apache και MySQL ένα-ένα.</li>
       <li><b>compose.yaml</b>: η περιγραφή των δύο containers, του PrestaShop και της βάσης MariaDB, και πώς συνδέονται.</li>
-      <li><b>PS_INSTALL_AUTO</b>: το PrestaShop εγκαθίσταται μόνο του, με χώρα Ελλάδα, τον δικό σου κωδικό διαχειριστή και φάκελο διαχείρισης <code>admin-eshop</code>.</li>
+      <li><b>PS_INSTALL_AUTO</b>: το PrestaShop εγκαθίσταται μόνο του, με χώρα Ελλάδα, τον δικό σου κωδικό διαχειριστή και φάκελο διαχείρισης <code>admin-dev</code>.</li>
     </ul>
     <h3>Έλεγχος προόδου</h3>
     <p>Αν μετά από 10 λεπτά η διεύθυνση δεν ανοίγει, τρέξε από το ίδιο Run command το παρακάτω και διάβασε τις τελευταίες γραμμές: όσο γράφει «Installing PrestaShop» περίμενε· αν γράφει «installation failed», στείλε μου την έξοδο.</p>
@@ -274,7 +271,7 @@ echo "=================================================================="</div>
       </div>
       <div class="card">
         <h4>Η διαχείριση <span class="en">(back office)</span></h4>
-        <p>Άνοιξε <code>http://&lt;η IP σου&gt;/admin-eshop</code> και μπες με το email και τον κωδικό που έβαλες στο σκριπτ. Από εδώ γίνονται όλα όσα είδαμε στην Εβδομάδα 4.</p>
+        <p>Άνοιξε <code>http://&lt;η IP σου&gt;/admin-dev</code> και μπες με το email και τον κωδικό που έβαλες στο σκριπτ. Από εδώ γίνονται όλα όσα είδαμε στην Εβδομάδα 4.</p>
       </div>
     </div>
     <h3>Τρία πράγματα να κάνεις αμέσως</h3>
@@ -375,7 +372,7 @@ echo "=================================================================="</div>
     <div class="progress" id="prog"></div>
     <div class="check" id="checklist">
       <label><input type="checkbox" data-k="c1"><span>Το κατάστημα ανοίγει από άλλη συσκευή (π.χ. κινητό σε 4G), όχι μόνο από τον υπολογιστή μου</span></label>
-      <label><input type="checkbox" data-k="c2"><span>Το back office ανοίγει στο <code>/admin-eshop</code> και υπάρχει δεύτερος λογαριασμός SuperAdmin για τον διδάσκοντα</span></label>
+      <label><input type="checkbox" data-k="c2"><span>Το back office ανοίγει στο <code>/admin-dev</code> και υπάρχει δεύτερος λογαριασμός SuperAdmin για τον διδάσκοντα</span></label>
       <label><input type="checkbox" data-k="c3"><span>Έσβησα τα δείγματα προϊόντων και κατηγοριών του PrestaShop</span></label>
       <label><input type="checkbox" data-k="c4"><span>12+ προϊόντα με φωτογραφία, περιγραφή, τιμή και απόθεμα· 2 με παραλλαγές· 6 από CSV</span></label>
       <label><input type="checkbox" data-k="c5"><span>Δύο μεταφορείς, ζώνη Ελλάδα, κλίμακες, δωρεάν μεταφορικά από ποσό</span></label>
