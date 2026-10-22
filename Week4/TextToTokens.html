@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7KW3PRQVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-R7KW3PRQVZ');
+</script>
+<title>From Text to Tokens · Web and Text Analytics</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1B2F6B;--navy2:#26314F;--muted:#5A6385;--tint:#EEF1FE;--green:#1e7a4c;--greenbg:#E6F4EC;--red:#b3261e;--redbg:#FBEAEA;--hl:#ffe27a;--line:#C9D0EE;--bg:#ffffff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--navy);font-family:Arial,Helvetica,sans-serif}
+a{color:var(--green)}a:hover{color:#15513d}
+.wrap{min-height:100vh;padding:40px 32px 64px}
+.col{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+h1{margin:8px 0 0;font-family:Georgia,serif;font-weight:700;font-size:40px;line-height:1.1}
+.stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px}
+.stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:9px 12px;color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.stepper .n{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px}
+.stepper .l{font-size:13px;line-height:1.25}
+.task{margin:0;font-size:20px;line-height:1.4;max-width:800px}
+.sub{font-size:15px;color:var(--muted);line-height:1.45}
+.lab{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.12em;color:var(--green);text-transform:uppercase}
+.box{display:flex;flex-direction:column;gap:12px}
+.sep{border-top:2px solid var(--navy);padding-top:20px}
+input.rx,textarea{font-family:'JetBrains Mono',monospace;font-size:20px;padding:12px 14px;border:2px solid var(--navy);border-radius:8px;background:var(--tint);outline:none;color:var(--navy);width:100%}
+textarea{font-size:16px;min-height:90px;resize:vertical;font-family:Arial,Helvetica,sans-serif}
+input.num{font-family:'JetBrains Mono',monospace;font-size:18px;width:90px;padding:8px 10px;border:2px solid var(--navy);border-radius:8px;background:var(--tint);color:var(--navy)}
+select{font:inherit;font-size:15px;padding:8px 10px;border:2px solid var(--navy);border-radius:8px;background:var(--tint);color:var(--navy)}
+.status{min-height:22px;font-size:15px;font-weight:500}
+.ok{color:var(--green)}.bad{color:var(--red)}
+.row{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:10px 14px;background:#fff}
+.row.pass{background:var(--greenbg);border-color:var(--green)}.row.fail{background:var(--redbg);border-color:var(--red)}
+.icon{font-family:'JetBrains Mono',monospace;font-weight:700;width:18px;flex:none}
+.mono{font-family:'JetBrains Mono',monospace}
+.tw{font-family:'JetBrains Mono',monospace;font-size:15px;white-space:pre-wrap;word-break:break-word;line-height:1.55}
+.m{background:var(--hl);border-radius:3px}
+.small{font-size:13px;color:var(--muted)}
+.btn{font:inherit;font-size:15px;padding:10px 18px;border:2px solid var(--navy);border-radius:8px;background:transparent;cursor:pointer;color:var(--navy)}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy);font-size:16px;padding:12px 22px}
+.btn:disabled{opacity:.4;cursor:default}
+.hint{font-size:16px;background:var(--tint);border:1px dashed var(--navy);border-radius:8px;padding:9px 14px}
+.opt{text-align:left;font:inherit;font-size:17px;padding:13px 16px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--navy);cursor:pointer;width:100%}
+.opt.right{background:var(--greenbg);border-color:var(--green)}.opt.wrong{background:var(--redbg);border-color:var(--red)}
+pre.sol{margin:0;font-family:'JetBrains Mono',monospace;font-size:18px;background:var(--tint);border:2px solid var(--green);border-radius:8px;padding:12px 16px;overflow:auto;white-space:pre-wrap}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-family:'JetBrains Mono',monospace;font-size:15px;padding:3px 7px;border-radius:5px;background:var(--tint);border:1px solid var(--line);white-space:pre}
+.chip.alt{background:#FFF4D6;border-color:#E9CF85}
+.chip.gone{text-decoration:line-through;opacity:.45}
+.chip.sel{background:var(--navy);color:#fff;border-color:var(--navy)}
+button.chip{cursor:pointer}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.card{border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#fff}
+table{border-collapse:collapse;font-size:15px;width:100%}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+th{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;font-weight:500}
+td.r,th.r{text-align:right}
+.stat{display:flex;gap:28px;flex-wrap:wrap}
+.stat div b{display:block;font-family:Georgia,serif;font-size:34px}
+.toggle{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.toggle .k{width:120px;font-size:15px}
+.seg{font:inherit;font-size:14px;padding:7px 12px;border:2px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy);cursor:pointer}
+.seg.on{background:var(--navy);color:#fff}
+.done{font-size:18px;font-weight:700;color:var(--green)}
+.pager{display:flex;align-items:center;justify-content:center;gap:6px;align-self:center;background:var(--navy);color:#fff;border-radius:999px;padding:6px 10px;margin-top:8px}
+.pager button{font:inherit;font-size:22px;line-height:1;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:#fff;cursor:pointer}
+.pager span{font-family:'JetBrains Mono',monospace;font-size:15px;min-width:64px;text-align:center}
+@media (max-width:600px){.wrap{padding:24px 16px 48px}h1{font-size:30px}.task{font-size:18px}.toggle .k{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="col">
+  <div>
+    <div class="kicker">Web and Text Analytics · Week 4 · From text to tokens</div>
+    <h1 id="title"></h1>
+  </div>
+  <div class="stepper" id="stepper"></div>
+  <div id="stage"></div>
+  <div class="pager">
+    <button id="prev" aria-label="Previous step">‹</button>
+    <span id="pos"></span>
+    <button id="next" aria-label="Next step">›</button>
+  </div>
+</div></div>
+
+<script>
+const DATA = {"tweets": [{"raw": "Check out Email Marketing 24/7:  http://t.co/O5fjR7oEqk you won't regret if you buy it :)", "clean": "Check out Email Marketing 24/7: you won't regret if you buy it :)"}, {"raw": "Our new product line is in our #etsy shop now! Check it out :) http://t.co/h8exCTLQxg #boxroomcrafts", "clean": "Our new product line is in our #etsy shop now! Check it out :) #boxroomcrafts"}, {"raw": "Manila_bro has chosen to follow me on Twitter! http://t.co/lKXZWXN1fb. Thanks for the follow :)", "clean": "Manila_bro has chosen to follow me on Twitter! . Thanks for the follow :)"}, {"raw": "https://t.co/gYx34VfmkK and I  probably only find this funny at 2:22 am :-)", "clean": "and I probably only find this funny at 2:22 am :-)"}, {"raw": "@Derek_GTA Hi Derek, you could try using ParkShare in Gloucestershire http://t.co/qIF9AyAlkc :)", "clean": "@Derek_GTA Hi Derek, you could try using ParkShare in Gloucestershire :)"}], "tok_sentence": "Check out Email Marketing 24/7: you won't regret if you buy it :)", "tok": {"split": ["Check", "out", "Email", "Marketing", "24/7:", "you", "won't", "regret", "if", "you", "buy", "it", ":)"], "word_tokenize": ["Check", "out", "Email", "Marketing", "24/7", ":", "you", "wo", "n't", "regret", "if", "you", "buy", "it", ":", ")"], "TweetTokenizer": ["Check", "out", "Email", "Marketing", "24/7", ":", "you", "won't", "regret", "if", "you", "buy", "it", ":)"], "GPT-4o (o200k)": ["Check", " out", " Email", " Marketing", " ", "24", "/", "7", ":", " you", " won", "'t", " regret", " if", " you", " buy", " it", " :)"]}, "bpe": {"play": 93, "played": 22, "player": 379, "players": 57, "playing": 30, "plays": 31, "use": 219, "used": 82, "uses": 12, "using": 78, "user": 29, "users": 7}, "stop": {"list": ["a", "about", "above", "after", "again", "against", "ain", "all", "am", "an", "and", "any", "are", "aren", "aren't", "as", "at", "be", "because", "been", "before", "being", "below", "between", "both", "but", "by", "can", "couldn", "couldn't", "d", "did", "didn", "didn't", "do", "does", "doesn", "doesn't", "doing", "don", "don't", "down", "during", "each", "few", "for", "from", "further", "had", "hadn", "hadn't", "has", "hasn", "hasn't", "have", "haven", "haven't", "having", "he", "he'd", "he'll", "her", "here", "hers", "herself", "he's", "him", "himself", "his", "how", "i", "i'd", "if", "i'll", "i'm", "in", "into", "is", "isn", "isn't", "it", "it'd", "it'll", "it's", "its", "itself", "i've", "just", "ll", "m", "ma", "me", "mightn", "mightn't", "more", "most", "mustn", "mustn't", "my", "myself", "needn", "needn't", "no", "nor", "not", "now", "o", "of", "off", "on", "once", "only", "or", "other", "our", "ours", "ourselves", "out", "over", "own", "re", "s", "same", "shan", "shan't", "she", "she'd", "she'll", "she's", "should", "shouldn", "shouldn't", "should've", "so", "some", "such", "t", "than", "that", "that'll", "the", "their", "theirs", "them", "themselves", "then", "there", "these", "they", "they'd", "they'll", "they're", "they've", "this", "those", "through", "to", "too", "under", "until", "up", "ve", "very", "was", "wasn", "wasn't", "we", "we'd", "we'll", "we're", "were", "weren", "weren't", "we've", "what", "when", "where", "which", "while", "who", "whom", "why", "will", "with", "won", "won't", "wouldn", "wouldn't", "y", "you", "you'd", "you'll", "your", "you're", "yours", "yourself", "yourselves", "you've"], "reviews": [{"text": "I did not get a Sim card with phone", "tokens": ["i", "did", "not", "get", "a", "sim", "card", "with", "phone"]}, {"text": "Never going back to Android or Windows phone. Super reliable and simple to use.", "tokens": ["never", "going", "back", "to", "android", "or", "windows", "phone", "super", "reliable", "and", "simple", "to", "use"]}, {"text": "I don't even know if I got the 32 gig for that matter.", "tokens": ["i", "do", "n't", "even", "know", "if", "i", "got", "the", "32", "gig", "for", "that", "matter"]}, {"text": "Verizon indicates that the phone is not compatible with their system", "tokens": ["verizon", "indicates", "that", "the", "phone", "is", "not", "compatible", "with", "their", "system"]}, {"text": "No scratches dings or dents! Plus is 32g! my kid is loving it!", "tokens": ["no", "scratches", "dings", "or", "dents", "plus", "is", "32g", "my", "kid", "is", "loving", "it"]}, {"text": "Nokia does not disappoint in this model.", "tokens": ["nokia", "does", "not", "disappoint", "in", "this", "model"]}, {"text": "When talking the voice is not very clear.", "tokens": ["when", "talking", "the", "voice", "is", "not", "very", "clear"]}, {"text": "I still have about 38 GB of free space! I am EXTREMELY pleased!", "tokens": ["i", "still", "have", "about", "38", "gb", "of", "free", "space", "i", "am", "extremely", "pleased"]}]}, "stem": [{"w": "batteries", "pos": "n", "porter": "batteri", "lemma_nopos": "battery", "lemma": "battery"}, {"w": "charging", "pos": "v", "porter": "charg", "lemma_nopos": "charging", "lemma": "charge"}, {"w": "happiness", "pos": "n", "porter": "happi", "lemma_nopos": "happiness", "lemma": "happiness"}, {"w": "was", "pos": "v", "porter": "wa", "lemma_nopos": "wa", "lemma": "be"}, {"w": "better", "pos": "a", "porter": "better", "lemma_nopos": "better", "lemma": "good"}, {"w": "ran", "pos": "v", "porter": "ran", "lemma_nopos": "ran", "lemma": "run"}, {"w": "running", "pos": "v", "porter": "run", "lemma_nopos": "running", "lemma": "run"}, {"w": "reviews", "pos": "n", "porter": "review", "lemma_nopos": "review", "lemma": "review"}, {"w": "university", "pos": "n", "porter": "univers", "lemma_nopos": "university", "lemma": "university"}, {"w": "universe", "pos": "n", "porter": "univers", "lemma_nopos": "universe", "lemma": "universe"}, {"w": "generous", "pos": "a", "porter": "gener", "lemma_nopos": "generous", "lemma": "generous"}, {"w": "generation", "pos": "n", "porter": "gener", "lemma_nopos": "generation", "lemma": "generation"}, {"w": "organ", "pos": "n", "porter": "organ", "lemma_nopos": "organ", "lemma": "organ"}, {"w": "organization", "pos": "n", "porter": "organ", "lemma_nopos": "organization", "lemma": "organization"}], "pairs": [{"a": "university", "b": "universe", "sa": "univers", "sb": "univers"}, {"a": "batteries", "b": "battery", "sa": "batteri", "sb": "batteri"}, {"a": "generous", "b": "generation", "sa": "gener", "sb": "gener"}, {"a": "reviews", "b": "review", "sa": "review", "sb": "review"}, {"a": "organization", "b": "organ", "sa": "organ", "sb": "organ"}, {"a": "ran", "b": "running", "sa": "ran", "sb": "run"}, {"a": "charging", "b": "charger", "sa": "charg", "sb": "charger"}], "texts": {"en": "All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood.", "el": "'Ολοι οι άνθρωποι γεννιούνται ελεύθεροι και ίσοι στην αξιοπρέπεια και τα δικαιώματα. Είναι προικισμένοι με λογική και συνείδηση, και οφείλουν να συμπεριφέρονται μεταξύ τους με πνεύμα αδελφοσύνης."}, "gpt": {"en": {"r50k": {"n": 33, "toks": []}, "cl100k": {"n": 33, "toks": []}, "o200k": {"n": 33, "toks": []}}, "el": {"r50k": {"n": 219, "toks": []}, "cl100k": {"n": 173, "toks": []}, "o200k": {"n": 72, "toks": []}}, "teddy_el": {"r50k": {"n": 16, "toks": ["", "Έ", "ν", "α", " α", "ρ", "κ", "ο", "", "υ", "", "δ", "", "ά", "κ", "ι"]}, "cl100k": {"n": 12, "toks": ["", "Έ", "ν", "α", " α", "ρ", "κ", "ου", "δ", "ά", "κ", "ι"]}, "o200k": {"n": 7, "toks": ["Έ", "να", " α", "ρκ", "ου", "δά", "κι"]}}}};
+
+/* ---------- helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const vis = t => esc(t).replace(/ /g, '␣');
+const chips = (arr, cls = '') => '<div class="chips">' + arr.map(t => `<span class="chip ${cls}">${vis(t)}</span>`).join('') + '</div>';
+const S = { step: 0, max: 0, done: {} };
+function markDone(i) { S.done[i] = true; drawStepper(); }
+
+/* multiple-choice block: returns html; wiring through data attributes */
+function mcq(id, q, opts, right, why) {
+  const st = S[id] || {};
+  let h = `<div class="box"><div style="font-size:16px">${q}</div>`;
+  opts.forEach((o, i) => {
+    let cls = '';
+    if (st.pick === i) cls = i === right ? 'right' : 'wrong';
+    h += `<button class="opt ${cls}" data-mcq="${id}" data-i="${i}">${o}</button>`;
+  });
+  if (st.pick !== undefined) h += `<div class="status ${st.pick === right ? 'ok' : 'bad'}">${st.pick === right ? 'Correct. ' + why : 'Not quite. Read the other options again.'}</div>`;
+  return h + '</div>';
+}
+const mcqOk = (id, right) => S[id] && S[id].pick === right;
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-mcq]');
+  if (!b) return;
+  S[b.dataset.mcq] = { pick: +b.dataset.i };
+  render();
+});
+const nextBtn = () => S.step + 1 < STEPS.length ? `<div><button class="btn primary" onclick="go(S.step + 1)">Next step →</button></div>` : '<div class="done">Exercise complete. Be ready to explain each choice aloud.</div>';
+
+/* ---------- step 1: links ---------- */
+const OLD = 'https?:\\/\\/.*[\\r\\n]*';
+function s1() {
+  if (S.rx1 === undefined) S.rx1 = OLD;
+  return `<div class="box">
+  <p class="task">Five real tweets from NLTK's <span class="mono">twitter_samples</span>. Last year's slides removed links with the pattern below, already typed in. Run it, compare each result with the target, then fix the pattern so that every tweet becomes exactly its target.</p>
+  <label style="font-size:15px">Your pattern <span class="small">· used as re.sub(pattern, '', tweet), then spaces are collapsed</span></label>
+  <input class="rx" id="rx1" spellcheck="false" autocomplete="off" value="${esc(S.rx1)}">
+  <div class="status" id="st1"></div>
+  <div class="lab">Tweets · yellow = what your pattern removes</div>
+  <div class="box" id="rows1"></div>
+  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" id="h1">${S.h1 ? 'Hide hint' : 'Show hint'}</button>${S.h1 ? '<span class="hint">.* runs to the end of the line. \\S+ stops at a space, but tweet 3 has a full stop glued to its link. What may the last character of a link be?</span>' : ''}</div>
+  <div id="after1"></div></div>`;
+}
+function s1wire() {
+  const inp = $('#rx1');
+  inp.addEventListener('input', () => { S.rx1 = inp.value; s1check(); });
+  $('#h1').onclick = () => { S.h1 = !S.h1; render(); };
+  s1check();
+}
+function s1check() {
+  let re = null, err = '';
+  try { if (S.rx1) re = new RegExp(S.rx1, 'g'); } catch (e) { err = 'Not a valid pattern yet: ' + e.message; }
+  let all = !!re, h = '';
+  DATA.tweets.forEach((t, i) => {
+    let marked = esc(t.raw), out = t.raw;
+    if (re) {
+      marked = ''; let last = 0; re.lastIndex = 0; let m;
+      while ((m = re.exec(t.raw)) !== null) { if (m[0] === '') { re.lastIndex++; continue; } marked += esc(t.raw.slice(last, m.index)) + `<span class="m">${esc(m[0])}</span>`; last = m.index + m[0].length; }
+      marked += esc(t.raw.slice(last));
+      re.lastIndex = 0; out = t.raw.replace(re, '');
+    }
+    out = out.replace(/\s+/g, ' ').trim();
+    const pass = re && out === t.clean; if (!pass) all = false;
+    h += `<div class="row ${re ? (pass ? 'pass' : 'fail') : ''}"><span class="icon ${pass ? 'ok' : 'bad'}">${re ? (pass ? '✓' : '✗') : '·'}</span><div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+      <div class="tw">${marked}</div>
+      <div class="small">result: <span class="mono">${esc(out)}</span></div>
+      ${pass ? '' : `<div class="small">target: <span class="mono">${esc(t.clean)}</span></div>`}</div></div>`;
+  });
+  $('#rows1').innerHTML = h;
+  const st = $('#st1');
+  st.className = 'status ' + (err ? 'bad' : all ? 'ok' : 'bad');
+  st.textContent = err || (all ? 'All five tweets match their targets.' : (S.rx1 === OLD ? 'This is last year\'s pattern. Look at what it removes.' : 'Some tweets do not match their target yet.'));
+  S.pass1 = all;
+  $('#after1').innerHTML = all ? s1after() : '';
+}
+function s1after() {
+  return `<div class="box sep">
+  <div style="font-size:15px">Reference solution · several patterns can be correct, this is one of them</div>
+  <pre class="sol">https?://\\S*[\\w/]</pre>
+  ${mcq('q1', 'Explain it · why did last year\'s pattern fail on tweets 1, 2 and 5?', [
+    'The greedy <span class="mono">.*</span> runs to the end of the line, so it deletes every word after the link.',
+    '<span class="mono">[\\r\\n]*</span> removes the line breaks, which joins the tweets together.',
+    '<span class="mono">\\/</span> is not allowed in Python, so the pattern matches nothing.'], 0,
+    'It only looked right on last year\'s example because that link sat at the very end of the tweet.')}
+  ${mcqOk('q1', 0) ? nextBtn() : ''}</div>`;
+}
+
+/* ---------- step 2: tokenizers ---------- */
+const TOKS = [['A', 'TweetTokenizer'], ['B', 'GPT-4o (o200k)'], ['C', 'split'], ['D', 'word_tokenize']];
+const TNAMES = ['split', 'word_tokenize', 'TweetTokenizer', 'GPT-4o (o200k)'];
+function s2() {
+  S.a2 = S.a2 || {};
+  let h = `<div class="box"><p class="task">The first tweet from step 1, cleaned, went through four tokenizers. Match each output to the tokenizer that produced it.</p>
+  <div class="card"><div class="lab">How each tokenizer cuts</div><table>
+    <tr><td class="mono" style="white-space:nowrap"><b>split()</b></td><td>Python built-in. Cuts only at spaces, so punctuation stays glued to the word.</td></tr>
+    <tr><td class="mono" style="white-space:nowrap"><b>word_tokenize</b></td><td>Penn Treebank rules. Splits off punctuation and contractions (can't → ca + n't), and breaks :D, @ and # apart.</td></tr>
+    <tr><td class="mono" style="white-space:nowrap"><b>TweetTokenizer</b></td><td>NLTK, built for social media. Keeps emoticons, @handles, #hashtags and contractions whole.</td></tr>
+    <tr><td class="mono" style="white-space:nowrap"><b>GPT-4o (o200k)</b></td><td>Learned subword (BPE) vocabulary. The space before a word belongs to the token (␣wait); rare strings break into pieces.</td></tr>
+  </table></div>
+  <div class="card"><div class="lab">Input</div><div class="tw" style="font-size:18px">${esc(DATA.tok_sentence)}</div></div>
+  <div class="small">␣ marks a space that belongs to the token.</div><div class="box">`;
+  TOKS.forEach(([k, name]) => {
+    const toks = DATA.tok[name];
+    const a = S.a2[k], st = !a ? '' : a === name ? 'pass' : 'fail';
+    h += `<div class="row ${S.c2 ? st : ''}" style="flex-direction:column;gap:8px">
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><b class="mono">${k}</b><span class="small">${toks.length} tokens</span>
+      <select data-k="${k}"><option value="">choose…</option>${TNAMES.map(n => `<option ${a === n ? 'selected' : ''}>${n}</option>`).join('')}</select></div>
+      ${chips(toks)}</div>`;
+  });
+  h += `</div><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" id="c2">Check</button><button class="btn" id="h2">${S.h2 ? 'Hide hint' : 'Show hint'}</button>${S.h2 ? '<span class="hint">Three clues. Punctuation still glued to a word means only spaces were used. A token that starts with ␣ comes from a byte-level BPE vocabulary. An emoticon kept whole means the tokenizer was built for tweets.</span>' : ''}</div>
+  <div class="status ${S.ok2 ? 'ok' : 'bad'}">${S.c2 ? (S.ok2 ? 'All four matched. Notice that word_tokenize turned won\'t into wo + n\'t: you will meet that again in step 5.' : 'Not yet. Look at won\'t, at :) and at the spaces.') : ''}</div>`;
+  if (S.ok2) h += nextBtn();
+  return h + '</div>';
+}
+function s2wire() {
+  document.querySelectorAll('select[data-k]').forEach(s => s.onchange = () => { S.a2[s.dataset.k] = s.value; S.c2 = false; render(); });
+  $('#h2').onclick = () => { S.h2 = !S.h2; render(); };
+  $('#c2').onclick = () => { S.c2 = true; S.ok2 = TOKS.every(([k, n]) => S.a2[k] === n); render(); };
+}
+
+/* ---------- step 3: BPE ---------- */
+const NMERGE = 6, UNSEEN = 'replayed';
+function bpeInit() { if (!S.bpe) S.bpe = { seg: Object.fromEntries(Object.keys(DATA.bpe).map(w => [w, [...w.split(''), '_']])), merges: [], msg: '' }; }
+function pairCounts() {
+  const c = new Map();
+  for (const [w, f] of Object.entries(DATA.bpe)) { const s = S.bpe.seg[w]; for (let i = 0; i < s.length - 1; i++) { const k = s[i] + '\u0001' + s[i + 1]; c.set(k, (c.get(k) || 0) + f); } }
+  return c;
+}
+function applyMerge(seq, a, b) { const n = []; for (let i = 0; i < seq.length; i++) { if (i < seq.length - 1 && seq[i] === a && seq[i + 1] === b) { n.push(a + b); i++; } else n.push(seq[i]); } return n; }
+function segment(word, merges) { let s = [...word.split(''), '_']; for (const [a, b] of merges) s = applyMerge(s, a, b); return s; }
+function s3() {
+  bpeInit();
+  const B = S.bpe, c = pairCounts(), done = B.merges.length >= NMERGE;
+  let h = `<div class="box"><p class="task">Byte-pair encoding learns its vocabulary from counts. Below are twelve real words with how often they occur in NLTK's product reviews. Count every pair of neighbouring symbols, weighted by the word's frequency, and click the most frequent pair. Do ${NMERGE} merges.</p>
+  <div class="small">_ marks the end of a word. If two pairs are tied, either is correct.</div>
+  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" id="h3">${S.h3 ? 'Hide hint' : 'Show hint'}</button>${S.h3 ? '<span class="hint">Count with the word counts, not once per word: the pair p l appears once in each of the six play words, so it counts 93 + 22 + 379 + 57 + 30 + 31 = 612. After every merge, count again: the new symbol makes new pairs. For the unseen word, apply your merges in the order you learned them.</span>' : ''}</div>
+  <div class="grid2"><div class="card"><div class="lab">Corpus · current segmentation</div><table><tr><th>word</th><th class="r">count</th><th>symbols</th></tr>`;
+  for (const [w, f] of Object.entries(DATA.bpe)) h += `<tr><td class="mono">${w}</td><td class="r mono">${f}</td><td>${chips(B.seg[w])}</td></tr>`;
+  h += `</table></div><div class="card"><div class="lab">Merges learned · ${B.merges.length} / ${NMERGE}</div>`;
+  h += B.merges.length ? '<ol style="margin:0;padding-left:22px;font-family:\'JetBrains Mono\',monospace;font-size:15px;line-height:1.7">' + B.merges.map(([a, b, n]) => `<li>${esc(a)} + ${esc(b)} → ${esc(a + b)} <span class="small">(${n})</span></li>`).join('') + '</ol>' : '<div class="small">None yet.</div>';
+  if (!done) {
+    h += `<div class="lab" style="margin-top:6px">Click the most frequent pair</div><div class="chips">`;
+    [...c.keys()].sort().forEach(k => { const [a, b] = k.split('\u0001'); h += `<button class="chip" data-pair="${esc(k)}">${esc(a)} ${esc(b)}</button>`; });
+    h += `</div><div class="status bad">${esc(B.msg)}</div>`;
+  }
+  h += `</div></div>`;
+  if (done) {
+    const exp = segment(UNSEEN, B.merges).join(' ');
+    h += `<div class="box sep"><div style="font-size:17px"><b class="mono">${UNSEEN}</b> never appears in the corpus. Tokenize it with your ${NMERGE} merges, applied in order. Type the pieces separated by spaces. The end marker _ is a piece of its own unless one of your merges attached it.</div>
+    <input class="rx" id="bpeIn" spellcheck="false" autocomplete="off" value="${esc(S.bpeIn || '')}" placeholder="e.g. r e play ...">
+    <div class="status" id="bpeSt"></div><div id="bpeAfter"></div></div>`;
+    S._bpeExp = exp;
+  }
+  return h + '</div>';
+}
+function s3after() {
+  return `<div class="box">${mcq('q3', 'Explain it · <span class="mono">replayed</span> was never seen, yet it was tokenized without an [UNK]. How?', [
+    'Whatever the merges do not cover falls back to smaller pieces, down to single characters, so every word can be written with the vocabulary.',
+    'BPE recognised the prefix re- and the suffix -ed as morphemes.',
+    'It is luck: a longer unseen word would have become [UNK].'], 0,
+    'Notice also that BPE found er on its own, from player and user: frequency, not grammar.')}${mcqOk('q3', 0) ? nextBtn() : ''}</div>`;
+}
+function s3wire() {
+  $('#h3').onclick = () => { S.h3 = !S.h3; render(); };
+  document.querySelectorAll('[data-pair]').forEach(b => b.onclick = () => {
+    const c = pairCounts(), k = b.dataset.pair, top = Math.max(...c.values());
+    const [a, x] = k.split('\u0001');
+    if (c.get(k) === top) { for (const w in S.bpe.seg) S.bpe.seg[w] = applyMerge(S.bpe.seg[w], a, x); S.bpe.merges.push([a, x, top]); S.bpe.msg = ''; }
+    else S.bpe.msg = `${a} ${x} occurs ${c.get(k)} times. The most frequent pair occurs ${top} times.`;
+    render();
+  });
+  const inp = $('#bpeIn');
+  if (inp) {
+    const chk = () => {
+      S.bpeIn = inp.value; const v = inp.value.trim().split(/\s+/).join(' ');
+      const ok = v === S._bpeExp; S.ok3 = ok;
+      $('#bpeSt').className = 'status ' + (ok ? 'ok' : 'bad');
+      $('#bpeSt').textContent = !v ? '' : ok ? 'Correct: ' + S._bpeExp : 'Not yet. Apply the merges one by one, in the order you learned them.';
+      $('#bpeAfter').innerHTML = ok ? s3after() : '';
+    };
+    inp.addEventListener('input', chk); chk();
+  }
+}
+
+/* ---------- step 4: Greek ---------- */
+const ENC = [['r50k', 'GPT-2 (2019)'], ['cl100k', 'GPT-4 (2023)'], ['o200k', 'GPT-4o (2024)']];
+function s4() {
+  const g = DATA.gpt;
+  let h = `<div class="box"><p class="task">The same sentence, Article 1 of the Universal Declaration of Human Rights, from NLTK's <span class="mono">udhr</span> corpus. With GPT-2's tokenizer the English costs <b>${g.en.r50k.n}</b> tokens. How many does the Greek cost?</p>
+  <div class="grid2"><div class="card"><div class="lab">English</div><div style="font-size:16px;line-height:1.5">${esc(DATA_EN)}</div></div><div class="card"><div class="lab">Greek</div><div style="font-size:16px;line-height:1.5">${esc(DATA_EL)}</div></div></div>
+  ${mcq('q4a', 'Your prediction for the Greek, GPT-2 tokenizer:', ['about 35', 'about 70', 'about 140', 'about 220'], 3, `It is ${g.el.r50k.n}: ${(g.el.r50k.n / g.en.r50k.n).toFixed(1)} times the English.`)}`;
+  if (S.q4a && S.q4a.pick !== undefined) {
+    h += `<div class="card"><div class="lab">Three generations of the GPT tokenizer</div><table><tr><th>tokenizer</th><th class="r">English</th><th class="r">Greek</th><th class="r">Greek ÷ English</th></tr>`;
+    ENC.forEach(([k, n]) => h += `<tr><td>${n} <span class="small mono">${k}</span></td><td class="r mono">${g.en[k].n}</td><td class="r mono">${g.el[k].n}</td><td class="r mono"><b>${(g.el[k].n / g.en[k].n).toFixed(1)}×</b></td></tr>`);
+    h += `</table><div class="small">“Ένα αρκουδάκι” with GPT-4o: ${chips(g.teddy_el.o200k.toks)}</div></div>`;
+    h += mcq('q4b', 'Explain it · the English cost never moved. Why did the Greek fall from 6.6× to 2.2×?', [
+      'The newer vocabularies are larger and were learned from far more non-English text, so whole Greek syllables and words became single tokens.',
+      'Greek text is compressed before it is tokenized.',
+      'GPT-4o drops the accents, which makes Greek words shorter.'], 0,
+      'The tokenizer is trained on a corpus; whatever that corpus under-represents pays more per word, in cost and in context window.');
+    if (mcqOk('q4b', 0)) h += `<div class="box sep"><div class="lab">Try it live · real tokenizers, running in your browser</div>
+      <textarea id="live" placeholder="Type any Greek or English text">${esc(S.live || 'Το κινητό ήρθε γρήγορα και η μπαταρία κρατάει δύο μέρες.')}</textarea>
+      <div id="liveOut" class="box"><div class="small">Loading the tokenizers…</div></div>${nextBtn()}</div>`;
+  }
+  return h + '</div>';
+}
+let TK = null;
+function loadTK() {
+  if (TK) return TK;
+  const load = src => new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+  TK = Promise.all([load('https://cdn.jsdelivr.net/npm/gpt-tokenizer@2.9.0/dist/cl100k_base.js'), load('https://cdn.jsdelivr.net/npm/gpt-tokenizer@2.9.0/dist/o200k_base.js')])
+    .then(() => ({ cl100k: window.GPTTokenizer_cl100k_base, o200k: window.GPTTokenizer_o200k_base }));
+  return TK;
+}
+function s4wire() {
+  const ta = $('#live'); if (!ta) return;
+  const run = () => {
+    S.live = ta.value;
+    loadTK().then(t => {
+      let h = '';
+      [['cl100k', 'GPT-4'], ['o200k', 'GPT-4o']].forEach(([k, n]) => {
+        const ids = t[k].encode(ta.value);
+        h += `<div><div class="small"><b>${n}</b> · ${ids.length} tokens · ${ta.value.length} characters</div>${chips(ids.map(i => t[k].decode([i])).map(x => x === '' ? '·' : x), k === 'o200k' ? 'alt' : '')}</div>`;
+      });
+      $('#liveOut').innerHTML = h + '<div class="small">· marks a piece that is only part of a character: the tokenizer works on bytes, and one Greek letter is two bytes.</div>';
+    }).catch(() => { $('#liveOut').innerHTML = '<div class="small bad">The tokenizers could not be loaded (no internet connection?). The rest of the exercise works without them.</div>'; });
+  };
+  ta.addEventListener('input', run); run();
+}
+
+/* ---------- step 7: stop words ---------- */
+const MUST7 = [0, 3, 4, 5, 6];
+function s7() {
+  const R = DATA.stop.reviews, SW = new Set(DATA.stop.list);
+  S.t7 = S.t7 || {}; S.keep7 = S.keep7 || {};
+  let h = `<div class="box"><p class="task">Eight real phone reviews after <span class="mono">word_tokenize</span>, lowercasing and NLTK's English stop-word list (${DATA.stop.list.length} words). Struck-through tokens were removed. Tick every review whose remaining tokens no longer carry its meaning.</p><div class="box">`;
+  R.forEach((r, i) => {
+    const res = S.c7 ? (MUST7.includes(i) === !!S.t7[i] ? 'pass' : 'fail') : '';
+    h += `<label class="row ${res}" style="cursor:pointer"><input type="checkbox" data-t7="${i}" ${S.t7[i] ? 'checked' : ''} style="margin-top:4px;width:18px;height:18px;flex:none"><div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+      <div style="font-size:16px">${esc(r.text)}</div><div class="chips">${r.tokens.map(t => `<span class="chip ${SW.has(t) ? 'gone' : ''}">${esc(t)}</span>`).join('')}</div></div></label>`;
+  });
+  h += `</div><div><button class="btn" id="c7">Check</button></div>`;
+  const ok = R.every((r, i) => MUST7.includes(i) === !!S.t7[i]);
+  if (S.c7 && !ok) h += `<div class="status bad">Not yet. Red rows are wrong. Read the struck-through words of each review aloud.</div>`;
+  if (S.c7 && ok) {
+    const used = [...new Set(R.flatMap(r => r.tokens).filter(t => SW.has(t)))].sort();
+    const kept = used.filter(w => S.keep7[w]);
+    const fixed = MUST7.every(i => R[i].tokens.some(t => SW.has(t) && S.keep7[t] && ['not', 'no'].includes(t)));
+    h += `<div class="box sep"><div style="font-size:17px">Now edit the list. Click the stop words that should <b>stay in the text</b>. Goal: rescue all five reviews while keeping the list as useful as possible (rescue at most 4 words).</div><div class="chips">`;
+    used.forEach(w => h += `<button class="chip ${S.keep7[w] ? 'sel' : ''}" data-k7="${esc(w)}">${esc(w)}</button>`);
+    h += `</div><div class="status ${fixed && kept.length <= 4 ? 'ok' : 'bad'}">${fixed ? (kept.length <= 4 ? `All five rescued, keeping ${kept.length} word(s): ${kept.join(', ')}.` : `All five rescued, but you kept ${kept.length} words. Which ones carry no meaning here?`) : `${MUST7.filter(i => R[i].tokens.some(t => S.keep7[t] && ['not', 'no'].includes(t))).length} of 5 reviews rescued.`}</div>`;
+    if (fixed && kept.length <= 4) {
+      h += mcq('q7', 'Explain it · “I don\'t even know…” and “Never going back…” kept their negation with the unedited list. Why?', [
+        '“never” is not on NLTK\'s list, and word_tokenize splits don\'t into do + n\'t, while the list contains “don\'t” but not “n\'t”.',
+        'NLTK detects negation automatically and protects it.',
+        'Lowercasing removed the apostrophe, so the words were no longer recognised.'], 0,
+        'They survived by accident, not by design. Print the list, check it against your tokenizer, and edit it for your task.');
+      if (mcqOk('q7', 0)) h += nextBtn();
+    }
+    h += '</div>';
+  }
+  return h + '</div>';
+}
+function s7wire() {
+  document.querySelectorAll('[data-t7]').forEach(c => c.onchange = () => { S.t7[c.dataset.t7] = c.checked; S.c7 = false; render(); });
+  $('#c7').onclick = () => { S.c7 = true; render(); };
+  document.querySelectorAll('[data-k7]').forEach(b => b.onclick = () => { S.keep7[b.dataset.k7] = !S.keep7[b.dataset.k7]; render(); });
+}
+
+/* ---------- step 8: stemming vs lemmatization ---------- */
+const W8 = ['batteries', 'charging', 'happiness', 'was', 'better', 'ran'];
+function opts8(w) {
+  const r = DATA.stem.find(x => x.w === w);
+  const set = { batteries: ['batteri', 'battery', 'batter'], charging: ['charg', 'charge', 'charging'], happiness: ['happi', 'happy', 'happiness'], was: ['wa', 'be', 'was'], better: ['better', 'good', 'bett'], ran: ['ran', 'run', 'ra'] }[w];
+  return { r, set };
+}
+function s8() {
+  S.a8 = S.a8 || {}; S.p8 = S.p8 || {};
+  let h = `<div class="box"><p class="task">Predict what the Porter stemmer returns for each word, then compare it with the WordNet lemmatizer, without and with the part of speech.</p><table><tr><th>word</th><th>your Porter prediction</th>${S.c8 ? '<th>Porter</th><th>lemmatize(w)</th><th>lemmatize(w, pos)</th>' : ''}</tr>`;
+  W8.forEach(w => {
+    const { r, set } = opts8(w), a = S.a8[w];
+    h += `<tr><td class="mono">${w}</td><td><select data-a8="${w}"><option value="">choose…</option>${set.map(o => `<option ${a === o ? 'selected' : ''}>${o}</option>`).join('')}</select> ${S.c8 ? `<span class="${a === r.porter ? 'ok' : 'bad'}">${a === r.porter ? '✓' : '✗'}</span>` : ''}</td>
+      ${S.c8 ? `<td class="mono">${r.porter}</td><td class="mono">${r.lemma_nopos}</td><td class="mono">${r.lemma} <span class="small">pos='${r.pos}'</span></td>` : ''}</tr>`;
+  });
+  h += `</table><div><button class="btn" id="c8">Check</button></div>`;
+  const ok = W8.every(w => S.a8[w] === opts8(w).r.porter);
+  if (S.c8 && !ok) h += `<div class="status bad">Not yet. Porter knows no words, only rules for endings: -ies → i, -ness removed, -ing removed, a final s removed.</div>`;
+  if (S.c8 && ok) {
+    h += `<div class="status ok">All six. Note “was” → “wa” in both tools until the lemmatizer is told it is a verb.</div><div class="box sep"><div style="font-size:17px">Seven pairs, each run through Porter. Classify every pair.</div><table><tr><th>pair</th><th>stems</th><th>verdict</th></tr>`;
+    DATA.pairs.forEach((p, i) => {
+      const truth = p.sa === p.sb ? (['batteries', 'reviews'].includes(p.a) ? 'correct merge' : 'over-stemming') : 'under-stemming';
+      const a = S.p8[i];
+      h += `<tr><td class="mono">${p.a} · ${p.b}</td><td class="mono">${p.sa} · ${p.sb}</td><td><select data-p8="${i}"><option value="">choose…</option>${['correct merge', 'over-stemming', 'under-stemming'].map(o => `<option ${a === o ? 'selected' : ''}>${o}</option>`).join('')}</select> ${S.cp8 ? `<span class="${a === truth ? 'ok' : 'bad'}">${a === truth ? '✓' : '✗'}</span>` : ''}</td></tr>`;
+    });
+    h += `</table><div class="small">Over-stemming: unrelated words get the same stem. Under-stemming: related words get different stems.</div><div><button class="btn" id="cp8">Check</button></div>`;
+    const ok2 = DATA.pairs.every((p, i) => S.p8[i] === (p.sa === p.sb ? (['batteries', 'reviews'].includes(p.a) ? 'correct merge' : 'over-stemming') : 'under-stemming'));
+    if (S.cp8 && !ok2) h += `<div class="status bad">Not yet. Do the two words in the pair mean related things? Did Porter give them the same stem?</div>`;
+    if (S.cp8 && ok2) {
+      h += mcq('q8', 'Explain it · you are building a TF-IDF classifier over 400,000 reviews, and a dashboard that shows customers\' most-used words. Which tool for which?', [
+        'Porter for the classifier, the lemmatizer for the dashboard: the model only needs consistent feature ids, people need real words.',
+        'The lemmatizer for both, since it is always more correct.',
+        'Porter for both, since it is faster.'], 0,
+        'Speed and consistency for the model; readable output for people. For Greek, prefer a lemmatizer (spaCy el): English stemming rules do not transfer.');
+      if (mcqOk('q8', 0)) h += nextBtn();
+    }
+    h += '</div>';
+  }
+  return h + '</div>';
+}
+function s8wire() {
+  document.querySelectorAll('[data-a8]').forEach(s => s.onchange = () => { S.a8[s.dataset.a8] = s.value; S.c8 = false; render(); });
+  document.querySelectorAll('[data-p8]').forEach(s => s.onchange = () => { S.p8[s.dataset.p8] = s.value; S.cp8 = false; render(); });
+  $('#c8').onclick = () => { S.c8 = true; render(); };
+  const c = $('#cp8'); if (c) c.onclick = () => { S.cp8 = true; render(); };
+}
+
+/* ---------- steps ---------- */
+const STEPS = [
+  { label: 'Clean the links', title: '1 · Remove the noise', html: s1, wire: s1wire, ok: () => mcqOk('q1', 0) },
+  { label: 'BPE by hand', title: '2 · Byte-pair encoding by hand', html: s3, wire: s3wire, ok: () => mcqOk('q3', 0) },
+  { label: 'Four tokenizers', title: '3 · One sentence, four tokenizers', html: s2, wire: s2wire, ok: () => !!S.ok2 },
+  { label: 'Greek costs more', title: '4 · What Greek costs in tokens', html: s4, wire: s4wire, ok: () => mcqOk('q4b', 0) },
+  { label: 'Stop words', title: '5 · Stop words that should not stop', html: s7, wire: s7wire, ok: () => mcqOk('q7', 0) },
+  { label: 'Stem or lemma', title: '6 · Stemming or lemmatization', html: s8, wire: s8wire, ok: () => mcqOk('q8', 0) },
+];
+const DATA_EN = DATA.texts.en, DATA_EL = DATA.texts.el;
+
+function drawStepper() {
+  $('#stepper').innerHTML = STEPS.map((s, i) => {
+    const bg = i === S.step ? '#1B2F6B' : (S.done[i] || STEPS[i].ok()) ? '#26314F' : '#5A6385';
+    return `<button data-go="${i}" style="background:${bg}"><span class="n">${i + 1} ${(S.done[i] || STEPS[i].ok()) ? '✓' : ''}</span><span class="l">${s.label}</span></button>`;
+  }).join('');
+  document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => go(+b.dataset.go));
+}
+function render() {
+  const st = STEPS[S.step];
+  $('#title').textContent = st.title;
+  $('#stage').innerHTML = st.html();
+  st.wire();
+  drawStepper();
+  $('#pos').textContent = `${S.step + 1} / ${STEPS.length}`;
+  $('#prev').style.opacity = S.step > 0 ? 1 : .4;
+  $('#next').style.opacity = S.step < STEPS.length - 1 ? 1 : .4;
+}
+function go(i) {
+  if (i < 0 || i >= STEPS.length) return;
+  S.step = i; S.max = Math.max(S.max, i);
+  try { history.replaceState(null, '', '#step' + (i + 1)); } catch (e) {}
+  render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+$('#prev').onclick = () => go(S.step - 1);
+$('#next').onclick = () => go(S.step + 1);
+const m = location.hash.match(/step(\d)/);
+S.step = m ? Math.min(Math.max(+m[1] - 1, 0), STEPS.length - 1) : 0;
+render();
+</script>
+</body>
+</html>
