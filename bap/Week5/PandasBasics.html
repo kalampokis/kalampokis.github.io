@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7KW3PRQVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R7KW3PRQVZ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pandas: πίνακες δεδομένων · Εβδομάδα 5</title>
+<meta name="description" content="Διαδραστικός οδηγός μάθησης: pandas DataFrame, read_csv, επιλογή στηλών, loc/iloc, φίλτρα, ταξινόμηση, νέες στήλες, κενές τιμές. Προγραμματισμός για Επιχειρηματική Αναλυτική, Εβδομάδα 5.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2F6B; --text:#26314F; --gray:#5A6385; --blue:#7895F9; --lblue:#B9C8FC; --pale:#EEF1FE;
+    --orange:#F5821F; --peach:#FDE8D4; --green:#1e7a4c; --lgreen:#E3F3EA; --red:#B23A3A; --lred:#FBE4E4;
+    --code:#141E3C; --codefg:#F4F6FF; --comment:#9FB3E8; --mono:'JetBrains Mono',Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pale);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+  a{color:var(--green)}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 16px 80px;display:flex;flex-direction:column;gap:22px}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--gray);text-transform:uppercase}
+  h1{margin:6px 0 0;font-family:Georgia,serif;font-weight:700;font-size:38px;line-height:1.1;color:var(--navy)}
+  h2{margin:0;font-family:Georgia,serif;font-size:28px;color:var(--navy)}
+  h3{margin:18px 0 6px;font-family:Georgia,serif;font-size:20px;color:var(--navy)}
+  p{margin:0 0 10px;font-size:17px}
+  .lead{font-size:19px;max-width:800px}
+  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px}
+  .stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 12px;background:var(--navy);color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px;opacity:.55}
+  .stepper button.active{opacity:1;outline:3px solid var(--orange)}
+  .stepper button.done{opacity:.9;background:var(--green)}
+  .stepper button span.n{font-family:var(--mono);font-weight:700;font-size:14px}
+  .stepper button span.l{font-size:13px}
+  section.step{display:none;flex-direction:column;gap:14px;background:#fff;border-radius:12px;padding:22px 22px 26px;box-shadow:0 1px 3px rgba(27,47,107,.08)}
+  section.step.active{display:flex}
+  code{font-family:var(--mono);background:var(--pale);padding:1px 5px;border-radius:4px;color:var(--navy);font-size:.95em}
+  .en{color:var(--gray);font-style:italic}
+  .box{border-radius:8px;padding:12px 16px;font-size:16px}
+  .tip{background:var(--peach)} .tip b{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .note{background:var(--pale)} .note b{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  /* runnable code */
+  .runner{border-radius:10px;overflow:hidden;border:2px solid var(--navy);background:var(--code)}
+  .runner .bar{display:flex;align-items:center;gap:10px;padding:6px 12px;background:#0E1630;color:var(--lblue);font-family:var(--mono);font-size:12px}
+  .runner .bar .spacer{flex:1}
+  .runner textarea{width:100%;display:block;border:0;outline:0;resize:vertical;min-height:120px;padding:12px 14px;background:var(--code);color:var(--codefg);font-family:var(--mono);font-size:16px;line-height:1.5;tab-size:4}
+  .runner .out{background:var(--pale);color:var(--navy);font-family:var(--mono);font-size:14px;padding:10px 14px;white-space:pre-wrap;min-height:34px;border-top:1px solid var(--lblue)}
+  .runner .out.err{color:var(--red);background:var(--lred)}
+  .runner .out:empty::before{content:"— πάτησε «Τρέξε» ή Ctrl+Enter —";color:var(--gray);font-style:italic;font-family:Arial}
+  .btn{font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--green);color:#fff;font-weight:bold}
+  .btn.secondary{background:transparent;border:2px solid var(--lblue);color:var(--lblue);font-weight:normal}
+  .btn.navy{background:var(--navy)}
+  .btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+  .btn:disabled{opacity:.5;cursor:default}
+  /* quiz */
+  .quiz{background:var(--pale);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .quiz .q{font-weight:bold;color:var(--navy)}
+  .quiz pre{margin:0;font-family:var(--mono);font-size:15px;background:var(--code);color:var(--codefg);padding:10px 14px;border-radius:8px;white-space:pre-wrap}
+  .quiz .opts{display:grid;gap:6px}
+  .quiz .opts button{text-align:left;font:inherit;font-size:16px;padding:9px 12px;border-radius:8px;border:1px solid var(--lblue);background:#fff;color:var(--navy);cursor:pointer;font-family:var(--mono);white-space:pre-wrap}
+  .quiz .opts button.ok{background:var(--lgreen);border-color:var(--green)}
+  .quiz .opts button.bad{background:var(--lred);border-color:var(--red)}
+  .quiz .fb{min-height:20px;font-size:15px}
+  .quiz .fb.ok{color:var(--green);font-weight:bold} .quiz .fb.bad{color:var(--red)}
+  /* exercise */
+  .exercise{border:2px dashed var(--orange);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#fff}
+  .exercise .title{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--orange);text-transform:uppercase}
+  .exercise .result{font-size:15px;min-height:20px}
+  .exercise .result.ok{color:var(--green);font-weight:bold} .exercise .result.bad{color:var(--red)}
+  .exercise details{font-size:15px} .exercise summary{cursor:pointer;color:var(--navy)}
+  /* visualizers */
+  .viz{display:flex;flex-direction:column;gap:10px;background:var(--pale);border-radius:10px;padding:14px 16px}
+  .viz input{font-family:var(--mono);font-size:20px;padding:8px 12px;border:2px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy);width:100%;max-width:420px}
+  .cells{display:flex;gap:8px;flex-wrap:wrap}
+  .cell{display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--mono)}
+  .cell .i{font-size:12px;color:var(--navy);background:var(--lblue);border-radius:10px;padding:1px 10px}
+  .cell .v{width:62px;height:52px;display:flex;align-items:center;justify-content:center;background:var(--code);color:#fff;font-weight:bold;font-size:18px;border-radius:6px}
+  .cell.hit .v{background:var(--orange)}
+  .cell.off .v{opacity:.35}
+  .cell .b{font-size:12px;font-family:var(--mono);color:var(--gray)}
+  .cell.hit .b{color:var(--orange);font-weight:bold}
+  .viz .res{font-family:var(--mono);font-size:17px;color:var(--navy);min-height:24px;white-space:pre-wrap}
+  .grid2d{display:inline-grid;gap:6px;align-items:center;align-self:flex-start;max-width:100%;overflow-x:auto}
+  .grid2d .hd{font-family:var(--mono);font-size:12px;color:var(--navy);background:var(--lblue);border-radius:10px;padding:1px 0;text-align:center}
+  .grid2d .rh{font-family:var(--mono);font-size:12px;color:var(--navy);background:var(--lblue);border-radius:10px;padding:1px 10px;text-align:center}
+  .grid2d .c{width:78px;height:46px;display:flex;align-items:center;justify-content:center;background:var(--code);color:#fff;font-family:var(--mono);font-weight:bold;font-size:17px;border-radius:6px}
+  .grid2d .c.hit{background:var(--orange)}
+  .dfviz table{border-collapse:collapse;font-family:var(--mono);font-size:14px;width:100%}
+  .dfviz th{background:var(--navy);color:#fff;text-align:left;padding:5px 8px;font-weight:bold}
+  .dfviz td{padding:5px 8px;border-bottom:1px solid var(--lblue);color:var(--navy)}
+  .dfviz td.idx{color:var(--gray)}
+  .dfviz tr.hit td{background:var(--peach);font-weight:bold}
+  .dfviz tr.off td{opacity:.4}
+  .dfviz td.b{text-align:center;color:var(--gray)} .dfviz tr.hit td.b{color:var(--orange)}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+  .status{font-family:var(--mono);font-size:12px;color:var(--gray)}
+  .status.ready{color:var(--green)}
+  table.t{border-collapse:collapse;width:100%;font-size:15px}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:bold}
+  table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue)} table.t td:first-child, table.t td.m{font-family:var(--mono);color:var(--navy)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:700px){.grid2{grid-template-columns:1fr} h1{font-size:30px}}
+  footer{font-size:13px;color:var(--gray);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="kicker">Προγραμματισμός για Επιχειρηματική Αναλυτική · Εβδομάδα 5 · <span id="pyStatus" class="status">φόρτωση Python…</span></div>
+    <h1>pandas: πίνακες δεδομένων με ονόματα</h1>
+    <p class="lead" style="margin-top:10px">Ένας διαδραστικός οδηγός για την τάξη και το σπίτι, σε 8 βήματα. Το pandas είναι η βιβλιοθήκη που κάνει την Python «Excel με κώδικα»: πίνακες με ονόματα στηλών, διαφορετικό τύπο ανά στήλη, φόρτωση από αρχείο με μία γραμμή. Ο κώδικας τρέχει μέσα στον browser σου, μαζί με το αρχείο <code>store_orders.csv</code> (60 παραγγελίες του καταστήματος της εβδομάδας 3). Την πρώτη φορά η φόρτωση του pandas θέλει 10–20 δευτερόλεπτα.</p>
+    <div class="box note"><b>ΤΟ ΑΡΧΕΙΟ ΤΗΣ ΕΒΔΟΜΑΔΑΣ</b><a href="store_orders.csv" download>store_orders.csv</a>: 60 παραγγελίες, 8 στήλες (order_id, date, item, category, unit_price, quantity, channel, city). Κατέβασέ το για να δουλέψεις και σε Colab ή Jupyter: ο ίδιος κώδικας τρέχει αυτούσιος.</div>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- ============ 1 ============ -->
+  <section class="step" data-title="Λεξικά &amp; DataFrame">
+    <h2>1. Από το λεξικό στο DataFrame</h2>
+    <p>Ένα <b>λεξικό</b> <span class="en">(dictionary)</span> κρατά ζεύγη <b>κλειδί → τιμή</b> μέσα σε άγκιστρα: <code>{"laptop": 899.0, "mouse": 19.9}</code>. Αντί για θέση (όπως στη λίστα) ζητάς την τιμή με το κλειδί της. Θα το δεις συνέχεια στο pandas, γι' αυτό μαθαίνουμε μόνο τα βασικά.</p>
+    <div class="runner" data-code="# Λεξικό (dictionary): ζεύγη κλειδί → τιμή
+prices = {&quot;laptop&quot;: 899.0, &quot;mouse&quot;: 19.9, &quot;monitor&quot;: 249.0}
+
+print(prices[&quot;mouse&quot;])          # πρόσβαση με το κλειδί
+prices[&quot;webcam&quot;] = 59.0         # προσθήκη νέου ζεύγους
+print(prices)
+print(list(prices.keys()))
+print(&quot;laptop&quot; in prices)"></div>
+    <p>Ένα <b>DataFrame</b> είναι ένας πίνακας με ονόματα στηλών, όπου κάθε στήλη μπορεί να έχει διαφορετικό τύπο: ακριβώς αυτό που δεν μπορούσε η NumPy. Ο πιο απλός τρόπος να φτιάξεις ένα: ένα λεξικό όπου κάθε κλειδί είναι <b>όνομα στήλης</b> και κάθε τιμή μια <b>λίστα</b> με τα περιεχόμενά της.</p>
+    <div class="runner" data-code="import pandas as pd
+
+data = {&quot;item&quot;: [&quot;laptop&quot;, &quot;mouse&quot;, &quot;monitor&quot;, &quot;keyboard&quot;, &quot;webcam&quot;],
+        &quot;unit_price&quot;: [899.0, 19.9, 249.0, 45.0, 59.0],
+        &quot;quantity&quot;: [12, 150, 30, 80, 45]}
+
+catalog = pd.DataFrame(data)
+print(catalog)
+print(type(catalog))
+print(catalog.shape)"></div>
+    <div class="box tip"><b>ΠΑΡΑΤΗΡΗΣΕ</b>Η αριστερή στήλη με τα 0, 1, 2… δεν είναι δική σου: είναι το <b>ευρετήριο</b> <span class="en">(index)</span>, η ετικέτα κάθε γραμμής. Το <code>import pandas as pd</code> είναι η σύμβαση, όπως το <code>np</code>.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="stock = {&quot;laptop&quot;: 12, &quot;mouse&quot;: 150}
+print(stock[&quot;mouse&quot;])" data-opts='["150","1","mouse","Σφάλμα"]' data-ans="0" data-why="Στο λεξικό ζητάς την τιμή με το κλειδί, όχι με θέση: stock[&quot;mouse&quot;] → 150."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="stock = {&quot;laptop&quot;: 12, &quot;mouse&quot;: 150}
+print(stock[1])" data-opts='["150","12","KeyError","IndexError"]' data-ans="2" data-why="Το 1 δεν είναι κλειδί του λεξικού (τα κλειδιά είναι &quot;laptop&quot; και &quot;mouse&quot;): KeyError: 1."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει το shape;" data-code="import pandas as pd
+df = pd.DataFrame({&quot;a&quot;: [1, 2, 3], &quot;b&quot;: [4, 5, 6]})
+print(df.shape)" data-opts='["(3, 2)","(2, 3)","6","(3, 3)"]' data-ans="0" data-why="Κάθε κλειδί = μία στήλη (2 στήλες), κάθε λίστα έχει 3 τιμές (3 γραμμές): (γραμμές, στήλες) = (3, 2)."></div>
+
+    <div class="exercise" data-code="import pandas as pd
+# Φτιάξε ένα DataFrame με όνομα products και τρεις στήλες:
+#   item:  laptop, mouse, monitor
+#   price: 899.0, 19.9, 249.0
+#   cost:  650.0, 8.0, 180.0
+# Τύπωσε το products και μετά το products.shape
+" data-check="import pandas as _pd
+assert 'products' in globals() and isinstance(products, _pd.DataFrame), 'Δεν βρήκα DataFrame με όνομα products.'
+assert list(products.columns) == ['item', 'price', 'cost'], 'Οι στήλες πρέπει να είναι item, price, cost (με αυτή τη σειρά).'
+assert products.shape == (3, 3), 'Το shape πρέπει να είναι (3, 3).'
+assert list(products['cost']) == [650.0, 8.0, 180.0], 'Η στήλη cost δεν έχει τις σωστές τιμές.'
+assert _out.strip().endswith('(3, 3)'), 'Η τελευταία γραμμή της εξόδου πρέπει να είναι το shape: (3, 3)'" data-solution="products = pd.DataFrame({&quot;item&quot;: [&quot;laptop&quot;, &quot;mouse&quot;, &quot;monitor&quot;],
+                         &quot;price&quot;: [899.0, 19.9, 249.0],
+                         &quot;cost&quot;: [650.0, 8.0, 180.0]})
+print(products)
+print(products.shape)">
+      <div class="title">Άσκηση 1</div>
+      <p>Λεξικό με τρία κλειδιά (τα ονόματα των στηλών) και τρεις λίστες ίδιου μήκους, μέσα σε <code>pd.DataFrame()</code>.</p>
+    </div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="step" data-title="Φόρτωση &amp; πρώτη ματιά">
+    <h2>2. Φόρτωση από αρχείο και πρώτη ματιά</h2>
+    <p>Στην πράξη τα δεδομένα έρχονται από αρχεία. Το <b>CSV</b> <span class="en">(comma-separated values)</span> είναι ένα απλό αρχείο κειμένου: μία γραμμή ανά εγγραφή, τιμές χωρισμένες με κόμμα, πρώτη γραμμή τα ονόματα των στηλών. Το <code>pd.read_csv()</code> το διαβάζει σε DataFrame με μία γραμμή. Μετά, οι πρώτες τέσσερις ερωτήσεις είναι πάντα οι ίδιες: <b>πώς μοιάζει, πόσο είναι, τι τύπους έχει, τι τιμές παίρνει.</b></p>
+    <div class="runner" data-code="import pandas as pd
+
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+
+print(orders.head())        # οι 5 πρώτες γραμμές
+print(orders.shape)         # (γραμμές, στήλες)
+print(orders.tail(3))       # οι 3 τελευταίες"></div>
+    <h3>info(): τι τύπους έχει, πού λείπουν τιμές</h3>
+    <p>Το <code>info()</code> δείχνει για κάθε στήλη τον τύπο <span class="en">(dtype)</span> και πόσες τιμές δεν είναι κενές <span class="en">(non-null)</span>. Τα <code>object</code> είναι κείμενο. Πρόσεξε τη στήλη <code>city</code>: 56 από 60.</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+
+orders.info()"></div>
+    <h3>describe(): περιγραφικά στατιστικά με μία γραμμή</h3>
+    <p>Για τις αριθμητικές στήλες: πλήθος, μέσος όρος, τυπική απόκλιση, ελάχιστο, τεταρτημόρια, μέγιστο. Το <code>columns</code> και το <code>dtypes</code> δίνουν τα ονόματα και τους τύπους σκέτους.</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+
+print(orders.describe())
+print(orders.columns)
+print(orders.dtypes)"></div>
+    <div class="box tip"><b>ΠΡΟΣΟΧΗ</b>Το <code>order_id</code> είναι αριθμός, άρα το describe() του βγάζει μέσο όρο (1030.5) που δεν σημαίνει τίποτα. Η στατιστική δεν ξέρει τι είναι «ταυτότητα» και τι «μέγεθος»· εσύ ξέρεις.</div>
+
+    <div class="quiz" data-q="Τι επιστρέφει το orders.shape;" data-code="orders = pd.read_csv(&quot;store_orders.csv&quot;)
+print(orders.shape)" data-opts='["(60, 8)","(8, 60)","60","480"]' data-ans="0" data-why="60 παραγγελίες (γραμμές) και 8 στήλες: (60, 8)."></div>
+    <div class="quiz" data-q="Σύμφωνα με το info(), πόσες τιμές λείπουν από τη στήλη city;" data-code="orders.info()
+# ...
+#  7   city        56 non-null     object" data-opts='["4","56","0","Δεν φαίνεται από το info()"]' data-ans="0" data-why="60 γραμμές συνολικά, 56 non-null, άρα 4 κενές."></div>
+    <div class="quiz" data-q="Ποια μέθοδος δείχνει τις 10 πρώτες γραμμές;" data-code="orders = pd.read_csv(&quot;store_orders.csv&quot;)" data-opts='["orders.head(10)","orders.head[10]","orders.first(10)","orders[10]"]' data-ans="0" data-why="head() είναι μέθοδος (παρενθέσεις) και δέχεται το πλήθος γραμμών ως όρισμα. Χωρίς όρισμα δίνει 5."></div>
+
+    <div class="exercise" data-code="import pandas as pd
+# 1. Φόρτωσε το store_orders.csv σε μεταβλητή orders
+# 2. Τύπωσε πόσες παραγγελίες έχει (len)
+# 3. Τύπωσε τις 2 τελευταίες γραμμές
+# 4. Τύπωσε τον μέγιστο της στήλης quantity, από το describe() ή αλλιώς
+" data-check="import pandas as _pd
+assert 'orders' in globals() and isinstance(orders, _pd.DataFrame), 'Δεν βρήκα DataFrame με όνομα orders.'
+assert orders.shape == (60, 8), 'Το orders πρέπει να έχει 60 γραμμές και 8 στήλες.'
+lines = _out.strip().split('\n')
+assert lines[0] == '60', 'Η πρώτη γραμμή της εξόδου πρέπει να είναι το πλήθος: 60.'
+assert '1060' in _out and '1059' in _out, 'Δεν βλέπω τις 2 τελευταίες γραμμές (παραγγελίες 1059 και 1060). Χρησιμοποίησε tail(2).'
+assert lines[-1].strip() in ('8', '8.0'), 'Η τελευταία γραμμή πρέπει να είναι ο μέγιστος της quantity: 8.'" data-solution="orders = pd.read_csv(&quot;store_orders.csv&quot;)
+print(len(orders))
+print(orders.tail(2))
+print(orders[&quot;quantity&quot;].max())">
+      <div class="title">Άσκηση 2</div>
+      <p>Φόρτωσε το αρχείο και απάντησε στις τρεις ερωτήσεις. Για τον μέγιστο μπορείς να διαβάσεις το <code>describe()</code> ή να κάνεις <code>orders["quantity"].max()</code> (το επόμενο βήμα εξηγεί γιατί δουλεύει).</p>
+    </div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="step" data-title="Στήλες">
+    <h2>3. Στήλες: Series και DataFrame</h2>
+    <p>Με <b>μονές αγκύλες</b> και ένα όνομα παίρνεις μία στήλη, που είναι ένα <b>Series</b> <span class="en">(ένας πίνακας NumPy με ετικέτες και όνομα)</span>. Με <b>διπλές αγκύλες</b> και μια λίστα ονομάτων παίρνεις ένα μικρότερο <b>DataFrame</b>. Η διαφορά έχει σημασία: το Series έχει μεθόδους στατιστικής, το DataFrame είναι πίνακας.</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+
+print(orders[&quot;item&quot;].head())
+print(type(orders[&quot;item&quot;]))
+
+print(orders[[&quot;item&quot;, &quot;quantity&quot;]].head(3))
+print(type(orders[[&quot;item&quot;, &quot;quantity&quot;]]))"></div>
+    <h3>Ό,τι ήξερες από τη NumPy, και λίγα ακόμη</h3>
+    <p>Ένα Series έχει <code>sum()</code>, <code>mean()</code>, <code>max()</code> όπως ο πίνακας NumPy, και δύο νέα που θα χρησιμοποιείς συνέχεια σε στήλες κειμένου: <code>unique()</code> (ποιες διαφορετικές τιμές υπάρχουν) και <code>value_counts()</code> (πόσες φορές η καθεμία, ταξινομημένες).</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+
+print(orders[&quot;quantity&quot;].sum())
+print(orders[&quot;quantity&quot;].mean())
+print(orders[&quot;item&quot;].unique())
+print(orders[&quot;item&quot;].value_counts())
+print(orders[&quot;channel&quot;].value_counts())"></div>
+    <div class="box note"><b>ΔΥΟ ΓΡΑΦΕΣ</b>Το <code>orders.quantity</code> κάνει το ίδιο με το <code>orders["quantity"]</code>, και το βλέπεις συχνά. Οι αγκύλες όμως δουλεύουν πάντα (και με κενά στο όνομα, και όταν το όνομα συμπίπτει με μέθοδο, και για νέες στήλες), γι' αυτό στο μάθημα κρατάμε τις αγκύλες.</div>
+
+    <div class="quiz" data-q="Τι τύπου είναι το αποτέλεσμα;" data-code="x = orders[[&quot;quantity&quot;]]" data-opts='["DataFrame (με μία στήλη)","Series","list","numpy.ndarray"]' data-ans="0" data-why="Διπλές αγκύλες = λίστα ονομάτων = DataFrame, ακόμη κι αν η λίστα έχει ένα όνομα. Για Series: orders[&quot;quantity&quot;]."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="s = pd.Series([3, 3, 5, 3])
+print(s.value_counts())" data-opts='["3    3\n5    1","3    1\n5    3","[3, 5]","4"]' data-ans="0" data-why="Το value_counts μετρά εμφανίσεις: το 3 εμφανίζεται 3 φορές, το 5 μία, με το συχνότερο πρώτο. (Η πραγματική έξοδος έχει και επικεφαλίδα/τύπο.)"></div>
+    <div class="quiz" data-q="Πόσες παραγγελίες είναι online; (από το value_counts παραπάνω)" data-opts='["36","24","60","0.6"]' data-ans="0" data-why="channel: online 36, store 24."></div>
+
+    <div class="exercise" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+# 1. Τύπωσε τη μέση τιμή μονάδας (unit_price), στρογγυλεμένη σε 2 δεκαδικά
+# 2. Τύπωσε τις διαφορετικές πόλεις (unique) της στήλης city
+# 3. Τύπωσε πόσες παραγγελίες έχει κάθε κατηγορία (category) με value_counts
+" data-check="lines = _out.strip().split('\n')
+assert lines[0] in ('196.5', '196.50'), 'Πρώτη γραμμή: η μέση unit_price με 2 δεκαδικά = 196.5 (round(orders[&quot;unit_price&quot;].mean(), 2)).'
+assert 'Larisa' in _out and 'nan' in _out, 'Δεν βλέπω τις μοναδικές πόλεις (πρέπει να περιλαμβάνουν Larisa και nan).'
+assert 'accessories' in _out and '42' in _out, 'Δεν βλέπω το value_counts της category (accessories 42, computers 9, displays 9).'" data-solution="print(round(orders[&quot;unit_price&quot;].mean(), 2))
+print(orders[&quot;city&quot;].unique())
+print(orders[&quot;category&quot;].value_counts())">
+      <div class="title">Άσκηση 3</div>
+      <p>Τρεις στήλες, τρεις μέθοδοι. Παρατήρησε το <code>nan</code> ανάμεσα στις πόλεις: οι κενές τιμές μετρούν ως «τιμή» στο unique (το βήμα 7 ασχολείται μαζί τους).</p>
+    </div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="step" data-title="Γραμμές: loc &amp; iloc">
+    <h2>4. Γραμμές: <span class="en">iloc</span> με θέση, <span class="en">loc</span> με ετικέτα</h2>
+    <p>Για γραμμές υπάρχουν δύο εργαλεία. Το <code>iloc[]</code> δουλεύει με <b>θέσεις</b> (0, 1, 2… όπως η NumPy: <code>[γραμμή, στήλη]</code>, slicing, αρνητικοί δείκτες). Το <code>loc[]</code> δουλεύει με <b>ετικέτες</b>: την ετικέτα του ευρετηρίου για τη γραμμή και το <b>όνομα</b> της στήλης. Όσο το ευρετήριο είναι 0, 1, 2… τα δύο μοιάζουν· η διαφορά φαίνεται μόλις αλλάξεις ευρετήριο.</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+
+print(orders.iloc[0])           # πρώτη γραμμή (ως Series)
+print(orders.iloc[2, 5])        # γραμμή 2, στήλη 5 (quantity)
+print(orders.iloc[:3, [2, 5]])  # γραμμές 0-2, στήλες 2 και 5
+print(orders.iloc[-1][&quot;item&quot;])  # τελευταία γραμμή, στήλη item"></div>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+
+print(orders.loc[2, &quot;quantity&quot;])
+print(orders.loc[:2, [&quot;item&quot;, &quot;quantity&quot;]])   # προσοχή: το loc ΠΕΡΙΛΑΜΒΑΝΕΙ το 2
+
+# Το order_id ως ευρετήριο: τώρα το loc ψάχνει με αριθμό παραγγελίας
+by_id = orders.set_index(&quot;order_id&quot;)
+print(by_id.loc[1005])
+print(by_id.loc[1005, &quot;item&quot;])
+print(by_id.iloc[4, 1])        # η ίδια γραμμή, με θέση"></div>
+    <div class="box tip"><b>ΜΝΗΜΟΝΙΚΟ</b><b>i</b>loc = <b>i</b>nteger (θέση). loc = label (ετικέτα, όνομα). Και μια παγίδα: το slicing στο <code>loc</code> περιλαμβάνει και το τελευταίο (<code>loc[:2]</code> δίνει 3 γραμμές), στο <code>iloc</code> όχι (<code>iloc[:2]</code> δίνει 2), όπως στις λίστες.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;a&quot;: [10, 20, 30]}, index=[&quot;x&quot;, &quot;y&quot;, &quot;z&quot;])
+print(df.loc[&quot;y&quot;, &quot;a&quot;])" data-opts='["20","10","KeyError","1"]' data-ans="0" data-why="Το loc ψάχνει την ετικέτα γραμμής &quot;y&quot; και τη στήλη &quot;a&quot;: 20."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;a&quot;: [10, 20, 30]}, index=[&quot;x&quot;, &quot;y&quot;, &quot;z&quot;])
+print(df.iloc[1, 0])" data-opts='["20","10","KeyError","y"]' data-ans="0" data-why="Το iloc δουλεύει με θέσεις: γραμμή 1 (η δεύτερη), στήλη 0: 20. Το df.loc[1, 0] θα έδινε KeyError, γιατί δεν υπάρχουν τέτοιες ετικέτες."></div>
+    <div class="quiz" data-q="Πόσες γραμμές επιστρέφει το καθένα;" data-code="orders.iloc[:3]   # α
+orders.loc[:3]    # β" data-opts='["α: 3, β: 4","α: 3, β: 3","α: 4, β: 4","α: 4, β: 3"]' data-ans="0" data-why="Το iloc εξαιρεί το τέλος (0, 1, 2), το loc το περιλαμβάνει (0, 1, 2, 3)."></div>
+
+    <div class="exercise" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+# 1. Τύπωσε την πόλη της πρώτης γραμμής (θέση 0) με iloc ή loc
+# 2. Φτιάξε by_id = orders με ευρετήριο το order_id
+# 3. Τύπωσε την ποσότητα της παραγγελίας 1042 (με loc πάνω στο by_id)
+# 4. Τύπωσε το item της τελευταίας γραμμής με iloc και αρνητικό δείκτη
+" data-check="lines = _out.strip().split('\n')
+assert lines == ['Athens', '3', 'mouse'], 'Περίμενα τρεις γραμμές: Athens, 3, mouse. Πήρα: ' + ' | '.join(lines)
+assert 'by_id' in globals() and by_id.index.name == 'order_id', 'Το by_id πρέπει να έχει ευρετήριο το order_id (set_index).'
+assert '1042' in _src and '.loc[' in _src, 'Για την παραγγελία 1042 χρησιμοποίησε by_id.loc[1042, ...].'
+assert '[-1]' in _src.replace(' ', ''), 'Για την τελευταία γραμμή χρησιμοποίησε iloc[-1].'" data-solution="print(orders.loc[0, &quot;city&quot;])
+by_id = orders.set_index(&quot;order_id&quot;)
+print(by_id.loc[1042, &quot;quantity&quot;])
+print(orders.iloc[-1][&quot;item&quot;])">
+      <div class="title">Άσκηση 4</div>
+      <p>Μία φορά με θέση, μία με ετικέτα, μία με αρνητικό δείκτη. Τρεις γραμμές εξόδου: <code>Athens</code>, <code>3</code>, <code>mouse</code>.</p>
+    </div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="step" data-title="Φίλτρα">
+    <h2>5. Φίλτρα: οι γραμμές όπου…</h2>
+    <p>Το boolean filtering της NumPy, αυτούσιο: μια σύγκριση σε στήλη δίνει Series από True/False, και μέσα στις αγκύλες του DataFrame κρατά <b>τις γραμμές</b> όπου είναι True. Δύο συνθήκες με <code>&amp;</code> / <code>|</code> και παρενθέσεις, όπως πριν. Νέο: το <code>isin()</code> για «μία από αυτές τις τιμές».</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+
+big = orders[orders[&quot;quantity&quot;] &gt; 6]
+print(big)
+print(len(big))
+
+print(orders[orders[&quot;item&quot;] == &quot;laptop&quot;].shape)
+print(orders[(orders[&quot;item&quot;] == &quot;monitor&quot;) &amp; (orders[&quot;channel&quot;] == &quot;online&quot;)])
+print(orders[orders[&quot;city&quot;].isin([&quot;Patras&quot;, &quot;Larisa&quot;])].shape)"></div>
+    <p>Γράψε μια συνθήκη και δες ποιες γραμμές «περνούν». Δοκίμασε <code>quantity &gt; 5</code>, <code>item == "laptop"</code>, <code>(category == "accessories") &amp; (channel == "store")</code>, <code>(unit_price &gt; 200) | (quantity &gt;= 8)</code>:</p>
+    <div class="dfviz" data-init="quantity &gt; 5"></div>
+    <div class="box tip"><b>ΙΔΙΑ ΠΑΓΙΔΑ, ΝΕΟ ΜΗΝΥΜΑ</b><code>orders[orders["quantity"] &gt; 5 and orders["channel"] == "online"]</code> δίνει <i>ValueError: The truth value of a Series is ambiguous</i>. Όπως και στη NumPy: <code>&amp;</code> με παρενθέσεις.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;item&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;], &quot;qty&quot;: [2, 7, 9]})
+print(len(df[df[&quot;qty&quot;] &gt; 5]))" data-opts='["2","1","[7, 9]","16"]' data-ans="0" data-why="Το φίλτρο κρατά τις γραμμές b και c, άρα 2 γραμμές."></div>
+    <div class="quiz" data-q="Ποια γραμμή είναι σωστή για «monitor ή webcam»;" data-opts='["orders[orders[\"item\"].isin([\"monitor\", \"webcam\"])]","orders[orders[\"item\"] == \"monitor\" or \"webcam\"]","orders[orders[\"item\"] == [\"monitor\", \"webcam\"]]","orders[\"item\" in [\"monitor\", \"webcam\"]]"]' data-ans="0" data-why="Το isin() ελέγχει αν κάθε τιμή ανήκει στη λίστα. Ισοδύναμο: (orders[&quot;item&quot;] == &quot;monitor&quot;) | (orders[&quot;item&quot;] == &quot;webcam&quot;)."></div>
+    <div class="quiz" data-q="Τι τύπου είναι το orders[&quot;quantity&quot;] &gt; 5;" data-opts='["Series από True/False","DataFrame με τις γραμμές","bool","int"]' data-ans="0" data-why="Η σύγκριση σε στήλη δίνει Series από True/False (μία τιμή ανά γραμμή). Οι γραμμές έρχονται μόνο όταν το βάλεις μέσα στις αγκύλες του DataFrame."></div>
+
+    <div class="exercise" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+# 1. Τύπωσε πόσες παραγγελίες keyboard έχουν ποσότητα 7 ή περισσότερο
+# 2. Τύπωσε πόσες παραγγελίες έγιναν online από την Athens
+# 3. Τύπωσε τις παραγγελίες (όλες τις στήλες) από Larisa, με isin ή ==
+" data-check="lines = _out.strip().split('\n')
+assert lines[0] == '5', 'Πρώτη γραμμή: 5 παραγγελίες keyboard με quantity &gt;= 7.'
+assert lines[1] == '12', 'Δεύτερη γραμμή: 12 παραγγελίες online από Athens (δύο συνθήκες με &amp; και παρενθέσεις).'
+assert _out.count('Larisa') == 3, 'Περίμενα να τυπωθούν οι 3 παραγγελίες από Larisa.'" data-solution="print(len(orders[(orders[&quot;item&quot;] == &quot;keyboard&quot;) &amp; (orders[&quot;quantity&quot;] &gt;= 7)]))
+print(len(orders[(orders[&quot;city&quot;] == &quot;Athens&quot;) &amp; (orders[&quot;channel&quot;] == &quot;online&quot;)]))
+print(orders[orders[&quot;city&quot;] == &quot;Larisa&quot;])">
+      <div class="title">Άσκηση 5</div>
+      <p>Τρία φίλτρα, δύο από αυτά με δύο συνθήκες. Τύπωσε <code>5</code>, <code>12</code> και μετά τον πίνακα με τις παραγγελίες από Larisa.</p>
+    </div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="step" data-title="Ταξινόμηση &amp; νέες στήλες">
+    <h2>6. Ταξινόμηση και νέες στήλες</h2>
+    <p>Το <code>sort_values("στήλη")</code> επιστρέφει <b>νέο</b> DataFrame ταξινομημένο (αύξουσα· <code>ascending=False</code> για φθίνουσα). Με λίστα στηλών ταξινομεί πρώτα κατά την πρώτη, μετά κατά τη δεύτερη. Το «top 3» είναι απλώς ταξινόμηση + <code>head(3)</code>.</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+
+print(orders.sort_values(&quot;quantity&quot;, ascending=False).head(3))
+print(orders.sort_values([&quot;item&quot;, &quot;quantity&quot;]).head(5))
+print(orders.head(2))   # η orders δεν άλλαξε"></div>
+    <h3>Νέα στήλη από υπολογισμό</h3>
+    <p>Ανάθεση σε όνομα που δεν υπάρχει ακόμη δημιουργεί στήλη. Ο υπολογισμός γίνεται στοιχείο προς στοιχείο, όπως στη NumPy: <code>orders["revenue"] = orders["unit_price"] * orders["quantity"]</code>. Από εκεί και πέρα η νέα στήλη είναι σαν όλες τις άλλες: φίλτρα, ταξινόμηση, στατιστικά.</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+print(orders.head(3))
+print(orders[&quot;revenue&quot;].sum())
+
+top3 = orders.sort_values(&quot;revenue&quot;, ascending=False).head(3)
+print(top3[[&quot;order_id&quot;, &quot;item&quot;, &quot;revenue&quot;]])"></div>
+
+    <div class="quiz" data-q="Μετά τον κώδικα, ποια είναι η πρώτη γραμμή της df;" data-code="df = pd.DataFrame({&quot;x&quot;: [3, 1, 2]})
+df.sort_values(&quot;x&quot;)
+print(df.iloc[0, 0])" data-opts='["3","1","2","Σφάλμα"]' data-ans="0" data-why="Το sort_values ΕΠΙΣΤΡΕΦΕΙ νέο DataFrame και δεν αλλάζει την df. Για να κρατήσεις το αποτέλεσμα: df = df.sort_values(&quot;x&quot;)."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;price&quot;: [10.0, 20.0], &quot;qty&quot;: [3, 2]})
+df[&quot;total&quot;] = df[&quot;price&quot;] * df[&quot;qty&quot;]
+print(df[&quot;total&quot;].sum())" data-opts='["70.0","50.0","[30.0, 40.0]","Σφάλμα"]' data-ans="0" data-why="Νέα στήλη total = [30.0, 40.0], άθροισμα 70.0."></div>
+    <div class="quiz" data-q="Ποια γραμμή δίνει τις 3 παραγγελίες με τη ΜΙΚΡΟΤΕΡΗ ποσότητα;" data-opts='["orders.sort_values(\"quantity\").head(3)","orders.sort_values(\"quantity\", ascending=False).head(3)","orders.head(3).sort_values(\"quantity\")","orders.min(3)"]' data-ans="0" data-why="Αύξουσα ταξινόμηση (η προεπιλογή) και μετά οι 3 πρώτες. Η τρίτη επιλογή ταξινομεί μόνο τις 3 πρώτες γραμμές του αρχείου."></div>
+
+    <div class="exercise" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+# 1. Πρόσθεσε στήλη revenue = unit_price * quantity
+# 2. Τύπωσε τα συνολικά έσοδα της κατηγορίας displays (φίλτρο + sum)
+# 3. Τύπωσε τα order_id των 3 παραγγελιών με τα μεγαλύτερα έσοδα
+#    (ταξινόμηση φθίνουσα, head(3), στήλη order_id)
+" data-check="import pandas as _pd
+assert 'revenue' in orders.columns, 'Δεν βρήκα στήλη revenue στο orders.'
+assert abs(orders['revenue'].sum() - 26872.6) &lt; 0.01, 'Η στήλη revenue δεν είναι σωστή (unit_price * quantity).'
+lines = _out.strip().split('\n')
+assert lines[0] in ('5478.0', '5478'), 'Πρώτη γραμμή: έσοδα displays = 5478.0'
+assert '1042' in _out and '1012' in _out and '1028' in _out, 'Περίμενα τα order_id 1042, 1012, 1028 (οι 3 μεγαλύτερες παραγγελίες).'" data-solution="orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+print(orders[orders[&quot;category&quot;] == &quot;displays&quot;][&quot;revenue&quot;].sum())
+print(orders.sort_values(&quot;revenue&quot;, ascending=False).head(3)[&quot;order_id&quot;])">
+      <div class="title">Άσκηση 6</div>
+      <p>Νέα στήλη, φίλτρο πάνω της, ταξινόμηση κατά αυτήν. Η δεύτερη ερώτηση συνδυάζει φίλτρο σε μία στήλη και άθροισμα σε άλλη: <code>orders[φίλτρο]["revenue"].sum()</code>.</p>
+    </div>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="step" data-title="Κενές τιμές &amp; σφάλματα">
+    <h2>7. Κενές τιμές <span class="en">(missing values)</span> και σφάλματα</h2>
+    <p>Στα πραγματικά δεδομένα λείπουν τιμές, και το pandas τις δείχνει ως <code>NaN</code> <span class="en">(Not a Number)</span>. Τρία εργαλεία: <code>isna()</code> (πού λείπουν), <code>fillna(τιμή)</code> (γέμισέ τες) και <code>dropna()</code> (πέτα τις γραμμές). Οι στατιστικές μέθοδοι τις αγνοούν σιωπηλά, γι' αυτό πρέπει να ξέρεις ότι υπάρχουν.</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+
+print(orders.isna().sum())            # κενές ανά στήλη
+print(orders[orders[&quot;city&quot;].isna()])  # οι γραμμές χωρίς πόλη
+
+orders[&quot;city&quot;] = orders[&quot;city&quot;].fillna(&quot;Unknown&quot;)
+print(orders[&quot;city&quot;].value_counts())
+print(orders.dropna().shape)          # τώρα δεν πετά τίποτα"></div>
+    <h3>Τα σφάλματα του pandas που θα δεις πρώτα</h3>
+    <table class="t">
+      <tr><th>Μήνυμα</th><th>Τι σημαίνει</th><th>Διόρθωση</th></tr>
+      <tr><td>KeyError: 'Item'</td><td>Δεν υπάρχει στήλη με αυτό το όνομα (κεφαλαία/πεζά, κενά)</td><td>Δες τα ονόματα: <code>orders.columns</code></td></tr>
+      <tr><td>ValueError: The truth value of a Series is ambiguous</td><td><code>and</code> / <code>or</code> ανάμεσα σε συνθήκες</td><td><code>&amp;</code> / <code>|</code> με παρενθέσεις</td></tr>
+      <tr><td>FileNotFoundError: store_orders.csv</td><td>Το αρχείο δεν είναι εκεί που τρέχει ο κώδικας</td><td>Ανέβασέ το (Colab) ή δώσε τη σωστή διαδρομή</td></tr>
+      <tr><td>AttributeError: 'DataFrame' object has no attribute 'Quantity'</td><td>Η γραφή με τελεία με λάθος όνομα στήλης</td><td>Αγκύλες και σωστό όνομα: <code>orders["quantity"]</code></td></tr>
+    </table>
+    <p style="margin-top:10px">Τρέξε, διάβασε, διόρθωσε ένα σφάλμα τη φορά:</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+
+print(orders[&quot;Item&quot;].head(2))
+print(orders[orders[&quot;quantity&quot;] &gt; 5 and orders[&quot;channel&quot;] == &quot;online&quot;].shape)"></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="s = pd.Series([2.0, None, 4.0])
+print(s.mean())" data-opts='["3.0","2.0","NaN","Σφάλμα"]' data-ans="0" data-why="Οι στατιστικές μέθοδοι αγνοούν τα NaN: (2 + 4) / 2 = 3.0. Γι' αυτό πρέπει να ξέρεις πόσα λείπουν."></div>
+    <div class="quiz" data-q="Ποιο σφάλμα θα εμφανιστεί;" data-code="orders = pd.read_csv(&quot;store_orders.csv&quot;)
+print(orders[&quot;Quantity&quot;].mean())" data-opts='["KeyError","AttributeError","ValueError","Κανένα, τυπώνει 3.85"]' data-ans="0" data-why="Τα ονόματα στηλών είναι case-sensitive: η στήλη λέγεται quantity. Με αγκύλες το λάθος όνομα δίνει KeyError (με τελεία θα έδινε AttributeError)."></div>
+    <div class="exercise" data-code="# Ο κώδικας έχει τρία σφάλματα. Διόρθωσέ τα ώστε να τυπώνει: 12
+import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+athens_online = orders[orders[&quot;City&quot;] == &quot;Athens&quot; and orders[&quot;channel&quot;] == &quot;online&quot;]
+print(len(athens_online)
+" data-check="assert _out.strip() == '12', 'Περίμενα να τυπωθεί 12. Έλεγξε: όνομα στήλης city, &amp; με παρενθέσεις, κλείσιμο παρένθεσης.'
+assert '&amp;' in _src, 'Χρησιμοποίησε &amp; αντί για and.'" data-solution="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+athens_online = orders[(orders[&quot;city&quot;] == &quot;Athens&quot;) &amp; (orders[&quot;channel&quot;] == &quot;online&quot;)]
+print(len(athens_online))">
+      <div class="title">Άσκηση 7</div>
+      <p>Ένα SyntaxError, ένα KeyError και ένα ValueError. Πάτησε «Έλεγξε», διάβασε το μήνυμα, διόρθωσε, ξαναπάτησε.</p>
+    </div>
+  </section>
+
+  <!-- ============ 8 ============ -->
+  <section class="step" data-title="Τελικό κουίζ">
+    <h2>8. Τελικό κουίζ</h2>
+    <p>Δώδεκα ερωτήσεις από όλη την εβδομάδα. Σκέψου πρώτα, μετά απάντησε· αν αμφιβάλλεις, άνοιξε το παράθυρο κώδικα στο τέλος και δοκίμασέ το.</p>
+    <div class="quiz" data-q="1. Τι θα τυπώσει;" data-code="d = {&quot;a&quot;: 1, &quot;b&quot;: 2}
+d[&quot;c&quot;] = 3
+print(len(d))" data-opts='["3","2","6","Σφάλμα"]' data-ans="0" data-why="Προστέθηκε τρίτο ζεύγος, άρα 3 κλειδιά."></div>
+    <div class="quiz" data-q="2. Ποια γραμμή φορτώνει σωστά ένα CSV;" data-opts='["orders = pd.read_csv(\"store_orders.csv\")","orders = pd.DataFrame(\"store_orders.csv\")","orders = pd.open(\"store_orders.csv\")","orders = read_csv(store_orders.csv)"]' data-ans="0" data-why="Συνάρτηση read_csv του pandas, με το όνομα του αρχείου ως string."></div>
+    <div class="quiz" data-q="3. Τι δείχνει το orders.info() που ΔΕΝ δείχνει το describe();" data-opts='["Τον τύπο κάθε στήλης και πόσες τιμές λείπουν","Τον μέσο όρο κάθε στήλης","Τις 5 πρώτες γραμμές","Το πλήθος γραμμών"]' data-ans="0" data-why="Το info() είναι για τη δομή (dtype, non-null), το describe() για τα στατιστικά των αριθμητικών στηλών."></div>
+    <div class="quiz" data-q="4. Τι τύπου είναι το orders[&quot;city&quot;];" data-opts='["Series","DataFrame","list","dict"]' data-ans="0" data-why="Μονές αγκύλες με ένα όνομα = μία στήλη = Series."></div>
+    <div class="quiz" data-q="5. Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;a&quot;: [5, 6, 7]})
+print(df.iloc[-1, 0])" data-opts='["7","5","-1","KeyError"]' data-ans="0" data-why="iloc με αρνητικό δείκτη: η τελευταία γραμμή, στήλη 0: 7."></div>
+    <div class="quiz" data-q="6. Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;a&quot;: [5, 6, 7]}, index=[10, 20, 30])
+print(df.loc[20, &quot;a&quot;])" data-opts='["6","20","KeyError","5"]' data-ans="0" data-why="Το loc ψάχνει την ετικέτα 20 (η δεύτερη γραμμή): 6."></div>
+    <div class="quiz" data-q="7. Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;a&quot;: [5, 6, 7]})
+print(len(df[df[&quot;a&quot;] &gt;= 6]))" data-opts='["2","1","[6, 7]","13"]' data-ans="0" data-why="Το φίλτρο κρατά τις γραμμές με 6 και 7: 2 γραμμές."></div>
+    <div class="quiz" data-q="8. Ποια γραμμή είναι σωστή για «ποσότητα πάνω από 5 ΚΑΙ κανάλι store»;" data-opts='["orders[(orders[\"quantity\"] &gt; 5) &amp; (orders[\"channel\"] == \"store\")]","orders[orders[\"quantity\"] &gt; 5 and orders[\"channel\"] == \"store\"]","orders[orders[\"quantity\"] &gt; 5 &amp; orders[\"channel\"] == \"store\"]","orders[\"quantity\" &gt; 5, \"channel\" == \"store\"]"]' data-ans="0" data-why="& με παρενθέσεις γύρω από κάθε συνθήκη. Το and δίνει ValueError· χωρίς παρενθέσεις το &amp; εκτελείται πρώτο και βγαίνει λάθος."></div>
+    <div class="quiz" data-q="9. Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;a&quot;: [3, 1, 2]})
+print(df.sort_values(&quot;a&quot;, ascending=False)[&quot;a&quot;].iloc[0])" data-opts='["3","1","2","Σφάλμα"]' data-ans="0" data-why="Φθίνουσα ταξινόμηση: 3, 2, 1· το πρώτο στοιχείο είναι το 3."></div>
+    <div class="quiz" data-q="10. Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;p&quot;: [2.0, 4.0], &quot;q&quot;: [5, 5]})
+df[&quot;t&quot;] = df[&quot;p&quot;] * df[&quot;q&quot;]
+print(df.shape)" data-opts='["(2, 3)","(2, 2)","(3, 2)","30.0"]' data-ans="0" data-why="Προστέθηκε μία στήλη: 2 γραμμές, 3 στήλες."></div>
+    <div class="quiz" data-q="11. Τι θα τυπώσει;" data-code="s = pd.Series([1.0, None, None, 4.0])
+print(s.isna().sum())" data-opts='["2","4","5.0","True"]' data-ans="0" data-why="Το isna() δίνει True όπου λείπει τιμή και το sum() τα μετρά: 2."></div>
+    <div class="quiz" data-q="12. Τι θα τυπώσει;" data-code="s = pd.Series([&quot;a&quot;, &quot;b&quot;, &quot;a&quot;, &quot;a&quot;])
+print(s.value_counts()[&quot;a&quot;])" data-opts='["3","1","a","[3, 1]"]' data-ans="0" data-why="Το value_counts() είναι Series με ευρετήριο τις τιμές· το [&quot;a&quot;] δίνει πόσες φορές εμφανίστηκε το a: 3."></div>
+    <div id="finalScore" class="box note" style="display:none"></div>
+    <h3>Δοκιμαστήριο</h3>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+# Ελεύθερος χώρος για πειράματα
+print(orders[orders[&quot;quantity&quot;] == 1][&quot;item&quot;].value_counts())"></div>
+    <div class="box tip"><b>ΓΙΑ ΤΟ ΣΠΙΤΙ</b>Εργασία: ολοκλήρωσε και τα 8 βήματα αυτής της σελίδας (κουίζ και ασκήσεις) και ξανατρέξε τον κώδικα του βήματος 6 σε Google Colab με το <a href="store_orders.csv" download>store_orders.csv</a>. DataCamp: <a href="https://app.datacamp.com/learn/courses/data-manipulation-with-pandas" target="_blank" rel="noopener">Data Manipulation with pandas</a>, κεφάλαιο 1 (Transforming DataFrames). Επόμενη εβδομάδα: ομαδοποίηση και συγκεντρωτικά με <code>groupby</code>.</div>
+  </section>
+
+  <div class="nav">
+    <button class="btn outline" id="prevBtn">← Προηγούμενο</button>
+    <button class="btn navy" id="nextBtn">Επόμενο βήμα →</button>
+  </div>
+  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Ο κώδικας εκτελείται στον browser με <a href="https://pyodide.org" target="_blank" rel="noopener">Pyodide</a>.</footer>
+</div>
+
+<script>
+(function(){
+  // ---------- storage helpers ----------
+  const KEY='bap-week5-pandas';
+  let state={step:0,quiz:{},ex:{}};
+  try{const s=localStorage.getItem(KEY); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  // ---------- stepper ----------
+  const steps=[...document.querySelectorAll('section.step')];
+  const stepper=document.getElementById('stepper');
+  steps.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.innerHTML='<span class="n">'+(i+1)+'</span><span class="l">'+s.dataset.title+'</span>';
+    b.onclick=()=>go(i);
+    stepper.appendChild(b);
+  });
+  function go(i){
+    state.step=i; save();
+    steps.forEach((s,j)=>s.classList.toggle('active',j===i));
+    [...stepper.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+    document.getElementById('prevBtn').disabled=i===0;
+    document.getElementById('nextBtn').disabled=i===steps.length-1;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.getElementById('prevBtn').onclick=()=>go(Math.max(0,state.step-1));
+  document.getElementById('nextBtn').onclick=()=>go(Math.min(steps.length-1,state.step+1));
+
+  // ---------- pyodide ----------
+  let pyodide=null, loading=null, pandasLoaded=false;
+  const statusEl=document.getElementById('pyStatus');
+  function loadPy(){
+    if(pyodide) return Promise.resolve(pyodide);
+    if(loading) return loading;
+    statusEl.textContent='φόρτωση Python…';
+    loading=new Promise((res,rej)=>{
+      const s=document.createElement('script');
+      s.src='https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+      s.onload=async()=>{
+        try{
+          pyodide=await loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/'});
+          statusEl.textContent='φόρτωση pandas (10–20 δευτ.)…';
+          try{
+            await pyodide.loadPackage(['numpy','pandas']);
+            // the week's data file, written into the browser's file system so read_csv("store_orders.csv") works as in Colab
+            const csv=await (await fetch('store_orders.csv')).text();
+            pyodide.FS.writeFile('store_orders.csv', csv);
+            await pyodide.runPythonAsync("import pandas as pd\npd.set_option('display.width', 120)\npd.set_option('display.max_columns', 20)");
+            pandasLoaded=true;
+          }catch(e){ console.error(e); }
+          statusEl.textContent=pandasLoaded?'Python + pandas έτοιμα ✓':'Python έτοιμη ✓ (το pandas δεν φορτώθηκε)'; statusEl.classList.add('ready');
+          res(pyodide);
+        }catch(e){statusEl.textContent='η Python δεν φορτώθηκε'; rej(e);}
+      };
+      s.onerror=()=>{statusEl.textContent='η Python δεν φορτώθηκε (έλεγξε τη σύνδεση)'; rej(new Error('load'));};
+      document.head.appendChild(s);
+    });
+    return loading;
+  }
+  let chain=Promise.resolve();
+  function runPython(src){
+    // serialise runs: stdout capture is global in Pyodide
+    const p=chain.then(()=>runPythonNow(src));
+    chain=p.catch(()=>{});
+    return p;
+  }
+  async function runPythonNow(src){
+    const py=await loadPy();
+    let out='';
+    py.setStdout({batched:(t)=>{out+=t+'\n';}});
+    py.setStderr({batched:(t)=>{out+=t+'\n';}});
+    const ns=py.globals.get('dict')();
+    let err=null;
+    try{ await py.runPythonAsync(src,{globals:ns}); }
+    catch(e){ err=String(e.message||e); }
+    return {out,err,ns};
+  }
+  function fmtErr(e){
+    // show where (line in the user's code) and what (the last Error line)
+    const lines=e.trim().split('\n');
+    const where=lines.filter(l=>/File "<exec>", line \d+/.test(l)).map(l=>l.replace(/.*line (\d+).*/,'γραμμή $1')).pop();
+    let what='';
+    for(let i=lines.length-1;i>=0;i--){ if(/^[A-Za-z]*(Error|Exception|Warning)\b/.test(lines[i])){ what=lines[i]; break; } }
+    if(!what) what=lines[lines.length-1];
+    return (where?'Σφάλμα στη '+where+':\n':'')+what;
+  }
+
+  // ---------- runners ----------
+  document.querySelectorAll('.runner').forEach(r=>{
+    const code=r.dataset.code;
+    r.innerHTML='<div class="bar"><span>script.py</span><span class="spacer"></span><button class="btn secondary reset">Επαναφορά</button><button class="btn run">▶ Τρέξε</button></div><textarea spellcheck="false"></textarea><div class="out"></div>';
+    const ta=r.querySelector('textarea'), out=r.querySelector('.out');
+    ta.value=code; ta.rows=Math.max(4,code.split('\n').length+1);
+    ta.addEventListener('keydown',e=>{
+      if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();run();}
+      if(e.key==='Tab'){e.preventDefault();const s=ta.selectionStart;ta.value=ta.value.slice(0,s)+'    '+ta.value.slice(ta.selectionEnd);ta.selectionStart=ta.selectionEnd=s+4;}
+    });
+    r.querySelector('.reset').onclick=()=>{ta.value=code;out.textContent='';out.classList.remove('err');};
+    const btn=r.querySelector('.run');
+    async function run(){
+      btn.disabled=true; out.classList.remove('err'); out.textContent='…';
+      try{
+        const res=await runPython(ta.value);
+        out.textContent=(res.out+(res.err?fmtErr(res.err):'')).trimEnd();
+        if(res.err) out.classList.add('err');
+        if(!out.textContent) out.textContent='(καμία έξοδος — μήπως ξέχασες το print;)';
+      }catch(e){out.textContent='Η Python δεν είναι διαθέσιμη: '+e; out.classList.add('err');}
+      btn.disabled=false;
+    }
+    btn.onclick=run;
+  });
+
+  // ---------- quizzes ----------
+  const quizzes=[...document.querySelectorAll('.quiz')];
+  quizzes.forEach((q,qi)=>{
+    const opts=JSON.parse(q.dataset.opts), ans=+q.dataset.ans;
+    q.innerHTML='<div class="q">'+q.dataset.q+'</div>'+(q.dataset.code?'<pre></pre>':'')+'<div class="opts"></div><div class="fb"></div>';
+    if(q.dataset.code) q.querySelector('pre').textContent=q.dataset.code;
+    const box=q.querySelector('.opts'), fb=q.querySelector('.fb');
+    opts.forEach((o,i)=>{
+      const b=document.createElement('button'); b.textContent=o;
+      b.onclick=()=>{
+        [...box.children].forEach(c=>c.classList.remove('ok','bad'));
+        if(i===ans){b.classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why; state.quiz[qi]=true;}
+        else{b.classList.add('bad'); fb.className='fb bad'; fb.textContent='Όχι ακριβώς. '+q.dataset.why; state.quiz[qi]=false;}
+        save(); updateDone(); finalScore();
+      };
+      box.appendChild(b);
+    });
+    if(state.quiz[qi]===true){box.children[ans].classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why;}
+  });
+  function finalScore(){
+    const sec=steps[steps.length-1]; const qs=[...sec.querySelectorAll('.quiz')];
+    const idx=qs.map(q=>quizzes.indexOf(q)); const done=idx.filter(i=>state.quiz[i]!==undefined).length;
+    const ok=idx.filter(i=>state.quiz[i]===true).length;
+    const el=document.getElementById('finalScore');
+    if(done===qs.length){el.style.display='block'; el.innerHTML='<b>ΑΠΟΤΕΛΕΣΜΑ</b>Σωστές απαντήσεις: '+ok+' / '+qs.length+(ok===qs.length?' — άψογα!':ok>=8?' — πολύ καλά, ξαναδές τις λάθος.':' — ξαναδιάβασε τα βήματα 1–7 και ξαναπροσπάθησε.');}
+  }
+  finalScore();
+
+  // ---------- exercises ----------
+  const exs=[...document.querySelectorAll('.exercise')];
+  exs.forEach((ex,ei)=>{
+    const code=ex.dataset.code, check=ex.dataset.check, sol=ex.dataset.solution;
+    const wrap=document.createElement('div');
+    wrap.innerHTML='<div class="runner"><div class="bar"><span>script.py</span><span class="spacer"></span><button class="btn secondary reset">Επαναφορά</button><button class="btn run">✔ Έλεγξε</button></div><textarea spellcheck="false"></textarea><div class="out"></div></div><div class="result"></div><details><summary>Δείξε μια λύση</summary><pre class="solpre"></pre></details>';
+    ex.appendChild(wrap);
+    const ta=wrap.querySelector('textarea'), out=wrap.querySelector('.out'), res=wrap.querySelector('.result'), btn=wrap.querySelector('.run');
+    ta.value=code; ta.rows=Math.max(5,code.split('\n').length+2);
+    wrap.querySelector('.solpre').textContent=sol;
+    Object.assign(wrap.querySelector('.solpre').style,{fontFamily:'var(--mono)',fontSize:'14px',background:'var(--pale)',padding:'10px 12px',borderRadius:'8px',whiteSpace:'pre-wrap',margin:'6px 0 0'});
+    ta.addEventListener('keydown',e=>{ if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();run();}
+      if(e.key==='Tab'){e.preventDefault();const s=ta.selectionStart;ta.value=ta.value.slice(0,s)+'    '+ta.value.slice(ta.selectionEnd);ta.selectionStart=ta.selectionEnd=s+4;}});
+    wrap.querySelector('.reset').onclick=()=>{ta.value=code;out.textContent='';out.classList.remove('err');res.textContent='';res.className='result';};
+    async function run(){
+      btn.disabled=true; out.classList.remove('err'); out.textContent='…'; res.className='result'; res.textContent='';
+      try{
+        const py=await loadPy();
+        const src=ta.value;
+        const r=await runPython(src);
+        out.textContent=(r.out+(r.err?fmtErr(r.err):'')).trimEnd();
+        if(r.err){out.classList.add('err'); res.className='result bad'; res.textContent='Ο κώδικας έβγαλε σφάλμα. Διάβασε το μήνυμα και διόρθωσέ τον.'; state.ex[ei]=false;}
+        else{
+          r.ns.set('_out',r.out); r.ns.set('_src',src);
+          try{ await py.runPythonAsync(check,{globals:r.ns}); res.className='result ok'; res.textContent='Σωστά! Η άσκηση ολοκληρώθηκε.'; state.ex[ei]=true; }
+          catch(e){ const m=String(e.message||e); const am=m.match(/AssertionError: ([^\n]*)/); res.className='result bad'; res.textContent=am?am[1]:'Δεν είναι ακόμη σωστό: '+fmtErr(m); state.ex[ei]=false; }
+        }
+      }catch(e){out.textContent='Η Python δεν είναι διαθέσιμη: '+e; out.classList.add('err');}
+      save(); updateDone(); btn.disabled=false;
+    }
+    btn.onclick=run;
+    if(state.ex[ei]===true){res.className='result ok'; res.textContent='Ολοκληρωμένη ✓ (μπορείς την ξανακάνεις)';}
+  });
+
+  function updateDone(){
+    steps.forEach((s,i)=>{
+      const qs=[...s.querySelectorAll('.quiz')].map(q=>quizzes.indexOf(q));
+      const es=[...s.querySelectorAll('.exercise')].map(e=>exs.indexOf(e));
+      const all=qs.every(i=>state.quiz[i]===true)&&es.every(i=>state.ex[i]===true)&&(qs.length+es.length)>0;
+      stepper.children[i].classList.toggle('done',all);
+    });
+  }
+
+  // ---------- DataFrame filter visualizer ----------
+  const DF_ROWS=[{"order_id": 1003, "item": "mouse", "category": "accessories", "unit_price": 19.9, "quantity": 6, "channel": "online", "city": "Thessaloniki"}, {"order_id": 1005, "item": "laptop", "category": "computers", "unit_price": 899.0, "quantity": 2, "channel": "online", "city": "Thessaloniki"}, {"order_id": 1008, "item": "laptop", "category": "computers", "unit_price": 899.0, "quantity": 1, "channel": "store", "city": null}, {"order_id": 1013, "item": "mouse", "category": "accessories", "unit_price": 19.9, "quantity": 8, "channel": "store", "city": "Patras"}, {"order_id": 1014, "item": "keyboard", "category": "accessories", "unit_price": 45.0, "quantity": 7, "channel": "online", "city": "Thessaloniki"}, {"order_id": 1025, "item": "monitor", "category": "displays", "unit_price": 249.0, "quantity": 2, "channel": "online", "city": "Thessaloniki"}, {"order_id": 1030, "item": "webcam", "category": "accessories", "unit_price": 59.0, "quantity": 8, "channel": "online", "city": "Athens"}, {"order_id": 1059, "item": "laptop", "category": "computers", "unit_price": 899.0, "quantity": 1, "channel": "store", "city": "Thessaloniki"}];
+  const DF_IDX=[2,4,7,12,13,24,29,58];
+  document.querySelectorAll('.dfviz').forEach(v=>{
+    const cols=Object.keys(DF_ROWS[0]);
+    v.className='viz dfviz';
+    v.innerHTML='<div style="font-family:var(--mono);font-size:15px;color:var(--navy)">orders[ <span class="cond"></span> ]   # 8 από τις 60 γραμμές</div><input spellcheck="false" autocomplete="off"><div style="overflow-x:auto"><table><thead><tr><th></th>'+cols.map(c=>'<th>'+c+'</th>').join('')+'<th>True/False</th></tr></thead><tbody></tbody></table></div><div class="res"></div>';
+    const inp=v.querySelector('input'), tb=v.querySelector('tbody'), res=v.querySelector('.res'), condEl=v.querySelector('.cond');
+    DF_ROWS.forEach((r,i)=>{const tr=document.createElement('tr'); tr.innerHTML='<td class="idx">'+DF_IDX[i]+'</td>'+cols.map(c=>'<td>'+(r[c]===null?'NaN':(c==='unit_price'?r[c].toFixed(1):r[c]))+'</td>').join('')+'<td class="b"></td>'; tb.appendChild(tr);});
+    function cmp(op,a,b){ if(a===null) return false; switch(op){case '>':return a>b;case '>=':return a>=b;case '<':return a<b;case '<=':return a<=b;case '==':return a===b;case '!=':return a!==b;} return false; }
+    function simple(e){
+      const m=e.match(/^([A-Za-z_]+)(>=|<=|==|!=|>|<)(.+)$/); if(!m) return null;
+      const col=m[1]; if(!cols.includes(col)) return {err:"KeyError: '"+col+"' — δεν υπάρχει τέτοια στήλη (orders.columns)"};
+      let val=m[3]; const q=val.match(/^"([^"]*)"$|^'([^']*)'$/);
+      if(q) val=q[1]!==undefined?q[1]:q[2]; else if(/^-?\d+(\.\d+)?$/.test(val)) val=+val; else return {err:'Το κείμενο θέλει εισαγωγικά: item == "laptop"'};
+      return {mask:DF_ROWS.map(r=>cmp(m[2],r[col],val))};
+    }
+    function evalExpr(e){
+      if(/\b(and|or)\b/.test(e)) return {err:'ValueError: The truth value of a Series is ambiguous — χρησιμοποίησε & ή | με παρενθέσεις'};
+      e=e.replace(/\s+/g,'');
+      if(false) return {err:'ValueError: The truth value of a Series is ambiguous — χρησιμοποίησε & ή | με παρενθέσεις'};
+      let r=simple(e); if(r) return r;
+      const m=e.match(/^\(([^()]*)\)([&|])\(([^()]*)\)$/);
+      if(m){const a=simple(m[1]), b=simple(m[3]); if(a&&a.err) return a; if(b&&b.err) return b; if(a&&b) return {mask:a.mask.map((p,i)=>m[2]==='&'?(p&&b.mask[i]):(p||b.mask[i]))};}
+      if(/(and|or)/.test(e)) return {err:'ValueError: The truth value of a Series is ambiguous — χρησιμοποίησε & ή | με παρενθέσεις'};
+      if(/[&|]/.test(e)) return {err:'Χρειάζονται παρενθέσεις γύρω από κάθε συνθήκη: (quantity > 5) & (channel == "online")'};
+      return {err:'Γράψε κάτι σαν quantity > 5, item == "laptop", (category == "accessories") & (channel == "store")'};
+    }
+    function upd(){
+      const r=evalExpr(inp.value); condEl.textContent=inp.value.trim();
+      [...tb.children].forEach((tr,i)=>{const hit=!!(r.mask&&r.mask[i]); tr.classList.toggle('hit',hit); tr.classList.toggle('off',!!r.mask&&!hit); tr.lastElementChild.textContent=r.mask?(hit?'True':'False'):'';});
+      res.style.color=r.err?'var(--red)':'var(--navy)';
+      res.textContent=r.err?r.err:'→ '+r.mask.filter(Boolean).length+' γραμμές από 8   ·   len(...) → '+r.mask.filter(Boolean).length;
+    }
+    inp.oninput=upd; inp.value=v.dataset.init; upd();
+  });
+
+  updateDone();
+  go(Math.min(state.step||0,steps.length-1));
+  // warm up python (and pandas) in the background
+  loadPy().catch(()=>{});
+})();
+</script>
+</body>
+</html>
