@@ -13,7 +13,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tableau 1: Από τις κρατήσεις στο πρώτο γράφημα · Εβδομάδα 2</title>
-<meta name="description" content="Οδηγός εργαστηρίου Tableau με δεδομένα κρατήσεων ξενοδοχείων: σύνδεση με τα δεδομένα, διαστάσεις και μέτρα, πρώτα γραφήματα, χάρτης, υπολογιζόμενο πεδίο, πρώτο dashboard. Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις, Εβδομάδα 2.">
+<meta name="description" content="Οδηγός εργαστηρίου Tableau με δεδομένα κρατήσεων ξενοδοχείων: σύνδεση με τα δεδομένα, διαστάσεις και μετρούμενα μεγέθη, πρώτα γραφήματα, χάρτης, υπολογιζόμενο πεδίο, πρώτο dashboard. Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις, Εβδομάδα 2.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -145,7 +145,7 @@
 
   <!-- ============ 1 ============ -->
   <section class="step" data-title="Σύνδεση">
-    <h2>2. Σύνδεση με τα δεδομένα: διαστάσεις και μέτρα</h2>
+    <h2>2. Σύνδεση με τα δεδομένα: διαστάσεις και μετρούμενα μεγέθη</h2>
     <p>Το Tableau δεν «ανοίγει» αρχεία όπως το Excel· <b>συνδέεται</b> σε πηγές δεδομένων <span class="en">(data sources)</span>: αρχεία, βάσεις, cloud. Το πρώτο πράγμα που βλέπεις είναι η σελίδα <span class="ui">Data Source</span>, όπου ελέγχεις ότι κατάλαβε σωστά τις στήλες.</p>
     <ol class="todo">
       <li>Άνοιξε το Tableau. Στην αρχική οθόνη, στο <span class="ui">Connect › To a File</span>, διάλεξε <span class="ui">Text file</span> και βρες το <code>hotel_bookings.csv</code>.</li>
@@ -157,15 +157,15 @@
     <p>Στο αριστερό πάνελ <span class="ui">Data</span> τα πεδία χωρίζονται σε δύο χρώματα:</p>
     <div class="grid2">
       <div class="box note"><b>ΜΠΛΕ · ΔΙΑΣΤΑΣΕΙΣ (DIMENSIONS)</b>Κατηγορίες που <b>τεμαχίζουν</b> τα δεδομένα: <span class="pill">Hotel</span> <span class="pill">Country</span> <span class="pill">Market Segment</span> <span class="pill">Arrival Date</span>. Απαντούν στο «ανά τι;».</div>
-      <div class="box note"><b>ΠΡΑΣΙΝΟ · ΜΕΤΡΑ (MEASURES)</b>Αριθμοί που <b>αθροίζονται</b>: <span class="pill m">ADR</span> <span class="pill m">Revenue</span> <span class="pill m">Nights</span> <span class="pill m">Lead Time (days)</span>. Απαντούν στο «πόσο;». Το Tableau τα αθροίζει αυτόματα (SUM) αν δεν του πεις αλλιώς (AVG, COUNT…).</div>
+      <div class="box note"><b>ΠΡΑΣΙΝΟ · ΜΕΤΡΟΥΜΕΝΑ ΜΕΓΕΘΗ (MEASURES)</b>Αριθμοί που <b>αθροίζονται</b>: <span class="pill m">ADR</span> <span class="pill m">Revenue</span> <span class="pill m">Nights</span> <span class="pill m">Lead Time (days)</span>. Απαντούν στο «πόσο;». Το Tableau τα αθροίζει αυτόματα (SUM) αν δεν του πεις αλλιώς (AVG, COUNT…).</div>
     </div>
-    <p>Κάθε γράφημα είναι ένας συνδυασμός: <b>ένα ή περισσότερα μέτρα, ανά μία ή περισσότερες διαστάσεις</b>. «Έσοδα ανά μήνα», «κρατήσεις ανά χώρα», «μέση τιμή ανά ξενοδοχείο και μήνα».</p>
-    <div class="box tip"><b>ΠΡΟΣΟΧΗ</b>Το <span class="pill m">Booking ID</span> είναι αριθμός, οπότε το Tableau το βάζει στα μέτρα. Αθροίζοντάς το όμως δεν βγαίνει τίποτα χρήσιμο. Το χρησιμοποιούμε με <b>COUNT</b> για να μετράμε κρατήσεις. Σύρε το στις διαστάσεις (drag στο μπλε τμήμα) ή απλώς άλλαξε την aggregation σε Count όταν το χρειάζεσαι.</div>
+    <p>Κάθε γράφημα είναι ένας συνδυασμός: <b>ένα ή περισσότερα μετρούμενα μεγέθη, ανά μία ή περισσότερες διαστάσεις</b>. «Έσοδα ανά μήνα», «κρατήσεις ανά χώρα», «μέση τιμή ανά ξενοδοχείο και μήνα».</p>
+    <div class="box tip"><b>ΠΡΟΣΟΧΗ</b>Το <span class="pill m">Booking ID</span> είναι αριθμός, οπότε το Tableau το βάζει στα μετρούμενα μεγέθη. Αθροίζοντάς το όμως δεν βγαίνει τίποτα χρήσιμο. Το χρησιμοποιούμε με <b>COUNT</b> για να μετράμε κρατήσεις. Σύρε το στις διαστάσεις (drag στο μπλε τμήμα) ή απλώς άλλαξε την aggregation σε Count όταν το χρειάζεσαι.</div>
     <div class="check" data-answer="119388" data-tol="0" data-unit="κρατήσεις" data-hint="Στο Sheet 1 σύρε το Booking ID στο Rows, κάνε δεξί κλικ πάνω στο pill και άλλαξε το Measure σε Count. Ή κοίτα κάτω αριστερά στη σελίδα Data Source: δείχνει τον αριθμό γραμμών.">
       <div class="title">Checkpoint 1</div>
       <div class="q">Πόσες κρατήσεις έχει το αρχείο;</div>
     </div>
-    <div class="quiz" data-q="Θέλεις ένα γράφημα «μέσος χρόνος lead time ανά τμήμα αγοράς». Τι είναι τι;" data-opts='["Lead Time = διάσταση, Market Segment = μέτρο","Lead Time = μέτρο με AVG, Market Segment = διάσταση","Και τα δύο διαστάσεις","Και τα δύο μέτρα"]' data-ans="1" data-why="Το Market Segment τεμαχίζει (ανά τι;), το Lead Time μετριέται (πόσο;). Και επειδή θέλουμε μέσο όρο, αλλάζουμε την aggregation από SUM σε AVG."></div>
+    <div class="quiz" data-q="Θέλεις ένα γράφημα «μέσος χρόνος lead time ανά τμήμα αγοράς». Τι είναι τι;" data-opts='["Lead Time = διάσταση, Market Segment = μετρούμενο μέγεθος","Lead Time = μετρούμενο μέγεθος με AVG, Market Segment = διάσταση","Και τα δύο διαστάσεις","Και τα δύο μετρούμενα μεγέθη"]' data-ans="1" data-why="Το Market Segment τεμαχίζει (ανά τι;), το Lead Time μετριέται (πόσο;). Και επειδή θέλουμε μέσο όρο, αλλάζουμε την aggregation από SUM σε AVG."></div>
   </section>
 
   <!-- ============ 2 ============ -->
@@ -267,7 +267,7 @@
       <li>Στο πάνελ Data, κλικ στο βελάκι δίπλα στην αναζήτηση › <span class="ui">Create Calculated Field</span>.</li>
       <li>Όνομα: <code>Cancellation Rate</code>. Τύπος:
         <div class="calc">SUM(IF [Canceled] = 'Yes' THEN 1 ELSE 0 END) / COUNT([Booking ID])</div>
-        Διάβασέ το: «μέτρα 1 για κάθε ακυρωμένη, άθροισε, διαίρεσε με το πλήθος των κρατήσεων». Πάτησε OK. Το νέο πεδίο εμφανίζεται στα μέτρα.</li>
+        Διάβασέ το: «μέτρα 1 για κάθε ακυρωμένη, άθροισε, διαίρεσε με το πλήθος των κρατήσεων». Πάτησε OK. Το νέο πεδίο εμφανίζεται στα μετρούμενα μεγέθη.</li>
       <li>Νέο φύλλο: <span class="pill">Market Segment</span> στο Rows, <span class="pill m">Cancellation Rate</span> στο Columns. Δεξί κλικ στον άξονα › <span class="ui">Format</span> › Numbers › Percentage, 1 δεκαδικό. Sort descending.</li>
       <li>Αντέγραψε το φύλλο (δεξί κλικ στην καρτέλα › Duplicate) και αντικατέστησε το Market Segment με το <span class="pill">Deposit Type</span>. Μετά με το <span class="pill">Repeated Guest</span>. Μετά με το <span class="pill">Country</span> (Top 10).</li>
       <li>Ονόμασε τα φύλλα <code>Ακυρώσεις ανά τμήμα</code>, <code>Ακυρώσεις ανά προκαταβολή</code> κ.λπ.</li>
