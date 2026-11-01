@@ -84,6 +84,7 @@
   table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue);vertical-align:top} table.t td.m{font-family:var(--mono);color:var(--navy);white-space:nowrap}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .calc{font-family:var(--mono);font-size:15px;background:var(--code);color:var(--codefg);padding:12px 14px;border-radius:8px;white-space:pre-wrap;line-height:1.5}
+  .calcwrap{position:relative} .calcwrap .cp{position:absolute;top:6px;right:6px;font:inherit;font-size:12px;padding:3px 9px;border:0;border-radius:5px;background:var(--blue);color:#fff;cursor:pointer}
   .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
   .checklist label{display:flex;gap:10px;align-items:flex-start;font-size:16px;padding:8px 10px;background:var(--pale);border-radius:8px;margin-bottom:6px;cursor:pointer}
   .checklist input{margin-top:4px;width:18px;height:18px}
@@ -96,7 +97,7 @@
   <div>
     <div class="kicker">Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις · Εβδομάδα 3 · Εργαστήριο Tableau 2/3</div>
     <h1>Το dashboard του revenue manager</h1>
-    <p class="lead" style="margin-top:10px">Οδηγός εργαστηρίου σε 7 βήματα. Χτίζουμε πάνω στο workbook της προηγούμενης εβδομάδας και ξεκαθαρίζουμε πρώτα τα <b>φίλτρα</b> (φύλλου, κάρτας, dashboard) και μετά προσθέτουμε αυτά που λείπουν από ένα πραγματικό dashboard εσόδων: <b>παραμέτρους</b> που δίνει ο χρήστης, πληρότητα και RevPAR, ομάδες lead time, καθαρά έσοδα μετά τις προμήθειες, σύγκριση ετών και μια οθόνη με δείκτες. Τα checkpoints ελέγχονται πάνω στα πραγματικά νούμερα. Τα βήματα 6 και 7 μπορούν να γίνουν στο σπίτι.</p>
+    <p class="lead" style="margin-top:10px">Οδηγός εργαστηρίου σε 7 βήματα. Χτίζουμε πάνω στο workbook της προηγούμενης εβδομάδας και ξεκαθαρίζουμε πρώτα τα <b>φίλτρα</b> (φύλλου, κάρτας, dashboard) και μετά προσθέτουμε αυτά που λείπουν από ένα πραγματικό dashboard εσόδων: <b>παραμέτρους</b> που δίνει ο χρήστης, πληρότητα και RevPAR, ομάδες lead time, καθαρά έσοδα μετά τις προμήθειες, σύγκριση ετών και μια οθόνη με δείκτες. Τα checkpoints ελέγχονται πάνω στα πραγματικά νούμερα. Το βήμα 5 γίνεται ως επίδειξη και τα βήματα 6–7 στο σπίτι.</p>
   </div>
 
   <div class="stepper" id="stepper"></div>
@@ -104,6 +105,7 @@
   <!-- ============ 1 ============ -->
   <section class="step" data-title="Ξεκίνημα">
     <h2>1. Ξεκίνημα: το workbook σου και μια επανάληψη</h2>
+    <div class="box note"><b>ΓΙΑ ΤΟ ΕΞ ΑΠΟΣΤΑΣΕΩΣ ΜΑΘΗΜΑ</b>Έχε δίπλα-δίπλα το Tableau και αυτή τη σελίδα (ή άνοιξέ τη στο κινητό). Κάθε τύπος έχει κουμπί <b>Αντιγραφή</b>: μην τον γράφεις με το χέρι. Σε κάθε checkpoint γράψε τον αριθμό που βρήκες και στο chat του μαθήματος, για να ξέρουμε ότι προχωράμε μαζί.</div>
     <p>Άνοιξε το <code>.twbx</code> που παρέδωσες την προηγούμενη εβδομάδα. Αν δεν το έχεις, άνοιξε νέο workbook και σύνδεσέ το ξανά με το <a href="../Week2/data/hotel_bookings.csv" download>hotel_bookings.csv</a> (Connect › Text file). Τα φύλλα που θα φτιάξουμε σήμερα είναι καινούργια, οπότε δεν πειράζει.</p>
     <div class="box note"><b>ΤΙ ΧΡΕΙΑΖΕΣΑΙ ΑΠΟ ΤΗΝ ΠΡΟΗΓΟΥΜΕΝΗ ΦΟΡΑ</b>Το υπολογιζόμενο πεδίο <code>Cancellation Rate</code>. Αν λείπει: Create Calculated Field › <span class="ui">SUM(IF [Canceled] = 'Yes' THEN 1 ELSE 0 END) / COUNT([Booking ID])</span>.</div>
     <div class="checklist" id="prep">
@@ -160,12 +162,12 @@
       <li>Πάνελ Data › βελάκι δίπλα στην αναζήτηση › <span class="ui">Create Parameter</span>. Όνομα <code>Rooms</code>, Data type <span class="ui">Integer</span>, Current value <code>200</code>, Allowable values <span class="ui">Range</span> 50–600, Step 10. OK.</li>
       <li>Δεξί κλικ στην παράμετρο › <span class="ui">Show Parameter</span>. Εμφανίζεται δεξιά ένα slider.</li>
       <li>Τρία υπολογιζόμενα πεδία:
-        <div class="calc">Room Nights Sold  =  SUM(IF [Canceled] = 'No' THEN [Nights] END)
-Days in Period    =  COUNTD([Arrival Date])
-Occupancy         =  [Room Nights Sold] / ([Rooms] * [Days in Period])</div>
+        <b>Room Nights Sold</b><div class="calc">SUM(IF [Canceled] = 'No' THEN [Nights] END)</div>
+        <b>Days in Period</b><div class="calc">COUNTD([Arrival Date])</div>
+        <b>Occupancy</b><div class="calc">[Room Nights Sold] / ([Rooms] * [Days in Period])</div>
         Διάβασέ το: «διανυκτερεύσεις που πουλήθηκαν, διά τα δωμάτια επί τις μέρες της περιόδου».</li>
       <li>Και ένα τέταρτο:
-        <div class="calc">RevPAR  =  SUM(IF [Canceled] = 'No' THEN [Revenue] END) / ([Rooms] * [Days in Period])</div></li>
+        <b>RevPAR</b><div class="calc">SUM(IF [Canceled] = 'No' THEN [Revenue] END) / ([Rooms] * [Days in Period])</div></li>
       <li>Νέο φύλλο <code>Πληρότητα ανά μήνα</code>: <span class="pill">Arrival Date</span> στο Columns ως YEAR και MONTH (discrete, και τα δύο), <span class="pill m">Occupancy</span> στο Rows. Format › Percentage, 1 δεκαδικό. Σύρε το <span class="pill">Hotel</span> στα <span class="ui">Filters</span> και κράτα μόνο το Resort Hotel.</li>
       <li>Πρόσθεσε το <span class="pill m">RevPAR</span> στο Rows (δεύτερο γράφημα από κάτω) και κούνησε το slider Rooms. Όλα ξαναϋπολογίζονται.</li>
     </ol>
@@ -211,18 +213,15 @@ END</div>
   <!-- ============ 5 ============ -->
   <section class="step" data-title="Καθαρά έσοδα">
     <h2>5. Παράμετρος «Προμήθεια»: καθαρά έσοδα ανά κανάλι</h2>
+    <div class="box tip"><b>ΠΡΟΑΙΡΕΤΙΚΟ · ΕΠΙΔΕΙΞΗ ΣΤΗΝ ΤΑΞΗ, ΔΙΚΟ ΣΟΥ ΣΤΟ ΣΠΙΤΙ</b>Αυτό το βήμα θα το δεις στην τάξη ως επίδειξη. Κάν᾽ το μόνος σου με την ησυχία σου· τα checkpoints 8 και 9 είναι προαιρετικά για το παραδοτέο.</div>
     <p>Τα έσοδα στο dataset είναι <b>μικτά</b>. Κάθε κράτηση μέσω τουριστικού γραφείου ή OTA αφήνει προμήθεια 15–25%. Με μια δεύτερη παράμετρο ο revenue manager βλέπει τι μένει στο ταμείο ανά κανάλι, και πόσο αξίζει μια άμεση κράτηση.</p>
     <ol class="todo">
       <li>Create Parameter › <code>Commission</code>, Data type <span class="ui">Float</span>, Current value <code>0.18</code>, Range 0.10–0.30, Step 0.01. Display format: Percentage. Show Parameter.</li>
       <li>Υπολογιζόμενο πεδίο <code>Revenue Kept</code> (τα έσοδα που πραγματοποιήθηκαν):
         <div class="calc">IF [Canceled] = 'No' THEN [Revenue] END</div></li>
       <li>Υπολογιζόμενο πεδίο <code>Net Revenue</code>:
-        <div class="calc">IF [Canceled] = 'No' THEN
-    IF [Market Segment] = 'Online TA' OR [Market Segment] = 'Offline TA/TO'
-    THEN [Revenue] * (1 - [Commission])
-    ELSE [Revenue]
-    END
-END</div></li>
+        <div class="calc">[Revenue Kept] * (1 - IF [Market Segment] = 'Online TA' OR [Market Segment] = 'Offline TA/TO' THEN [Commission] ELSE 0 END)</div>
+        Διάβασέ το: «τα έσοδα που μπήκαν, επί (1 μείον προμήθεια) αν το κανάλι είναι τουριστικό γραφείο ή OTA, αλλιώς επί 1».</li>
       <li>Νέο φύλλο <code>Έσοδα ανά κανάλι</code>: <span class="pill">Market Segment</span> στο Rows. Σύρε το <span class="pill m">Revenue Kept</span> στο Columns και μετά το <span class="pill m">Net Revenue</span> <b>πάνω στον ίδιο άξονα</b> μέχρι να εμφανιστούν δύο διάφανοι κύλινδροι· άφησέ το. Το Tableau φτιάχνει <span class="ui">Measure Names</span> / <span class="ui">Measure Values</span>: δύο μπάρες ανά κανάλι, μικτά και καθαρά.</li>
       <li>Sort descending. Κούνησε την παράμετρο Commission από 10% σε 30% και δες πόσο αλλάζει η εικόνα των OTA.</li>
     </ol>
@@ -367,6 +366,12 @@ END</div></li>
       stepper.children[i].classList.toggle('done',all);
     });
   }
+  // copy buttons on formulas
+  document.querySelectorAll('.calc').forEach(c=>{
+    const w=document.createElement('div'); w.className='calcwrap'; c.parentNode.insertBefore(w,c); w.appendChild(c);
+    const b=document.createElement('button'); b.className='cp'; b.textContent='Αντιγραφή'; w.appendChild(b);
+    b.onclick=async()=>{try{await navigator.clipboard.writeText(c.textContent.trim());b.textContent='Αντιγράφηκε ✓';}catch(e){b.textContent='Επίλεξε και Ctrl+C';} setTimeout(()=>b.textContent='Αντιγραφή',2000);};
+  });
   updateDone(); finalScore(); go(Math.min(state.step||0,steps.length-1));
 })();
 </script>
