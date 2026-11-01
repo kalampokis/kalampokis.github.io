@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7KW3PRQVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R7KW3PRQVZ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tableau 2: Το dashboard του revenue manager · Εβδομάδα 3</title>
+<meta name="description" content="Οδηγός εργαστηρίου Tableau 2 με δεδομένα κρατήσεων ξενοδοχείων: παράμετροι, πληρότητα και RevPAR, ομάδες lead time, καθαρά έσοδα ανά κανάλι, σύγκριση ετών, dashboard με KPI. Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις, Εβδομάδα 3.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2F6B; --text:#26314F; --gray:#5A6385; --blue:#7895F9; --lblue:#B9C8FC; --pale:#EEF1FE;
+    --orange:#F5821F; --peach:#FDE8D4; --green:#1e7a4c; --lgreen:#E3F3EA; --red:#B23A3A; --lred:#FBE4E4;
+    --code:#141E3C; --codefg:#F4F6FF; --mono:'JetBrains Mono',Consolas,monospace;
+    --dim:#4E79A7; --mea:#59A14F;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pale);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+  a{color:var(--green)}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 16px 80px;display:flex;flex-direction:column;gap:22px}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--gray);text-transform:uppercase}
+  h1{margin:6px 0 0;font-family:Georgia,serif;font-weight:700;font-size:38px;line-height:1.1;color:var(--navy)}
+  h2{margin:0;font-family:Georgia,serif;font-size:28px;color:var(--navy)}
+  h3{margin:18px 0 6px;font-family:Georgia,serif;font-size:20px;color:var(--navy)}
+  p{margin:0 0 10px;font-size:17px}
+  .lead{font-size:19px;max-width:800px}
+  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:8px}
+  .stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 12px;background:var(--navy);color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px;opacity:.55}
+  .stepper button.active{opacity:1;outline:3px solid var(--orange)}
+  .stepper button.done{opacity:.9;background:var(--green)}
+  .stepper button span.n{font-family:var(--mono);font-weight:700;font-size:14px}
+  .stepper button span.l{font-size:13px}
+  section.step{display:none;flex-direction:column;gap:14px;background:#fff;border-radius:12px;padding:22px 22px 26px;box-shadow:0 1px 3px rgba(27,47,107,.08)}
+  section.step.active{display:flex}
+  code{font-family:var(--mono);background:var(--pale);padding:1px 5px;border-radius:4px;color:var(--navy);font-size:.95em}
+  .en{color:var(--gray);font-style:italic}
+  .box{border-radius:8px;padding:12px 16px;font-size:16px}
+  .tip{background:var(--peach)} .tip b{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .note{background:var(--pale)} .note b{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .warn{background:var(--lred)} .warn b{color:var(--red);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .btn{font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--green);color:#fff;font-weight:bold}
+  .btn.navy{background:var(--navy)} .btn.orange{background:var(--orange)}
+  .btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+  .btn:disabled{opacity:.5;cursor:default}
+  /* pills for Tableau fields */
+  .pill{display:inline-block;font-family:var(--mono);font-size:13px;padding:2px 10px;border-radius:12px;color:#fff;background:var(--dim);white-space:nowrap}
+  .pill.m{background:var(--mea)}
+  .ui{font-family:var(--mono);font-size:.92em;color:var(--navy);background:#fff;border:1px solid var(--lblue);border-radius:4px;padding:1px 6px;white-space:nowrap}
+  /* steps list */
+  ol.todo{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px;counter-reset:s}
+  ol.todo li{position:relative;padding:10px 14px 10px 50px;background:var(--pale);border-radius:8px;font-size:16px;counter-increment:s}
+  ol.todo li::before{content:counter(s);position:absolute;left:12px;top:9px;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--mono);font-weight:bold;font-size:14px;display:flex;align-items:center;justify-content:center}
+  /* checkpoint */
+  .check{border:2px dashed var(--orange);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#fff}
+  .check .title{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--orange);text-transform:uppercase}
+  .check .q{font-weight:bold;color:var(--navy);font-size:16px}
+  .check .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .check input{font:inherit;font-family:var(--mono);font-size:17px;padding:7px 10px;border:2px solid var(--navy);border-radius:8px;width:180px;background:#fff;color:var(--navy)}
+  .check select{font:inherit;font-size:16px;padding:7px 10px;border:2px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy)}
+  .check .unit{color:var(--gray);font-size:15px}
+  .check .result{font-size:15px;min-height:20px}
+  .check .result.ok{color:var(--green);font-weight:bold} .check .result.bad{color:var(--red)}
+  .check details{font-size:15px} .check summary{cursor:pointer;color:var(--navy)}
+  /* quiz */
+  .quiz{background:var(--pale);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .quiz .q{font-weight:bold;color:var(--navy)}
+  .quiz .opts{display:grid;gap:6px}
+  .quiz .opts button{text-align:left;font:inherit;font-size:16px;padding:9px 12px;border-radius:8px;border:1px solid var(--lblue);background:#fff;color:var(--navy);cursor:pointer}
+  .quiz .opts button.ok{background:var(--lgreen);border-color:var(--green)}
+  .quiz .opts button.bad{background:var(--lred);border-color:var(--red)}
+  .quiz .fb{min-height:20px;font-size:15px}
+  .quiz .fb.ok{color:var(--green);font-weight:bold} .quiz .fb.bad{color:var(--red)}
+  table.t{border-collapse:collapse;width:100%;font-size:15px}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:bold}
+  table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue);vertical-align:top} table.t td.m{font-family:var(--mono);color:var(--navy);white-space:nowrap}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .calc{font-family:var(--mono);font-size:15px;background:var(--code);color:var(--codefg);padding:12px 14px;border-radius:8px;white-space:pre-wrap;line-height:1.5}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+  .checklist label{display:flex;gap:10px;align-items:flex-start;font-size:16px;padding:8px 10px;background:var(--pale);border-radius:8px;margin-bottom:6px;cursor:pointer}
+  .checklist input{margin-top:4px;width:18px;height:18px}
+  @media (max-width:700px){.grid2{grid-template-columns:1fr} h1{font-size:30px}}
+  footer{font-size:13px;color:var(--gray);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="kicker">Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις · Εβδομάδα 3 · Εργαστήριο Tableau 2/3</div>
+    <h1>Το dashboard του revenue manager</h1>
+    <p class="lead" style="margin-top:10px">Οδηγός εργαστηρίου σε 6 βήματα. Χτίζουμε πάνω στο workbook της προηγούμενης εβδομάδας και προσθέτουμε αυτά που λείπουν από ένα πραγματικό dashboard εσόδων: <b>παραμέτρους</b> που δίνει ο χρήστης, πληρότητα και RevPAR, ομάδες lead time, καθαρά έσοδα μετά τις προμήθειες, σύγκριση ετών και μια οθόνη με δείκτες. Τα checkpoints ελέγχονται πάνω στα πραγματικά νούμερα. Τα βήματα 5 και 6 μπορούν να γίνουν στο σπίτι.</p>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- ============ 1 ============ -->
+  <section class="step" data-title="Ξεκίνημα">
+    <h2>1. Ξεκίνημα: το workbook σου και μια επανάληψη</h2>
+    <p>Άνοιξε το <code>.twbx</code> που παρέδωσες την προηγούμενη εβδομάδα. Αν δεν το έχεις, άνοιξε νέο workbook και σύνδεσέ το ξανά με το <a href="../Week2/data/hotel_bookings.csv" download>hotel_bookings.csv</a> (Connect › Text file). Τα φύλλα που θα φτιάξουμε σήμερα είναι καινούργια, οπότε δεν πειράζει.</p>
+    <div class="box note"><b>ΤΙ ΧΡΕΙΑΖΕΣΑΙ ΑΠΟ ΤΗΝ ΠΡΟΗΓΟΥΜΕΝΗ ΦΟΡΑ</b>Το υπολογιζόμενο πεδίο <code>Cancellation Rate</code>. Αν λείπει: Create Calculated Field › <span class="ui">SUM(IF [Canceled] = 'Yes' THEN 1 ELSE 0 END) / COUNT([Booking ID])</span>.</div>
+    <div class="checklist" id="prep">
+      <label><input type="checkbox" data-k="wb"> Το workbook είναι ανοιχτό και βλέπω τα πεδία στο πάνελ Data</label>
+      <label><input type="checkbox" data-k="par"> Υπάρχει το πεδίο Cancellation Rate στα μετρούμενα μεγέθη</label>
+    </div>
+    <div class="quiz" data-q="Επανάληψη. Σε ένα φύλλο βλέπεις SUM(ADR) = 12.153.472. Τι σημαίνει ο αριθμός;" data-opts='["Τα συνολικά έσοδα δωματίων","Τίποτα: το άθροισμα μέσων τιμών ανά διανυκτέρευση δεν έχει νόημα· θέλεις AVG(ADR)","Τον μέσο ADR επί τις κρατήσεις","Τον ADR του ακριβότερου μήνα"]' data-ans="1" data-why="Ο ADR είναι ήδη μέσος όρος ανά κράτηση. Αθροίζοντάς τον παίρνεις έναν αριθμό χωρίς ερμηνεία. Πριν διαβάσεις τον αριθμό, διάβασε το pill."></div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="step" data-title="Πληρότητα &amp; RevPAR">
+    <h2>2. Παράμετρος «Διαθέσιμα δωμάτια»: πληρότητα και RevPAR</h2>
+    <p>Το dataset δεν λέει πόσα δωμάτια έχει κάθε ξενοδοχείο. Χωρίς αυτό δεν υπάρχει <b>πληρότητα</b> <span class="en">(occupancy)</span> ούτε <b>RevPAR</b>. Στο Tableau, ό,τι δεν υπάρχει στα δεδομένα αλλά το ξέρει ο χρήστης, μπαίνει ως <b>παράμετρος</b> <span class="en">(parameter)</span>: ένα κουτάκι που αλλάζει ο χρήστης και ξαναϋπολογίζεται το dashboard.</p>
+    <ol class="todo">
+      <li>Πάνελ Data › βελάκι δίπλα στην αναζήτηση › <span class="ui">Create Parameter</span>. Όνομα <code>Rooms</code>, Data type <span class="ui">Integer</span>, Current value <code>200</code>, Allowable values <span class="ui">Range</span> 50–600, Step 10. OK.</li>
+      <li>Δεξί κλικ στην παράμετρο › <span class="ui">Show Parameter</span>. Εμφανίζεται δεξιά ένα slider.</li>
+      <li>Τρία υπολογιζόμενα πεδία:
+        <div class="calc">Room Nights Sold  =  SUM(IF [Canceled] = 'No' THEN [Nights] END)
+Days in Period    =  COUNTD([Arrival Date])
+Occupancy         =  [Room Nights Sold] / ([Rooms] * [Days in Period])</div>
+        Διάβασέ το: «διανυκτερεύσεις που πουλήθηκαν, διά τα δωμάτια επί τις μέρες της περιόδου».</li>
+      <li>Και ένα τέταρτο:
+        <div class="calc">RevPAR  =  SUM(IF [Canceled] = 'No' THEN [Revenue] END) / ([Rooms] * [Days in Period])</div></li>
+      <li>Νέο φύλλο <code>Πληρότητα ανά μήνα</code>: <span class="pill">Arrival Date</span> στο Columns ως YEAR και MONTH (discrete, και τα δύο), <span class="pill m">Occupancy</span> στο Rows. Format › Percentage, 1 δεκαδικό. Σύρε το <span class="pill">Hotel</span> στα <span class="ui">Filters</span> και κράτα μόνο το Resort Hotel.</li>
+      <li>Πρόσθεσε το <span class="pill m">RevPAR</span> στο Rows (δεύτερο γράφημα από κάτω) και κούνησε το slider Rooms. Όλα ξαναϋπολογίζονται.</li>
+    </ol>
+    <div class="box warn"><b>ΠΡΟΣΕΓΓΙΣΗ, ΟΧΙ ΑΚΡΙΒΕΙΑ</b>Μετράμε τις διανυκτερεύσεις στον μήνα <i>άφιξης</i>, ενώ μια διαμονή 5 νυχτών στις 29 Αυγούστου «χύνεται» στον Σεπτέμβριο. Για ένα μάθημα η προσέγγιση αρκεί· σε πραγματικό PMS η πληρότητα υπολογίζεται ανά νύχτα. Να το πεις όταν παρουσιάσεις το dashboard: ο αναλυτής που ξέρει τα όρια των αριθμών του είναι πιο αξιόπιστος.</div>
+    <div class="check" data-answer="91.5" data-tol="0.3" data-unit="%" data-hint="Resort Hotel, Αύγουστος 2016, Rooms = 200. Αν βλέπεις ~75%, δεν έχεις το MONTH στο Columns και βλέπεις όλη την περίοδο. Αν βλέπεις πάνω από 100%, έχεις ξεχάσει το φίλτρο Hotel και μετράς και τα δύο ξενοδοχεία με 200 δωμάτια.">
+      <div class="title">Checkpoint 1</div>
+      <div class="q">Με Rooms = 200, ποια είναι η πληρότητα του Resort Hotel τον Αύγουστο 2016;</div>
+    </div>
+    <div class="check" data-answer="161.59" data-tol="0.6" data-unit="€" data-hint="Ίδιο φύλλο, η τιμή RevPAR για Αύγουστο 2016. Σύγκρινέ το με τον ADR (~187 €): RevPAR = ADR × πληρότητα.">
+      <div class="title">Checkpoint 2</div>
+      <div class="q">Και ο RevPAR του ίδιου μήνα;</div>
+    </div>
+    <div class="quiz" data-q="Τον Ιανουάριο 2017 το resort έχει ADR ~51 € και πληρότητα ~50%. Τον Αύγουστο 2016, ADR ~187 € και πληρότητα ~92%. Πόσες φορές μεγαλύτερος είναι ο RevPAR του Αυγούστου;" data-opts='["Περίπου 2 φορές","Περίπου 4 φορές","Περίπου 6 φορές","Ίδιος, γιατί το ξενοδοχείο είναι το ίδιο"]' data-ans="2" data-why="RevPAR = ADR × πληρότητα: 187 × 0,92 ≈ 172 έναντι 51 × 0,50 ≈ 26, δηλαδή πάνω από 6 φορές. Οι δύο δείκτες πολλαπλασιάζονται, γι᾽ αυτό ο RevPAR είναι ο ένας αριθμός που συγκρίνει μήνες και ξενοδοχεία."></div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="step" data-title="Ομάδες lead time">
+    <h2>3. Ομάδες lead time: IF / ELSEIF</h2>
+    <p>Το lead time είναι αριθμός από 0 ως 700+. Για να το διαβάσει ένας διευθυντής, το κόβουμε σε <b>ομάδες</b> <span class="en">(bins)</span>. Το Tableau έχει αυτόματα bins, αλλά τα όρια που έχουν επιχειρησιακό νόημα τα ορίζουμε εμείς με ένα υπολογιζόμενο πεδίο.</p>
+    <ol class="todo">
+      <li>Create Calculated Field › όνομα <code>Lead Time Group</code>:
+        <div class="calc">IF [Lead Time (days)] <= 7 THEN '1 · 0–7 μέρες'
+ELSEIF [Lead Time (days)] <= 30 THEN '2 · 8–30 μέρες'
+ELSEIF [Lead Time (days)] <= 90 THEN '3 · 1–3 μήνες'
+ELSEIF [Lead Time (days)] <= 180 THEN '4 · 3–6 μήνες'
+ELSE '5 · πάνω από 6 μήνες'
+END</div>
+        Ο αριθμός μπροστά είναι για να ταξινομούνται σωστά. Το νέο πεδίο είναι κείμενο, άρα <b>διάσταση</b> (μπλε).</li>
+      <li>Νέο φύλλο <code>Ακυρώσεις ανά lead time</code>: <span class="pill">Lead Time Group</span> στο Rows, <span class="pill m">Cancellation Rate</span> στο Columns, Percentage. <span class="pill m">Booking ID</span> (Count) στο <span class="ui">Label</span>, για να φαίνεται και πόσες κρατήσεις έχει κάθε ομάδα.</li>
+      <li>Σύρε το <span class="pill">Hotel</span> στο Color. Ισχύει το ίδιο μοτίβο και στα δύο ξενοδοχεία;</li>
+    </ol>
+    <div class="check" data-answer="57.0" data-tol="0.2" data-unit="%" data-hint="Η τελευταία ομάδα, χωρίς Hotel στο Color. Περίπου 24.700 κρατήσεις.">
+      <div class="title">Checkpoint 3</div>
+      <div class="q">Ποσοστό ακυρώσεων για κρατήσεις πάνω από 6 μήνες πριν;</div>
+    </div>
+    <div class="check" data-answer="9.6" data-tol="0.2" data-unit="%" data-hint="Η πρώτη ομάδα, 0–7 μέρες.">
+      <div class="title">Checkpoint 4</div>
+      <div class="q">Και για κρατήσεις της τελευταίας εβδομάδας;</div>
+    </div>
+    <div class="quiz" data-q="Το ποσοστό ακυρώσεων ανεβαίνει σταθερά όσο μεγαλώνει το lead time: 10% → 28% → 38% → 45% → 57%. Ποια πολιτική ΔΕΝ προκύπτει λογικά από αυτό;" data-opts='["Προκαταβολή ή μη επιστρέψιμη τιμή για κρατήσεις πάνω από 3 μήνες πριν","Overbooking υπολογισμένο ανά ομάδα lead time, όχι ένα ποσοστό για όλους","Να μη δέχεται το ξενοδοχείο κρατήσεις νωρίτερα από 3 μήνες","Υπενθύμιση με μικρό κίνητρο 30 μέρες πριν την άφιξη στις πρώιμες κρατήσεις"]' data-ans="2" data-why="Οι πρώιμες κρατήσεις ακυρώνονται συχνά, αλλά οι μισές και παραπάνω έρχονται και γεμίζουν το ξενοδοχείο σε περιόδους που αλλιώς θα έμενε άδειο. Η απάντηση είναι διαχείριση του ρίσκου (προκαταβολή, overbooking, επικοινωνία), όχι άρνηση της ζήτησης."></div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="step" data-title="Καθαρά έσοδα">
+    <h2>4. Παράμετρος «Προμήθεια»: καθαρά έσοδα ανά κανάλι</h2>
+    <p>Τα έσοδα στο dataset είναι <b>μικτά</b>. Κάθε κράτηση μέσω τουριστικού γραφείου ή OTA αφήνει προμήθεια 15–25%. Με μια δεύτερη παράμετρο ο revenue manager βλέπει τι μένει στο ταμείο ανά κανάλι, και πόσο αξίζει μια άμεση κράτηση.</p>
+    <ol class="todo">
+      <li>Create Parameter › <code>Commission</code>, Data type <span class="ui">Float</span>, Current value <code>0.18</code>, Range 0.10–0.30, Step 0.01. Display format: Percentage. Show Parameter.</li>
+      <li>Υπολογιζόμενο πεδίο <code>Revenue Kept</code> (τα έσοδα που πραγματοποιήθηκαν):
+        <div class="calc">IF [Canceled] = 'No' THEN [Revenue] END</div></li>
+      <li>Υπολογιζόμενο πεδίο <code>Net Revenue</code>:
+        <div class="calc">IF [Canceled] = 'No' THEN
+    IF [Market Segment] = 'Online TA' OR [Market Segment] = 'Offline TA/TO'
+    THEN [Revenue] * (1 - [Commission])
+    ELSE [Revenue]
+    END
+END</div></li>
+      <li>Νέο φύλλο <code>Έσοδα ανά κανάλι</code>: <span class="pill">Market Segment</span> στο Rows. Σύρε το <span class="pill m">Revenue Kept</span> στο Columns και μετά το <span class="pill m">Net Revenue</span> <b>πάνω στον ίδιο άξονα</b> μέχρι να εμφανιστούν δύο διάφανοι κύλινδροι· άφησέ το. Το Tableau φτιάχνει <span class="ui">Measure Names</span> / <span class="ui">Measure Values</span>: δύο μπάρες ανά κανάλι, μικτά και καθαρά.</li>
+      <li>Sort descending. Κούνησε την παράμετρο Commission από 10% σε 30% και δες πόσο αλλάζει η εικόνα των OTA.</li>
+    </ol>
+    <div class="check" data-answer="11.25" data-tol="0.05" data-unit="εκατ. €" data-hint="Commission = 18%. Η μπάρα Net Revenue του Online TA. Τα μικτά είναι 13,71 εκατ. Γράψε σε εκατομμύρια με δύο δεκαδικά, π.χ. 9.87.">
+      <div class="title">Checkpoint 5</div>
+      <div class="q">Με προμήθεια 18%, ποια είναι τα καθαρά έσοδα από Online TA;</div>
+    </div>
+    <div class="check" data-answer="22.51" data-tol="0.05" data-unit="εκατ. €" data-hint="Βγάλε το Market Segment από το Rows (ή κοίτα το Grand Total: Analysis › Totals › Show Column Grand Totals). Με 18%: μικτά 26,0 εκατ., καθαρά 22,51.">
+      <div class="title">Checkpoint 6</div>
+      <div class="q">Και τα συνολικά καθαρά έσοδα, όλα τα κανάλια μαζί;</div>
+    </div>
+    <div class="quiz" data-q="Στα 18% προμήθεια, τα δύο ξενοδοχεία «πληρώνουν» στα τουριστικά γραφεία και τις OTAs περίπου 3,5 εκατ. ευρώ σε 26 μήνες. Ποιο είναι το σωστό συμπέρασμα;" data-opts='["Να κλείσουν τα κανάλια OTA και να πουλάνε μόνο απευθείας","Η προμήθεια είναι το κόστος απόκτησης πελάτη· η ερώτηση είναι πόσες από αυτές τις κρατήσεις θα έρχονταν και χωρίς OTA, και πόσο κοστίζει να τις φέρεις μόνος σου","Οι OTAs είναι πάντα πιο ακριβές από τη διαφήμιση","Τα 3,5 εκατ. είναι λάθος υπολογισμός"]' data-ans="1" data-why="Το billboard effect, η πρόσβαση σε αγορές που δεν φτάνεις μόνος, και το κόστος δικής σου διαφήμισης μπαίνουν στη ζυγαριά. Αυτό θα το δούμε αναλυτικά στην ενότητα για τα κανάλια διανομής."></div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="step" data-title="Σύγκριση ετών">
+    <h2>5. Σύγκριση ετών και τάση</h2>
+    <p>Ένας revenue manager δεν ρωτά «πόσες κρατήσεις τον Μάιο;» αλλά «πόσες <b>σε σχέση με πέρυσι</b>;». Η σύγκριση έτους με έτος <span class="en">(year over year)</span> είναι ένα γράφημα με δύο ημερομηνιακά pills.</p>
+    <ol class="todo">
+      <li>Νέο φύλλο <code>Έτος με έτος</code>: <span class="pill">Arrival Date</span> στο Columns ως <b>MONTH discrete</b>. <span class="pill m">Booking ID</span> Count στο Rows. Σύρε ξανά το <span class="pill">Arrival Date</span> στο <span class="ui">Color</span> και διάλεξε <b>YEAR</b>. Τρεις γραμμές, μία ανά έτος.</li>
+      <li>Κάνε το ίδιο με <span class="pill m">ADR</span> (Average) στο Rows αντί για Count. Ανεβαίνουν οι τιμές από χρονιά σε χρονιά;</li>
+      <li>Τάση: νέο φύλλο, <span class="pill">Arrival Date</span> στο Columns ως <b>WEEK continuous</b> (κάτω ομάδα), Count στο Rows. Από το πάνελ <span class="ui">Analytics</span> (δίπλα στο Data) σύρε το <span class="ui">Trend Line</span> πάνω στο γράφημα.</li>
+    </ol>
+    <div class="check" data-answer="6313" data-tol="0" data-unit="αφίξεις" data-hint="Στο φύλλο Έτος με έτος, η γραμμή 2017 στον Μάιο. Το 2016 ο Μάιος είχε 5.478.">
+      <div class="title">Checkpoint 7</div>
+      <div class="q">Πόσες αφίξεις είχε ο Μάιος 2017;</div>
+    </div>
+    <div class="check" data-answer="114.64" data-tol="0.3" data-unit="€" data-hint="AVG(ADR) με YEAR στο Color και χωρίς μήνα: ή απλώς YEAR(Arrival Date) στο Columns και AVG(ADR) στο Rows. 2015: 87,18 · 2016: 98,23 · 2017: 114,64.">
+      <div class="title">Checkpoint 8</div>
+      <div class="q">Ποιος είναι ο μέσος ADR όλων των κρατήσεων του 2017;</div>
+    </div>
+    <div class="quiz" data-q="Από Ιανουάριο ως Ιούλιο το 2017 έχει περισσότερες αφίξεις από το 2016 κάθε μήνα. Τον Αύγουστο 2017 έχει λιγότερες (4.925 έναντι 5.063). Τι ελέγχεις πρώτα;" data-opts='["Αν έπεσε η ζήτηση τον Αύγουστο 2017","Αν ο Αύγουστος 2017 είναι ο τελευταίος μήνας των δεδομένων, άρα πιθανώς ελλιπής","Αν ανέβηκαν πολύ οι τιμές","Αν οι Πορτογάλοι ακύρωσαν περισσότερο"]' data-ans="1" data-why="Το dataset σταματά στις 31 Αυγούστου 2017. Μια πτώση στον τελευταίο μήνα μιας χρονοσειράς είναι σχεδόν πάντα ατελή δεδομένα, όχι γεγονός. Πρώτα ελέγχεις τα όρια των δεδομένων, μετά ψάχνεις εξηγήσεις."></div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="step" data-title="KPI dashboard">
+    <h2>6. Η «πρωινή εικόνα»: δείκτες και dashboard</h2>
+    <p>Τα dashboards εσόδων ξεκινούν με 3–5 <b>μεγάλους αριθμούς</b> <span class="en">(KPI tiles, «big numbers»)</span> και από κάτω τα γραφήματα που τους εξηγούν. Ένας μεγάλος αριθμός στο Tableau είναι ένα φύλλο με ένα μόνο μετρούμενο μέγεθος στο <span class="ui">Text</span>.</p>
+    <ol class="todo">
+      <li>Νέο φύλλο <code>KPI Πληρότητα</code>: σύρε το <span class="pill m">Occupancy</span> πάνω στο <span class="ui">Text</span> της κάρτας Marks. Τίποτα στο Rows/Columns. Κάνε κλικ στο Text › μεγάλωσε τη γραμματοσειρά (36+), Percentage. Αφαίρεσε τον τίτλο ή γράψε «Πληρότητα».</li>
+      <li>Duplicate × 3: <code>KPI ADR</code> (AVG ADR), <code>KPI RevPAR</code>, <code>KPI Ακυρώσεις</code> (Cancellation Rate).</li>
+      <li>Νέο dashboard <code>Revenue manager</code>, Size Automatic. Πάνω σε μία οριζόντια σειρά τα 4 KPI (σύρε ένα <span class="ui">Horizontal</span> container από τα Objects και βάλε τα μέσα). Από κάτω: <code>Πληρότητα ανά μήνα</code>, <code>Ακυρώσεις ανά lead time</code>, <code>Έσοδα ανά κανάλι</code>.</li>
+      <li>Δεξιά οι δύο παράμετροι (Rooms, Commission): από το βελάκι ενός φύλλου › <span class="ui">Parameters</span>. Και το φίλτρο Hotel, <span class="ui">Apply to Worksheets › All Using This Data Source</span>.</li>
+      <li>Μια <b>ενέργεια</b> <span class="en">(action)</span>: Dashboard › Actions › Add Action › <span class="ui">Filter</span>, Source: Έσοδα ανά κανάλι, Run on: Select. Τώρα κλικ σε ένα κανάλι φιλτράρει όλο το dashboard. Δοκίμασε «Groups».</li>
+      <li>Save As <code>Επώνυμο_Tableau2.twbx</code>.</li>
+    </ol>
+    <div class="check" data-answer="73.4" data-tol="0.3" data-unit="%" data-hint="Στο dashboard: φίλτρο Hotel = City Hotel, Rooms = 300, και στο φύλλο Πληρότητα ανά μήνα κοίτα Αύγουστο 2016. Αν το KPI δείχνει ~70%, δείχνει όλη την περίοδο· το checkpoint ζητά τον μήνα.">
+      <div class="title">Checkpoint 9</div>
+      <div class="q">City Hotel, Rooms = 300: πληρότητα Αυγούστου 2016;</div>
+    </div>
+    <div class="check" data-select='["Δεν ξέρω, δεν φτιάχτηκε","Όχι, μόνο στο φύλλο-πηγή","Ναι, ένα κλικ στο κανάλι αλλάζει τα KPI και τα γραφήματα"]' data-answer="2" data-hint="Αν δεν φιλτράρει τα άλλα φύλλα, στο Add Action έλεγξε ότι Target Sheets είναι όλα τα φύλλα του dashboard.">
+      <div class="title">Checkpoint 10</div>
+      <div class="q">Δουλεύει η ενέργεια φίλτρου;</div>
+    </div>
+    <h3>Παραδοτέο (μέχρι το επόμενο μάθημα)</h3>
+    <div class="box note"><b>ΤΙ ΑΝΕΒΑΖΕΙΣ ΣΤΟ eCLASS</b>
+      1. Το <code>.twbx</code> με το dashboard «Revenue manager» (ή link Tableau Public).<br>
+      2. Μία εικόνα του dashboard με Rooms και Commission ρυθμισμένα σε τιμές που εσύ θεωρείς ρεαλιστικές, και μία πρόταση που εξηγεί γιατί.<br>
+      3. <b>Μία απόφαση</b> προς τον διευθυντή του resort, σε 3–4 προτάσεις, που βασίζεται σε έναν συγκεκριμένο αριθμό του dashboard (π.χ. «για κρατήσεις πάνω από 6 μήνες πριν, να ζητάμε 30% προκαταβολή, γιατί…»).
+    </div>
+    <div class="box note" id="finalScore" style="display:none"></div>
+    <h3>Την επόμενη εβδομάδα</h3>
+    <p>Εργαστήριο Tableau 3: Story, σύγκριση resort και city hotel, πρόβλεψη (forecast) για τους επόμενους μήνες, και πώς παρουσιάζεις ένα dashboard σε 5 λεπτά σε κάποιον που δεν έχει χρόνο.</p>
+  </section>
+
+  <div class="nav">
+    <button class="btn outline" id="prevBtn">← Προηγούμενο</button>
+    <button class="btn navy" id="nextBtn">Επόμενο →</button>
+  </div>
+  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Δεδομένα: Antonio, de Almeida &amp; Nunes (2019), Hotel booking demand datasets, <i>Data in Brief</i> 22, 41–49 (CC BY 4.0).</footer>
+</div>
+
+<script>
+(function(){
+  const KEY='mtm-week3-tableau2';
+  let state={step:0,quiz:{},check:{},prep:{}};
+  try{const s=localStorage.getItem(KEY); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  const steps=[...document.querySelectorAll('section.step')];
+  const stepper=document.getElementById('stepper');
+  steps.forEach((s,i)=>{const b=document.createElement('button'); b.innerHTML='<span class="n">'+(i+1)+'</span><span class="l">'+s.dataset.title+'</span>'; b.onclick=()=>go(i); stepper.appendChild(b);});
+  function go(i){state.step=i; save(); steps.forEach((s,j)=>s.classList.toggle('active',j===i)); [...stepper.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+    document.getElementById('prevBtn').disabled=i===0; document.getElementById('nextBtn').disabled=i===steps.length-1; window.scrollTo({top:0,behavior:'smooth'});}
+  document.getElementById('prevBtn').onclick=()=>go(Math.max(0,state.step-1));
+  document.getElementById('nextBtn').onclick=()=>go(Math.min(steps.length-1,state.step+1));
+
+  // prep checklist
+  document.querySelectorAll('#prep input').forEach(c=>{c.checked=!!state.prep[c.dataset.k]; c.onchange=()=>{state.prep[c.dataset.k]=c.checked; save(); updateDone();};});
+
+  // quizzes
+  const quizzes=[...document.querySelectorAll('.quiz')];
+  quizzes.forEach((q,qi)=>{
+    const opts=JSON.parse(q.dataset.opts), ans=+q.dataset.ans;
+    q.innerHTML='<div class="q">'+q.dataset.q+'</div><div class="opts"></div><div class="fb"></div>';
+    const box=q.querySelector('.opts'), fb=q.querySelector('.fb');
+    opts.forEach((o,i)=>{const b=document.createElement('button'); b.textContent=o;
+      b.onclick=()=>{[...box.children].forEach(c=>c.classList.remove('ok','bad'));
+        if(i===ans){b.classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why; state.quiz[qi]=true;}
+        else{b.classList.add('bad'); fb.className='fb bad'; fb.textContent='Όχι ακριβώς. '+q.dataset.why; state.quiz[qi]=false;}
+        save(); updateDone(); finalScore();};
+      box.appendChild(b);});
+    if(state.quiz[qi]===true){box.children[ans].classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why;}
+  });
+
+  // numeric / select checkpoints
+  const checks=[...document.querySelectorAll('.check')];
+  function parseNum(s){s=String(s).trim().replace(/\s/g,'').replace(/%|€/g,''); if(/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) s=s.replace(/\./g,'').replace(',','.'); else s=s.replace(',','.'); return parseFloat(s);}
+  checks.forEach((c,ci)=>{
+    const wrap=document.createElement('div');
+    if(c.dataset.select){
+      const opts=JSON.parse(c.dataset.select);
+      wrap.innerHTML='<div class="row"><select><option value="">— διάλεξε —</option>'+opts.map((o,i)=>'<option value="'+i+'">'+o+'</option>').join('')+'</select><button class="btn">✔ Έλεγξε</button></div><div class="result"></div><details><summary>Βοήθεια</summary><div>'+c.dataset.hint+'</div></details>';
+    }else{
+      wrap.innerHTML='<div class="row"><input inputmode="decimal" placeholder="αριθμός"><span class="unit">'+(c.dataset.unit||'')+'</span><button class="btn">✔ Έλεγξε</button></div><div class="result"></div><details><summary>Βοήθεια</summary><div>'+c.dataset.hint+'</div></details>';
+    }
+    c.appendChild(wrap);
+    const res=wrap.querySelector('.result'), btn=wrap.querySelector('button');
+    function check(){
+      let ok;
+      if(c.dataset.select){const v=wrap.querySelector('select').value; if(v==='')return; ok=+v===+c.dataset.answer;}
+      else{const v=parseNum(wrap.querySelector('input').value); if(isNaN(v)){res.className='result bad'; res.textContent='Γράψε έναν αριθμό.'; return;} ok=Math.abs(v-+c.dataset.answer)<=+c.dataset.tol+1e-9;}
+      res.className='result '+(ok?'ok':'bad'); res.textContent=ok?'Σωστά! Συνέχισε.':'Δεν ταιριάζει με αυτό που περιμένω. Δες τη Βοήθεια και ξαναδοκίμασε.';
+      state.check[ci]=ok; save(); updateDone(); finalScore();
+    }
+    btn.onclick=check; const inp=wrap.querySelector('input'); if(inp) inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+    if(state.check[ci]===true){res.className='result ok'; res.textContent='Ολοκληρωμένο ✓';}
+  });
+
+  function finalScore(){
+    const n=checks.length, ok=checks.filter((c,i)=>state.check[i]===true).length;
+    const el=document.getElementById('finalScore');
+    if(ok===n){el.style.display='block'; el.innerHTML='<b>ΟΛΟΚΛΗΡΩΣΗ</b>Και τα '+n+' checkpoints σωστά. Το εργαστήριο ολοκληρώθηκε· μένει το παραδοτέο.';}
+    else if(ok>0){el.style.display='block'; el.innerHTML='<b>ΠΡΟΟΔΟΣ</b>'+ok+' από '+n+' checkpoints.';}
+  }
+  function updateDone(){
+    steps.forEach((s,i)=>{
+      const qs=[...s.querySelectorAll('.quiz')].map(q=>quizzes.indexOf(q));
+      const cs=[...s.querySelectorAll('.check')].map(c=>checks.indexOf(c));
+      let extra=true; if(s.querySelector('#prep')) extra=['wb','par'].every(k=>state.prep[k]);
+      const all=qs.every(i=>state.quiz[i]===true)&&cs.every(i=>state.check[i]===true)&&extra&&(qs.length+cs.length>0||s.querySelector('#prep'));
+      stepper.children[i].classList.toggle('done',all);
+    });
+  }
+  updateDone(); finalScore(); go(Math.min(state.step||0,steps.length-1));
+})();
+</script>
+</body>
+</html>
