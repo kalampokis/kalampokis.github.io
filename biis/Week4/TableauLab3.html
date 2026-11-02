@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7KW3PRQVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R7KW3PRQVZ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tableau lab 3: Where and when? · Week 4</title>
+<meta name="description" content="Tableau lab 3 with real hotel booking data: filled and symbol maps, continuous and discrete dates, trend lines, forecast, dual axis. Business Intelligence Information Systems, Week 4.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2F6B; --text:#26314F; --gray:#5A6385; --blue:#7895F9; --lblue:#B9C8FC; --pale:#EEF1FE;
+    --orange:#F5821F; --peach:#FDE8D4; --green:#1e7a4c; --lgreen:#E3F3EA; --red:#B23A3A; --lred:#FBE4E4;
+    --code:#141E3C; --codefg:#F4F6FF; --mono:'JetBrains Mono',Consolas,monospace;
+    --dim:#4E79A7; --mea:#59A14F;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pale);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+  a{color:var(--green)}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 16px 80px;display:flex;flex-direction:column;gap:22px}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--gray);text-transform:uppercase}
+  h1{margin:6px 0 0;font-family:Georgia,serif;font-weight:700;font-size:38px;line-height:1.1;color:var(--navy)}
+  h2{margin:0;font-family:Georgia,serif;font-size:28px;color:var(--navy)}
+  h3{margin:18px 0 6px;font-family:Georgia,serif;font-size:20px;color:var(--navy)}
+  p{margin:0 0 10px;font-size:17px}
+  .lead{font-size:19px;max-width:800px}
+  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:8px}
+  .stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 12px;background:var(--navy);color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px;opacity:.55}
+  .stepper button.active{opacity:1;outline:3px solid var(--orange)}
+  .stepper button.done{opacity:.9;background:var(--green)}
+  .stepper button span.n{font-family:var(--mono);font-weight:700;font-size:14px}
+  .stepper button span.l{font-size:13px}
+  section.step{display:none;flex-direction:column;gap:14px;background:#fff;border-radius:12px;padding:22px 22px 26px;box-shadow:0 1px 3px rgba(27,47,107,.08)}
+  section.step.active{display:flex}
+  code{font-family:var(--mono);background:var(--pale);padding:1px 5px;border-radius:4px;color:var(--navy);font-size:.95em}
+  .en{color:var(--gray);font-style:italic}
+  .box{border-radius:8px;padding:12px 16px;font-size:16px}
+  .tip{background:var(--peach)} .tip>b:first-child{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .note{background:var(--pale)} .note>b:first-child{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .warn{background:var(--lred)} .warn>b:first-child{color:var(--red);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .btn{font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--green);color:#fff;font-weight:bold}
+  .btn.navy{background:var(--navy)} .btn.orange{background:var(--orange)}
+  .btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+  .btn:disabled{opacity:.5;cursor:default}
+  /* pills for Tableau fields */
+  .pill{display:inline-block;font-family:var(--mono);font-size:13px;padding:2px 10px;border-radius:12px;color:#fff;background:var(--dim);white-space:nowrap}
+  .pill.m{background:var(--mea)}
+  .ui{font-family:var(--mono);font-size:.92em;color:var(--navy);background:#fff;border:1px solid var(--lblue);border-radius:4px;padding:1px 6px;white-space:nowrap}
+  /* steps list */
+  ol.todo{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px;counter-reset:s}
+  ol.todo li{position:relative;padding:10px 14px 10px 50px;background:var(--pale);border-radius:8px;font-size:16px;counter-increment:s}
+  ol.todo li::before{content:counter(s);position:absolute;left:12px;top:9px;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--mono);font-weight:bold;font-size:14px;display:flex;align-items:center;justify-content:center}
+  /* checkpoint */
+  .check{border:2px dashed var(--orange);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#fff}
+  .check .title{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--orange);text-transform:uppercase}
+  .check .q{font-weight:bold;color:var(--navy);font-size:16px}
+  .check .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .check input{font:inherit;font-family:var(--mono);font-size:17px;padding:7px 10px;border:2px solid var(--navy);border-radius:8px;width:180px;background:#fff;color:var(--navy)}
+  .check select{font:inherit;font-size:16px;padding:7px 10px;border:2px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy)}
+  .check .unit{color:var(--gray);font-size:15px}
+  .check .result{font-size:15px;min-height:20px}
+  .check .result.ok{color:var(--green);font-weight:bold} .check .result.bad{color:var(--red)}
+  .check details{font-size:15px} .check summary{cursor:pointer;color:var(--navy)}
+  /* quiz */
+  .quiz{background:var(--pale);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .quiz .q{font-weight:bold;color:var(--navy)}
+  .quiz .opts{display:grid;gap:6px}
+  .quiz .opts button{text-align:left;font:inherit;font-size:16px;padding:9px 12px;border-radius:8px;border:1px solid var(--lblue);background:#fff;color:var(--navy);cursor:pointer}
+  .quiz .opts button.ok{background:var(--lgreen);border-color:var(--green)}
+  .quiz .opts button.bad{background:var(--lred);border-color:var(--red)}
+  .quiz .fb{min-height:20px;font-size:15px}
+  .quiz .fb.ok{color:var(--green);font-weight:bold} .quiz .fb.bad{color:var(--red)}
+  table.t{border-collapse:collapse;width:100%;font-size:15px}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:bold}
+  table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue);vertical-align:top} table.t td.m{font-family:var(--mono);color:var(--navy);white-space:nowrap}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .calc{font-family:var(--mono);font-size:15px;background:var(--code);color:var(--codefg);padding:12px 14px;border-radius:8px;white-space:pre-wrap;line-height:1.5}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+  .checklist label{display:flex;gap:10px;align-items:flex-start;font-size:16px;padding:8px 10px;background:var(--pale);border-radius:8px;margin-bottom:6px;cursor:pointer}
+  .checklist input{margin-top:4px;width:18px;height:18px}
+  @media (max-width:700px){.grid2{grid-template-columns:1fr} h1{font-size:30px}}
+  footer{font-size:13px;color:var(--gray);text-align:center}
+</style>
+<style id="site-nav-style">
+  #site-nav{font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#1B2F6B;color:#fff;padding:8px 16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  #site-nav a{color:#fff;text-decoration:none}
+  #site-nav .sn-home{font-weight:bold} #site-nav .sn-sep{opacity:.5} #site-nav .sn-teach{color:#B9C8FC;margin-left:auto}
+  @media (max-width:700px){
+    #site-nav{font-size:13px;gap:6px 12px;padding:8px 12px}
+    #site-nav .sn-sep{display:none}
+    #site-nav .sn-back{flex-basis:100%;order:3;padding-top:2px}
+    #site-nav .sn-teach{order:2}
+    table.t{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+    .ui,.pill,td.m,.pill.m{white-space:normal}
+    .check input{max-width:100%} .check select{max-width:100%}
+    .calc,pre,code{overflow-wrap:anywhere}
+    .wrap{overflow-x:hidden}
+  }
+</style>
+</head>
+<body>
+<nav id="site-nav"><a class="sn-home" href="../../index.html">Dr. Evangelos Kalampokis</a><span class="sn-sep">|</span><a class="sn-back" href="../../courses/business-intelligence-information-systems.html">&larr; Course page: Business Intelligence Information Systems</a><a class="sn-teach" href="../../index.html#teaching">Home</a></nav>
+<div class="wrap">
+  <div>
+    <div class="kicker">Business Intelligence Information Systems · Week 4 · Tableau lab 3 of 5</div>
+    <h1>Where and when?</h1>
+    <p class="lead" style="margin-top:10px">A 70-minute lab in 7 steps. Two dimensions that every business dataset has and that Tableau treats specially: <b>geography</b> (maps) and <b>time</b> (dates). You will map where the guests come from, follow arrivals and prices over three years, and let Tableau fit a trend and a forecast. Every step ends with a checkpoint; progress is saved in this browser.</p>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- ============ 0 ============ -->
+  <section class="step" data-title="Start">
+    <h2>1. Start: geography and dates in your data <span class="en">(5 min)</span></h2>
+    <p>Open <code>Surname_Lab2.twbx</code> (or reconnect to <a href="../../mtm/Week2/data/hotel_bookings.csv" download>hotel_bookings.csv</a>). Go to the <span class="ui">Data Source</span> tab and check two columns:</p>
+    <ol class="todo">
+      <li><span class="pill">Country</span> must show a <b>globe</b> icon (geographic role Country/Region). If it shows Abc, click the icon › <span class="ui">Geographic Role › Country/Region</span>.</li>
+      <li><span class="pill">Arrival Date</span> must show a <b>calendar</b> icon (Date). <span class="pill">Arrival Year</span> and <span class="pill">Arrival Month</span> are plain number and text columns; today we use the real date field, because only a date can be drilled and plotted as a timeline.</li>
+    </ol>
+    <div class="box note"><b>WHY IT MATTERS</b>A geographic role lets Tableau generate <span class="pill m">Latitude</span> and <span class="pill m">Longitude</span> for each country, so a map is one double-click away. A date type lets Tableau expand Year › Quarter › Month › Day and choose between date <i>parts</i> (all Augusts together) and date <i>values</i> (August 2015, August 2016…).</div>
+    <div class="checklist" id="prep">
+      <label><input type="checkbox" data-k="geo"> Country has the globe icon</label>
+      <label><input type="checkbox" data-k="date"> Arrival Date has the calendar icon</label>
+    </div>
+  </section>
+
+  <!-- ============ 1 ============ -->
+  <section class="step" data-title="Filled map">
+    <h2>2. Where do the guests come from? A filled map <span class="en">(12 min)</span></h2>
+    <ol class="todo">
+      <li>New worksheet. <b>Double-click</b> <span class="pill">Country</span>. Tableau puts Longitude on Columns, Latitude on Rows and draws a mark per country.</li>
+      <li>Change the mark type to <span class="ui">Map</span> (or pick the filled map in Show Me). Countries are now coloured shapes.</li>
+      <li><span class="pill m">Booking ID</span> (Count) to <span class="ui">Color</span>. <span class="pill">Canceled</span> to Filters, keep <b>No</b>.</li>
+      <li>Portugal is so dark that every other country looks the same. Select Portugal on the map › <span class="ui">Exclude</span>. Now Europe becomes readable. This is the “domestic market” decision from Lab 1: state it in the title.</li>
+      <li><span class="ui">Map › Background Maps</span>: try Light and Dark. <span class="ui">Map › Map Layers</span>: switch off layers you do not need (land cover, streets). Less background, more data.</li>
+      <li>Title: double-click the sheet title and write <code>Guests per country of origin (excl. Portugal, non-cancelled)</code>. Rename the sheet <code>Guest origin map</code>.</li>
+    </ol>
+    <div class="check" data-answer="6069" data-tol="0" data-unit="bookings" data-hint="Hover over Germany on the map; the tooltip shows Count of Booking ID with Canceled = No. Portugal excluded does not change Germany's number.">
+      <div class="title">Checkpoint 1</div>
+      <div class="q">How many non-cancelled bookings came from Germany?</div>
+    </div>
+    <div class="quiz" data-q="Some countries show as “Unknown” and a few names (e.g. historical territories) get no shape on the map. What do you do?" data-opts='["Delete those rows from the CSV","Nothing – the map is still correct for the countries it shows; note the number of unmapped rows in the caption (Tableau shows it bottom-right: “n unknown”)","Assign them to Portugal","Switch to a symbol map, which has no such problem"]' data-ans="1" data-why="Tableau reports unmatched locations at the bottom right of the map. You can fix names with Edit Locations, but you never silently drop data. Say what is missing; the reader can then judge."></div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="step" data-title="Symbol map">
+    <h2>3. Two measures on a map: revenue and price <span class="en">(10 min)</span></h2>
+    <p>A filled map carries one measure (colour). A <b>symbol map</b> puts a circle in each country, so size and colour can carry two measures – like the scatter plot of Lab 2, but on geography.</p>
+    <ol class="todo">
+      <li>Duplicate <span class="ui">Guest origin map</span>, rename the copy <code>Revenue map</code>. Change the mark type to <span class="ui">Circle</span>.</li>
+      <li>Remove the count from Colour. <span class="pill m">Revenue</span> to <span class="ui">Size</span>; <span class="pill m">ADR</span> (set to <b>Average</b>) to <span class="ui">Color</span>, sequential palette.</li>
+      <li>Keep Canceled = No. Put Portugal back for a moment (remove the exclusion) and look at the circle: it is big (revenue) but pale (low average price). Exclude it again.</li>
+      <li>Hover the circles of the United Kingdom, France, Spain and Germany: which market brings the most revenue? Which pays the highest average price?</li>
+    </ol>
+    <div class="check" data-answer="4112359" data-tol="2000" data-unit="€" data-hint="Hover the United Kingdom circle: SUM(Revenue) with Canceled = No ≈ €4.11 million – the largest foreign market, second only to Portugal.">
+      <div class="title">Checkpoint 2</div>
+      <div class="q">Realised revenue from guests of the United Kingdom?</div>
+    </div>
+    <div class="quiz" data-q="Why is a filled map a poor choice for a measure like revenue, and a symbol map a better one?" data-opts='["Filled maps cannot show numbers","Large countries (Russia, Brazil) dominate a filled map visually regardless of their value; a circle sized by the measure is read independently of the area of the country","Symbol maps are faster to draw","Filled maps only work for the USA"]' data-ans="1" data-why="Area on a filled map is geography, not data. The eye still reads it as importance, so a huge, low-value country shouts. Circles sized by the measure avoid that – at the cost of the less accurate area channel, which is fine for “bigger or smaller”."></div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="step" data-title="Timeline">
+    <h2>4. Arrivals over three years: the continuous date <span class="en">(10 min)</span></h2>
+    <ol class="todo">
+      <li>New worksheet. <span class="pill">Arrival Date</span> to <span class="ui">Columns</span>. It appears as <code>YEAR(Arrival Date)</code>, blue. Right-click the pill and choose <span class="ui">Month</span> from the <b>lower</b> block (“May 2015”). The pill turns <b>green</b>: a continuous timeline.</li>
+      <li><span class="pill m">Booking ID</span> (Count) to <span class="ui">Rows</span>; <span class="pill">Hotel</span> to <span class="ui">Color</span>; <span class="pill">Canceled</span> to Filters, keep No. Two lines from July 2015 to August 2017.</li>
+      <li>Hover the first and the last month of each line. Notice that 2015 starts in July and 2017 ends in August: the data does <b>not</b> cover whole years.</li>
+      <li>Right-click the date pill again › choose <span class="ui">Week</span> (lower block). More detail, more noise. Go back to Month. Granularity is a decision, not a default.</li>
+      <li>Rename the sheet <code>Arrivals timeline</code>.</li>
+    </ol>
+    <div class="check" data-answer="2339" data-tol="0" data-unit="arrivals" data-hint="Continuous MONTH(Arrival Date) on Columns, COUNT(Booking ID) on Rows, Hotel on Color, Canceled = No. Hover the highest point of the City Hotel line: May 2017, 2,339 arrivals.">
+      <div class="title">Checkpoint 3</div>
+      <div class="q">In which month did the City Hotel have the most arrivals, and how many? Type the number.</div>
+    </div>
+    <div class="quiz" data-q="A colleague compares total arrivals per year (2015: 13,854 · 2016: 36,370 · 2017: 24,941) and concludes that 2017 was a bad year. What is wrong?" data-opts='["Nothing, 2017 is clearly down","2017 only has eight months of data (to August) and 2015 only six; yearly totals are not comparable – compare the same months, or use monthly values","Tableau miscounts 2017","The resort closed in 2017"]' data-ans="1" data-why="The first question for any time series is: are the periods complete? The timeline shows it immediately; a bar chart of yearly totals hides it. Compare January–August of 2016 with January–August of 2017, or look at the monthly line."></div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="step" data-title="Date parts">
+    <h2>5. Seasonality: the discrete date <span class="en">(8 min)</span></h2>
+    <p>The timeline answers “how did it evolve?”. To answer “which month is typically busy?” we need the date <b>part</b>: all Mays together, one line per year.</p>
+    <ol class="todo">
+      <li>Duplicate <span class="ui">Arrivals timeline</span>, rename it <code>Seasonality by year</code>.</li>
+      <li>Right-click the date pill on Columns › choose <span class="ui">Month</span> from the <b>upper</b> block (“May”). The pill turns <b>blue</b>; the axis becomes twelve headers.</li>
+      <li>Replace <span class="pill">Hotel</span> on Colour with <span class="pill">Arrival Date</span>: drag Arrival Date onto the Hotel pill on the Marks card, then set it to <span class="ui">Year</span> (upper block). One line per year.</li>
+      <li>Put <span class="pill">Hotel</span> on <span class="ui">Rows</span>, to the left of the count, so you get one panel per hotel.</li>
+      <li>Read it: which months repeat as peaks? Where do 2016 and 2017 differ?</li>
+    </ol>
+    <div class="check" data-answer="1212" data-tol="0" data-unit="arrivals" data-hint="Discrete MONTH on Columns, YEAR on Color, Hotel on Rows, COUNT(Booking ID), Canceled = No. Hover May on the 2017 line of the Resort Hotel panel: 1,212 (2016: 1,323).">
+      <div class="title">Checkpoint 4</div>
+      <div class="q">Resort Hotel arrivals in May 2017?</div>
+    </div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="step" data-title="Trend & forecast">
+    <h2>6. Price over time: trend line and forecast <span class="en">(12 min)</span></h2>
+    <ol class="todo">
+      <li>New worksheet. Continuous <span class="ui">Month</span> of <span class="pill">Arrival Date</span> on Columns (lower block, green). <span class="pill m">ADR</span> on Rows, set to <b>Average</b>. <span class="pill">Hotel</span> on Color. Canceled = No.</li>
+      <li>Open the <span class="ui">Analytics</span> pane (tab next to Data, top left). Drag <span class="ui">Trend Line</span> onto the view › Linear. One trend per hotel.</li>
+      <li>Hover a trend line: the tooltip shows the equation, R² and the p-value. Which hotel's price rises faster per month?</li>
+      <li>Drag <span class="ui">Forecast</span> from the Analytics pane onto the view. Tableau extends each line by a year, with a shaded prediction band. Right-click the view › <span class="ui">Forecast › Forecast Options</span> to see the model (exponential smoothing with seasonality).</li>
+      <li>Hover the forecast for August 2018 at the Resort Hotel. Compare with August 2016 and 2017 on the real line.</li>
+      <li>Rename the sheet <code>Price trend and forecast</code>.</li>
+    </ol>
+    <div class="check" data-answer="201.68" data-tol="0.5" data-unit="€" data-hint="Continuous MONTH, AVG(ADR), Hotel on Color, Canceled = No. Hover the Resort Hotel point of August 2017: 201.68 € (August 2016: 187.08 €).">
+      <div class="title">Checkpoint 5</div>
+      <div class="q">Average ADR of the Resort Hotel in August 2017?</div>
+    </div>
+    <div class="check" data-select='["City Hotel","Resort Hotel","Both the same","Neither rises"]' data-answer="0" data-hint="Hover the two trend lines. The City Hotel slope is about +1.8 € per month, the Resort Hotel about +1.4 € per month – both rise, the city faster.">
+      <div class="title">Checkpoint 6</div>
+      <div class="q">Which hotel's average price rises faster according to the linear trend?</div>
+    </div>
+    <div class="quiz" data-q="The forecast band for the resort in summer 2018 is very wide. What does that tell the revenue manager?" data-opts='["Tableau is not good at forecasting","The seasonal swing is large and there are only two full summers of history, so the model is uncertain – use the forecast as a baseline, not a target","Prices will fall","The data has errors in 2018"]' data-ans="1" data-why="A prediction interval is information, not a flaw. Two seasons of history for a strongly seasonal series give a wide band. State the assumption (same seasonality, no new competitor, no event) when you show it."></div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="step" data-title="Before you leave">
+    <h2>7. Dual axis, then before you leave <span class="en">(13 min)</span></h2>
+    <p>One last chart combines today's two questions: how many arrive, and at what price, per month.</p>
+    <ol class="todo">
+      <li>Duplicate <span class="ui">Arrivals timeline</span>, rename it <code>Arrivals and price</code>. Remove Hotel from Colour.</li>
+      <li>Change the mark type to <span class="ui">Bar</span>. Then drag <span class="pill m">ADR</span> (Average) to the <b>right edge</b> of the view until a dashed axis appears, and drop. Tableau creates a <b>dual axis</b>: bars for arrivals, a second mark for price.</li>
+      <li>On the Marks card there are now two tabs. Set the AVG(ADR) one to <span class="ui">Line</span>. Right-click the right axis › <span class="ui">Move marks to back</span> if the line hides behind the bars.</li>
+      <li>Do <b>not</b> synchronise the axes: arrivals (thousands) and price (euro) are different units. Label both axes clearly.</li>
+      <li><span class="ui">File › Save As</span> › <code>Surname_Lab3.twbx</code>. Export <span class="ui">Guest origin map</span> as PNG. Upload both to eClass before you leave.</li>
+    </ol>
+    <div class="box note"><b>HOMEWORK (BY NEXT LECTURE, ~15 MIN)</b>
+      One paragraph in eClass: <b>(1)</b> name the three largest foreign markets by revenue and say which of them pays the highest average price; <b>(2)</b> describe the resort's seasonality in one sentence with numbers (peak month and lowest month, arrivals or price); <b>(3)</b> state one assumption behind the forecast you produced.
+    </div>
+    <div class="check" data-select='["14","15","16","17 or more"]' data-answer="2" data-hint="Ten sheets from Labs 1–2 plus six today: Guest origin map, Revenue map, Arrivals timeline, Seasonality by year, Price trend and forecast, Arrivals and price.">
+      <div class="title">Checkpoint 7</div>
+      <div class="q">How many named sheets does your workbook have now?</div>
+    </div>
+    <div class="quiz" data-q="When is it right to synchronise the two axes of a dual-axis chart?" data-opts='["Always – otherwise the chart is misleading","Never","When both measures have the same unit and comparable scale (e.g. sales and profit in euro); not for arrivals vs price","Only for maps"]' data-ans="2" data-why="Synchronising forces one scale on both measures. For two amounts in euro that is honest and makes the gap readable; for a count and a price it would squash one of them to a flat line."></div>
+    <div class="box note" id="finalScore" style="display:none"></div>
+    <h3>Next lecture</h3>
+    <p>Week 5: why, and what if? Calculated fields (cancellation rate, revenue per available room), IF/THEN, parameters and what-if analysis. Bring your .twbx.</p>
+  </section>
+
+  <div class="nav">
+    <button class="btn outline" id="prevBtn">← Previous</button>
+    <button class="btn navy" id="nextBtn">Next →</button>
+  </div>
+  <footer>Evangelos Kalampokis · Information Systems Lab · University of Macedonia · Data: Antonio, de Almeida &amp; Nunes (2019), Hotel booking demand datasets, <i>Data in Brief</i> 22, 41–49 (CC BY 4.0).</footer>
+</div>
+<script>
+(function(){
+  const KEY='biis-week4-tableau3';
+  let state={step:0,quiz:{},check:{},prep:{}};
+  try{const s=localStorage.getItem(KEY); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  const steps=[...document.querySelectorAll('section.step')];
+  const stepper=document.getElementById('stepper');
+  steps.forEach((s,i)=>{const b=document.createElement('button'); b.innerHTML='<span class="n">'+(i+1)+'</span><span class="l">'+s.dataset.title+'</span>'; b.onclick=()=>go(i); stepper.appendChild(b);});
+  function go(i){state.step=i; save(); steps.forEach((s,j)=>s.classList.toggle('active',j===i)); [...stepper.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+    document.getElementById('prevBtn').disabled=i===0; document.getElementById('nextBtn').disabled=i===steps.length-1; window.scrollTo({top:0,behavior:'smooth'});}
+  document.getElementById('prevBtn').onclick=()=>go(Math.max(0,state.step-1));
+  document.getElementById('nextBtn').onclick=()=>go(Math.min(steps.length-1,state.step+1));
+
+  // prep checklist
+  document.querySelectorAll('#prep input').forEach(c=>{c.checked=!!state.prep[c.dataset.k]; c.onchange=()=>{state.prep[c.dataset.k]=c.checked; save(); updateDone();};});
+
+  // quizzes
+  const quizzes=[...document.querySelectorAll('.quiz')];
+  quizzes.forEach((q,qi)=>{
+    const opts=JSON.parse(q.dataset.opts), ans=+q.dataset.ans;
+    q.innerHTML='<div class="q">'+q.dataset.q+'</div><div class="opts"></div><div class="fb"></div>';
+    const box=q.querySelector('.opts'), fb=q.querySelector('.fb');
+    opts.forEach((o,i)=>{const b=document.createElement('button'); b.textContent=o;
+      b.onclick=()=>{[...box.children].forEach(c=>c.classList.remove('ok','bad'));
+        if(i===ans){b.classList.add('ok'); fb.className='fb ok'; fb.textContent='Correct! '+q.dataset.why; state.quiz[qi]=true;}
+        else{b.classList.add('bad'); fb.className='fb bad'; fb.textContent='Not quite. '+q.dataset.why; state.quiz[qi]=false;}
+        save(); updateDone(); finalScore();};
+      box.appendChild(b);});
+    if(state.quiz[qi]===true){box.children[ans].classList.add('ok'); fb.className='fb ok'; fb.textContent='Correct! '+q.dataset.why;}
+  });
+
+  // numeric / select checkpoints
+  const checks=[...document.querySelectorAll('.check')];
+  function parseNum(s){s=String(s).trim().replace(/\s/g,'').replace(/%|€/g,''); if(/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(s)) s=s.replace(/,/g,''); else if(/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) s=s.replace(/\./g,'').replace(',','.'); else s=s.replace(',','.'); return parseFloat(s);}
+  checks.forEach((c,ci)=>{
+    const wrap=document.createElement('div');
+    if(c.dataset.select){
+      const opts=JSON.parse(c.dataset.select);
+      wrap.innerHTML='<div class="row"><select><option value="">— choose —</option>'+opts.map((o,i)=>'<option value="'+i+'">'+o+'</option>').join('')+'</select><button class="btn">✔ Check</button></div><div class="result"></div><details><summary>Hint</summary><div>'+c.dataset.hint+'</div></details>';
+    }else{
+      wrap.innerHTML='<div class="row"><input inputmode="decimal" placeholder="number"><span class="unit">'+(c.dataset.unit||'')+'</span><button class="btn">✔ Check</button></div><div class="result"></div><details><summary>Hint</summary><div>'+c.dataset.hint+'</div></details>';
+    }
+    c.appendChild(wrap);
+    const res=wrap.querySelector('.result'), btn=wrap.querySelector('button');
+    function check(){
+      let ok;
+      if(c.dataset.select){const v=wrap.querySelector('select').value; if(v==='')return; ok=+v===+c.dataset.answer;}
+      else{const v=parseNum(wrap.querySelector('input').value); if(isNaN(v)){res.className='result bad'; res.textContent='Type a number.'; return;} ok=Math.abs(v-+c.dataset.answer)<=+c.dataset.tol+1e-9;}
+      res.className='result '+(ok?'ok':'bad'); res.textContent=ok?'Correct! Carry on.':'Not what I expect. Open the hint and try again.';
+      state.check[ci]=ok; save(); updateDone(); finalScore();
+    }
+    btn.onclick=check; const inp=wrap.querySelector('input'); if(inp) inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+    if(state.check[ci]===true){res.className='result ok'; res.textContent='Done ✓';}
+  });
+
+  function finalScore(){
+    const n=checks.length, ok=checks.filter((c,i)=>state.check[i]===true).length;
+    const el=document.getElementById('finalScore');
+    if(ok===n){el.style.display='block'; el.innerHTML='<b>COMPLETE</b>All '+n+' checkpoints correct. Lab done; only the deliverable is left.';}
+    else if(ok>0){el.style.display='block'; el.innerHTML='<b>PROGRESS</b>'+ok+' of '+n+' checkpoints.';}
+  }
+  function updateDone(){
+    steps.forEach((s,i)=>{
+      const qs=[...s.querySelectorAll('.quiz')].map(q=>quizzes.indexOf(q));
+      const cs=[...s.querySelectorAll('.check')].map(c=>checks.indexOf(c));
+      let extra=true; const pc=[...s.querySelectorAll('#prep input')]; if(pc.length) extra=pc.every(c=>state.prep[c.dataset.k]);
+      const all=qs.every(i=>state.quiz[i]===true)&&cs.every(i=>state.check[i]===true)&&extra&&(qs.length+cs.length>0||s.querySelector('#prep'));
+      stepper.children[i].classList.toggle('done',all);
+    });
+  }
+  updateDone(); finalScore(); go(Math.min(state.step||0,steps.length-1));
+})();
+</script>
+</body>
+</html>
