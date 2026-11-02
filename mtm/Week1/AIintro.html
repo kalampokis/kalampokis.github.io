@@ -43,8 +43,8 @@
   code{font-family:var(--mono);background:var(--pale);padding:1px 5px;border-radius:4px;color:var(--navy);font-size:.95em}
   .en{color:var(--gray);font-style:italic}
   .box{border-radius:8px;padding:12px 16px;font-size:16px}
-  .tip{background:var(--peach)} .tip b{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
-  .note{background:var(--pale)} .note b{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .tip{background:var(--peach)} .tip>b:first-child{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .note{background:var(--pale)} .note>b:first-child{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
   .btn{font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--green);color:#fff;font-weight:bold}
   .btn.navy{background:var(--navy)}
   .btn.orange{background:var(--orange)}
@@ -121,9 +121,25 @@
   @media (max-width:700px){.grid2,.gallery{grid-template-columns:1fr} .pb{grid-template-columns:minmax(0,1fr)} h1{font-size:30px} .meter .row{grid-template-columns:120px 1fr 60px} .nw .cand{grid-template-columns:100px 1fr 50px}}
   footer{font-size:13px;color:var(--gray);text-align:center}
 </style>
+<style id="site-nav-style">
+  #site-nav{font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#1B2F6B;color:#fff;padding:8px 16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  #site-nav a{color:#fff;text-decoration:none}
+  #site-nav .sn-home{font-weight:bold} #site-nav .sn-sep{opacity:.5} #site-nav .sn-teach{color:#B9C8FC;margin-left:auto}
+  @media (max-width:700px){
+    #site-nav{font-size:13px;gap:6px 12px;padding:8px 12px}
+    #site-nav .sn-sep{display:none}
+    #site-nav .sn-back{flex-basis:100%;order:3;padding-top:2px}
+    #site-nav .sn-teach{order:2}
+    table.t{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+    .ui,.pill,td.m,.pill.m{white-space:normal}
+    .check input{max-width:100%} .check select{max-width:100%}
+    .calc,pre,code{overflow-wrap:anywhere}
+    .wrap{overflow-x:hidden}
+  }
+</style>
 </head>
 <body>
-<nav id="site-nav" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#1B2F6B;color:#fff;padding:8px 16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:#fff;text-decoration:none;font-weight:bold">Dr. Evangelos Kalampokis</a><span style="opacity:.5">|</span><a href="../../courses/e-services-tourism-businesses.html" style="color:#fff;text-decoration:none">&larr; Σελίδα μαθήματος: Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις</a><a href="../../index.html#teaching" style="color:#B9C8FC;text-decoration:none;margin-left:auto">Αρχική</a></nav>
+<nav id="site-nav"><a class="sn-home" href="../../index.html">Dr. Evangelos Kalampokis</a><span class="sn-sep">|</span><a class="sn-back" href="../../courses/e-services-tourism-businesses.html">&larr; Σελίδα μαθήματος: Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις</a><a class="sn-teach" href="../../index.html#teaching">Αρχική</a></nav>
 <div class="wrap">
   <div>
     <div class="kicker">Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις · Εβδομάδα 1</div>
