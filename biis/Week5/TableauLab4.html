@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7KW3PRQVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R7KW3PRQVZ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tableau lab 4: Why, and what if? · Week 5</title>
+<meta name="description" content="Tableau lab 4 with real hotel booking data: calculated fields, IF/ELSEIF, date functions, parameters for occupancy and commission, groups and sets. Business Intelligence Information Systems, Week 5.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2F6B; --text:#26314F; --gray:#5A6385; --blue:#7895F9; --lblue:#B9C8FC; --pale:#EEF1FE;
+    --orange:#F5821F; --peach:#FDE8D4; --green:#1e7a4c; --lgreen:#E3F3EA; --red:#B23A3A; --lred:#FBE4E4;
+    --code:#141E3C; --codefg:#F4F6FF; --mono:'JetBrains Mono',Consolas,monospace;
+    --dim:#4E79A7; --mea:#59A14F;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pale);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+  a{color:var(--green)}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 16px 80px;display:flex;flex-direction:column;gap:22px}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--gray);text-transform:uppercase}
+  h1{margin:6px 0 0;font-family:Georgia,serif;font-weight:700;font-size:38px;line-height:1.1;color:var(--navy)}
+  h2{margin:0;font-family:Georgia,serif;font-size:28px;color:var(--navy)}
+  h3{margin:18px 0 6px;font-family:Georgia,serif;font-size:20px;color:var(--navy)}
+  p{margin:0 0 10px;font-size:17px}
+  .lead{font-size:19px;max-width:800px}
+  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:8px}
+  .stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 12px;background:var(--navy);color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px;opacity:.55}
+  .stepper button.active{opacity:1;outline:3px solid var(--orange)}
+  .stepper button.done{opacity:.9;background:var(--green)}
+  .stepper button span.n{font-family:var(--mono);font-weight:700;font-size:14px}
+  .stepper button span.l{font-size:13px}
+  section.step{display:none;flex-direction:column;gap:14px;background:#fff;border-radius:12px;padding:22px 22px 26px;box-shadow:0 1px 3px rgba(27,47,107,.08)}
+  section.step.active{display:flex}
+  code{font-family:var(--mono);background:var(--pale);padding:1px 5px;border-radius:4px;color:var(--navy);font-size:.95em}
+  .en{color:var(--gray);font-style:italic}
+  .box{border-radius:8px;padding:12px 16px;font-size:16px}
+  .tip{background:var(--peach)} .tip>b:first-child{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .note{background:var(--pale)} .note>b:first-child{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .warn{background:var(--lred)} .warn>b:first-child{color:var(--red);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .btn{font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--green);color:#fff;font-weight:bold}
+  .btn.navy{background:var(--navy)} .btn.orange{background:var(--orange)}
+  .btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+  .btn:disabled{opacity:.5;cursor:default}
+  /* pills for Tableau fields */
+  .pill{display:inline-block;font-family:var(--mono);font-size:13px;padding:2px 10px;border-radius:12px;color:#fff;background:var(--dim);white-space:nowrap}
+  .pill.m{background:var(--mea)}
+  .ui{font-family:var(--mono);font-size:.92em;color:var(--navy);background:#fff;border:1px solid var(--lblue);border-radius:4px;padding:1px 6px;white-space:nowrap}
+  /* steps list */
+  ol.todo{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px;counter-reset:s}
+  ol.todo li{position:relative;padding:10px 14px 10px 50px;background:var(--pale);border-radius:8px;font-size:16px;counter-increment:s}
+  ol.todo li::before{content:counter(s);position:absolute;left:12px;top:9px;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--mono);font-weight:bold;font-size:14px;display:flex;align-items:center;justify-content:center}
+  /* checkpoint */
+  .check{border:2px dashed var(--orange);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#fff}
+  .check .title{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--orange);text-transform:uppercase}
+  .check .q{font-weight:bold;color:var(--navy);font-size:16px}
+  .check .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .check input{font:inherit;font-family:var(--mono);font-size:17px;padding:7px 10px;border:2px solid var(--navy);border-radius:8px;width:180px;background:#fff;color:var(--navy)}
+  .check select{font:inherit;font-size:16px;padding:7px 10px;border:2px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy)}
+  .check .unit{color:var(--gray);font-size:15px}
+  .check .result{font-size:15px;min-height:20px}
+  .check .result.ok{color:var(--green);font-weight:bold} .check .result.bad{color:var(--red)}
+  .check details{font-size:15px} .check summary{cursor:pointer;color:var(--navy)}
+  /* quiz */
+  .quiz{background:var(--pale);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .quiz .q{font-weight:bold;color:var(--navy)}
+  .quiz .opts{display:grid;gap:6px}
+  .quiz .opts button{text-align:left;font:inherit;font-size:16px;padding:9px 12px;border-radius:8px;border:1px solid var(--lblue);background:#fff;color:var(--navy);cursor:pointer}
+  .quiz .opts button.ok{background:var(--lgreen);border-color:var(--green)}
+  .quiz .opts button.bad{background:var(--lred);border-color:var(--red)}
+  .quiz .fb{min-height:20px;font-size:15px}
+  .quiz .fb.ok{color:var(--green);font-weight:bold} .quiz .fb.bad{color:var(--red)}
+  table.t{border-collapse:collapse;width:100%;font-size:15px}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:bold}
+  table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue);vertical-align:top} table.t td.m{font-family:var(--mono);color:var(--navy);white-space:nowrap}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .calc{font-family:var(--mono);font-size:15px;background:var(--code);color:var(--codefg);padding:12px 14px;border-radius:8px;white-space:pre-wrap;line-height:1.5}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+  .checklist label{display:flex;gap:10px;align-items:flex-start;font-size:16px;padding:8px 10px;background:var(--pale);border-radius:8px;margin-bottom:6px;cursor:pointer}
+  .checklist input{margin-top:4px;width:18px;height:18px}
+  @media (max-width:700px){.grid2{grid-template-columns:1fr} h1{font-size:30px}}
+  footer{font-size:13px;color:var(--gray);text-align:center}
+</style>
+<style id="site-nav-style">
+  #site-nav{font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#1B2F6B;color:#fff;padding:8px 16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  #site-nav a{color:#fff;text-decoration:none}
+  #site-nav .sn-home{font-weight:bold} #site-nav .sn-sep{opacity:.5} #site-nav .sn-teach{color:#B9C8FC;margin-left:auto}
+  @media (max-width:700px){
+    #site-nav{font-size:13px;gap:6px 12px;padding:8px 12px}
+    #site-nav .sn-sep{display:none}
+    #site-nav .sn-back{flex-basis:100%;order:3;padding-top:2px}
+    #site-nav .sn-teach{order:2}
+    table.t{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+    .ui,.pill,td.m,.pill.m{white-space:normal}
+    .check input{max-width:100%} .check select{max-width:100%}
+    .calc,pre,code{overflow-wrap:anywhere}
+    .wrap{overflow-x:hidden}
+  }
+</style>
+</head>
+<body>
+<nav id="site-nav"><a class="sn-home" href="../../index.html">Dr. Evangelos Kalampokis</a><span class="sn-sep">|</span><a class="sn-back" href="../../courses/business-intelligence-information-systems.html">&larr; Course page: Business Intelligence Information Systems</a><a class="sn-teach" href="../../index.html#teaching">Home</a></nav>
+<div class="wrap">
+  <div>
+    <div class="kicker">Business Intelligence Information Systems · Week 5 · Tableau lab 4 of 5</div>
+    <h1>Why, and what if?</h1>
+    <p class="lead" style="margin-top:10px">A 70-minute lab in 7 steps. So far every number came straight from a column. Today you create the numbers a manager actually asks for – cancellation rate, lead-time bands, occupancy, net revenue after commission – with <b>calculated fields</b>, and you let the user change the assumptions with <b>parameters</b>. Checkpoints as usual; progress is saved in this browser.</p>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- ============ 0 ============ -->
+  <section class="step" data-title="Start">
+    <h2>1. Start: two kinds of calculation <span class="en">(5 min)</span></h2>
+    <p>Open <code>Surname_Lab3.twbx</code> (or reconnect to <a href="../../mtm/Week2/data/hotel_bookings.csv" download>hotel_bookings.csv</a>). Before the first formula, the one distinction that decides whether a calculation is right:</p>
+    <div class="grid2">
+      <div class="box note"><b>ROW-LEVEL</b>Evaluated once <b>per booking</b>, before aggregation. Uses plain fields: <code>[ADR] * [Nights]</code>, <code>IF [Lead Time (days)] &lt;= 7 THEN … END</code>. The result is a new column you can use as a dimension or a measure.</div>
+      <div class="box note"><b>AGGREGATE</b>Evaluated on the <b>marks of the view</b>, after aggregation. Uses SUM, AVG, COUNT…: <code>SUM([Revenue]) / COUNT([Booking ID])</code>. The result changes with what is on the shelves.</div>
+    </div>
+    <div class="box warn"><b>THE CLASSIC MISTAKE</b>A ratio is the ratio of the sums, not the average of the ratios: <code>SUM([Profit]) / SUM([Sales])</code>, never <code>AVG([Profit] / [Sales])</code>. Tableau will not let you mix a row-level field with an aggregate in one formula (“cannot mix aggregate and non-aggregate”): that error usually means you forgot a SUM.</div>
+    <p>Every calculated field is created the same way: <span class="ui">Analysis › Create Calculated Field</span> (or right-click in the Data pane › Create › Calculated Field), name it, type the formula, check “The calculation is valid”, OK.</p>
+    <div class="checklist" id="prep">
+      <label><input type="checkbox" data-k="wb"> My Lab 3 workbook is open (or I reconnected to the CSV)</label>
+      <label><input type="checkbox" data-k="dlg"> I found Analysis › Create Calculated Field and closed the dialog again</label>
+    </div>
+  </section>
+
+  <!-- ============ 1 ============ -->
+  <section class="step" data-title="A rate">
+    <h2>2. The cancellation rate as a field <span class="en">(12 min)</span></h2>
+    <p>In Lab 2 the cancellation rate was a label on a stacked bar. Now it becomes a <b>measure</b>, so it can be a bar length, sorted, coloured, filtered.</p>
+    <ol class="todo">
+      <li><span class="ui">Analysis › Create Calculated Field</span>. Name: <code>Cancellation rate</code>. Formula:
+        <div class="calc">SUM(IF [Canceled] = "Yes" THEN 1 ELSE 0 END) / COUNT([Booking ID])</div>
+        Read it: for each booking 1 or 0 (row-level), summed (aggregate), divided by the number of bookings (aggregate). Valid → OK.</li>
+      <li>New worksheet. <span class="pill">Customer Type</span> to <span class="ui">Rows</span>, <span class="pill m">Cancellation rate</span> to <span class="ui">Columns</span>. Sort descending.</li>
+      <li>Right-click the pill › <span class="ui">Format</span> › Numbers › Percentage, 1 decimal. Drag <span class="pill m">Cancellation rate</span> to <span class="ui">Label</span> too.</li>
+      <li>Do <b>not</b> put a Canceled filter on this sheet – the rate needs both groups.</li>
+      <li>Swap Customer Type for <span class="pill">Distribution Channel</span>, then <span class="pill">Deposit Type</span>: the same measure answers three questions. Rename the sheet <code>Cancellation rate</code> and keep Customer Type.</li>
+    </ol>
+    <div class="check" data-answer="40.7" data-tol="0.2" data-unit="%" data-hint="Customer Type on Rows, Cancellation rate on Columns, no filter on Canceled. Transient = 40.7 %, Contract 31.0 %, Transient-Party 25.4 %, Group 10.2 %.">
+      <div class="title">Checkpoint 1</div>
+      <div class="q">Cancellation rate of Transient customers?</div>
+    </div>
+    <div class="quiz" data-q="A classmate writes the rate as AVG(IF [Canceled] = &quot;Yes&quot; THEN 1 ELSE 0 END). Is it the same?" data-opts='["No, AVG is not allowed in calculated fields","Yes – the average of a 0/1 field over the bookings in the mark is exactly the share of 1s; both are aggregate calculations","No, it gives the rate per customer instead of per booking","Only if you add a Canceled filter"]' data-ans="1" data-why="The mean of a 0/1 indicator is a proportion. Both formulas aggregate over the same rows, so they agree. The SUM/COUNT version is clearer about what is counted; the AVG version is shorter."></div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="step" data-title="Bands">
+    <h2>3. Lead-time bands with IF / ELSEIF <span class="en">(10 min)</span></h2>
+    <p>Lead time is a number with thousands of values. A manager thinks in bands: last minute, this month, this quarter, earlier. A row-level IF turns the number into a <b>dimension</b>.</p>
+    <ol class="todo">
+      <li>Create Calculated Field <code>Lead-time band</code>:
+        <div class="calc">IF [Lead Time (days)] &lt;= 7 THEN "0–7 days"
+ELSEIF [Lead Time (days)] &lt;= 30 THEN "8–30 days"
+ELSEIF [Lead Time (days)] &lt;= 90 THEN "31–90 days"
+ELSE "90+ days" END</div>
+        It appears as a dimension (Abc) because the result is text.</li>
+      <li>New worksheet. <span class="pill">Lead-time band</span> to <span class="ui">Rows</span>, <span class="pill m">Cancellation rate</span> to <span class="ui">Columns</span> and <span class="ui">Label</span>. The bands are in the wrong order (alphabetical): right-click the band pill › <span class="ui">Sort › Manual</span> and drag them into order.</li>
+      <li>Add <span class="pill m">Booking ID</span> (Count) to <span class="ui">Tooltip</span> so the reader sees how many bookings each band holds.</li>
+      <li>Rename the sheet <code>Cancellation by lead time</code>. What is the relationship?</li>
+    </ol>
+    <div class="check" data-answer="50.7" data-tol="0.2" data-unit="%" data-hint="Lead-time band on Rows, Cancellation rate on Columns, no Canceled filter. 0–7 days: 9.6 %; 8–30: 27.9 %; 31–90: 37.7 %; 90+: 50.7 %.">
+      <div class="title">Checkpoint 2</div>
+      <div class="q">Cancellation rate of bookings made more than 90 days ahead?</div>
+    </div>
+    <div class="quiz" data-q="The bands show that early bookings cancel far more often. The revenue manager says: “so we should discourage early booking”. What is the right reply?" data-opts='["Agreed – stop taking bookings over 90 days ahead","Early bookings are mostly groups and tour operators (Lab 2) with their own cancellation behaviour; lead time is associated with cancellation, not shown to cause it – check the rate per band within each segment before acting","The chart is wrong because the bands are unequal","Nothing can be concluded from a bar chart"]' data-ans="1" data-why="Association is not causation, and the band mixes very different customers. Put Market Segment on Colour or Rows and look again: the pattern may hold within segments or be explained by them. Calculated fields make the analysis possible; they do not make the interpretation automatic."></div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="step" data-title="Date functions">
+    <h2>4. A date function: arrivals by weekday <span class="en">(8 min)</span></h2>
+    <ol class="todo">
+      <li>Create Calculated Field <code>Arrival weekday</code>:
+        <div class="calc">DATENAME("weekday", [Arrival Date])</div>
+        (<code>DATEPART</code> would give 1–7 as a number; <code>DATENAME</code> gives the name.)</li>
+      <li>New worksheet. <span class="pill">Arrival weekday</span> to <span class="ui">Columns</span>, <span class="pill m">Booking ID</span> (Count) to <span class="ui">Rows</span>, <span class="pill">Canceled</span> to Filters keep <b>No</b>, <span class="pill">Hotel</span> to <span class="ui">Color</span>.</li>
+      <li>Tableau already knows the weekday order; if not, sort manually Monday → Sunday.</li>
+      <li>Rename the sheet <code>Arrivals by weekday</code>. Which day do most guests arrive? Is it the same for both hotels?</li>
+    </ol>
+    <div class="check" data-answer="10926" data-tol="0" data-unit="arrivals" data-hint="DATENAME weekday on Columns, COUNT(Booking ID), Canceled = No, both hotels together: Saturday 10,926. Monday is the busiest with 11,976.">
+      <div class="title">Checkpoint 3</div>
+      <div class="q">How many non-cancelled arrivals were on a Saturday (both hotels)?</div>
+    </div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="step" data-title="Parameter">
+    <h2>5. What if? Occupancy with a parameter <span class="en">(13 min)</span></h2>
+    <p>Occupancy = room-nights sold ÷ room-nights available. The file has the nights sold, but <b>not</b> how many rooms each hotel has. Instead of guessing inside a formula, we make the number of rooms a <b>parameter</b> the user can change.</p>
+    <ol class="todo">
+      <li>Data pane › <span class="ui">Create › Parameter</span>. Name <code>Rooms</code>, data type Integer, current value <b>230</b>, allowable values Range 100–400, step 10. OK.</li>
+      <li>Create Calculated Field <code>Occupancy</code>:
+        <div class="calc">SUM([Nights]) / ([Rooms] * COUNTD(DATE([Arrival Date])))</div>
+        Nights sold in the mark, divided by rooms × number of distinct arrival days in the mark (≈ days in the month). Format as Percentage, 1 decimal.</li>
+      <li>New worksheet. <span class="pill">Arrival Date</span> to <span class="ui">Columns</span> as continuous <span class="ui">Month</span> (lower block), <span class="pill m">Occupancy</span> to <span class="ui">Rows</span>, <span class="pill">Hotel</span> to <span class="ui">Color</span>, <span class="pill">Canceled</span> to Filters keep <b>No</b>.</li>
+      <li>Right-click the <span class="pill">Rooms</span> parameter › <span class="ui">Show Parameter Control</span>. Set it to 200 and watch the lines. Set it to 230 again.</li>
+      <li>Add a <span class="ui">Reference Line</span> at 1 (100 %) from the Analytics pane. Rename the sheet <code>Occupancy (what-if)</code>.</li>
+    </ol>
+    <div class="check" data-answer="92.8" data-tol="0.3" data-unit="%" data-hint="Rooms = 230, Canceled = No, continuous month. Hover the City Hotel point of May 2017: 92.8 % (6,617 nights ÷ (230 × 31)). With Rooms = 200 the same month shows 106.7 %.">
+      <div class="title">Checkpoint 4</div>
+      <div class="q">Occupancy of the City Hotel in May 2017 with Rooms = 230?</div>
+    </div>
+    <div class="quiz" data-q="With Rooms = 200 the City Hotel shows 106.7 % occupancy in May 2017. What does that tell you?" data-opts='["The hotel overbooked by 7 %","The parameter is wrong: with 6,617 room-nights sold in 31 days the hotel must have at least 214 rooms – a what-if that produces an impossible value bounds the assumption","Tableau cannot compute percentages above 100","The data for May 2017 is duplicated"]' data-ans="1" data-why="A what-if parameter is a hypothesis. When the result is impossible, the hypothesis is rejected – that is useful information. (Our approximation also counts nights of stays that spill into the next month, so the true figure is a little lower; next week we replace the parameter with a real capacity table.)"></div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="step" data-title="Commission">
+    <h2>6. Net revenue after commission <span class="en">(10 min)</span></h2>
+    <p>Bookings through travel agents and tour operators (channel TA/TO) cost a commission. What is the revenue <i>net</i> of commission, and how does it change if the rate changes?</p>
+    <ol class="todo">
+      <li><span class="ui">Create › Parameter</span>: name <code>Commission</code>, Float, current value <b>0.15</b>, display format Percentage, range 0–0.30 step 0.01.</li>
+      <li>Create Calculated Field <code>Net revenue</code>:
+        <div class="calc">SUM([Revenue] * (1 - IF [Distribution Channel] = "TA/TO" THEN [Commission] ELSE 0 END))</div>
+        The IF is row-level (per booking), then everything is summed once. Writing <code>SUM([Revenue]) * (1 - IF …)</code> would mix aggregate and row-level and fail.</li>
+      <li>New worksheet. <span class="pill">Distribution Channel</span> to <span class="ui">Rows</span>; <span class="pill m">Revenue</span> and <span class="pill m">Net revenue</span> to <span class="ui">Columns</span> (two bars per channel, or use Measure Values). <span class="pill">Canceled</span> to Filters keep <b>No</b>. Show the Commission parameter control.</li>
+      <li>Format both as currency, 0 decimals. Rename the sheet <code>Net revenue by channel</code>. Move the slider to 20 %: how much does the hotel lose?</li>
+    </ol>
+    <div class="check" data-answer="17688128" data-tol="3000" data-unit="€" data-hint="Commission = 15 %, Canceled = No. TA/TO: revenue €20.81 M, net €17.69 M. Other channels: net = revenue.">
+      <div class="title">Checkpoint 5</div>
+      <div class="q">Net revenue of the TA/TO channel at 15 % commission?</div>
+    </div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="step" data-title="Groups & sets">
+    <h2>7. Groups and sets, then before you leave <span class="en">(12 min)</span></h2>
+    <p>Two ways to reshape a dimension without a formula: a <b>group</b> merges members into new ones; a <b>set</b> splits members into In and Out by a rule.</p>
+    <ol class="todo">
+      <li>Data pane › right-click <span class="pill">Market Segment</span> › <span class="ui">Create › Group</span>. Select Online TA, Offline TA/TO and Groups › <b>Group</b> › name it <code>Intermediated</code>. Select the rest › Group › <code>Direct &amp; corporate</code>. Name the field <code>Segment group</code>. OK.</li>
+      <li>New worksheet: <span class="pill">Segment group</span> on Rows, <span class="pill m">Revenue</span> on Columns and Label as <span class="ui">Percent of Total</span> (Quick Table Calculation), Canceled = No. Rename <code>Revenue by segment group</code>.</li>
+      <li>Right-click <span class="pill">Country</span> › <span class="ui">Create › Set</span> › tab <span class="ui">Top</span> › By field, Top 10 by Sum of Revenue › name <code>Top 10 markets</code>. OK.</li>
+      <li>New worksheet: <span class="pill">Top 10 markets</span> on Rows (In / Out), <span class="pill m">Revenue</span> on Columns and Label as Percent of Total, Canceled = No. Rename <code>Top markets share</code>.</li>
+      <li><span class="ui">File › Save As</span> › <code>Surname_Lab4.twbx</code>. Export <span class="ui">Occupancy (what-if)</span> as PNG. Upload both to eClass before you leave.</li>
+    </ol>
+    <div class="check" data-answer="81.7" data-tol="0.3" data-unit="%" data-hint="Segment group on Rows, SUM(Revenue) as Percent of Total, Canceled = No: Intermediated 81.7 %, Direct & corporate 18.3 %.">
+      <div class="title">Checkpoint 6</div>
+      <div class="q">Share of realised revenue that comes through intermediated segments?</div>
+    </div>
+    <div class="check" data-answer="81.2" data-tol="0.3" data-unit="%" data-hint="Top 10 markets set on Rows (In/Out), SUM(Revenue) as Percent of Total, Canceled = No: In = 81.2 %.">
+      <div class="title">Checkpoint 7</div>
+      <div class="q">Share of realised revenue from the top 10 countries?</div>
+    </div>
+    <div class="box note"><b>HOMEWORK (BY NEXT LECTURE, ~15 MIN)</b>
+      One paragraph in eClass: <b>(1)</b> the occupancy of each hotel in its best month, with the Rooms value you assumed and why; <b>(2)</b> how much net revenue the hotel loses if TA/TO commission rises from 15 % to 20 %; <b>(3)</b> one calculated field you would add next, written as a formula.
+    </div>
+    <div class="quiz" data-q="When should a number be a parameter rather than typed into the formula?" data-opts='["Always – parameters are faster","When it is an assumption the user may want to change or test (rooms, commission, threshold), not a fact in the data","Only for text values","Never in a published dashboard"]' data-ans="1" data-why="A parameter exposes an assumption and lets the reader test it. A constant hidden in a formula is an assumption nobody can see. Facts that are in the data (nights sold, revenue) stay fields; assumptions become parameters."></div>
+    <div class="box note" id="finalScore" style="display:none"></div>
+    <h3>Next lecture</h3>
+    <p>Week 6: combine and tell. Relationships between tables (a real capacity table replaces the Rooms parameter; a countries table adds continents), then a dashboard with actions and a published story. Bring your .twbx.</p>
+  </section>
+
+  <div class="nav">
+    <button class="btn outline" id="prevBtn">← Previous</button>
+    <button class="btn navy" id="nextBtn">Next →</button>
+  </div>
+  <footer>Evangelos Kalampokis · Information Systems Lab · University of Macedonia · Data: Antonio, de Almeida &amp; Nunes (2019), Hotel booking demand datasets, <i>Data in Brief</i> 22, 41–49 (CC BY 4.0).</footer>
+</div>
+<script>
+(function(){
+  const KEY='biis-week5-tableau4';
+  let state={step:0,quiz:{},check:{},prep:{}};
+  try{const s=localStorage.getItem(KEY); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  const steps=[...document.querySelectorAll('section.step')];
+  const stepper=document.getElementById('stepper');
+  steps.forEach((s,i)=>{const b=document.createElement('button'); b.innerHTML='<span class="n">'+(i+1)+'</span><span class="l">'+s.dataset.title+'</span>'; b.onclick=()=>go(i); stepper.appendChild(b);});
+  function go(i){state.step=i; save(); steps.forEach((s,j)=>s.classList.toggle('active',j===i)); [...stepper.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+    document.getElementById('prevBtn').disabled=i===0; document.getElementById('nextBtn').disabled=i===steps.length-1; window.scrollTo({top:0,behavior:'smooth'});}
+  document.getElementById('prevBtn').onclick=()=>go(Math.max(0,state.step-1));
+  document.getElementById('nextBtn').onclick=()=>go(Math.min(steps.length-1,state.step+1));
+
+  // prep checklist
+  document.querySelectorAll('#prep input').forEach(c=>{c.checked=!!state.prep[c.dataset.k]; c.onchange=()=>{state.prep[c.dataset.k]=c.checked; save(); updateDone();};});
+
+  // quizzes
+  const quizzes=[...document.querySelectorAll('.quiz')];
+  quizzes.forEach((q,qi)=>{
+    const opts=JSON.parse(q.dataset.opts), ans=+q.dataset.ans;
+    q.innerHTML='<div class="q">'+q.dataset.q+'</div><div class="opts"></div><div class="fb"></div>';
+    const box=q.querySelector('.opts'), fb=q.querySelector('.fb');
+    opts.forEach((o,i)=>{const b=document.createElement('button'); b.textContent=o;
+      b.onclick=()=>{[...box.children].forEach(c=>c.classList.remove('ok','bad'));
+        if(i===ans){b.classList.add('ok'); fb.className='fb ok'; fb.textContent='Correct! '+q.dataset.why; state.quiz[qi]=true;}
+        else{b.classList.add('bad'); fb.className='fb bad'; fb.textContent='Not quite. '+q.dataset.why; state.quiz[qi]=false;}
+        save(); updateDone(); finalScore();};
+      box.appendChild(b);});
+    if(state.quiz[qi]===true){box.children[ans].classList.add('ok'); fb.className='fb ok'; fb.textContent='Correct! '+q.dataset.why;}
+  });
+
+  // numeric / select checkpoints
+  const checks=[...document.querySelectorAll('.check')];
+  function parseNum(s){s=String(s).trim().replace(/\s/g,'').replace(/%|€/g,''); if(/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(s)) s=s.replace(/,/g,''); else if(/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) s=s.replace(/\./g,'').replace(',','.'); else s=s.replace(',','.'); return parseFloat(s);}
+  checks.forEach((c,ci)=>{
+    const wrap=document.createElement('div');
+    if(c.dataset.select){
+      const opts=JSON.parse(c.dataset.select);
+      wrap.innerHTML='<div class="row"><select><option value="">— choose —</option>'+opts.map((o,i)=>'<option value="'+i+'">'+o+'</option>').join('')+'</select><button class="btn">✔ Check</button></div><div class="result"></div><details><summary>Hint</summary><div>'+c.dataset.hint+'</div></details>';
+    }else{
+      wrap.innerHTML='<div class="row"><input inputmode="decimal" placeholder="number"><span class="unit">'+(c.dataset.unit||'')+'</span><button class="btn">✔ Check</button></div><div class="result"></div><details><summary>Hint</summary><div>'+c.dataset.hint+'</div></details>';
+    }
+    c.appendChild(wrap);
+    const res=wrap.querySelector('.result'), btn=wrap.querySelector('button');
+    function check(){
+      let ok;
+      if(c.dataset.select){const v=wrap.querySelector('select').value; if(v==='')return; ok=+v===+c.dataset.answer;}
+      else{const v=parseNum(wrap.querySelector('input').value); if(isNaN(v)){res.className='result bad'; res.textContent='Type a number.'; return;} ok=Math.abs(v-+c.dataset.answer)<=+c.dataset.tol+1e-9;}
+      res.className='result '+(ok?'ok':'bad'); res.textContent=ok?'Correct! Carry on.':'Not what I expect. Open the hint and try again.';
+      state.check[ci]=ok; save(); updateDone(); finalScore();
+    }
+    btn.onclick=check; const inp=wrap.querySelector('input'); if(inp) inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+    if(state.check[ci]===true){res.className='result ok'; res.textContent='Done ✓';}
+  });
+
+  function finalScore(){
+    const n=checks.length, ok=checks.filter((c,i)=>state.check[i]===true).length;
+    const el=document.getElementById('finalScore');
+    if(ok===n){el.style.display='block'; el.innerHTML='<b>COMPLETE</b>All '+n+' checkpoints correct. Lab done; only the deliverable is left.';}
+    else if(ok>0){el.style.display='block'; el.innerHTML='<b>PROGRESS</b>'+ok+' of '+n+' checkpoints.';}
+  }
+  function updateDone(){
+    steps.forEach((s,i)=>{
+      const qs=[...s.querySelectorAll('.quiz')].map(q=>quizzes.indexOf(q));
+      const cs=[...s.querySelectorAll('.check')].map(c=>checks.indexOf(c));
+      let extra=true; const pc=[...s.querySelectorAll('#prep input')]; if(pc.length) extra=pc.every(c=>state.prep[c.dataset.k]);
+      const all=qs.every(i=>state.quiz[i]===true)&&cs.every(i=>state.check[i]===true)&&extra&&(qs.length+cs.length>0||s.querySelector('#prep'));
+      stepper.children[i].classList.toggle('done',all);
+    });
+  }
+  updateDone(); finalScore(); go(Math.min(state.step||0,steps.length-1));
+})();
+</script>
+</body>
+</html>
