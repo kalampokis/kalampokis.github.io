@@ -76,9 +76,25 @@ td.r,th.r{text-align:right}
 .pager span{font-family:'JetBrains Mono',monospace;font-size:15px;min-width:64px;text-align:center}
 @media (max-width:600px){.wrap{padding:24px 16px 48px}h1{font-size:30px}.task{font-size:18px}.toggle .k{width:100%}}
 </style>
+<style id="site-nav-style">
+  #site-nav{font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#1B2F6B;color:#fff;padding:8px 16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  #site-nav a{color:#fff;text-decoration:none}
+  #site-nav .sn-home{font-weight:bold} #site-nav .sn-sep{opacity:.5} #site-nav .sn-teach{color:#B9C8FC;margin-left:auto}
+  @media (max-width:700px){
+    #site-nav{font-size:13px;gap:6px 12px;padding:8px 12px}
+    #site-nav .sn-sep{display:none}
+    #site-nav .sn-back{flex-basis:100%;order:3;padding-top:2px}
+    #site-nav .sn-teach{order:2}
+    table.t{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+    .ui,.pill,td.m,.pill.m{white-space:normal}
+    .check input{max-width:100%} .check select{max-width:100%}
+    .calc,pre,code{overflow-wrap:anywhere}
+    .wrap{overflow-x:hidden}
+  }
+</style>
 </head>
 <body>
-<nav id="site-nav" style="font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#1B2F6B;color:#fff;padding:8px 16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap"><a href="../index.html" style="color:#fff;text-decoration:none;font-weight:bold">Dr. Evangelos Kalampokis</a><span style="opacity:.5">|</span><a href="../courses/web-text-analytics.html" style="color:#fff;text-decoration:none">&larr; Course page: Web and Text Analytics</a><a href="../index.html#teaching" style="color:#B9C8FC;text-decoration:none;margin-left:auto">Home</a></nav>
+<nav id="site-nav"><a class="sn-home" href="../index.html">Dr. Evangelos Kalampokis</a><span class="sn-sep">|</span><a class="sn-back" href="../courses/web-text-analytics.html">&larr; Course page: Web and Text Analytics</a><a class="sn-teach" href="../index.html#teaching">Home</a></nav>
 <div class="wrap"><div class="col">
   <div>
     <div class="kicker">Web and Text Analytics · Week 4 · From text to tokens</div>
