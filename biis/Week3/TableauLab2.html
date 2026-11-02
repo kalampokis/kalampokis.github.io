@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7KW3PRQVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R7KW3PRQVZ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tableau lab 2: How do I see it? · Week 3</title>
+<meta name="description" content="Tableau lab 2 with real hotel booking data: encoding with colour, size and position; proportions, scatter plots, highlight tables, chart choice. Business Intelligence Information Systems, Week 3.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2F6B; --text:#26314F; --gray:#5A6385; --blue:#7895F9; --lblue:#B9C8FC; --pale:#EEF1FE;
+    --orange:#F5821F; --peach:#FDE8D4; --green:#1e7a4c; --lgreen:#E3F3EA; --red:#B23A3A; --lred:#FBE4E4;
+    --code:#141E3C; --codefg:#F4F6FF; --mono:'JetBrains Mono',Consolas,monospace;
+    --dim:#4E79A7; --mea:#59A14F;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pale);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+  a{color:var(--green)}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 16px 80px;display:flex;flex-direction:column;gap:22px}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--gray);text-transform:uppercase}
+  h1{margin:6px 0 0;font-family:Georgia,serif;font-weight:700;font-size:38px;line-height:1.1;color:var(--navy)}
+  h2{margin:0;font-family:Georgia,serif;font-size:28px;color:var(--navy)}
+  h3{margin:18px 0 6px;font-family:Georgia,serif;font-size:20px;color:var(--navy)}
+  p{margin:0 0 10px;font-size:17px}
+  .lead{font-size:19px;max-width:800px}
+  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:8px}
+  .stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 12px;background:var(--navy);color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px;opacity:.55}
+  .stepper button.active{opacity:1;outline:3px solid var(--orange)}
+  .stepper button.done{opacity:.9;background:var(--green)}
+  .stepper button span.n{font-family:var(--mono);font-weight:700;font-size:14px}
+  .stepper button span.l{font-size:13px}
+  section.step{display:none;flex-direction:column;gap:14px;background:#fff;border-radius:12px;padding:22px 22px 26px;box-shadow:0 1px 3px rgba(27,47,107,.08)}
+  section.step.active{display:flex}
+  code{font-family:var(--mono);background:var(--pale);padding:1px 5px;border-radius:4px;color:var(--navy);font-size:.95em}
+  .en{color:var(--gray);font-style:italic}
+  .box{border-radius:8px;padding:12px 16px;font-size:16px}
+  .tip{background:var(--peach)} .tip>b:first-child{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .note{background:var(--pale)} .note>b:first-child{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .warn{background:var(--lred)} .warn>b:first-child{color:var(--red);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .btn{font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--green);color:#fff;font-weight:bold}
+  .btn.navy{background:var(--navy)} .btn.orange{background:var(--orange)}
+  .btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+  .btn:disabled{opacity:.5;cursor:default}
+  /* pills for Tableau fields */
+  .pill{display:inline-block;font-family:var(--mono);font-size:13px;padding:2px 10px;border-radius:12px;color:#fff;background:var(--dim);white-space:nowrap}
+  .pill.m{background:var(--mea)}
+  .ui{font-family:var(--mono);font-size:.92em;color:var(--navy);background:#fff;border:1px solid var(--lblue);border-radius:4px;padding:1px 6px;white-space:nowrap}
+  /* steps list */
+  ol.todo{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px;counter-reset:s}
+  ol.todo li{position:relative;padding:10px 14px 10px 50px;background:var(--pale);border-radius:8px;font-size:16px;counter-increment:s}
+  ol.todo li::before{content:counter(s);position:absolute;left:12px;top:9px;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--mono);font-weight:bold;font-size:14px;display:flex;align-items:center;justify-content:center}
+  /* checkpoint */
+  .check{border:2px dashed var(--orange);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#fff}
+  .check .title{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--orange);text-transform:uppercase}
+  .check .q{font-weight:bold;color:var(--navy);font-size:16px}
+  .check .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .check input{font:inherit;font-family:var(--mono);font-size:17px;padding:7px 10px;border:2px solid var(--navy);border-radius:8px;width:180px;background:#fff;color:var(--navy)}
+  .check select{font:inherit;font-size:16px;padding:7px 10px;border:2px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy)}
+  .check .unit{color:var(--gray);font-size:15px}
+  .check .result{font-size:15px;min-height:20px}
+  .check .result.ok{color:var(--green);font-weight:bold} .check .result.bad{color:var(--red)}
+  .check details{font-size:15px} .check summary{cursor:pointer;color:var(--navy)}
+  /* quiz */
+  .quiz{background:var(--pale);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .quiz .q{font-weight:bold;color:var(--navy)}
+  .quiz .opts{display:grid;gap:6px}
+  .quiz .opts button{text-align:left;font:inherit;font-size:16px;padding:9px 12px;border-radius:8px;border:1px solid var(--lblue);background:#fff;color:var(--navy);cursor:pointer}
+  .quiz .opts button.ok{background:var(--lgreen);border-color:var(--green)}
+  .quiz .opts button.bad{background:var(--lred);border-color:var(--red)}
+  .quiz .fb{min-height:20px;font-size:15px}
+  .quiz .fb.ok{color:var(--green);font-weight:bold} .quiz .fb.bad{color:var(--red)}
+  table.t{border-collapse:collapse;width:100%;font-size:15px}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:bold}
+  table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue);vertical-align:top} table.t td.m{font-family:var(--mono);color:var(--navy);white-space:nowrap}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .calc{font-family:var(--mono);font-size:15px;background:var(--code);color:var(--codefg);padding:12px 14px;border-radius:8px;white-space:pre-wrap;line-height:1.5}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+  .checklist label{display:flex;gap:10px;align-items:flex-start;font-size:16px;padding:8px 10px;background:var(--pale);border-radius:8px;margin-bottom:6px;cursor:pointer}
+  .checklist input{margin-top:4px;width:18px;height:18px}
+  @media (max-width:700px){.grid2{grid-template-columns:1fr} h1{font-size:30px}}
+  footer{font-size:13px;color:var(--gray);text-align:center}
+</style>
+<style id="site-nav-style">
+  #site-nav{font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#1B2F6B;color:#fff;padding:8px 16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  #site-nav a{color:#fff;text-decoration:none}
+  #site-nav .sn-home{font-weight:bold} #site-nav .sn-sep{opacity:.5} #site-nav .sn-teach{color:#B9C8FC;margin-left:auto}
+  @media (max-width:700px){
+    #site-nav{font-size:13px;gap:6px 12px;padding:8px 12px}
+    #site-nav .sn-sep{display:none}
+    #site-nav .sn-back{flex-basis:100%;order:3;padding-top:2px}
+    #site-nav .sn-teach{order:2}
+    table.t{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+    .ui,.pill,td.m,.pill.m{white-space:normal}
+    .check input{max-width:100%} .check select{max-width:100%}
+    .calc,pre,code{overflow-wrap:anywhere}
+    .wrap{overflow-x:hidden}
+  }
+</style>
+</head>
+<body>
+<nav id="site-nav"><a class="sn-home" href="../../index.html">Dr. Evangelos Kalampokis</a><span class="sn-sep">|</span><a class="sn-back" href="../../courses/business-intelligence-information-systems.html">&larr; Course page: Business Intelligence Information Systems</a><a class="sn-teach" href="../../index.html#teaching">Home</a></nav>
+<div class="wrap">
+  <div>
+    <div class="kicker">Business Intelligence Information Systems · Week 3 · Tableau lab 2 of 5</div>
+    <h1>How do I see it?</h1>
+    <p class="lead" style="margin-top:10px">A 70-minute lab in 7 steps on the same hotel bookings as last week. This time the question is not <i>what</i> to show but <i>how</i>: which visual channel (position, length, colour, size) carries which number, and which chart answers the question fastest. Every step ends with a <b>checkpoint</b>; your progress is saved in this browser.</p>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- ============ 0 ============ -->
+  <section class="step" data-title="Start">
+    <h2>1. Start: your workbook and a recap <span class="en">(5 min)</span></h2>
+    <p>Open <code>Surname_Lab1.twbx</code> from last week. If you do not have it, connect again to <a href="../../mtm/Week2/data/hotel_bookings.csv" download>hotel_bookings.csv</a> (Connect › To a File › Text file) and you can still do everything below.</p>
+    <h3>The channels you will use today</h3>
+    <table class="t">
+      <tr><th>Channel</th><th>Where in Tableau</th><th>Best for</th><th>Weak for</th></tr>
+      <tr><td class="m">Position</td><td>Rows / Columns</td><td>Any number; the most precise channel</td><td>More than two measures at once</td></tr>
+      <tr><td class="m">Length</td><td>Bars</td><td>Comparing magnitudes</td><td>Parts of a whole across many categories</td></tr>
+      <tr><td class="m">Colour (sequential)</td><td>Marks › Color, a measure</td><td>Low→high patterns in tables and maps</td><td>Reading exact values</td></tr>
+      <tr><td class="m">Colour (categorical)</td><td>Marks › Color, a dimension</td><td>Up to ~6 groups</td><td>Many categories, colour-blind readers</td></tr>
+      <tr><td class="m">Size</td><td>Marks › Size, a measure</td><td>A third measure on a scatter plot</td><td>Precise comparison; negative values</td></tr>
+      <tr><td class="m">Label / Text</td><td>Marks › Label</td><td>Exact numbers where they matter</td><td>Everything, everywhere (clutter)</td></tr>
+    </table>
+    <div class="box note"><b>THE QUESTION OF THE DAY</b>Last week we saw that the City Hotel loses 4 in 10 bookings to cancellations. Today we look at <b>who</b> cancels, <b>what they pay</b> and <b>when they book</b>, and we choose the chart that makes each answer obvious.</div>
+    <div class="checklist" id="prep">
+      <label><input type="checkbox" data-k="wb"> My Lab 1 workbook is open (or I reconnected to the CSV)</label>
+      <label><input type="checkbox" data-k="sheets"> I can see the five sheets from Lab 1 in the tabs at the bottom</label>
+    </div>
+  </section>
+
+  <!-- ============ 1 ============ -->
+  <section class="step" data-title="Proportions">
+    <h2>2. Who cancels? A proportion on colour <span class="en">(12 min)</span></h2>
+    <p>Counts answer “how many”; a manager usually wants “what share”. We build the stacked bar first, then turn the labels into percentages <i>within each segment</i>.</p>
+    <ol class="todo">
+      <li>New worksheet. <span class="pill">Market Segment</span> to <span class="ui">Rows</span>, <span class="pill m">Booking ID</span> (Count) to <span class="ui">Columns</span>. Sort descending.</li>
+      <li><span class="pill">Canceled</span> to <span class="ui">Color</span>. Each bar splits into Yes / No. Length now shows the count, colour the status.</li>
+      <li><span class="pill m">Booking ID</span> (Count) to <span class="ui">Label</span>. Right-click that label pill › <span class="ui">Quick Table Calculation › Percent of Total</span>.</li>
+      <li>Right-click the same pill again › <span class="ui">Compute Using › Canceled</span>. Now each segment adds up to 100 % and the label on the “Yes” part is the <b>cancellation rate</b> of that segment.</li>
+      <li>Open <span class="ui">Color</span> › Edit Colors: give “Yes” a strong colour (orange) and “No” a light grey. The eye should go to the problem, not to the background.</li>
+      <li>Rename the sheet <code>Cancellation by segment</code>.</li>
+    </ol>
+    <div class="check" data-answer="61.1" data-tol="0.3" data-unit="%" data-hint="Market Segment on Rows, COUNT(Booking ID) on Columns and on Label, Canceled on Color; label = Percent of Total computed using Canceled. The orange (Yes) part of the Groups bar reads 61.1 %. If you see 16.6 % you are computing across the whole table instead of within the segment.">
+      <div class="title">Checkpoint 1</div>
+      <div class="q">What percentage of Groups bookings were cancelled?</div>
+    </div>
+    <div class="quiz" data-q="You want readers to compare the cancellation RATE across segments at a glance. Which is the best encoding?" data-opts='["Stacked bars of counts with percentage labels (what we just built)","Side-by-side bars of counts, Yes next to No","A bar chart of the rate itself, one bar per segment, sorted","A pie chart per segment"]' data-ans="2" data-why="Labels on stacked bars give the numbers, but comparing them means reading text. A rate encoded as bar LENGTH, sorted, is read in a glance. We will be able to build that once we have calculated fields (Lab 4); for now the stacked bar with percentages is the honest compromise."></div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="step" data-title="Scatter">
+    <h2>3. Two measures at once: price vs lead time <span class="en">(12 min)</span></h2>
+    <p>Bars encode one measure. A <b>scatter plot</b> puts one measure on each axis, so every mark answers two questions: at what price does this segment book, and how far ahead?</p>
+    <ol class="todo">
+      <li>New worksheet. <span class="pill m">ADR</span> to <span class="ui">Columns</span>, <span class="pill m">Lead Time (days)</span> to <span class="ui">Rows</span>. Change both pills to <span class="ui">Measure › Average</span>. One mark: the whole dataset.</li>
+      <li><span class="pill">Market Segment</span> to <span class="ui">Detail</span> on the Marks card. One mark per segment. Then drag it also onto <span class="ui">Label</span>.</li>
+      <li><span class="pill">Hotel</span> to <span class="ui">Color</span>: each segment splits into a resort mark and a city mark.</li>
+      <li><span class="pill m">Booking ID</span> (Count) to <span class="ui">Size</span>: big circles = many bookings. Set the mark type to <span class="ui">Circle</span> if it is not already.</li>
+      <li><span class="pill">Canceled</span> to <span class="ui">Filters</span>, keep <b>No</b>: prices and lead times of stays that happened.</li>
+      <li>Rename the sheet <code>Price vs lead time</code>.</li>
+    </ol>
+    <div class="check" data-answer="161.5" data-tol="0.6" data-unit="days" data-hint="AVG(Lead Time) on Rows, AVG(ADR) on Columns, Market Segment on Detail/Label, Hotel on Color, Canceled = No. Hover the Resort Hotel “Groups” circle: about 161.5 days and 67.80 €.">
+      <div class="title">Checkpoint 2</div>
+      <div class="q">Average lead time of Groups bookings at the Resort Hotel (non-cancelled)?</div>
+    </div>
+    <p>Read the plot like a map: top-left are segments that book early and pay little (tour operators, groups), bottom-right book late and pay more (direct, online). Write one sentence about what this means for the hotel's pricing.</p>
+    <div class="quiz" data-q="Size shows the number of bookings. Why is size a poor channel for the number of CANCELLED bookings per segment?" data-opts='["Tableau cannot put a count on Size","People judge circle areas badly, and small differences disappear; also a cancelled count makes no sense on a non-cancelled filter","Size only works with dimensions","Circles cannot be labelled"]' data-ans="1" data-why="Area is one of the least accurate channels for the human eye (we underestimate large areas). Use size for a rough third measure, never for the number you want compared. And with Canceled = No on the filter there are no cancelled bookings in the view at all."></div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="step" data-title="Highlight table">
+    <h2>4. Colour on a grid: the highlight table <span class="en">(12 min)</span></h2>
+    <p>When the question is “price per hotel <i>and</i> per month”, a bar chart with 24 bars is hard to read. A <b>highlight table</b> keeps the exact numbers and adds a sequential colour so the pattern jumps out.</p>
+    <ol class="todo">
+      <li>New worksheet. <span class="pill">Arrival Date</span> to <span class="ui">Rows</span>; on the pill choose <span class="ui">Month</span> from the <b>upper</b> (discrete) block, so you get January … December. Do not use the text column <span class="pill">Arrival Month</span>: Tableau would sort it alphabetically.</li>
+      <li><span class="pill">Hotel</span> to <span class="ui">Columns</span>.</li>
+      <li><span class="pill m">ADR</span> to <span class="ui">Color</span> and again to <span class="ui">Label</span>; set both to <span class="ui">Average</span>. Marks type: <span class="ui">Square</span>. <span class="pill">Canceled</span> to Filters, keep No.</li>
+      <li>Open <span class="ui">Color</span> › Edit Colors: choose a <b>sequential</b> palette (one hue, light→dark, e.g. Orange or Blue). Avoid a diverging red–blue palette here: there is no meaningful midpoint for a price.</li>
+      <li>Format the label to 0 decimals and prefix €. Rename the sheet <code>Price by month and hotel</code>.</li>
+    </ol>
+    <div class="check" data-answer="181.21" data-tol="0.4" data-unit="€" data-hint="MONTH(Arrival Date) discrete on Rows, Hotel on Columns, AVG(ADR) on Color and Label, Canceled = No. The darkest cell is Resort Hotel · August ≈ 181 €. If you read 186.79 you forgot the cancellation filter.">
+      <div class="title">Checkpoint 3</div>
+      <div class="q">Average ADR of the Resort Hotel in August (non-cancelled)?</div>
+    </div>
+    <div class="quiz" data-q="Which statement about the two hotels does the highlight table make obvious?" data-opts='["Both hotels have the same seasonality","The resort swings from under 50 € in winter to over 180 € in August; the city hotel stays between about 82 € and 120 € all year","The city hotel is always cheaper","Prices are highest in December"]' data-ans="1" data-why="Sequential colour makes the resort column change from pale to dark, while the city column stays mid-tone: a seasonal business next to a steady one. That is the insight a 24-bar chart would hide."></div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="step" data-title="A paradox">
+    <h2>5. A number that cannot be right: deposit type <span class="en">(10 min)</span></h2>
+    <p>Encoding well also means noticing when a chart shows something that <i>should not</i> be possible. Rebuild the proportion chart from step 2 with a different dimension.</p>
+    <ol class="todo">
+      <li>Duplicate <span class="ui">Cancellation by segment</span>, rename the copy <code>Cancellation by deposit</code>.</li>
+      <li>Drag <span class="pill">Deposit Type</span> onto the Market Segment pill on Rows (it swaps). Check that the label is still Percent of Total computed using Canceled.</li>
+      <li>Read the three bars: No Deposit, Non Refund, Refundable.</li>
+    </ol>
+    <div class="check" data-answer="99.4" data-tol="0.2" data-unit="%" data-hint="Deposit Type on Rows, COUNT(Booking ID) on Columns and Label (Percent of Total, compute using Canceled), Canceled on Color. The Non Refund bar is almost entirely orange: 99.4 %.">
+      <div class="title">Checkpoint 4</div>
+      <div class="q">What percentage of Non Refund bookings were cancelled?</div>
+    </div>
+    <div class="quiz" data-q="Guests who paid a non-refundable deposit cancelled 99 % of the time; guests with no deposit 28 %. What is the right reaction?" data-opts='["Stop asking for deposits: they cause cancellations","The chart is wrong; Tableau must have swapped Yes and No","This is a question, not a conclusion: check who these bookings are (segment, country, agent) before interpreting – the pattern is probably a data-recording or policy artefact, not guest behaviour","Delete the Non Refund rows as outliers"]' data-ans="2" data-why="A good chart surfaces anomalies; it does not explain them. Add Market Segment or Country to the view and you will see the Non Refund bookings concentrate in a few channels. In the next labs we will have the tools (filters across sheets, calculated fields) to investigate properly."></div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="step" data-title="Chart choice">
+    <h2>6. Same question, three charts: seasonality <span class="en">(10 min)</span></h2>
+    <p>“How do arrivals vary over the year, per hotel?” Build it three ways on one sheet by changing only the encoding, then decide.</p>
+    <ol class="todo">
+      <li>New worksheet. <span class="pill">Arrival Date</span> to <span class="ui">Columns</span> as <span class="ui">Month</span> (discrete, upper block). <span class="pill m">Booking ID</span> (Count) to <span class="ui">Rows</span>. <span class="pill">Canceled</span> to Filters, keep No. You have 12 bars.</li>
+      <li><span class="pill">Hotel</span> to <span class="ui">Color</span>. Bars become stacked. Try side-by-side bars from Show Me. Can you compare the two hotels month by month?</li>
+      <li>Change the mark type to <span class="ui">Line</span>. Two lines, one per hotel. Now the shape of each season is visible.</li>
+      <li>Try a third version: Show Me › <b>highlight table</b> (Hotel on Columns, months on Rows, count on Colour and Label).</li>
+      <li>Keep the version you find clearest and rename the sheet <code>Arrivals by month</code>.</li>
+    </ol>
+    <div class="check" data-answer="8638" data-tol="0" data-unit="bookings" data-hint="MONTH(Arrival Date) discrete, COUNT(Booking ID), Canceled = No, both hotels together: August is the peak with 8,638 arrivals.">
+      <div class="title">Checkpoint 5</div>
+      <div class="q">How many non-cancelled bookings arrived in August (both hotels)?</div>
+    </div>
+    <div class="check" data-select='["Stacked bars per month","Line chart per month with Hotel on Colour","Highlight table month × hotel","Pie chart of months"]' data-answer="1" data-hint="A line shows the shape of the season for each hotel and lets the eye compare the two curves month by month. Stacked bars hide the lower series; the highlight table is good for exact numbers but weaker for shape. A pie chart of twelve months is unreadable.">
+      <div class="title">Checkpoint 6</div>
+      <div class="q">Which version shows the seasonality of the two hotels best?</div>
+    </div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="step" data-title="Before you leave">
+    <h2>7. Before you leave, and homework <span class="en">(8 min)</span></h2>
+    <ol class="todo">
+      <li><span class="ui">File › Save As</span> › <code>Surname_Lab2.twbx</code>.</li>
+      <li>Open <span class="ui">Price vs lead time</span> › <span class="ui">Worksheet › Export › Image</span> › PNG.</li>
+      <li>Upload the .twbx and the PNG to eClass before you leave.</li>
+    </ol>
+    <div class="box note"><b>HOMEWORK (BY NEXT LECTURE, ~15 MIN)</b>
+      One paragraph in eClass: <b>(1)</b> explain the scatter plot to a hotel manager in two sentences – what the axes are and what the position of Groups vs Direct means for pricing; <b>(2)</b> state the Non Refund paradox as a question you would investigate, and name the dimension you would add to the chart first.
+    </div>
+    <div class="check" data-select='["8","9","10","11 or more"]' data-answer="2" data-hint="Five sheets from Lab 1 plus five today: Cancellation by segment, Price vs lead time, Price by month and hotel, Cancellation by deposit, Arrivals by month.">
+      <div class="title">Checkpoint 7</div>
+      <div class="q">How many named sheets does your workbook have now?</div>
+    </div>
+    <div class="quiz" data-q="A colleague puts Market Segment (7 values) on Colour AND Hotel (2 values) on Shape in the scatter plot, with no labels. What goes wrong?" data-opts='["Nothing, more channels = more information","14 colour–shape combinations are more than the eye can decode; keep one categorical channel (colour for hotel) and use labels or small multiples for the other","Tableau refuses two dimensions on the Marks card","Shapes only work for measures"]' data-ans="1" data-why="Every extra channel costs attention. Categorical colour works up to about six values; combining it with shape multiplies the legend the reader has to memorise. Prefer labels, filters or separate panels (Rows per Hotel) over a second categorical channel."></div>
+    <div class="box note" id="finalScore" style="display:none"></div>
+    <h3>Next lecture</h3>
+    <p>Week 4: where and when? Maps of the guests' countries, dates as discrete vs continuous, trend lines and a first forecast. Bring your .twbx.</p>
+  </section>
+
+  <div class="nav">
+    <button class="btn outline" id="prevBtn">← Previous</button>
+    <button class="btn navy" id="nextBtn">Next →</button>
+  </div>
+  <footer>Evangelos Kalampokis · Information Systems Lab · University of Macedonia · Data: Antonio, de Almeida &amp; Nunes (2019), Hotel booking demand datasets, <i>Data in Brief</i> 22, 41–49 (CC BY 4.0).</footer>
+</div>
+<script>
+(function(){
+  const KEY='biis-week3-tableau2';
+  let state={step:0,quiz:{},check:{},prep:{}};
+  try{const s=localStorage.getItem(KEY); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  const steps=[...document.querySelectorAll('section.step')];
+  const stepper=document.getElementById('stepper');
+  steps.forEach((s,i)=>{const b=document.createElement('button'); b.innerHTML='<span class="n">'+(i+1)+'</span><span class="l">'+s.dataset.title+'</span>'; b.onclick=()=>go(i); stepper.appendChild(b);});
+  function go(i){state.step=i; save(); steps.forEach((s,j)=>s.classList.toggle('active',j===i)); [...stepper.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+    document.getElementById('prevBtn').disabled=i===0; document.getElementById('nextBtn').disabled=i===steps.length-1; window.scrollTo({top:0,behavior:'smooth'});}
+  document.getElementById('prevBtn').onclick=()=>go(Math.max(0,state.step-1));
+  document.getElementById('nextBtn').onclick=()=>go(Math.min(steps.length-1,state.step+1));
+
+  // prep checklist
+  document.querySelectorAll('#prep input').forEach(c=>{c.checked=!!state.prep[c.dataset.k]; c.onchange=()=>{state.prep[c.dataset.k]=c.checked; save(); updateDone();};});
+
+  // quizzes
+  const quizzes=[...document.querySelectorAll('.quiz')];
+  quizzes.forEach((q,qi)=>{
+    const opts=JSON.parse(q.dataset.opts), ans=+q.dataset.ans;
+    q.innerHTML='<div class="q">'+q.dataset.q+'</div><div class="opts"></div><div class="fb"></div>';
+    const box=q.querySelector('.opts'), fb=q.querySelector('.fb');
+    opts.forEach((o,i)=>{const b=document.createElement('button'); b.textContent=o;
+      b.onclick=()=>{[...box.children].forEach(c=>c.classList.remove('ok','bad'));
+        if(i===ans){b.classList.add('ok'); fb.className='fb ok'; fb.textContent='Correct! '+q.dataset.why; state.quiz[qi]=true;}
+        else{b.classList.add('bad'); fb.className='fb bad'; fb.textContent='Not quite. '+q.dataset.why; state.quiz[qi]=false;}
+        save(); updateDone(); finalScore();};
+      box.appendChild(b);});
+    if(state.quiz[qi]===true){box.children[ans].classList.add('ok'); fb.className='fb ok'; fb.textContent='Correct! '+q.dataset.why;}
+  });
+
+  // numeric / select checkpoints
+  const checks=[...document.querySelectorAll('.check')];
+  function parseNum(s){s=String(s).trim().replace(/\s/g,'').replace(/%|€/g,''); if(/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(s)) s=s.replace(/,/g,''); else if(/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) s=s.replace(/\./g,'').replace(',','.'); else s=s.replace(',','.'); return parseFloat(s);}
+  checks.forEach((c,ci)=>{
+    const wrap=document.createElement('div');
+    if(c.dataset.select){
+      const opts=JSON.parse(c.dataset.select);
+      wrap.innerHTML='<div class="row"><select><option value="">— choose —</option>'+opts.map((o,i)=>'<option value="'+i+'">'+o+'</option>').join('')+'</select><button class="btn">✔ Check</button></div><div class="result"></div><details><summary>Hint</summary><div>'+c.dataset.hint+'</div></details>';
+    }else{
+      wrap.innerHTML='<div class="row"><input inputmode="decimal" placeholder="number"><span class="unit">'+(c.dataset.unit||'')+'</span><button class="btn">✔ Check</button></div><div class="result"></div><details><summary>Hint</summary><div>'+c.dataset.hint+'</div></details>';
+    }
+    c.appendChild(wrap);
+    const res=wrap.querySelector('.result'), btn=wrap.querySelector('button');
+    function check(){
+      let ok;
+      if(c.dataset.select){const v=wrap.querySelector('select').value; if(v==='')return; ok=+v===+c.dataset.answer;}
+      else{const v=parseNum(wrap.querySelector('input').value); if(isNaN(v)){res.className='result bad'; res.textContent='Type a number.'; return;} ok=Math.abs(v-+c.dataset.answer)<=+c.dataset.tol+1e-9;}
+      res.className='result '+(ok?'ok':'bad'); res.textContent=ok?'Correct! Carry on.':'Not what I expect. Open the hint and try again.';
+      state.check[ci]=ok; save(); updateDone(); finalScore();
+    }
+    btn.onclick=check; const inp=wrap.querySelector('input'); if(inp) inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+    if(state.check[ci]===true){res.className='result ok'; res.textContent='Done ✓';}
+  });
+
+  function finalScore(){
+    const n=checks.length, ok=checks.filter((c,i)=>state.check[i]===true).length;
+    const el=document.getElementById('finalScore');
+    if(ok===n){el.style.display='block'; el.innerHTML='<b>COMPLETE</b>All '+n+' checkpoints correct. Lab done; only the deliverable is left.';}
+    else if(ok>0){el.style.display='block'; el.innerHTML='<b>PROGRESS</b>'+ok+' of '+n+' checkpoints.';}
+  }
+  function updateDone(){
+    steps.forEach((s,i)=>{
+      const qs=[...s.querySelectorAll('.quiz')].map(q=>quizzes.indexOf(q));
+      const cs=[...s.querySelectorAll('.check')].map(c=>checks.indexOf(c));
+      let extra=true; const pc=[...s.querySelectorAll('#prep input')]; if(pc.length) extra=pc.every(c=>state.prep[c.dataset.k]);
+      const all=qs.every(i=>state.quiz[i]===true)&&cs.every(i=>state.check[i]===true)&&extra&&(qs.length+cs.length>0||s.querySelector('#prep'));
+      stepper.children[i].classList.toggle('done',all);
+    });
+  }
+  updateDone(); finalScore(); go(Math.min(state.step||0,steps.length-1));
+})();
+</script>
+</body>
+</html>
