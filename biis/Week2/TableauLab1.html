@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7KW3PRQVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R7KW3PRQVZ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tableau lab 1: What is in the data, and what sells? · Week 2</title>
+<meta name="description" content="Tableau lab 1 with real hotel booking data: connect, dimensions and measures, first views, revenue per segment, drill-down, SUM vs AVG, filters. Business Intelligence Information Systems, Week 2.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2F6B; --text:#26314F; --gray:#5A6385; --blue:#7895F9; --lblue:#B9C8FC; --pale:#EEF1FE;
+    --orange:#F5821F; --peach:#FDE8D4; --green:#1e7a4c; --lgreen:#E3F3EA; --red:#B23A3A; --lred:#FBE4E4;
+    --code:#141E3C; --codefg:#F4F6FF; --mono:'JetBrains Mono',Consolas,monospace;
+    --dim:#4E79A7; --mea:#59A14F;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pale);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+  a{color:var(--green)}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 16px 80px;display:flex;flex-direction:column;gap:22px}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--gray);text-transform:uppercase}
+  h1{margin:6px 0 0;font-family:Georgia,serif;font-weight:700;font-size:38px;line-height:1.1;color:var(--navy)}
+  h2{margin:0;font-family:Georgia,serif;font-size:28px;color:var(--navy)}
+  h3{margin:18px 0 6px;font-family:Georgia,serif;font-size:20px;color:var(--navy)}
+  p{margin:0 0 10px;font-size:17px}
+  .lead{font-size:19px;max-width:800px}
+  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:8px}
+  .stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 12px;background:var(--navy);color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px;opacity:.55}
+  .stepper button.active{opacity:1;outline:3px solid var(--orange)}
+  .stepper button.done{opacity:.9;background:var(--green)}
+  .stepper button span.n{font-family:var(--mono);font-weight:700;font-size:14px}
+  .stepper button span.l{font-size:13px}
+  section.step{display:none;flex-direction:column;gap:14px;background:#fff;border-radius:12px;padding:22px 22px 26px;box-shadow:0 1px 3px rgba(27,47,107,.08)}
+  section.step.active{display:flex}
+  code{font-family:var(--mono);background:var(--pale);padding:1px 5px;border-radius:4px;color:var(--navy);font-size:.95em}
+  .en{color:var(--gray);font-style:italic}
+  .box{border-radius:8px;padding:12px 16px;font-size:16px}
+  .tip{background:var(--peach)} .tip b{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .note{background:var(--pale)} .note b{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .warn{background:var(--lred)} .warn b{color:var(--red);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .btn{font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--green);color:#fff;font-weight:bold}
+  .btn.navy{background:var(--navy)} .btn.orange{background:var(--orange)}
+  .btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+  .btn:disabled{opacity:.5;cursor:default}
+  /* pills for Tableau fields */
+  .pill{display:inline-block;font-family:var(--mono);font-size:13px;padding:2px 10px;border-radius:12px;color:#fff;background:var(--dim);white-space:nowrap}
+  .pill.m{background:var(--mea)}
+  .ui{font-family:var(--mono);font-size:.92em;color:var(--navy);background:#fff;border:1px solid var(--lblue);border-radius:4px;padding:1px 6px;white-space:nowrap}
+  /* steps list */
+  ol.todo{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px;counter-reset:s}
+  ol.todo li{position:relative;padding:10px 14px 10px 50px;background:var(--pale);border-radius:8px;font-size:16px;counter-increment:s}
+  ol.todo li::before{content:counter(s);position:absolute;left:12px;top:9px;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--mono);font-weight:bold;font-size:14px;display:flex;align-items:center;justify-content:center}
+  /* checkpoint */
+  .check{border:2px dashed var(--orange);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#fff}
+  .check .title{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--orange);text-transform:uppercase}
+  .check .q{font-weight:bold;color:var(--navy);font-size:16px}
+  .check .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .check input{font:inherit;font-family:var(--mono);font-size:17px;padding:7px 10px;border:2px solid var(--navy);border-radius:8px;width:180px;background:#fff;color:var(--navy)}
+  .check select{font:inherit;font-size:16px;padding:7px 10px;border:2px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy)}
+  .check .unit{color:var(--gray);font-size:15px}
+  .check .result{font-size:15px;min-height:20px}
+  .check .result.ok{color:var(--green);font-weight:bold} .check .result.bad{color:var(--red)}
+  .check details{font-size:15px} .check summary{cursor:pointer;color:var(--navy)}
+  /* quiz */
+  .quiz{background:var(--pale);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .quiz .q{font-weight:bold;color:var(--navy)}
+  .quiz .opts{display:grid;gap:6px}
+  .quiz .opts button{text-align:left;font:inherit;font-size:16px;padding:9px 12px;border-radius:8px;border:1px solid var(--lblue);background:#fff;color:var(--navy);cursor:pointer}
+  .quiz .opts button.ok{background:var(--lgreen);border-color:var(--green)}
+  .quiz .opts button.bad{background:var(--lred);border-color:var(--red)}
+  .quiz .fb{min-height:20px;font-size:15px}
+  .quiz .fb.ok{color:var(--green);font-weight:bold} .quiz .fb.bad{color:var(--red)}
+  table.t{border-collapse:collapse;width:100%;font-size:15px}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:bold}
+  table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue);vertical-align:top} table.t td.m{font-family:var(--mono);color:var(--navy);white-space:nowrap}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .calc{font-family:var(--mono);font-size:15px;background:var(--code);color:var(--codefg);padding:12px 14px;border-radius:8px;white-space:pre-wrap;line-height:1.5}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+  .checklist label{display:flex;gap:10px;align-items:flex-start;font-size:16px;padding:8px 10px;background:var(--pale);border-radius:8px;margin-bottom:6px;cursor:pointer}
+  .checklist input{margin-top:4px;width:18px;height:18px}
+  @media (max-width:700px){.grid2{grid-template-columns:1fr} h1{font-size:30px}}
+  footer{font-size:13px;color:var(--gray);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <div class="kicker">Business Intelligence Information Systems · Week 2 · Tableau lab 1 of 5</div>
+    <h1>What is in the data, and what sells?</h1>
+    <p class="lead" style="margin-top:10px">A 70-minute lab in 7 steps (the first one you do at home, before class). You work in Tableau with the real bookings of two hotels in Portugal (119,388 bookings, 2015–2017). Every step ends with a <b>checkpoint</b>: type the number you see in Tableau and the page tells you whether you are on the right track. Your progress is saved in this browser.</p>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- ============ 0 ============ -->
+  <section class="step" data-title="Before the lab">
+    <h2>1. Before the lab: software and data <span class="en">(at home, 15 min)</span></h2>
+    <p>The lab runs on your own laptop. You need two things <b>before</b> you come to class, because the Tableau licence takes 1–2 days to be approved.</p>
+    <h3>A. Tableau</h3>
+    <div class="grid2">
+      <div class="box note"><b>RECOMMENDED · TABLEAU DESKTOP</b>Free for students for one year through <a href="https://www.tableau.com/academic/students" target="_blank" rel="noopener">Tableau for Students</a>. Apply with your university e-mail (uom.edu.gr); when approved, download Tableau Desktop and enter the key. Saves locally (.twbx) and connects to anything.</div>
+      <div class="box note"><b>ALTERNATIVE · TABLEAU PUBLIC</b>Free for everyone, no application: <a href="https://public.tableau.com/app/discover" target="_blank" rel="noopener">public.tableau.com</a>. Almost the same interface. Since 2024 it also saves locally; anything you <i>publish</i> is public. Fine for the lab, not for real company data.</div>
+    </div>
+    <h3>B. The data</h3>
+    <p>Download the data pack and unzip it in a folder you will find again, e.g. <code>Documents/Tableau</code>. It contains three files; today you only need the first one.</p>
+    <table class="t">
+      <tr><th>File</th><th>What it is</th><th>Used in</th></tr>
+      <tr><td class="m"><a href="../../mtm/Week2/data/hotel_bookings.csv" download>hotel_bookings.csv</a></td><td>119,388 bookings of a resort hotel (Algarve) and a city hotel (Lisbon), July 2015 – August 2017. One row = one booking. One of the best-known open hotel datasets <span class="en">(Antonio, de Almeida &amp; Nunes, 2019)</span>, lightly cleaned for the course.</td><td>Labs 1–5</td></tr>
+      <tr><td class="m"><a href="data/countries.csv" download>countries.csv</a></td><td>One row per country of origin: ISO code, continent, EU membership, region group.</td><td>Labs 3, 5</td></tr>
+      <tr><td class="m"><a href="data/hotel_capacity.csv" download>hotel_capacity.csv</a></td><td>Available room-nights per hotel and month. Room counts (230 city, 190 resort) are estimated from peak occupancy in the data, for teaching purposes.</td><td>Labs 4, 5</td></tr>
+    </table>
+    <h3>Data dictionary <span class="en">(hotel_bookings.csv)</span></h3>
+    <table class="t">
+      <tr><th>Column</th><th>Meaning</th></tr>
+      <tr><td class="m">Booking ID</td><td>Sequential booking number. We count bookings by counting these.</td></tr>
+      <tr><td class="m">Hotel</td><td>Resort Hotel (Algarve) or City Hotel (Lisbon)</td></tr>
+      <tr><td class="m">Canceled</td><td>Yes if the booking was cancelled, No if the guest arrived</td></tr>
+      <tr><td class="m">Arrival Date / Year / Month</td><td>Arrival date, plus year and month as separate columns</td></tr>
+      <tr><td class="m">Lead Time (days)</td><td>Days between booking and arrival</td></tr>
+      <tr><td class="m">Nights, Weekend Nights</td><td>Nights in total and at the weekend</td></tr>
+      <tr><td class="m">Adults, Children, Guests</td><td>Adults, children, total people</td></tr>
+      <tr><td class="m">Meal</td><td>Bed &amp; Breakfast, Half Board, Full Board, Self Catering</td></tr>
+      <tr><td class="m">Country</td><td>Guest's country of origin</td></tr>
+      <tr><td class="m">Market Segment</td><td>Online TA, Offline TA/TO, Direct, Groups, Corporate, Complementary, Aviation</td></tr>
+      <tr><td class="m">Distribution Channel</td><td>TA/TO (travel agents and tour operators), Direct, Corporate, GDS</td></tr>
+      <tr><td class="m">Repeated Guest</td><td>Yes if the guest has stayed before</td></tr>
+      <tr><td class="m">Deposit Type</td><td>No Deposit, Non Refund, Refundable</td></tr>
+      <tr><td class="m">Customer Type</td><td>Transient (individual), Transient-Party, Contract, Group</td></tr>
+      <tr><td class="m">Room Type</td><td>Code of the room type booked (A–L)</td></tr>
+      <tr><td class="m">ADR</td><td><b>Average Daily Rate</b>: average price per night, in euro. The basic price indicator in hotels.</td></tr>
+      <tr><td class="m">Revenue</td><td>ADR × Nights: the revenue of the booking. For cancelled bookings, the revenue that was lost.</td></tr>
+      <tr><td class="m">Special Requests</td><td>Number of special requests (high floor, twin beds…)</td></tr>
+      <tr><td class="m">Reservation Status</td><td>Check-Out, Canceled, No-Show</td></tr>
+    </table>
+    <h3>Ready?</h3>
+    <div class="checklist" id="prep">
+      <label><input type="checkbox" data-k="lic"> I applied for Tableau for Students (or installed Tableau Public)</label>
+      <label><input type="checkbox" data-k="inst"> Tableau opens on my laptop</label>
+      <label><input type="checkbox" data-k="data"> I downloaded hotel_bookings.csv and I know where it is</label>
+    </div>
+  </section>
+
+  <!-- ============ 1 ============ -->
+  <section class="step" data-title="Connect">
+    <h2>2. Connect and look around: dimensions and measures <span class="en">(10 min)</span></h2>
+    <p>Tableau does not "open" files like Excel does; it <b>connects</b> to data sources: files, databases, cloud services. The first thing you see is the <span class="ui">Data Source</span> page, where you check that it understood the columns correctly.</p>
+    <ol class="todo">
+      <li>Open Tableau. On the start screen, under <span class="ui">Connect › To a File</span>, choose <span class="ui">Text file</span> and select <code>hotel_bookings.csv</code>.</li>
+      <li>On the <span class="ui">Data Source</span> page you see the columns and the first rows. Above each column there is a type icon: <b>Abc</b> text, <b>#</b> number, <b>📅</b> date, <b>🌐</b> geographic.</li>
+      <li>Check that <span class="ui">Arrival Date</span> has a date icon and <span class="ui">Country</span> a globe. If not, click the icon and change the type.</li>
+      <li>Click <span class="ui">Sheet 1</span> at the bottom left. This is a <b>worksheet</b>, where views are built.</li>
+    </ol>
+    <h3>The most important idea in Tableau</h3>
+    <p>In the <span class="ui">Data</span> pane on the left, the fields come in two colours:</p>
+    <div class="grid2">
+      <div class="box note"><b>BLUE · DIMENSIONS</b>Categories that <b>slice</b> the data: <span class="pill">Hotel</span> <span class="pill">Country</span> <span class="pill">Market Segment</span> <span class="pill">Arrival Date</span>. They answer "per what?".</div>
+      <div class="box note"><b>GREEN · MEASURES</b>Numbers that are <b>aggregated</b>: <span class="pill m">ADR</span> <span class="pill m">Revenue</span> <span class="pill m">Nights</span> <span class="pill m">Lead Time (days)</span>. They answer "how much?". Tableau sums them (SUM) unless you say otherwise (AVG, COUNT…).</div>
+    </div>
+    <p>Every view is a combination: <b>one or more measures, per one or more dimensions</b>. "Revenue per month", "bookings per country", "average price per hotel and month".</p>
+    <div class="box tip"><b>WATCH OUT</b><span class="pill m">Booking ID</span> is a number, so Tableau lists it as a measure. Summing it is meaningless. We use it with <b>COUNT</b> to count bookings: drag it to the dimensions (above the line) or just change the aggregation to Count whenever you need it.</div>
+    <div class="check" data-answer="119388" data-tol="0" data-unit="bookings" data-hint="In Sheet 1 drag Booking ID to Rows, right-click the pill and change Measure to Count. Or look at the bottom left of the Data Source page: it shows the number of rows.">
+      <div class="title">Checkpoint 1</div>
+      <div class="q">How many bookings are in the file?</div>
+    </div>
+    <div class="quiz" data-q="You want a view of “average lead time per market segment”. Which is which?" data-opts='["Lead Time = dimension, Market Segment = measure","Lead Time = measure with AVG, Market Segment = dimension","Both are dimensions","Both are measures"]' data-ans="1" data-why="Market Segment slices (per what?), Lead Time is measured (how much?). And because we want an average, we change the aggregation from SUM to AVG."></div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="step" data-title="First view">
+    <h2>3. The first view: bookings and cancellations per hotel <span class="en">(10 min)</span></h2>
+    <p>In Tableau you build views by dragging fields onto <b>shelves</b>: <span class="ui">Columns</span> (horizontal), <span class="ui">Rows</span> (vertical) and the <span class="ui">Marks</span> card (colour, size, label).</p>
+    <ol class="todo">
+      <li>Drag <span class="pill">Hotel</span> to <span class="ui">Columns</span>.</li>
+      <li>Drag <span class="pill m">Booking ID</span> to <span class="ui">Rows</span>. Right-click the pill › <span class="ui">Measure › Count</span>. You see two bars.</li>
+      <li>Drag <span class="pill">Canceled</span> onto <span class="ui">Color</span> on the Marks card. The bars split into two colours.</li>
+      <li>Drag <span class="pill m">Booking ID</span> again onto <span class="ui">Label</span> (Count again) to show the numbers.</li>
+      <li>Double-click the <span class="ui">Sheet 1</span> tab at the bottom and rename it <code>Bookings per hotel</code>. Name every sheet you make; you will reuse them.</li>
+    </ol>
+    <div class="box tip"><b>TRY IT</b>Click <span class="ui">Show Me</span> at the top right. It shows which chart types fit the fields you have selected. Try "stacked bar" and "side-by-side bar", then come back with Ctrl+Z.</div>
+    <div class="check" data-answer="33101" data-tol="0" data-unit="cancelled bookings" data-hint="Look at the label on the “Yes” part of the City Hotel bar. If it is hidden, hover: the tooltip shows the number.">
+      <div class="title">Checkpoint 2</div>
+      <div class="q">How many City Hotel bookings were cancelled?</div>
+    </div>
+    <p>Compare with the Resort Hotel. The city hotel loses more than 4 in 10 bookings, the resort fewer than 3 in 10. Why? Keep the question; in Lab 4 we will answer it with data.</p>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="step" data-title="What sells">
+    <h2>4. What sells? Revenue per market segment <span class="en">(12 min)</span></h2>
+    <p>The question of the day. "What sells" needs a measure of money (<span class="pill m">Revenue</span>) and a dimension that describes <i>how</i> the hotel sells (<span class="pill">Market Segment</span>: online travel agents, tour operators, direct bookings, groups…). One problem: cancelled bookings have a Revenue value too, but that money never arrived. We must leave them out.</p>
+    <ol class="todo">
+      <li>New worksheet (<span class="ui">New Worksheet</span> icon at the bottom, or Ctrl+M).</li>
+      <li>Drag <span class="pill">Market Segment</span> to <span class="ui">Rows</span> and <span class="pill m">Revenue</span> to <span class="ui">Columns</span>. Horizontal bars, one per segment.</li>
+      <li>Drag <span class="pill">Canceled</span> to the <span class="ui">Filters</span> shelf. In the dialog tick only <b>No</b> › OK. The bars shrink: this is <b>realised</b> revenue.</li>
+      <li>Sort: hover over the <span class="ui">Revenue</span> axis and click the sort icon, or use the toolbar sort button. Largest at the top.</li>
+      <li>Drag <span class="pill m">Revenue</span> onto <span class="ui">Label</span>. Right-click the label pill › <span class="ui">Format</span> › Numbers › Currency (Custom), 0 decimals, prefix €.</li>
+      <li>Rename the sheet <code>Revenue per segment</code>.</li>
+    </ol>
+    <div class="check" data-answer="13714401" data-tol="2000" data-unit="€" data-hint="Canceled = No on the Filters shelf, SUM(Revenue) per Market Segment. The top bar is Online TA, about €13.7 million. If you get about €20 million you forgot the filter.">
+      <div class="title">Checkpoint 3</div>
+      <div class="q">What is the realised revenue of the Online TA segment?</div>
+    </div>
+    <div class="quiz" data-q="Why did we filter Canceled = No before answering “what sells”?" data-opts='["Because cancelled bookings have no revenue value in the file","Because the revenue of a cancelled booking was never collected, so it would inflate every segment","Because Tableau cannot sum cancelled bookings","Because the manager only cares about the resort"]' data-ans="1" data-why="The file stores ADR × Nights for every booking, cancelled or not. For cancelled bookings that is revenue the hotel lost, not revenue it earned. The filter is part of the question, not a technicality: “what sells” means “what was actually paid for”."></div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="step" data-title="Drill down">
+    <h2>5. Drill down: segment × hotel × meal <span class="en">(10 min)</span></h2>
+    <p>One dimension gives an overview; a second one explains it. We add <span class="pill">Hotel</span> and then <span class="pill">Meal</span> to see <i>which</i> product the segments buy.</p>
+    <ol class="todo">
+      <li>Duplicate the sheet: right-click the <span class="ui">Revenue per segment</span> tab › <span class="ui">Duplicate</span>. Rename the copy <code>Revenue by hotel and meal</code>.</li>
+      <li>Drag <span class="pill">Hotel</span> to <span class="ui">Rows</span>, to the <b>left</b> of Market Segment. Every segment is now split per hotel. Notice the nesting: the headers read Hotel › Market Segment.</li>
+      <li>Replace Market Segment with <span class="pill">Meal</span>: drag Meal onto the Market Segment pill on Rows (it swaps). Now: revenue per hotel and meal plan.</li>
+      <li>Click <span class="ui">Swap Rows and Columns</span> in the toolbar (Ctrl+W) and back. Decide which orientation reads better for long category names.</li>
+      <li>Sort within each hotel: click the sort icon on the Revenue axis. The sort happens inside each hotel because the pills are nested.</li>
+    </ol>
+    <div class="check" data-answer="3650857" data-tol="2000" data-unit="€" data-hint="Hotel and Meal on Rows, SUM(Revenue), Canceled = No still on the Filters shelf (it came with the duplicate). Read the Half Board bar of the Resort Hotel: about €3.65 million.">
+      <div class="title">Checkpoint 4</div>
+      <div class="q">Realised revenue of Half Board at the Resort Hotel?</div>
+    </div>
+    <p>Write down one sentence: what is the difference in the product mix between the two hotels? You will need it at the end.</p>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="step" data-title="SUM or AVG">
+    <h2>6. SUM or AVG? The price question <span class="en">(10 min)</span></h2>
+    <p>"What sells" has a second half: <i>at what price</i>. <span class="pill m">ADR</span> is the average price per night of each booking. Tableau will SUM it by default, and a sum of prices means nothing. This step is about choosing the aggregation deliberately.</p>
+    <ol class="todo">
+      <li>New worksheet. <span class="pill">Hotel</span> to <span class="ui">Columns</span>, <span class="pill m">ADR</span> to <span class="ui">Rows</span>. You get <code>SUM(ADR)</code>: two tall, meaningless bars.</li>
+      <li>Right-click the <code>SUM(ADR)</code> pill › <span class="ui">Measure › Average</span>. Now the bars show the typical price per night.</li>
+      <li>Add <span class="pill">Canceled</span> to <span class="ui">Filters</span>, keep only <b>No</b> (prices of stays that actually happened).</li>
+      <li>Drag <span class="pill m">ADR</span> to <span class="ui">Label</span>, set it to Average as well, format with 2 decimals.</li>
+      <li>Try <span class="ui">Measure › Median</span> on the same pill. Is it higher or lower than the average? What does that tell you about the distribution of prices?</li>
+      <li>Rename the sheet <code>Average price per hotel</code>.</li>
+    </ol>
+    <div class="check" data-answer="105.75" data-tol="0.2" data-unit="€ per night" data-hint="AVG(ADR), Canceled = No. City Hotel ≈ 105.75 €, Resort ≈ 90.79 €. If you see millions you still have SUM; if you see 104–105 you forgot the filter on cancellations.">
+      <div class="title">Checkpoint 5</div>
+      <div class="q">Average ADR of the City Hotel (non-cancelled bookings)?</div>
+    </div>
+    <div class="quiz" data-q="The resort has a lower average price but longer stays (4.1 vs 2.9 nights). Which view answers “which hotel earns more per booking?”" data-opts='["AVG(ADR) per hotel","SUM(ADR) per hotel","AVG(Revenue) per hotel","COUNT(Booking ID) per hotel"]' data-ans="2" data-why="Revenue = ADR × Nights is already the money per booking; its average per hotel answers the question directly. ADR alone ignores the length of stay."></div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="step" data-title="Filters">
+    <h2>7. Filters are questions: where do the guests come from? <span class="en">(10 min)</span></h2>
+    <p>A filter is not a technical setting; it is a way of asking a narrower question. Here we let the <i>user</i> of the view ask it, with a filter card.</p>
+    <ol class="todo">
+      <li>New worksheet. <span class="pill">Country</span> to <span class="ui">Rows</span>, <span class="pill m">Booking ID</span> (Count) to <span class="ui">Columns</span>. Sort descending. 177 countries: too many.</li>
+      <li>Drag <span class="pill">Country</span> to <span class="ui">Filters</span> › tab <span class="ui">Top</span> › By field › Top 10 by Count of Booking ID › OK. Ten bars remain.</li>
+      <li>Add <span class="pill">Canceled</span> to <span class="ui">Filters</span>, keep <b>No</b>. Then right-click that pill › <span class="ui">Show Filter</span>. A filter card appears on the right: tick Yes, untick No, and watch the view change. This is how a dashboard user will explore.</li>
+      <li>Add <span class="pill">Hotel</span> to <span class="ui">Color</span>. Which countries prefer the resort, which the city?</li>
+      <li>Rename the sheet <code>Top 10 countries</code>.</li>
+    </ol>
+    <div class="check" data-answer="9675" data-tol="0" data-unit="bookings" data-hint="Top 10 countries by Count of Booking ID, filter card Canceled = No only. The United Kingdom is second after Portugal, with 9,675 non-cancelled bookings (12,128 if you count cancellations too).">
+      <div class="title">Checkpoint 6</div>
+      <div class="q">How many non-cancelled bookings came from the United Kingdom?</div>
+    </div>
+    <div class="box tip"><b>ONE MORE</b>Select the Portugal bar, click <span class="ui">Exclude</span>. Portugal is the domestic market and dwarfs everything else; without it the foreign markets become comparable. Then remove the exclusion (drag the pill off the Filters shelf): hiding the biggest category is a decision you must state, not a default.</div>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="step" data-title="Before you leave">
+    <h2>8. Before you leave, and homework <span class="en">(8 min)</span></h2>
+    <p>You have five named sheets. Save your work and hand in the small deliverable before leaving the room; the homework is one paragraph.</p>
+    <ol class="todo">
+      <li><span class="ui">File › Save As</span> › <code>Surname_Lab1.twbx</code> (packaged workbook, includes the data). In Tableau Public: <span class="ui">File › Save</span> locally, or <span class="ui">Save to Tableau Public</span>.</li>
+      <li>Open the sheet <span class="ui">Revenue per segment</span> › <span class="ui">Worksheet › Export › Image</span> › save as PNG.</li>
+      <li>Upload the .twbx and the PNG to eClass before you leave.</li>
+    </ol>
+    <div class="box note"><b>HOMEWORK (BY NEXT LECTURE, ~15 MIN)</b>
+      One paragraph in eClass, three sentences: <b>(1)</b> one finding from today's views that a hotel manager would want to know, with the number; <b>(2)</b> the difference in the product mix between the two hotels (your sentence from step 5); <b>(3)</b> one question about the data that you could not answer yet with what you know.
+    </div>
+    <div class="check" data-select='["3","4","5","6 or more"]' data-answer="2" data-hint="Bookings per hotel, Revenue per segment, Revenue by hotel and meal, Average price per hotel, Top 10 countries.">
+      <div class="title">Checkpoint 7</div>
+      <div class="q">How many named sheets does your workbook have?</div>
+    </div>
+    <div class="quiz" data-q="A manager looks at “Revenue per segment” without the Canceled filter and says: “Online TA brings us €20 million.” What do you tell her?" data-opts='["Correct, that is what the file says","About €13.7 million was actually earned; the rest is the revenue of bookings that were cancelled","Tableau double-counts online bookings","Online TA is not a real segment"]' data-ans="1" data-why="The Revenue column holds ADR × Nights for every booking. Cancelled bookings never paid, so the figure without the filter mixes earned and lost revenue. The first question to any number in a dashboard is: what was filtered, and what was not?"></div>
+    <div class="box note" id="finalScore" style="display:none"></div>
+    <h3>Next lecture</h3>
+    <p>Lab 2: how do I see it? Encoding with colour, size and shape; scatter plots of price against lead time; highlight tables. Bring your .twbx; we build on it.</p>
+  </section>
+
+  <div class="nav">
+    <button class="btn outline" id="prevBtn">← Previous</button>
+    <button class="btn navy" id="nextBtn">Next →</button>
+  </div>
+  <footer>Evangelos Kalampokis · Information Systems Lab · University of Macedonia · Data: Antonio, de Almeida &amp; Nunes (2019), Hotel booking demand datasets, <i>Data in Brief</i> 22, 41–49 (CC BY 4.0).</footer>
+</div>
+<script>
+(function(){
+  const KEY='biis-week2-tableau1';
+  let state={step:0,quiz:{},check:{},prep:{}};
+  try{const s=localStorage.getItem(KEY); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  const steps=[...document.querySelectorAll('section.step')];
+  const stepper=document.getElementById('stepper');
+  steps.forEach((s,i)=>{const b=document.createElement('button'); b.innerHTML='<span class="n">'+(i+1)+'</span><span class="l">'+s.dataset.title+'</span>'; b.onclick=()=>go(i); stepper.appendChild(b);});
+  function go(i){state.step=i; save(); steps.forEach((s,j)=>s.classList.toggle('active',j===i)); [...stepper.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+    document.getElementById('prevBtn').disabled=i===0; document.getElementById('nextBtn').disabled=i===steps.length-1; window.scrollTo({top:0,behavior:'smooth'});}
+  document.getElementById('prevBtn').onclick=()=>go(Math.max(0,state.step-1));
+  document.getElementById('nextBtn').onclick=()=>go(Math.min(steps.length-1,state.step+1));
+
+  // prep checklist
+  document.querySelectorAll('#prep input').forEach(c=>{c.checked=!!state.prep[c.dataset.k]; c.onchange=()=>{state.prep[c.dataset.k]=c.checked; save(); updateDone();};});
+
+  // quizzes
+  const quizzes=[...document.querySelectorAll('.quiz')];
+  quizzes.forEach((q,qi)=>{
+    const opts=JSON.parse(q.dataset.opts), ans=+q.dataset.ans;
+    q.innerHTML='<div class="q">'+q.dataset.q+'</div><div class="opts"></div><div class="fb"></div>';
+    const box=q.querySelector('.opts'), fb=q.querySelector('.fb');
+    opts.forEach((o,i)=>{const b=document.createElement('button'); b.textContent=o;
+      b.onclick=()=>{[...box.children].forEach(c=>c.classList.remove('ok','bad'));
+        if(i===ans){b.classList.add('ok'); fb.className='fb ok'; fb.textContent='Correct! '+q.dataset.why; state.quiz[qi]=true;}
+        else{b.classList.add('bad'); fb.className='fb bad'; fb.textContent='Not quite. '+q.dataset.why; state.quiz[qi]=false;}
+        save(); updateDone(); finalScore();};
+      box.appendChild(b);});
+    if(state.quiz[qi]===true){box.children[ans].classList.add('ok'); fb.className='fb ok'; fb.textContent='Correct! '+q.dataset.why;}
+  });
+
+  // numeric / select checkpoints
+  const checks=[...document.querySelectorAll('.check')];
+  function parseNum(s){s=String(s).trim().replace(/\s/g,'').replace(/%|€/g,''); if(/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(s)) s=s.replace(/,/g,''); else if(/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) s=s.replace(/\./g,'').replace(',','.'); else s=s.replace(',','.'); return parseFloat(s);}
+  checks.forEach((c,ci)=>{
+    const wrap=document.createElement('div');
+    if(c.dataset.select){
+      const opts=JSON.parse(c.dataset.select);
+      wrap.innerHTML='<div class="row"><select><option value="">— choose —</option>'+opts.map((o,i)=>'<option value="'+i+'">'+o+'</option>').join('')+'</select><button class="btn">✔ Check</button></div><div class="result"></div><details><summary>Hint</summary><div>'+c.dataset.hint+'</div></details>';
+    }else{
+      wrap.innerHTML='<div class="row"><input inputmode="decimal" placeholder="number"><span class="unit">'+(c.dataset.unit||'')+'</span><button class="btn">✔ Check</button></div><div class="result"></div><details><summary>Hint</summary><div>'+c.dataset.hint+'</div></details>';
+    }
+    c.appendChild(wrap);
+    const res=wrap.querySelector('.result'), btn=wrap.querySelector('button');
+    function check(){
+      let ok;
+      if(c.dataset.select){const v=wrap.querySelector('select').value; if(v==='')return; ok=+v===+c.dataset.answer;}
+      else{const v=parseNum(wrap.querySelector('input').value); if(isNaN(v)){res.className='result bad'; res.textContent='Type a number.'; return;} ok=Math.abs(v-+c.dataset.answer)<=+c.dataset.tol+1e-9;}
+      res.className='result '+(ok?'ok':'bad'); res.textContent=ok?'Correct! Carry on.':'Not what I expect. Open the hint and try again.';
+      state.check[ci]=ok; save(); updateDone(); finalScore();
+    }
+    btn.onclick=check; const inp=wrap.querySelector('input'); if(inp) inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+    if(state.check[ci]===true){res.className='result ok'; res.textContent='Done ✓';}
+  });
+
+  function finalScore(){
+    const n=checks.length, ok=checks.filter((c,i)=>state.check[i]===true).length;
+    const el=document.getElementById('finalScore');
+    if(ok===n){el.style.display='block'; el.innerHTML='<b>COMPLETE</b>All '+n+' checkpoints correct. Lab done; only the deliverable is left.';}
+    else if(ok>0){el.style.display='block'; el.innerHTML='<b>PROGRESS</b>'+ok+' of '+n+' checkpoints.';}
+  }
+  function updateDone(){
+    steps.forEach((s,i)=>{
+      const qs=[...s.querySelectorAll('.quiz')].map(q=>quizzes.indexOf(q));
+      const cs=[...s.querySelectorAll('.check')].map(c=>checks.indexOf(c));
+      let extra=true; if(s.querySelector('#prep')) extra=['lic','inst','data'].every(k=>state.prep[k]);
+      const all=qs.every(i=>state.quiz[i]===true)&&cs.every(i=>state.check[i]===true)&&extra&&(qs.length+cs.length>0||s.querySelector('#prep'));
+      stepper.children[i].classList.toggle('done',all);
+    });
+  }
+  updateDone(); finalScore(); go(Math.min(state.step||0,steps.length-1));
+})();
+</script>
+</body>
+</html>
