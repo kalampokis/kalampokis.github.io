@@ -214,22 +214,33 @@
       <li><div>Περίμενε μέχρι να εμφανιστεί η έξοδος (2–4 λεπτά). Στο τέλος γράφει τις διευθύνσεις του καταστήματος. Η ίδια η εγκατάσταση του PrestaShop συνεχίζει στο παρασκήνιο για άλλα <b>5–10 λεπτά</b>.</div></li>
     </ol>
     <div class="codeblock" id="script"><button class="copy" data-copy="script">Αντιγραφή</button><span class="hl">ADMIN_MAIL="onoma@uom.edu.gr"        # το email με το οποίο θα μπαίνετε στο back office
-ADMIN_PASSWD="Allaxte-Me-2026"       # τουλάχιστον 8 χαρακτήρες, χωρίς κενά και χωρίς ' ή "</span>
+ADMIN_PASSWD="Allaxte-Me-2026"       # τουλάχιστον 8 χαρακτήρες, χωρίς κενά και χωρίς ' ή "
+PUBLIC_IP=""                         # αφήστε το κενό· συμπληρώστε το μόνο αν το script σας ζητήσει</span>
 set -e
 export DEBIAN_FRONTEND=noninteractive
-echo ">>> 1/4 Εγκατάσταση Docker"
-apt-get update -y
-apt-get install -y docker.io docker-compose-v2 curl
+echo "&gt;&gt;&gt; 1/4 Εγκατάσταση Docker"
+apt-get -o DPkg::Lock::Timeout=600 update -y
+apt-get -o DPkg::Lock::Timeout=600 install -y docker.io docker-compose-v2 curl
 systemctl enable --now docker
-echo ">>> 2/4 Εύρεση δημόσιας IP"
-IP=$(curl -s -m 5 -H Metadata:true "http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/publicIpAddress?api-version=2021-02-01&amp;format=text" || true)
-if [ -z "$IP" ]; then IP=$(curl -s -m 5 -H "Metadata-Flavor: Google" "http://169.254.169.254/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" || true); fi
-if [ -z "$IP" ]; then IP=$(curl -s -m 5 https://ifconfig.me || true); fi
-IP=${IP:-localhost}
+echo "&gt;&gt;&gt; 2/4 Εύρεση δημόσιας IP"
+valid_ip() {
+  case "$1" in ""|*[!0-9.]*) return 1 ;; esac
+  printf '%s' "$1" | grep -Eq '^[0-9]{1,3}(\.[0-9]{1,3}){3}$'
+}
+IP="$PUBLIC_IP"
+if ! valid_ip "$IP"; then IP=$(curl -sf -m 5 -H Metadata:true "http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/publicIpAddress?api-version=2021-02-01&amp;format=text" || true); fi
+if ! valid_ip "$IP"; then IP=$(curl -sf -m 5 -H "Metadata-Flavor: Google" "http://169.254.169.254/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" || true); fi
+if ! valid_ip "$IP"; then IP=$(curl -sf -m 5 https://api.ipify.org || true); fi
+if ! valid_ip "$IP"; then IP=$(curl -sf -m 5 https://ifconfig.me || true); fi
+if ! valid_ip "$IP"; then
+  echo "ΣΦΑΛΜΑ: Δεν βρέθηκε αυτόματα η δημόσια IP του VM."
+  echo "Αντιγράψτε την IP από τη σελίδα Overview του VM, γράψτε την στη γραμμή PUBLIC_IP=\"...\" στην αρχή του script και τρέξτε το ξανά."
+  exit 1
+fi
 echo "    IP: $IP"
-echo ">>> 3/4 Αρχείο compose"
+echo "&gt;&gt;&gt; 3/4 Αρχείο compose"
 mkdir -p /opt/eshop &amp;&amp; cd /opt/eshop
-cat > compose.yaml &lt;&lt;EOF
+cat &gt; compose.yaml &lt;&lt;EOF
 services:
   db:
     image: mariadb:11.4
@@ -263,7 +274,7 @@ volumes:
   dbdata:
   psdata:
 EOF
-echo ">>> 4/4 Εκκίνηση (το κατέβασμα και η εγκατάσταση παίρνουν 5-10 λεπτά)"
+echo "&gt;&gt;&gt; 4/4 Εκκίνηση (το κατέβασμα και η εγκατάσταση παίρνουν 5-10 λεπτά)"
 docker compose up -d
 echo "=================================================================="
 echo "  Κατάστημα (front office):  http://$IP"
