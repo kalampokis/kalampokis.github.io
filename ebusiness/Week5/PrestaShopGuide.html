@@ -225,6 +225,7 @@ echo ">>> 2/4 Εύρεση δημόσιας IP"
 IP=$(curl -s -m 5 -H Metadata:true "http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipAddress/0/publicIpAddress?api-version=2021-02-01&amp;format=text" || true)
 if [ -z "$IP" ]; then IP=$(curl -s -m 5 -H "Metadata-Flavor: Google" "http://169.254.169.254/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip" || true); fi
 if [ -z "$IP" ]; then IP=$(curl -s -m 5 https://ifconfig.me || true); fi
+IP=${IP:-localhost}
 echo "    IP: $IP"
 echo ">>> 3/4 Αρχείο compose"
 mkdir -p /opt/eshop &amp;&amp; cd /opt/eshop
@@ -251,11 +252,11 @@ services:
       DB_PASSWD: prestashop
       DB_NAME: prestashop
       PS_INSTALL_AUTO: 1
-      PS_DOMAIN: ${IP:-localhost}
+      PS_DOMAIN: "$IP"
       PS_COUNTRY: GR
       PS_LANGUAGE: en
-      ADMIN_MAIL: $ADMIN_MAIL
-      ADMIN_PASSWD: $ADMIN_PASSWD
+      ADMIN_MAIL: "$ADMIN_MAIL"
+      ADMIN_PASSWD: "$ADMIN_PASSWD"
     volumes:
       - psdata:/var/www/html
 volumes:
