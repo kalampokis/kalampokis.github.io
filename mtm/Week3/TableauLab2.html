@@ -85,6 +85,9 @@
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .calc{font-family:var(--mono);font-size:15px;background:var(--code);color:var(--codefg);padding:12px 14px;border-radius:8px;white-space:pre-wrap;line-height:1.5}
   .calcwrap{position:relative} .calcwrap .cp{position:absolute;top:6px;right:6px;font:inherit;font-size:12px;padding:3px 9px;border:0;border-radius:5px;background:var(--blue);color:#fff;cursor:pointer}
+  .shot{display:block;max-width:100%;border:1px solid var(--lblue);border-radius:8px;box-shadow:0 1px 4px rgba(27,47,107,.12)}
+  figure.fig{margin:6px 0 10px;display:flex;flex-direction:column;gap:6px} figure.fig figcaption{font-size:13px;color:var(--gray)} figure.fig.half{max-width:520px}
+  .figrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start} @media (max-width:700px){.figrow{grid-template-columns:1fr}}
   .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
   .checklist label{display:flex;gap:10px;align-items:flex-start;font-size:16px;padding:8px 10px;background:var(--pale);border-radius:8px;margin-bottom:6px;cursor:pointer}
   .checklist input{margin-top:4px;width:18px;height:18px}
@@ -143,6 +146,7 @@
       <li>Δεύτερο είδος: σύρε το <span class="pill m">Lead Time (days)</span> στα Filters › <span class="ui">All values</span> › βάλε εύρος 0–30. Τα μετρούμενα μεγέθη φιλτράρονται με <b>εύρος</b>, οι διαστάσεις με <b>λίστα</b>.</li>
       <li>Τρίτο είδος, που το είδαμε την προηγούμενη φορά: <span class="pill">Country</span> στα Filters › καρτέλα <span class="ui">Top</span> › Top 10 by Count. Βγάλε τώρα όλα τα φίλτρα (σύρε τα pills έξω από το ράφι) εκτός από το Country = Portugal.</li>
     </ol>
+    <div class="figrow"><figure class="fig"><img class="shot" src="img/02_filter_dialog.png" alt="Το παράθυρο του φίλτρου: ψάξε «Portugal» και τσέκαρέ το."><figcaption>Το παράθυρο του φίλτρου: ψάξε «Portugal» και τσέκαρέ το.</figcaption></figure><figure class="fig"><img class="shot" src="img/03_pill_menu.png" alt="Το μενού του pill στο ράφι Filters: εδώ είναι το Show Filter και το Apply to Worksheets."><figcaption>Το μενού του pill στο ράφι Filters: εδώ είναι το Show Filter και το Apply to Worksheets.</figcaption></figure></div>
     <div class="check" data-answer="48589" data-tol="0" data-unit="κρατήσεις" data-hint="Country = Portugal, και τα δύο ξενοδοχεία, χωρίς άλλο φίλτρο. Πρόσθεσε τις δύο μπάρες ή βγάλε προσωρινά το Hotel από το Columns.">
       <div class="title">Checkpoint 1</div>
       <div class="q">Με φίλτρο Country = Portugal, πόσες κρατήσεις βλέπεις συνολικά;</div>
@@ -153,6 +157,7 @@
       <li>Στο βελάκι της κάρτας διάλεξε τη μορφή: <span class="ui">Single Value (dropdown)</span> για μία χώρα, <span class="ui">Multiple Values (list)</span> για πολλές. Δοκίμασε και τα δύο. Διάλεξε «United Kingdom».</li>
       <li>Το ίδιο με το <span class="pill">Hotel</span>: σύρε το στα Filters, Show Filter, Single Value (list). Θα το χρειαστούμε σε όλο το dashboard.</li>
     </ol>
+    <div class="figrow"><figure class="fig"><img class="shot" src="img/05_filter_card.png" alt="Μετά το Show Filter: η κάρτα φίλτρου εμφανίζεται δεξιά από το γράφημα."><figcaption>Μετά το Show Filter: η κάρτα φίλτρου εμφανίζεται δεξιά από το γράφημα.</figcaption></figure><figure class="fig"><img class="shot" src="img/06_filter_card_menu.png" alt="Το μενού της κάρτας: μορφή (Single Value dropdown κ.λπ.) και, ξανά, Apply to Worksheets."><figcaption>Το μενού της κάρτας: μορφή (Single Value dropdown κ.λπ.) και, ξανά, Apply to Worksheets.</figcaption></figure></div>
     <div class="check" data-answer="2453" data-tol="0" data-unit="ακυρώσεις" data-hint="Κάρτα Country = United Kingdom, Canceled στο Color (ή στο Filters = Yes). Από τις 12.128 βρετανικές κρατήσεις, 2.453 ακυρώθηκαν (20,2%).">
       <div class="title">Checkpoint 2</div>
       <div class="q">Διάλεξε «United Kingdom» στην κάρτα. Πόσες από αυτές τις κρατήσεις ακυρώθηκαν;</div>
@@ -165,6 +170,7 @@
       <li>Βελάκι της κάρτας φίλτρου › <span class="ui">Apply to Worksheets › All Using This Data Source</span>. Ξαναδιάλεξε «Resort Hotel»: τώρα αλλάζουν όλα. Η επιλογή <span class="ui">Selected Worksheets…</span> σου επιτρέπει να εξαιρέσεις κάποιο φύλλο (π.χ. έναν χάρτη που θέλεις πάντα ολόκληρο).</li>
       <li>Έλεγχος: στο ράφι Filters κάθε φύλλου που «ακούει» την κάρτα εμφανίζεται πλέον το pill Hotel με ένα μικρό εικονίδιο βάσης δεδομένων. Αν δεν το βλέπεις σε κάποιο φύλλο, εκείνο δεν φιλτράρεται.</li>
     </ol>
+    <figure class="fig half"><img class="shot" src="img/04_apply_to_worksheets.png" alt="Apply to Worksheets › All Using this Data Source: από εδώ και πέρα το φίλτρο ισχύει σε όλα τα φύλλα."><figcaption>Apply to Worksheets › All Using this Data Source: από εδώ και πέρα το φίλτρο ισχύει σε όλα τα φύλλα.</figcaption></figure>
     <div class="box note"><b>ΤΑ ΤΡΙΑ ΕΠΙΠΕΔΑ, ΜΕ ΜΙΑ ΜΑΤΙΑ</b>
       <b>Φίλτρο φύλλου</b>: το ορίζεις εσύ, κρυφό, ισχύει σε ένα φύλλο. &nbsp;·&nbsp; <b>Κάρτα φίλτρου</b>: το ίδιο φίλτρο, ορατό, το αλλάζει ο χρήστης· πάλι ένα φύλλο, εκτός αν το επεκτείνεις. &nbsp;·&nbsp; <b>Φίλτρο dashboard</b>: κάρτα με Apply to Worksheets › All, ή <b>ενέργεια φίλτρου</b> (κλικ σε ένα γράφημα φιλτράρει τα άλλα, στο βήμα 7).
     </div>
@@ -188,6 +194,8 @@
       <li>Νέο φύλλο <code>Πληρότητα ανά μήνα</code>: <span class="pill">Arrival Date</span> στο Columns ως YEAR και MONTH (discrete, και τα δύο), <span class="pill m">Occupancy</span> στο Rows. Format › Percentage, 1 δεκαδικό. Σύρε το <span class="pill">Hotel</span> στα <span class="ui">Filters</span> και κράτα μόνο το Resort Hotel.</li>
       <li>Πρόσθεσε το <span class="pill m">RevPAR</span> στο Rows (δεύτερο γράφημα από κάτω) και κούνησε το slider Rooms. Όλα ξαναϋπολογίζονται.</li>
     </ol>
+    <div class="figrow"><figure class="fig"><img class="shot" src="img/07_data_pane_menu.png" alt="Το μενού του πάνελ Data: Create Calculated Field και Create Parameter."><figcaption>Το μενού του πάνελ Data: Create Calculated Field και Create Parameter.</figcaption></figure><figure class="fig"><img class="shot" src="img/08_create_parameter.png" alt="Η παράμετρος Rooms: Integer, τρέχουσα τιμή 200, εύρος 50–600 με βήμα 10."><figcaption>Η παράμετρος Rooms: Integer, τρέχουσα τιμή 200, εύρος 50–600 με βήμα 10.</figcaption></figure></div>
+    <div class="figrow"><figure class="fig"><img class="shot" src="img/10_calc_occupancy.png" alt="Το υπολογιζόμενο πεδίο Occupancy, γραμμένο σε δύο γραμμές. Η παράμετρος [Rooms] χρησιμοποιείται σαν πεδίο. «The calculation is valid» = σωστή σύνταξη."><figcaption>Το υπολογιζόμενο πεδίο Occupancy, γραμμένο σε δύο γραμμές. Η παράμετρος [Rooms] χρησιμοποιείται σαν πεδίο. «The calculation is valid» = σωστή σύνταξη.</figcaption></figure><figure class="fig"><img class="shot" src="img/11_parameter_card.png" alt="Μετά το Show Parameter: η κάρτα Rooms δεξιά, κάτω από το φίλτρο Country."><figcaption>Μετά το Show Parameter: η κάρτα Rooms δεξιά, κάτω από το φίλτρο Country.</figcaption></figure></div>
     <div class="box warn"><b>ΠΡΟΣΕΓΓΙΣΗ, ΟΧΙ ΑΚΡΙΒΕΙΑ</b>Μετράμε τις διανυκτερεύσεις στον μήνα <i>άφιξης</i>, ενώ μια διαμονή 5 νυχτών στις 29 Αυγούστου «χύνεται» στον Σεπτέμβριο. Για ένα μάθημα η προσέγγιση αρκεί· σε πραγματικό PMS η πληρότητα υπολογίζεται ανά νύχτα. Να το πεις όταν παρουσιάσεις το dashboard: ο αναλυτής που ξέρει τα όρια των αριθμών του είναι πιο αξιόπιστος.</div>
     <div class="check" data-answer="91.5" data-tol="0.3" data-unit="%" data-hint="Resort Hotel, Αύγουστος 2016, Rooms = 200. Αν βλέπεις ~75%, δεν έχεις το MONTH στο Columns και βλέπεις όλη την περίοδο. Αν βλέπεις πάνω από 100%, έχεις ξεχάσει το φίλτρο Hotel και μετράς και τα δύο ξενοδοχεία με 200 δωμάτια.">
       <div class="title">Checkpoint 3</div>
@@ -239,9 +247,10 @@ END</div>
       <li>Υπολογιζόμενο πεδίο <code>Net Revenue</code>:
         <div class="calc">[Revenue Kept] * (1 - IF [Market Segment] = 'Online TA' OR [Market Segment] = 'Offline TA/TO' THEN [Commission] ELSE 0 END)</div>
         Διάβασέ το: «τα έσοδα που μπήκαν, επί (1 μείον προμήθεια) αν το κανάλι είναι τουριστικό γραφείο ή OTA, αλλιώς επί 1».</li>
-      <li>Νέο φύλλο <code>Έσοδα ανά κανάλι</code>: <span class="pill">Market Segment</span> στο Rows. Σύρε το <span class="pill m">Revenue Kept</span> στο Columns και μετά το <span class="pill m">Net Revenue</span> <b>πάνω στον ίδιο άξονα</b> μέχρι να εμφανιστούν δύο διάφανοι κύλινδροι· άφησέ το. Το Tableau φτιάχνει <span class="ui">Measure Names</span> / <span class="ui">Measure Values</span>: δύο μπάρες ανά κανάλι, μικτά και καθαρά.</li>
+      <li>Νέο φύλλο <code>Έσοδα ανά κανάλι</code>: <span class="pill">Market Segment</span> στο Rows. Σύρε το πεδίο <span class="pill m">Measure Values</span> (το τελευταίο στη λίστα των μετρούμενων μεγεθών) στο <span class="ui">Columns</span>. Εμφανίζεται μια κάρτα <span class="ui">Measure Values</span> με όλα τα μετρούμενα μεγέθη· σύρε έξω από την κάρτα όλα εκτός από <span class="pill m">Revenue Kept</span> και <span class="pill m">Net Revenue</span>. Δύο μπάρες ανά κανάλι, μικτά και καθαρά.</li>
       <li>Sort descending. Κούνησε την παράμετρο Commission από 10% σε 30% και δες πόσο αλλάζει η εικόνα των OTA.</li>
     </ol>
+    <figure class="fig half"><img class="shot" src="img/12_measure_values.png" alt="Η κάρτα Measure Values μετά το σύρσιμο: περιέχει όλα τα μετρούμενα μεγέθη· κρατάς μόνο τα δύο που θέλεις."><figcaption>Η κάρτα Measure Values μετά το σύρσιμο: περιέχει όλα τα μετρούμενα μεγέθη· κρατάς μόνο τα δύο που θέλεις.</figcaption></figure>
     <div class="check" data-answer="11.25" data-tol="0.05" data-unit="εκατ. €" data-hint="Commission = 18%. Η μπάρα Net Revenue του Online TA. Τα μικτά είναι 13,71 εκατ. Γράψε σε εκατομμύρια με δύο δεκαδικά, π.χ. 9.87.">
       <div class="title">Checkpoint 7</div>
       <div class="q">Με προμήθεια 18%, ποια είναι τα καθαρά έσοδα από Online TA;</div>

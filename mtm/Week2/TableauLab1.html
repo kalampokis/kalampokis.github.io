@@ -84,6 +84,9 @@
   table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue);vertical-align:top} table.t td.m{font-family:var(--mono);color:var(--navy);white-space:nowrap}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .calc{font-family:var(--mono);font-size:15px;background:var(--code);color:var(--codefg);padding:12px 14px;border-radius:8px;white-space:pre-wrap;line-height:1.5}
+  .shot{display:block;max-width:100%;border:1px solid var(--lblue);border-radius:8px;box-shadow:0 1px 4px rgba(27,47,107,.12)}
+  figure.fig{margin:6px 0 10px;display:flex;flex-direction:column;gap:6px} figure.fig figcaption{font-size:13px;color:var(--gray)} figure.fig.half{max-width:520px}
+  .figrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start} @media (max-width:700px){.figrow{grid-template-columns:1fr}}
   .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
   .checklist label{display:flex;gap:10px;align-items:flex-start;font-size:16px;padding:8px 10px;background:var(--pale);border-radius:8px;margin-bottom:6px;cursor:pointer}
   .checklist input{margin-top:4px;width:18px;height:18px}
@@ -170,6 +173,7 @@
       <li>Έλεγξε ότι το <span class="ui">Arrival Date</span> έχει εικονίδιο ημερομηνίας και το <span class="ui">Country</span> υδρόγειο. Αν όχι, κάνε κλικ στο εικονίδιο και άλλαξε τον τύπο.</li>
       <li>Κάνε κλικ στο <span class="ui">Sheet 1</span> κάτω αριστερά. Αυτό είναι το <b>φύλλο εργασίας</b> <span class="en">(worksheet)</span>, όπου φτιάχνονται τα γραφήματα.</li>
     </ol>
+    <figure class="fig"><img class="shot" src="../Week3/img/01_datasource.png" alt="Η σελίδα Data Source μετά τη σύνδεση με το hotel_bookings.csv: πάνω το αρχείο, κάτω οι στήλες με τον τύπο τους."><figcaption>Η σελίδα Data Source μετά τη σύνδεση με το hotel_bookings.csv: πάνω το αρχείο, κάτω οι στήλες με τον τύπο τους.</figcaption></figure>
     <h3>Το πιο σημαντικό πράγμα σε όλο το Tableau</h3>
     <p>Στο αριστερό πάνελ <span class="ui">Data</span> τα πεδία χωρίζονται σε δύο χρώματα:</p>
     <div class="grid2">
@@ -240,6 +244,7 @@
       <li>Νέο φύλλο για το ίδιο ερώτημα σε μπάρες: <span class="pill">Country</span> στο Rows, <span class="pill m">Booking ID</span> Count στο Columns. Πάτησε το κουμπί <span class="ui">Sort descending</span> στη γραμμή εργαλείων.</li>
       <li>Σύρε το <span class="pill">Country</span> στο <span class="ui">Filters</span> › καρτέλα <span class="ui">Top</span> › By field › Top 10 by Count of Booking ID. Ονόμασέ το <code>Top 10 αγορές</code>.</li>
     </ol>
+    <figure class="fig half"><img class="shot" src="../Week3/img/02_filter_dialog.png" alt="Το παράθυρο φίλτρου (εδώ για το Country): η καρτέλα Top είναι στο «Top/Bottom»."><figcaption>Το παράθυρο φίλτρου (εδώ για το Country): η καρτέλα Top είναι στο «Top/Bottom».</figcaption></figure>
     <div class="box tip"><b>ΑΝ Ο ΧΑΡΤΗΣ ΔΕΝ ΒΓΑΙΝΕΙ</b>Κάνε δεξί κλικ στο Country στο πάνελ Data › <span class="ui">Geographic Role › Country/Region</span>. Αν κάτω δεξιά λέει «X unknown», κλικ εκεί: η τιμή «Unknown» δεν είναι χώρα, αγνόησέ την.</div>
     <div class="check" data-select='["Πορτογαλία","Ηνωμένο Βασίλειο","Γαλλία","Ισπανία","Γερμανία"]' data-answer="2" data-hint="Στο φύλλο Top 10 αγορές, ταξινομημένο φθίνουσα: Portugal, United Kingdom, France, Spain, Germany…">
       <div class="title">Checkpoint 5</div>
@@ -289,6 +294,7 @@
       <li>Αντέγραψε το φύλλο (δεξί κλικ στην καρτέλα › Duplicate) και αντικατέστησε το Market Segment με το <span class="pill">Deposit Type</span>. Μετά με το <span class="pill">Repeated Guest</span>. Μετά με το <span class="pill">Country</span> (Top 10).</li>
       <li>Ονόμασε τα φύλλα <code>Ακυρώσεις ανά τμήμα</code>, <code>Ακυρώσεις ανά προκαταβολή</code> κ.λπ.</li>
     </ol>
+    <div class="figrow"><figure class="fig"><img class="shot" src="../Week3/img/07_data_pane_menu.png" alt="Πάνελ Data › βελάκι › Create Calculated Field."><figcaption>Πάνελ Data › βελάκι › Create Calculated Field.</figcaption></figure><figure class="fig"><img class="shot" src="../Week3/img/09_calc_cancellation.png" alt="Ο επεξεργαστής τύπων με το Cancellation Rate. Κάτω αριστερά: «The calculation is valid»."><figcaption>Ο επεξεργαστής τύπων με το Cancellation Rate. Κάτω αριστερά: «The calculation is valid».</figcaption></figure></div>
     <div class="check" data-answer="61.1" data-tol="0.2" data-unit="%" data-hint="Στο φύλλο Ακυρώσεις ανά τμήμα, η γραμμή Groups. Αν βλέπεις 0,611 αντί για 61,1%, άλλαξε τη μορφή σε Percentage.">
       <div class="title">Checkpoint 9</div>
       <div class="q">Ποιο είναι το ποσοστό ακυρώσεων για το τμήμα Groups;</div>
