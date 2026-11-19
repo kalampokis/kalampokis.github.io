@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7KW3PRQVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R7KW3PRQVZ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pandas: συγκεντρωτικά με groupby · Εβδομάδες 7–8</title>
+<meta name="description" content="Διαδραστικός οδηγός μάθησης: groupby, agg, ποσοστά με boolean, pivot_table, ημερομηνίες ανά μήνα. Προγραμματισμός για Επιχειρηματική Αναλυτική, Εβδομάδες 7–8.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2F6B; --text:#26314F; --gray:#5A6385; --blue:#7895F9; --lblue:#B9C8FC; --pale:#EEF1FE;
+    --orange:#F5821F; --peach:#FDE8D4; --green:#1e7a4c; --lgreen:#E3F3EA; --red:#B23A3A; --lred:#FBE4E4;
+    --code:#141E3C; --codefg:#F4F6FF; --comment:#9FB3E8; --mono:'JetBrains Mono',Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pale);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+  a{color:var(--green)}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 16px 80px;display:flex;flex-direction:column;gap:22px}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--gray);text-transform:uppercase}
+  h1{margin:6px 0 0;font-family:Georgia,serif;font-weight:700;font-size:38px;line-height:1.1;color:var(--navy)}
+  h2{margin:0;font-family:Georgia,serif;font-size:28px;color:var(--navy)}
+  h3{margin:18px 0 6px;font-family:Georgia,serif;font-size:20px;color:var(--navy)}
+  p{margin:0 0 10px;font-size:17px}
+  .lead{font-size:19px;max-width:800px}
+  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px}
+  .stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 12px;background:var(--navy);color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px;opacity:.55}
+  .stepper button.active{opacity:1;outline:3px solid var(--orange)}
+  .stepper button.done{opacity:.9;background:var(--green)}
+  .stepper button span.n{font-family:var(--mono);font-weight:700;font-size:14px}
+  .stepper button span.l{font-size:13px}
+  section.step{display:none;flex-direction:column;gap:14px;background:#fff;border-radius:12px;padding:22px 22px 26px;box-shadow:0 1px 3px rgba(27,47,107,.08)}
+  section.step.active{display:flex}
+  code{font-family:var(--mono);background:var(--pale);padding:1px 5px;border-radius:4px;color:var(--navy);font-size:.95em}
+  .en{color:var(--gray);font-style:italic}
+  .box{border-radius:8px;padding:12px 16px;font-size:16px}
+  .tip{background:var(--peach)} .tip>b:first-child{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .note{background:var(--pale)} .note>b:first-child{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  /* runnable code */
+  .runner{border-radius:10px;overflow:hidden;border:2px solid var(--navy);background:var(--code)}
+  .runner .bar{display:flex;align-items:center;gap:10px;padding:6px 12px;background:#0E1630;color:var(--lblue);font-family:var(--mono);font-size:12px}
+  .runner .bar .spacer{flex:1}
+  .runner textarea{width:100%;display:block;border:0;outline:0;resize:vertical;min-height:120px;padding:12px 14px;background:var(--code);color:var(--codefg);font-family:var(--mono);font-size:16px;line-height:1.5;tab-size:4}
+  .runner .out{background:var(--pale);color:var(--navy);font-family:var(--mono);font-size:14px;padding:10px 14px;white-space:pre-wrap;min-height:34px;border-top:1px solid var(--lblue)}
+  .runner .out.err{color:var(--red);background:var(--lred)}
+  .runner .out:empty::before{content:"— πάτησε «Τρέξε» ή Ctrl+Enter —";color:var(--gray);font-style:italic;font-family:Arial}
+  .btn{font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--green);color:#fff;font-weight:bold}
+  .btn.secondary{background:transparent;border:2px solid var(--lblue);color:var(--lblue);font-weight:normal}
+  .btn.navy{background:var(--navy)}
+  .btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+  .btn:disabled{opacity:.5;cursor:default}
+  /* quiz */
+  .quiz{background:var(--pale);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .quiz .q{font-weight:bold;color:var(--navy)}
+  .quiz pre{margin:0;font-family:var(--mono);font-size:15px;background:var(--code);color:var(--codefg);padding:10px 14px;border-radius:8px;white-space:pre-wrap}
+  .quiz .opts{display:grid;gap:6px}
+  .quiz .opts button{text-align:left;font:inherit;font-size:16px;padding:9px 12px;border-radius:8px;border:1px solid var(--lblue);background:#fff;color:var(--navy);cursor:pointer;font-family:var(--mono);white-space:pre-wrap}
+  .quiz .opts button.ok{background:var(--lgreen);border-color:var(--green)}
+  .quiz .opts button.bad{background:var(--lred);border-color:var(--red)}
+  .quiz .fb{min-height:20px;font-size:15px}
+  .quiz .fb.ok{color:var(--green);font-weight:bold} .quiz .fb.bad{color:var(--red)}
+  /* exercise */
+  .exercise{border:2px dashed var(--orange);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#fff}
+  .exercise .title{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--orange);text-transform:uppercase}
+  .exercise .result{font-size:15px;min-height:20px}
+  .exercise .result.ok{color:var(--green);font-weight:bold} .exercise .result.bad{color:var(--red)}
+  .exercise details{font-size:15px} .exercise summary{cursor:pointer;color:var(--navy)}
+  /* visualizers */
+  .viz{display:flex;flex-direction:column;gap:10px;background:var(--pale);border-radius:10px;padding:14px 16px}
+  .viz input{font-family:var(--mono);font-size:20px;padding:8px 12px;border:2px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy);width:100%;max-width:420px}
+  .cells{display:flex;gap:8px;flex-wrap:wrap}
+  .cell{display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--mono)}
+  .cell .i{font-size:12px;color:var(--navy);background:var(--lblue);border-radius:10px;padding:1px 10px}
+  .cell .v{width:62px;height:52px;display:flex;align-items:center;justify-content:center;background:var(--code);color:#fff;font-weight:bold;font-size:18px;border-radius:6px}
+  .cell.hit .v{background:var(--orange)}
+  .cell.off .v{opacity:.35}
+  .cell .b{font-size:12px;font-family:var(--mono);color:var(--gray)}
+  .cell.hit .b{color:var(--orange);font-weight:bold}
+  .viz .res{font-family:var(--mono);font-size:17px;color:var(--navy);min-height:24px;white-space:pre-wrap}
+  .grid2d{display:inline-grid;gap:6px;align-items:center;align-self:flex-start;max-width:100%;overflow-x:auto}
+  .grid2d .hd{font-family:var(--mono);font-size:12px;color:var(--navy);background:var(--lblue);border-radius:10px;padding:1px 0;text-align:center}
+  .grid2d .rh{font-family:var(--mono);font-size:12px;color:var(--navy);background:var(--lblue);border-radius:10px;padding:1px 10px;text-align:center}
+  .grid2d .c{width:78px;height:46px;display:flex;align-items:center;justify-content:center;background:var(--code);color:#fff;font-family:var(--mono);font-weight:bold;font-size:17px;border-radius:6px}
+  .grid2d .c.hit{background:var(--orange)}
+  .dfviz table{border-collapse:collapse;font-family:var(--mono);font-size:14px;width:100%}
+  .dfviz th{background:var(--navy);color:#fff;text-align:left;padding:5px 8px;font-weight:bold}
+  .dfviz td{padding:5px 8px;border-bottom:1px solid var(--lblue);color:var(--navy)}
+  .dfviz td.idx{color:var(--gray)}
+  .dfviz tr.hit td{background:var(--peach);font-weight:bold}
+  .dfviz tr.off td{opacity:.4}
+  .dfviz td.b{text-align:center;color:var(--gray)} .dfviz tr.hit td.b{color:var(--orange)}
+  .gbviz .two{display:grid;grid-template-columns:3fr 2fr;gap:14px;align-items:start}
+  .gbviz table{border-collapse:collapse;font-family:var(--mono);font-size:14px;width:100%}
+  .gbviz th{background:var(--navy);color:#fff;text-align:left;padding:5px 8px;font-weight:bold}
+  .gbviz td{padding:5px 8px;border-bottom:1px solid #fff;color:var(--navy)}
+  .gbviz td.idx{color:var(--gray)} .gbviz td.key{font-weight:bold}
+  .gbviz tr.g0 td{background:#FDE8D4} .gbviz tr.g1 td{background:#E3F3EA} .gbviz tr.g2 td{background:#E8EDFB} .gbviz tr.g3 td{background:#F3E8FB} .gbviz tr.g4 td{background:#FFF6CC}
+  .gbviz .lbl{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--gray);margin-bottom:4px}
+  @media (max-width:700px){.gbviz .two{grid-template-columns:1fr}}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+  .status{font-family:var(--mono);font-size:12px;color:var(--gray)}
+  .status.ready{color:var(--green)}
+  table.t{border-collapse:collapse;width:100%;font-size:15px}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:bold}
+  table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue)} table.t td:first-child, table.t td.m{font-family:var(--mono);color:var(--navy)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:700px){.grid2{grid-template-columns:1fr} h1{font-size:30px}}
+  footer{font-size:13px;color:var(--gray);text-align:center}
+</style>
+<style id="site-nav-style">
+  #site-nav{font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#1B2F6B;color:#fff;padding:8px 16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  #site-nav a{color:#fff;text-decoration:none}
+  #site-nav .sn-home{font-weight:bold} #site-nav .sn-sep{opacity:.5} #site-nav .sn-teach{color:#B9C8FC;margin-left:auto}
+  @media (max-width:700px){
+    #site-nav{font-size:13px;gap:6px 12px;padding:8px 12px}
+    #site-nav .sn-sep{display:none}
+    #site-nav .sn-back{flex-basis:100%;order:3;padding-top:2px}
+    #site-nav .sn-teach{order:2}
+    table.t{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+    .ui,.pill,td.m,.pill.m{white-space:normal}
+    .check input{max-width:100%} .check select{max-width:100%}
+    .calc,pre,code{overflow-wrap:anywhere}
+    .wrap{overflow-x:hidden}
+  }
+</style>
+</head>
+<body>
+<nav id="site-nav"><a class="sn-home" href="../../index.html">Dr. Evangelos Kalampokis</a><span class="sn-sep">|</span><a class="sn-back" href="../../courses/business-analytics-programming.html">&larr; Σελίδα μαθήματος: Προγραμματισμός για Επιχειρηματική Αναλυτική</a><a class="sn-teach" href="../../index.html#teaching">Αρχική</a></nav>
+<div class="wrap">
+  <div>
+    <div class="kicker">Προγραμματισμός για Επιχειρηματική Αναλυτική · Εβδομάδες 7–8 · <span id="pyStatus" class="status">φόρτωση Python…</span></div>
+    <h1>pandas: συγκεντρωτικά με groupby</h1>
+    <p class="lead" style="margin-top:10px">Ένας διαδραστικός οδηγός για την τάξη και το σπίτι, σε 8 βήματα. Μέχρι τώρα απαντούσαμε ερωτήσεις για <i>όλο</i> τον πίνακα ή για ένα <i>φίλτρο</i> του. Οι περισσότερες επιχειρηματικές ερωτήσεις όμως έχουν τη λέξη «ανά»: έσοδα <b>ανά προϊόν</b>, παραγγελίες <b>ανά πόλη</b>, ποσοστό online <b>ανά κατηγορία</b>. Αυτό κάνει το <code>groupby</code>. Ο κώδικας τρέχει μέσα στον browser σου, με το ίδιο <code>store_orders.csv</code> των εβδομάδων 5–6· την πρώτη φορά η φόρτωση του pandas θέλει 10–20 δευτερόλεπτα.</p>
+    <div class="box note"><b>ΤΟ ΑΡΧΕΙΟ</b><a href="store_orders.csv" download>store_orders.csv</a>: 60 παραγγελίες, 8 στήλες (order_id, date, item, category, unit_price, quantity, channel, city). Σε κάθε παράδειγμα υποθέτουμε ότι έχει ήδη τρέξει η φόρτωση και η στήλη <code>revenue</code>: <code>orders = pd.read_csv("store_orders.csv")</code> και <code>orders["revenue"] = orders["unit_price"] * orders["quantity"]</code>.</div>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- ============ 1 ============ -->
+  <section class="step" data-title="Από το value_counts στο groupby">
+    <h2>1. Από το <span class="en">value_counts</span> στο <span class="en">groupby</span></h2>
+    <p>Το <code>value_counts()</code> απαντούσε «πόσες παραγγελίες ανά προϊόν». Το <code>groupby("item")</code> κάνει το ίδιο αλλά <b>γενικά</b>: χωρίζει τον πίνακα σε ομάδες (μία ανά τιμή της στήλης), εφαρμόζει έναν υπολογισμό σε κάθε ομάδα και ενώνει τα αποτελέσματα. Αυτό το μοτίβο λέγεται <b>split – apply – combine</b>. Με <code>.size()</code> μετράς γραμμές· με <code>["στήλη"].sum()</code> αθροίζεις μια στήλη ανά ομάδα.</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+
+# Πόσες παραγγελίες ανά προϊόν: δύο τρόποι
+print(orders[&quot;item&quot;].value_counts())
+print(orders.groupby(&quot;item&quot;).size())
+
+# Έσοδα ανά προϊόν: ομαδοποίηση + στήλη + στατιστικό
+print(orders.groupby(&quot;item&quot;)[&quot;revenue&quot;].sum())"></div>
+    <p>Τι κάνει το groupby «από κάτω»; Ακριβώς αυτό που θα έκανες με ένα φίλτρο ανά ομάδα, μόνο που δεν χρειάζεται να ξέρεις τις ομάδες από πριν και δεν γράφεις βρόχο:</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+
+# Με το χέρι: ένα φίλτρο για κάθε κανάλι
+for ch in [&quot;online&quot;, &quot;store&quot;]:
+    part = orders[orders[&quot;channel&quot;] == ch]
+    print(ch, part[&quot;revenue&quot;].sum())
+
+# Με groupby: μία γραμμή, για όσες ομάδες υπάρχουν
+print(orders.groupby(&quot;channel&quot;)[&quot;revenue&quot;].sum())"></div>
+    <p>Δες το split – apply – combine πάνω σε 8 γραμμές. Γράψε π.χ. <code>groupby("channel")["quantity"].sum()</code>, <code>groupby("item").size()</code>, <code>groupby("category")["unit_price"].mean()</code>, <code>groupby("city")["quantity"].max()</code>:</p>
+    <div class="gbviz" data-init="groupby(&quot;channel&quot;)[&quot;quantity&quot;].sum()"></div>
+    <div class="box tip"><b>ΔΙΑΒΑΣΕ ΤΟ ΑΠΟ ΑΡΙΣΤΕΡΑ</b><code>orders.groupby("item")["revenue"].sum()</code> = «πάρε τις παραγγελίες, χώρισέ τες ανά προϊόν, κράτα τη στήλη revenue, άθροισε μέσα σε κάθε ομάδα». Τρία κομμάτια: <b>κλειδί</b> ομαδοποίησης, <b>στήλη</b>, <b>στατιστικό</b>.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;team&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;a&quot;, &quot;b&quot;, &quot;a&quot;],
+                   &quot;pts&quot;: [3, 5, 1, 2, 6]})
+print(df.groupby(&quot;team&quot;)[&quot;pts&quot;].sum())" data-opts='["team\na    10\nb     7\nName: pts, dtype: int64","17","team\na    3\nb    2\ndtype: int64","[10, 7]"]' data-ans="0" data-why="Ομάδα a: 3+1+6 = 10, ομάδα b: 5+2 = 7. Το αποτέλεσμα είναι Series με ευρετήριο τις ομάδες."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;team&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;a&quot;, &quot;b&quot;, &quot;a&quot;],
+                   &quot;pts&quot;: [3, 5, 1, 2, 6]})
+print(df.groupby(&quot;team&quot;).size())" data-opts='["team\na    3\nb    2\ndtype: int64","5","team\na    10\nb     7\ndtype: int64","(5, 2)"]' data-ans="0" data-why="Το size() μετρά γραμμές ανά ομάδα: τρεις γραμμές a, δύο γραμμές b. Ίδιο με df[&quot;team&quot;].value_counts(), αλλά ταξινομημένο κατά ομάδα."></div>
+    <div class="quiz" data-q="Ποια έκφραση δίνει τη συνολική ποσότητα ανά πόλη;" data-opts='["orders.groupby(\"city\")[\"quantity\"].sum()","orders.groupby(\"quantity\")[\"city\"].sum()","orders[\"city\"].groupby(\"quantity\").sum()","orders.sum(\"quantity\").groupby(\"city\")"]' data-ans="0" data-why="Κλειδί = η στήλη που ορίζει τις ομάδες (city), μετά η στήλη που αθροίζεις (quantity), μετά το στατιστικό."></div>
+
+    <div class="exercise" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+# 1. Τύπωσε πόσες παραγγελίες έχει κάθε πόλη (groupby + size)
+# 2. Τύπωσε τη συνολική ποσότητα ανά κανάλι (groupby + στήλη + sum)
+" data-check="assert 'groupby' in _src, 'Χρησιμοποίησε groupby.'
+assert 'Thessaloniki    26' in _out and 'Larisa           3' in _out, 'Δεν βλέπω το πλήθος παραγγελιών ανά πόλη (Thessaloniki 26, Athens 17, Patras 10, Larisa 3).'
+assert 'online    148' in _out and 'store      83' in _out, 'Δεν βλέπω τη συνολική ποσότητα ανά κανάλι (online 148, store 83).'" data-solution="print(orders.groupby(&quot;city&quot;).size())
+print(orders.groupby(&quot;channel&quot;)[&quot;quantity&quot;].sum())">
+      <div class="title">Άσκηση 1</div>
+      <p>Δύο ομαδοποιήσεις: μία που μετρά γραμμές, μία που αθροίζει στήλη. Παρατήρησε ότι η Larisa έχει 3 παραγγελίες ενώ 4 γραμμές δεν έχουν πόλη καθόλου: το groupby <b>αγνοεί</b> τις γραμμές με NaN στο κλειδί.</p>
+    </div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="step" data-title="Στατιστικά ανά ομάδα">
+    <h2>2. Στατιστικά ανά ομάδα και τι επιστρέφει</h2>
+    <p>Μετά το <code>["στήλη"]</code> μπορείς να βάλεις ό,τι στατιστικό ήξερες από τα Series: <code>sum</code>, <code>mean</code>, <code>median</code>, <code>min</code>, <code>max</code>, <code>count</code>, <code>std</code>. Το αποτέλεσμα είναι ένα <b>Series</b> με ευρετήριο τις ομάδες, άρα μπορείς να το ταξινομήσεις, να πάρεις τα πρώτα, ή να ζητήσεις μια ομάδα με το όνομά της.</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+
+g = orders.groupby(&quot;item&quot;)[&quot;quantity&quot;]
+print(g.mean())
+print(g.max())
+
+by_item = orders.groupby(&quot;item&quot;)[&quot;revenue&quot;].sum()
+print(type(by_item))
+print(by_item[&quot;laptop&quot;])                                  # μία ομάδα, με το όνομά της
+print(by_item.sort_values(ascending=False).head(2))       # top-2 προϊόντα"></div>
+    <p>Με <b>διπλές αγκύλες</b> και λίστα στηλών παίρνεις DataFrame: ένα στατιστικό για κάθε στήλη, ανά ομάδα. Το <code>round()</code> βοηθά στο διάβασμα.</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+
+print(orders.groupby(&quot;item&quot;)[[&quot;quantity&quot;, &quot;revenue&quot;]].sum())
+print(orders.groupby(&quot;city&quot;)[[&quot;quantity&quot;, &quot;revenue&quot;]].mean().round(1))"></div>
+    <div class="box tip"><b>ΜΕΣΟΣ ΟΡΟΣ ΤΙΝΟΣ;</b>Το <code>orders.groupby("item")["quantity"].mean()</code> είναι η μέση ποσότητα <i>ανά παραγγελία</i> για κάθε προϊόν, όχι ανά μήνα ή ανά πελάτη. Η μονάδα της «γραμμής» καθορίζει τι σημαίνει ο μέσος όρος. Στο Instacart θα έχει σημασία: γραμμή = προϊόν μέσα σε παραγγελία.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;team&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;a&quot;, &quot;b&quot;, &quot;a&quot;],
+                   &quot;pts&quot;: [3, 5, 1, 2, 6]})
+print(df.groupby(&quot;team&quot;)[&quot;pts&quot;].sum()[&quot;b&quot;])" data-opts='["7","10","b","KeyError"]' data-ans="0" data-why="Το αποτέλεσμα του groupby είναι Series με ευρετήριο τις ομάδες, άρα [&quot;b&quot;] δίνει το άθροισμα της ομάδας b: 5+2 = 7."></div>
+    <div class="quiz" data-q="Τι τύπου είναι το αποτέλεσμα;" data-code="x = orders.groupby(&quot;city&quot;)[[&quot;quantity&quot;, &quot;revenue&quot;]].mean()" data-opts='["DataFrame (δύο στήλες, μία γραμμή ανά πόλη)","Series","Δύο Series","list"]' data-ans="0" data-why="Διπλές αγκύλες = λίστα στηλών = DataFrame, όπως και στην εβδομάδα 5. Με μονές αγκύλες θα ήταν Series."></div>
+    <div class="quiz" data-q="Ποιο προϊόν έχει τα περισσότερα έσοδα;" data-code="orders.groupby(&quot;item&quot;)[&quot;revenue&quot;].sum().sort_values(ascending=False).head(1)" data-opts='["laptop","mouse","monitor","keyboard"]' data-ans="0" data-why="Παρότι το mouse έχει τις περισσότερες παραγγελίες (20), το laptop με 9 παραγγελίες των 899€ δίνει 14384€. Πλήθος και έσοδα είναι διαφορετικές ερωτήσεις."></div>
+
+    <div class="exercise" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+# 1. Τύπωσε τα μέσα έσοδα ανά παραγγελία για κάθε κατηγορία, στρογγυλεμένα σε 1 δεκαδικό
+# 2. Τύπωσε τη μέγιστη ποσότητα ανά προϊόν
+# 3. Τύπωσε το όνομα της πόλης με τα περισσότερα συνολικά έσοδα (sort_values + index[0] ή idxmax)
+" data-check="assert 'computers      1598.2' in _out, 'Δεν βλέπω τα μέσα έσοδα ανά κατηγορία με 1 δεκαδικό (accessories 166.9, computers 1598.2, displays 608.7).'
+assert 'webcam      8' in _out and 'laptop      3' in _out, 'Δεν βλέπω τη μέγιστη ποσότητα ανά προϊόν (keyboard 8, laptop 3, monitor 3, mouse 8, webcam 8).'
+assert _out.strip().split('\n')[-1] == 'Thessaloniki', 'Η τελευταία γραμμή πρέπει να είναι μόνο το όνομα της πόλης: Thessaloniki'" data-solution="print(orders.groupby(&quot;category&quot;)[&quot;revenue&quot;].mean().round(1))
+print(orders.groupby(&quot;item&quot;)[&quot;quantity&quot;].max())
+print(orders.groupby(&quot;city&quot;)[&quot;revenue&quot;].sum().idxmax())">
+      <div class="title">Άσκηση 2</div>
+      <p>Τρία στατιστικά ανά ομάδα. Για το τρίτο θυμήσου το <code>argmax</code> της NumPy: στο pandas η <code>idxmax()</code> επιστρέφει την <b>ετικέτα</b> (εδώ το όνομα της πόλης) του μεγίστου.</p>
+    </div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="step" data-title="Δύο κλειδιά &amp; reset_index">
+    <h2>3. Δύο κλειδιά και <span class="en">reset_index</span></h2>
+    <p>Με λίστα στο groupby ομαδοποιείς κατά <b>δύο</b> (ή περισσότερες) στήλες: μία ομάδα για κάθε συνδυασμό. Το αποτέλεσμα έχει ευρετήριο δύο επιπέδων, που διαβάζεται αλλά δεν είναι βολικό για φίλτρα ή ταξινόμηση. Το <code>reset_index()</code> το μετατρέπει σε κανονικό DataFrame με στήλες.</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+
+print(orders.groupby([&quot;item&quot;, &quot;channel&quot;])[&quot;revenue&quot;].sum())
+
+by_item = orders.groupby(&quot;item&quot;)[&quot;revenue&quot;].sum().reset_index()
+print(by_item)
+print(type(by_item))
+print(by_item.sort_values(&quot;revenue&quot;, ascending=False))"></div>
+    <div class="box note"><b>ΠΟΤΕ RESET_INDEX</b>Όταν θες να συνεχίσεις να δουλεύεις με το αποτέλεσμα σαν πίνακα: φίλτρο (<code>by_item[by_item["revenue"] &gt; 3000]</code>), ταξινόμηση κατά στήλη, συνένωση με άλλον πίνακα (εβδομάδα 9), γράφημα. Αν απλώς το τυπώνεις, δεν χρειάζεται.</div>
+
+    <div class="quiz" data-q="Πόσες γραμμές έχει το αποτέλεσμα;" data-code="orders.groupby([&quot;item&quot;, &quot;channel&quot;])[&quot;revenue&quot;].sum()
+# 5 προϊόντα, 2 κανάλια, αλλά το webcam πουλήθηκε μόνο online" data-opts='["9","10","5","60"]' data-ans="0" data-why="Μία γραμμή ανά συνδυασμό που ΥΠΑΡΧΕΙ στα δεδομένα: 5×2 = 10 πιθανοί, αλλά (webcam, store) δεν εμφανίζεται, άρα 9."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;team&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;a&quot;], &quot;pts&quot;: [3, 5, 1]})
+r = df.groupby(&quot;team&quot;)[&quot;pts&quot;].sum().reset_index()
+print(list(r.columns))" data-opts='["[&#39;team&#39;, &#39;pts&#39;]","[&#39;pts&#39;]","[&#39;index&#39;, &#39;pts&#39;]","[0, 1]"]' data-ans="0" data-why="Το reset_index μετατρέπει το ευρετήριο (team) σε κανονική στήλη, δίπλα στην pts."></div>
+    <div class="quiz" data-q="Ποιο ΔΕΝ δουλεύει πάνω στο by_item = orders.groupby(&quot;item&quot;)[&quot;revenue&quot;].sum() (χωρίς reset_index);" data-opts='["by_item[\"item\"]","by_item[\"laptop\"]","by_item.sort_values()","by_item.head(2)"]' data-ans="0" data-why="Το by_item είναι Series: το item είναι το ευρετήριό του, όχι στήλη. by_item[&quot;item&quot;] δίνει KeyError. Για να γίνει στήλη: reset_index()."></div>
+
+    <div class="exercise" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+# 1. Υπολόγισε τα συνολικά έσοδα ανά (category, channel) και κάνε το αποτέλεσμα
+#    DataFrame με reset_index (μεταβλητή rev)
+# 2. Ταξινόμησέ το κατά revenue φθίνουσα και τύπωσε τις 3 πρώτες γραμμές
+" data-check="import pandas as _pd
+assert 'rev' in globals() and isinstance(rev, _pd.DataFrame), 'Δεν βρήκα DataFrame με όνομα rev. Χρησιμοποίησε reset_index().'
+assert set(rev.columns) == {'category', 'channel', 'revenue'}, 'Το rev πρέπει να έχει στήλες category, channel, revenue.'
+assert rev.shape[0] == 6, 'Το rev πρέπει να έχει 6 γραμμές (3 κατηγορίες × 2 κανάλια).'
+lines = [l for l in _out.strip().split('\n') if 'computers' in l or 'accessories' in l or 'displays' in l]
+assert len(lines) == 3 and 'computers' in lines[0] and 'online' in lines[0] and '8091.0' in lines[0], 'Η πρώτη γραμμή της εξόδου πρέπει να είναι computers / online / 8091.0 (φθίνουσα ταξινόμηση κατά revenue, head(3)).'" data-solution="rev = orders.groupby([&quot;category&quot;, &quot;channel&quot;])[&quot;revenue&quot;].sum().reset_index()
+print(rev.sort_values(&quot;revenue&quot;, ascending=False).head(3))">
+      <div class="title">Άσκηση 3</div>
+      <p>Δύο κλειδιά, reset_index, ταξινόμηση κατά στήλη. Η αλυσίδα: <code>groupby → sum → reset_index → sort_values → head</code>.</p>
+    </div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="step" data-title="agg: πολλά στατιστικά">
+    <h2>4. <span class="en">agg</span>: πολλά στατιστικά με μία κίνηση</h2>
+    <p>Συχνά θέλεις για κάθε ομάδα <i>και</i> το πλήθος <i>και</i> το σύνολο <i>και</i> τον μέσο. Το <code>agg()</code> δέχεται μια <b>λίστα</b> στατιστικών (για μία στήλη), ένα <b>λεξικό</b> {στήλη: στατιστικό} (διαφορετικό ανά στήλη), ή <b>ονομασμένα</b> αποτελέσματα <code>όνομα=("στήλη", "στατιστικό")</code>, που είναι η πιο καθαρή γραφή γιατί διαλέγεις εσύ τα ονόματα των στηλών.</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+
+# Λίστα: πολλά στατιστικά για μία στήλη
+print(orders.groupby(&quot;item&quot;)[&quot;revenue&quot;].agg([&quot;sum&quot;, &quot;mean&quot;, &quot;count&quot;]))
+
+# Λεξικό: διαφορετικό στατιστικό ανά στήλη (εδώ χρειάζεται το λεξικό της εβδομάδας 5)
+print(orders.groupby(&quot;channel&quot;).agg({&quot;revenue&quot;: &quot;sum&quot;,
+                                    &quot;quantity&quot;: &quot;mean&quot;,
+                                    &quot;order_id&quot;: &quot;count&quot;}))"></div>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+
+# Ονομασμένα αποτελέσματα: όνομα=(&quot;στήλη&quot;, &quot;στατιστικό&quot;)
+summary = orders.groupby(&quot;item&quot;).agg(
+    orders=(&quot;order_id&quot;, &quot;count&quot;),
+    units=(&quot;quantity&quot;, &quot;sum&quot;),
+    revenue=(&quot;revenue&quot;, &quot;sum&quot;),
+    avg_qty=(&quot;quantity&quot;, &quot;mean&quot;),
+)
+print(summary.round(2))
+print(summary.sort_values(&quot;revenue&quot;, ascending=False).head(3))"></div>
+    <div class="box tip"><b>ΟΝΟΜΑΤΑ ΣΤΑΤΙΣΤΙΚΩΝ</b>Μέσα στο agg τα στατιστικά γράφονται ως string: <code>"sum"</code>, <code>"mean"</code>, <code>"median"</code>, <code>"min"</code>, <code>"max"</code>, <code>"count"</code>, <code>"std"</code>, <code>"nunique"</code> (πόσες διαφορετικές τιμές). Το <code>"average"</code> δεν υπάρχει: AttributeError.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;team&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;a&quot;, &quot;b&quot;, &quot;a&quot;],
+                   &quot;pts&quot;: [3, 5, 1, 2, 6]})
+print(df.groupby(&quot;team&quot;)[&quot;pts&quot;].agg([&quot;min&quot;, &quot;max&quot;]))" data-opts='["      min  max\nteam          \na       1    6\nb       2    5","team\na    1\nb    2","[1, 6, 2, 5]","Σφάλμα"]' data-ans="0" data-why="Λίστα στατιστικών → DataFrame με μία στήλη ανά στατιστικό και μία γραμμή ανά ομάδα."></div>
+    <div class="quiz" data-q="Πώς ονομάζεται η στήλη του αποτελέσματος;" data-code="orders.groupby(&quot;city&quot;).agg(total=(&quot;revenue&quot;, &quot;sum&quot;))" data-opts='["total","revenue","sum","revenue_sum"]' data-ans="0" data-why="Στην ονομασμένη γραφή, το όνομα πριν το = είναι το όνομα της νέας στήλης."></div>
+    <div class="quiz" data-q="Ποιο στατιστικό δίνει «πόσα διαφορετικά προϊόντα αγόρασε κάθε πόλη»;" data-code="orders.groupby(&quot;city&quot;)[&quot;item&quot;].agg(&quot;...&quot;)" data-opts='["\"nunique\"","\"count\"","\"unique\"","\"size\""]' data-ans="0" data-why="Το count μετρά γραμμές, το nunique μετρά ΔΙΑΦΟΡΕΤΙΚΕΣ τιμές. Το unique επιστρέφει τη λίστα τους, όχι το πλήθος."></div>
+
+    <div class="exercise" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+# Φτιάξε με agg (ονομασμένη γραφή) έναν πίνακα summary ανά πόλη με στήλες:
+#   orders  = πλήθος παραγγελιών (count του order_id)
+#   revenue = συνολικά έσοδα
+#   avg_qty = μέση ποσότητα
+# Ταξινόμησέ τον κατά revenue φθίνουσα και τύπωσέ τον στρογγυλεμένο σε 2 δεκαδικά
+" data-check="import pandas as _pd
+assert 'summary' in globals() and isinstance(summary, _pd.DataFrame), 'Δεν βρήκα DataFrame με όνομα summary.'
+assert list(summary.columns) == ['orders', 'revenue', 'avg_qty'], 'Οι στήλες πρέπει να είναι orders, revenue, avg_qty (με αυτή τη σειρά).'
+assert summary.loc['Thessaloniki', 'orders'] == 26 and abs(summary.loc['Patras', 'revenue'] - 4736.8) &lt; 0.01, 'Οι τιμές δεν είναι σωστές (Thessaloniki: 26 παραγγελίες, Patras: έσοδα 4736.8).'
+lines = [l for l in _out.strip().split('\n') if l.startswith(('Thessaloniki', 'Athens', 'Patras', 'Larisa'))]
+assert [l.split()[0] for l in lines] == ['Thessaloniki', 'Athens', 'Patras', 'Larisa'], 'Η έξοδος πρέπει να είναι ταξινομημένη κατά revenue φθίνουσα: Thessaloniki, Athens, Patras, Larisa.'
+assert '4.04' in _out and '3.59' in _out, 'Στρογγυλοποίησε σε 2 δεκαδικά (avg_qty Thessaloniki 4.04, Athens 3.59).'" data-solution="summary = orders.groupby(&quot;city&quot;).agg(
+    orders=(&quot;order_id&quot;, &quot;count&quot;),
+    revenue=(&quot;revenue&quot;, &quot;sum&quot;),
+    avg_qty=(&quot;quantity&quot;, &quot;mean&quot;),
+)
+print(summary.sort_values(&quot;revenue&quot;, ascending=False).round(2))">
+      <div class="title">Άσκηση 4</div>
+      <p>Ο «πίνακας-σύνοψη» που θα βλέπεις σε κάθε αναφορά: μία γραμμή ανά ομάδα, τρία-τέσσερα νούμερα η καθεμία.</p>
+    </div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="step" data-title="Ποσοστά με boolean">
+    <h2>5. Ποσοστά ανά ομάδα: ο μέσος όρος ενός True/False</h2>
+    <p>Το κόλπο της εβδομάδας 4 (μέσος όρος σε True/False = ποσοστό των True) γίνεται πολύ δυνατό μέσα σε groupby. Φτιάχνεις μια στήλη από True/False (π.χ. «είναι online;») και ζητάς τον μέσο της ανά ομάδα: παίρνεις το <b>ποσοστό</b> ανά ομάδα. Το <code>sum()</code> της ίδιας στήλης δίνει το <b>πλήθος</b>.</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+
+orders[&quot;is_online&quot;] = orders[&quot;channel&quot;] == &quot;online&quot;
+print(orders[&quot;is_online&quot;].head(3))
+print(orders[&quot;is_online&quot;].mean())                           # ποσοστό online συνολικά
+print(orders.groupby(&quot;item&quot;)[&quot;is_online&quot;].mean().round(2))  # ποσοστό online ανά προϊόν
+
+orders[&quot;big&quot;] = orders[&quot;quantity&quot;] &gt;= 5
+print(orders.groupby(&quot;city&quot;)[&quot;big&quot;].mean().round(2))        # ποσοστό «μεγάλων» ανά πόλη
+print(orders.groupby(&quot;category&quot;)[&quot;big&quot;].sum())               # πλήθος «μεγάλων» ανά κατηγορία"></div>
+    <div class="box note"><b>ΠΡΟΣ ΤΟ INSTACART</b>Το «reorder probability» ενός προϊόντος είναι ακριβώς αυτό: μια στήλη True/False «ήταν επαναγορά;» και <code>groupby("product")["reordered"].mean()</code>. Με 3 εκατομμύρια γραμμές, η ίδια μία γραμμή κώδικα.</div>
+
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;team&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;a&quot;, &quot;b&quot;, &quot;a&quot;],
+                   &quot;pts&quot;: [3, 5, 1, 2, 6]})
+df[&quot;win&quot;] = df[&quot;pts&quot;] &gt; 2
+print(df.groupby(&quot;team&quot;)[&quot;win&quot;].mean())" data-opts='["team\na    0.666667\nb    0.500000\nName: win, dtype: float64","team\na    2\nb    1\nName: win, dtype: int64","0.6","Σφάλμα"]' data-ans="0" data-why="a: [True, False, True] → 2/3 = 0.67· b: [True, False] → 1/2 = 0.5. Ο μέσος ενός True/False είναι το ποσοστό των True."></div>
+    <div class="quiz" data-q="Τι δίνει το df.groupby(&quot;team&quot;)[&quot;win&quot;].sum() στο ίδιο παράδειγμα;" data-opts='["Το πλήθος των νικών ανά ομάδα: a 2, b 1","Το ποσοστό νικών","Το άθροισμα των πόντων","Σφάλμα: δεν προστίθενται True/False"]' data-ans="0" data-why="True = 1, False = 0, άρα το άθροισμα είναι το πλήθος των True."></div>
+    <div class="quiz" data-q="Ποιο προϊόν πουλιέται ΜΟΝΟ online; (από την έξοδο παραπάνω)" data-opts='["webcam","mouse","laptop","keyboard"]' data-ans="0" data-why="Ποσοστό online 1.00 για το webcam: και οι 5 παραγγελίες του ήταν online."></div>
+
+    <div class="exercise" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+# 1. Φτιάξε στήλη big: True όταν quantity &gt;= 5
+# 2. Τύπωσε το ποσοστό «μεγάλων» παραγγελιών ανά προϊόν, με 2 δεκαδικά
+# 3. Φτιάξε στήλη is_online και τύπωσε το ποσοστό online ανά πόλη, με 2 δεκαδικά
+" data-check="assert 'big' in orders.columns and orders['big'].dtype == bool, 'Η στήλη big πρέπει να είναι True/False (quantity &gt;= 5).'
+assert 'keyboard    0.53' in _out and 'laptop      0.00' in _out, 'Δεν βλέπω το ποσοστό μεγάλων ανά προϊόν (keyboard 0.53, laptop 0.00, monitor 0.00, mouse 0.55, webcam 0.60).'
+assert 'Athens          0.71' in _out and 'Patras          0.40' in _out, 'Δεν βλέπω το ποσοστό online ανά πόλη (Athens 0.71, Larisa 0.67, Patras 0.40, Thessaloniki 0.62).'" data-solution="orders[&quot;big&quot;] = orders[&quot;quantity&quot;] &gt;= 5
+print(orders.groupby(&quot;item&quot;)[&quot;big&quot;].mean().round(2))
+orders[&quot;is_online&quot;] = orders[&quot;channel&quot;] == &quot;online&quot;
+print(orders.groupby(&quot;city&quot;)[&quot;is_online&quot;].mean().round(2))">
+      <div class="title">Άσκηση 5</div>
+      <p>Δύο ποσοστά ανά ομάδα. Παρατήρησε ότι laptop και monitor έχουν 0.00: κανείς δεν αγοράζει 5 laptop μαζί. Ένα ποσοστό 0 είναι κι αυτό πληροφορία.</p>
+    </div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="step" data-title="pivot_table">
+    <h2>6. <span class="en">pivot_table</span>: δύο κλειδιά σε γραμμές και στήλες</h2>
+    <p>Το groupby με δύο κλειδιά έδινε μια «μακριά» λίστα. Το <code>pivot_table</code> βάζει το ένα κλειδί στις <b>γραμμές</b> και το άλλο στις <b>στήλες</b>, όπως ο συγκεντρωτικός πίνακας του Excel: <code>values</code> τι μετράς, <code>index</code> οι γραμμές, <code>columns</code> οι στήλες, <code>aggfunc</code> το στατιστικό. Με <code>fill_value=0</code> γεμίζεις τα κενά και με <code>margins=True</code> παίρνεις σύνολα.</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+
+print(orders.pivot_table(values=&quot;revenue&quot;, index=&quot;item&quot;, columns=&quot;channel&quot;, aggfunc=&quot;sum&quot;))
+
+print(orders.pivot_table(values=&quot;order_id&quot;, index=&quot;category&quot;, columns=&quot;city&quot;,
+                         aggfunc=&quot;count&quot;, fill_value=0, margins=True))"></div>
+    <div class="box tip"><b>ΤΟ NaN ΣΤΟ WEBCAM / STORE</b>Δεν είναι 0 έσοδα: είναι «δεν υπάρχει τέτοιος συνδυασμός». Το fill_value=0 το κάνει 0 για να διαβάζεται, αλλά να ξέρεις τη διαφορά. Και το «All» στο δεύτερο παράδειγμα είναι 56, όχι 60: οι 4 παραγγελίες χωρίς πόλη δεν μπήκαν σε καμία στήλη.</div>
+
+    <div class="quiz" data-q="Σε ποια έκφραση groupby αντιστοιχεί ο πίνακας;" data-code="orders.pivot_table(values=&quot;revenue&quot;, index=&quot;item&quot;, columns=&quot;channel&quot;, aggfunc=&quot;sum&quot;)" data-opts='["orders.groupby([\"item\", \"channel\"])[\"revenue\"].sum()","orders.groupby(\"item\")[\"revenue\"].sum()","orders.groupby(\"channel\")[\"item\"].sum()","orders.groupby(\"revenue\")[[\"item\", \"channel\"]].sum()"]' data-ans="0" data-why="Ίδιοι αριθμοί, άλλη διάταξη: το groupby με δύο κλειδιά τους δίνει σε μία «μακριά» στήλη, το pivot_table σε πλέγμα γραμμών × στηλών."></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;team&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;a&quot;], &quot;home&quot;: [&quot;y&quot;, &quot;y&quot;, &quot;n&quot;], &quot;pts&quot;: [3, 5, 1]})
+print(df.pivot_table(values=&quot;pts&quot;, index=&quot;team&quot;, columns=&quot;home&quot;, aggfunc=&quot;sum&quot;))" data-opts='["home    n    y\nteam          \na     1.0  3.0\nb     NaN  5.0","home  n  y\nteam      \na     1  3\nb     0  5","team\na    4\nb    5","Σφάλμα"]' data-ans="0" data-why="Η ομάδα b δεν έχει γραμμή με home = n, άρα NaN (και η στήλη γίνεται float). Με fill_value=0 θα ήταν 0."></div>
+    <div class="quiz" data-q="Τι κάνει το margins=True;" data-opts='["Προσθέτει γραμμή και στήλη «All» με τα σύνολα","Γεμίζει τα κενά με 0","Στρογγυλοποιεί τα αποτελέσματα","Ταξινομεί τον πίνακα"]' data-ans="0" data-why="Τα περιθώρια (margins) είναι τα σύνολα ανά γραμμή και ανά στήλη, συν το γενικό σύνολο."></div>
+
+    <div class="exercise" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+# Φτιάξε pivot_table με όνομα pt: συνολική ποσότητα (quantity, sum)
+# ανά προϊόν (γραμμές) και κανάλι (στήλες), με fill_value=0. Τύπωσέ το.
+" data-check="import pandas as _pd
+assert 'pt' in globals() and isinstance(pt, _pd.DataFrame), 'Δεν βρήκα DataFrame με όνομα pt.'
+assert list(pt.columns) == ['online', 'store'] and list(pt.index) == ['keyboard', 'laptop', 'monitor', 'mouse', 'webcam'], 'Γραμμές = item, στήλες = channel (index=&quot;item&quot;, columns=&quot;channel&quot;).'
+assert pt.loc['webcam', 'store'] == 0, 'Το webcam / store πρέπει να είναι 0 (fill_value=0), όχι NaN.'
+assert pt.loc['mouse', 'online'] == 51 and pt.loc['laptop', 'store'] == 7, 'Οι τιμές δεν είναι σωστές: χρειάζεται values=&quot;quantity&quot; και aggfunc=&quot;sum&quot;.'
+assert 'webcam' in _out, 'Τύπωσε τον πίνακα pt.'" data-solution="pt = orders.pivot_table(values=&quot;quantity&quot;, index=&quot;item&quot;, columns=&quot;channel&quot;,
+                        aggfunc=&quot;sum&quot;, fill_value=0)
+print(pt)">
+      <div class="title">Άσκηση 6</div>
+      <p>Τέσσερα ορίσματα με όνομα: <code>values</code>, <code>index</code>, <code>columns</code>, <code>aggfunc</code>. Και ένα πέμπτο για τα κενά.</p>
+    </div>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="step" data-title="Ανά μήνα &amp; σφάλματα">
+    <h2>7. Ανά μήνα: ημερομηνίες, και τα σφάλματα του groupby</h2>
+    <p>Η στήλη <code>date</code> διαβάστηκε ως κείμενο (object). Με <code>pd.to_datetime()</code> γίνεται πραγματική ημερομηνία, και τότε το <code>.dt</code> σου δίνει μήνα, ημέρα εβδομάδας, έτος: <code>orders["date"].dt.month</code>. Μια στήλη «μήνας» είναι ένα ακόμη κλειδί για groupby, και ξαφνικά έχεις τις μηνιαίες πωλήσεις της εβδομάδας 3, από τα πραγματικά δεδομένα.</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+
+orders[&quot;date&quot;] = pd.to_datetime(orders[&quot;date&quot;])
+print(orders[&quot;date&quot;].dtype)
+orders[&quot;month&quot;] = orders[&quot;date&quot;].dt.month
+print(orders[[&quot;date&quot;, &quot;month&quot;]].head(3))
+
+monthly = orders.groupby(&quot;month&quot;)[&quot;revenue&quot;].sum()
+print(monthly)
+print(monthly.idxmax(), monthly.max())     # ο καλύτερος μήνας"></div>
+    <h3>Τα σφάλματα του groupby που θα δεις πρώτα</h3>
+    <table class="t">
+      <tr><th>Μήνυμα</th><th>Τι σημαίνει</th><th>Διόρθωση</th></tr>
+      <tr><td>KeyError: 'Item'</td><td>Το κλειδί του groupby δεν είναι στήλη (κεφαλαία/πεζά)</td><td><code>orders.columns</code></td></tr>
+      <tr><td>TypeError: agg function failed [how-&gt;mean, dtype-&gt;object]</td><td>Ζήτησες mean() σε όλες τις στήλες, και κάποιες είναι κείμενο</td><td>Διάλεξε στήλη: <code>["revenue"].mean()</code>, ή <code>mean(numeric_only=True)</code></td></tr>
+      <tr><td>AttributeError: 'SeriesGroupBy' object has no attribute 'average'</td><td>Δεν υπάρχει στατιστικό με αυτό το όνομα</td><td><code>"mean"</code> (sum, mean, median, min, max, count, std, nunique)</td></tr>
+      <tr><td>KeyError: 'item' (μετά από groupby)</td><td>Το κλειδί έγινε ευρετήριο, δεν είναι πια στήλη</td><td><code>reset_index()</code>, ή ζήτησε την ομάδα: <code>by_item["laptop"]</code></td></tr>
+    </table>
+    <p style="margin-top:10px">Τρέξε, διάβασε, διόρθωσε ένα σφάλμα τη φορά:</p>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+
+print(orders.groupby(&quot;item&quot;).mean())
+print(orders.groupby(&quot;item&quot;)[&quot;revenue&quot;].agg([&quot;sum&quot;, &quot;average&quot;]))"></div>
+    <div class="quiz" data-q="Τι θα τυπώσει;" data-code="s = pd.Series([&quot;2025-03-18&quot;, &quot;2025-11-05&quot;])
+print(pd.to_datetime(s).dt.month.tolist())" data-opts='["[3, 11]","[18, 5]","[\"03\", \"11\"]","Σφάλμα"]' data-ans="0" data-why="Μετά το to_datetime, το .dt.month δίνει τον αριθμό του μήνα κάθε ημερομηνίας."></div>
+    <div class="quiz" data-q="Ποιο σφάλμα θα εμφανιστεί;" data-code="orders.groupby(&quot;city&quot;).mean()
+# οι στήλες item, category, channel είναι κείμενο" data-opts='["TypeError (agg function failed, dtype object)","KeyError","Κανένα, αγνοεί τις στήλες κειμένου","ValueError"]' data-ans="0" data-why="Το pandas 2 δεν αγνοεί πια σιωπηλά τις στήλες κειμένου. Διάλεξε στήλες ή βάλε numeric_only=True."></div>
+
+    <div class="exercise" data-code="# Ο κώδικας έχει τρία σφάλματα. Διόρθωσέ τα ώστε να τυπώνει τα μέσα έσοδα ανά προϊόν (1 δεκαδικό)
+import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+by_item = orders.groupby(&quot;Item&quot;).agg(avg_revenue=(&quot;revenue&quot;, &quot;average&quot;))
+print(by_item[&quot;item&quot;])
+" data-check="assert 'laptop      1598.2' in _out or 'laptop   1598.2' in _out or '1598.2' in _out, 'Περίμενα τα μέσα έσοδα ανά προϊόν με 1 δεκαδικό (laptop 1598.2, monitor 608.7, keyboard 206.5, webcam 365.8, mouse 83.6).'
+assert '&quot;item&quot;' in _src and '&quot;mean&quot;' in _src, 'Έλεγξε το όνομα της στήλης (item) και του στατιστικού (mean).'
+assert 'print(by_item[&quot;item&quot;])' not in _src, 'Μετά το groupby το item είναι ευρετήριο, όχι στήλη: τύπωσε by_item ή by_item[&quot;avg_revenue&quot;].'" data-solution="by_item = orders.groupby(&quot;item&quot;).agg(avg_revenue=(&quot;revenue&quot;, &quot;mean&quot;))
+print(by_item.round(1))">
+      <div class="title">Άσκηση 7</div>
+      <p>Ένα KeyError, ένα AttributeError και ένα KeyError «μετά το groupby». Πάτησε «Έλεγξε», διάβασε το μήνυμα, διόρθωσε, ξαναπάτησε.</p>
+    </div>
+  </section>
+
+  <!-- ============ 8 ============ -->
+  <section class="step" data-title="Τελικό κουίζ">
+    <h2>8. Τελικό κουίζ</h2>
+    <p>Δώδεκα ερωτήσεις από όλη την ενότητα. Σκέψου πρώτα, μετά απάντησε· αν αμφιβάλλεις, άνοιξε το παράθυρο κώδικα στο τέλος και δοκίμασέ το.</p>
+    <div class="quiz" data-q="1. Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;k&quot;: [&quot;x&quot;, &quot;y&quot;, &quot;x&quot;], &quot;v&quot;: [10, 20, 30]})
+print(df.groupby(&quot;k&quot;)[&quot;v&quot;].sum())" data-opts='["k\nx    40\ny    20\nName: v, dtype: int64","60","k\nx    2\ny    1\ndtype: int64","[40, 20]"]' data-ans="0" data-why="x: 10+30 = 40, y: 20."></div>
+    <div class="quiz" data-q="2. Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;k&quot;: [&quot;x&quot;, &quot;y&quot;, &quot;x&quot;], &quot;v&quot;: [10, 20, 30]})
+print(df.groupby(&quot;k&quot;).size()[&quot;x&quot;])" data-opts='["2","40","x","KeyError"]' data-ans="0" data-why="size() δίνει το πλήθος γραμμών ανά ομάδα· η ομάδα x έχει 2 γραμμές."></div>
+    <div class="quiz" data-q="3. Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;k&quot;: [&quot;x&quot;, &quot;y&quot;, &quot;x&quot;], &quot;v&quot;: [10, 20, 40]})
+print(df.groupby(&quot;k&quot;)[&quot;v&quot;].mean().idxmax())" data-opts='["x","y","25.0","1"]' data-ans="0" data-why="Μέσοι: x = (10+40)/2 = 25.0, y = 20.0. Η idxmax επιστρέφει την ΕΤΙΚΕΤΑ (την ομάδα) του μεγίστου, όχι την τιμή."></div>
+    <div class="quiz" data-q="4. Ποια έκφραση δίνει τον μέσο όρο ποσότητας ανά κατηγορία;" data-opts='["orders.groupby(\"category\")[\"quantity\"].mean()","orders.groupby(\"quantity\")[\"category\"].mean()","orders[\"quantity\"].mean(\"category\")","orders.mean().groupby(\"category\")"]' data-ans="0" data-why="Κλειδί → στήλη → στατιστικό."></div>
+    <div class="quiz" data-q="5. Τι τύπου είναι το orders.groupby(&quot;city&quot;)[&quot;revenue&quot;].sum();" data-opts='["Series με ευρετήριο τις πόλεις","DataFrame με στήλες city και revenue","dict","list"]' data-ans="0" data-why="Μονές αγκύλες → Series. Το DataFrame με στήλη city θα προέκυπτε μετά από reset_index()."></div>
+    <div class="quiz" data-q="6. Τι κάνει το reset_index() μετά από groupby;" data-opts='["Μετατρέπει το κλειδί από ευρετήριο σε κανονική στήλη","Ταξινομεί το αποτέλεσμα","Διαγράφει τις ομάδες","Επαναφέρει τον αρχικό πίνακα"]' data-ans="0" data-why="Το κλειδί του groupby γίνεται ευρετήριο· το reset_index το ξαναφέρνει ως στήλη, με νέο ευρετήριο 0, 1, 2…"></div>
+    <div class="quiz" data-q="7. Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;k&quot;: [&quot;x&quot;, &quot;y&quot;, &quot;x&quot;], &quot;v&quot;: [10, 20, 30]})
+r = df.groupby(&quot;k&quot;)[&quot;v&quot;].agg([&quot;sum&quot;, &quot;count&quot;])
+print(r.loc[&quot;x&quot;, &quot;count&quot;])" data-opts='["2","40","x","Σφάλμα"]' data-ans="0" data-why="Το agg με λίστα δίνει DataFrame με στήλες sum και count· η γραμμή x έχει count 2."></div>
+    <div class="quiz" data-q="8. Πώς θα ονομάζεται η στήλη;" data-code="orders.groupby(&quot;item&quot;).agg(n=(&quot;order_id&quot;, &quot;count&quot;))" data-opts='["n","order_id","count","order_id_count"]' data-ans="0" data-why="Ονομασμένη γραφή: το όνομα πριν το = είναι το όνομα της στήλης."></div>
+    <div class="quiz" data-q="9. Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;k&quot;: [&quot;x&quot;, &quot;y&quot;, &quot;x&quot;, &quot;x&quot;], &quot;ok&quot;: [True, False, False, True]})
+print(df.groupby(&quot;k&quot;)[&quot;ok&quot;].mean()[&quot;x&quot;])" data-opts='["0.6666666666666666","2","0.5","True"]' data-ans="0" data-why="Ομάδα x: [True, False, True] → 2 από 3 = 0.67. Μέσος όρος True/False = ποσοστό."></div>
+    <div class="quiz" data-q="10. Τι θα τυπώσει;" data-code="df = pd.DataFrame({&quot;k&quot;: [&quot;x&quot;, &quot;y&quot;, &quot;x&quot;, &quot;x&quot;], &quot;ok&quot;: [True, False, False, True]})
+print(df.groupby(&quot;k&quot;)[&quot;ok&quot;].sum()[&quot;x&quot;])" data-opts='["2","0.67","3","True"]' data-ans="0" data-why="Το άθροισμα των True είναι το πλήθος τους: 2."></div>
+    <div class="quiz" data-q="11. Σε ένα pivot_table με index=&quot;item&quot; και columns=&quot;channel&quot;, τι είναι το NaN;" data-opts='["Συνδυασμός που δεν υπάρχει στα δεδομένα","Μηδενικά έσοδα","Σφάλμα υπολογισμού","Κενή τιμή στην αρχική στήλη"]' data-ans="0" data-why="Καμία γραμμή δεν έχει αυτόν τον συνδυασμό (π.χ. webcam / store). Με fill_value=0 εμφανίζεται ως 0."></div>
+    <div class="quiz" data-q="12. Τι θα τυπώσει;" data-code="s = pd.Series([&quot;2025-06-12&quot;, &quot;2025-06-30&quot;, &quot;2025-09-05&quot;])
+m = pd.to_datetime(s).dt.month
+print(m.value_counts().idxmax())" data-opts='["6","9","2","2025"]' data-ans="0" data-why="Μήνες: 6, 6, 9. Το value_counts μετρά 6 → 2 φορές, 9 → 1· η idxmax δίνει τον συχνότερο μήνα: 6."></div>
+    <div id="finalScore" class="box note" style="display:none"></div>
+    <h3>Δοκιμαστήριο</h3>
+    <div class="runner" data-code="import pandas as pd
+orders = pd.read_csv(&quot;store_orders.csv&quot;)
+orders[&quot;revenue&quot;] = orders[&quot;unit_price&quot;] * orders[&quot;quantity&quot;]
+# Ελεύθερος χώρος για πειράματα
+orders[&quot;month&quot;] = pd.to_datetime(orders[&quot;date&quot;]).dt.month
+print(orders.pivot_table(values=&quot;revenue&quot;, index=&quot;month&quot;, columns=&quot;category&quot;, aggfunc=&quot;sum&quot;, fill_value=0))"></div>
+    <div class="box tip"><b>ΓΙΑ ΤΟ ΣΠΙΤΙ</b>Εργασία: ολοκλήρωσε και τα 8 βήματα αυτής της σελίδας (κουίζ και ασκήσεις) και γράψε σε Google Colab, με το <a href="store_orders.csv" download>store_orders.csv</a>, τρεις δικές σου ερωτήσεις «ανά …» και τις απαντήσεις τους. DataCamp: <a href="https://app.datacamp.com/learn/courses/data-manipulation-with-pandas" target="_blank" rel="noopener">Data Manipulation with pandas</a>, κεφάλαιο 2 (Aggregating DataFrames). Επόμενη ενότητα: συνένωση πινάκων με <code>merge</code>.</div>
+  </section>
+
+  <div class="nav">
+    <button class="btn outline" id="prevBtn">← Προηγούμενο</button>
+    <button class="btn navy" id="nextBtn">Επόμενο βήμα →</button>
+  </div>
+  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Ο κώδικας εκτελείται στον browser με <a href="https://pyodide.org" target="_blank" rel="noopener">Pyodide</a>.</footer>
+</div>
+
+<script>
+(function(){
+  // ---------- storage helpers ----------
+  const KEY='bap-week7-groupby';
+  let state={step:0,quiz:{},ex:{}};
+  try{const s=localStorage.getItem(KEY); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  // ---------- stepper ----------
+  const steps=[...document.querySelectorAll('section.step')];
+  const stepper=document.getElementById('stepper');
+  steps.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.innerHTML='<span class="n">'+(i+1)+'</span><span class="l">'+s.dataset.title+'</span>';
+    b.onclick=()=>go(i);
+    stepper.appendChild(b);
+  });
+  function go(i){
+    state.step=i; save();
+    steps.forEach((s,j)=>s.classList.toggle('active',j===i));
+    [...stepper.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+    document.getElementById('prevBtn').disabled=i===0;
+    document.getElementById('nextBtn').disabled=i===steps.length-1;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.getElementById('prevBtn').onclick=()=>go(Math.max(0,state.step-1));
+  document.getElementById('nextBtn').onclick=()=>go(Math.min(steps.length-1,state.step+1));
+
+  // ---------- pyodide ----------
+  let pyodide=null, loading=null, pandasLoaded=false;
+  const statusEl=document.getElementById('pyStatus');
+  function loadPy(){
+    if(pyodide) return Promise.resolve(pyodide);
+    if(loading) return loading;
+    statusEl.textContent='φόρτωση Python…';
+    loading=new Promise((res,rej)=>{
+      const s=document.createElement('script');
+      s.src='https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+      s.onload=async()=>{
+        try{
+          pyodide=await loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/'});
+          statusEl.textContent='φόρτωση pandas (10–20 δευτ.)…';
+          try{
+            await pyodide.loadPackage(['numpy','pandas']);
+            // the week's data file, written into the browser's file system so read_csv("store_orders.csv") works as in Colab
+            const csv=await (await fetch('store_orders.csv')).text();
+            pyodide.FS.writeFile('store_orders.csv', csv);
+            await pyodide.runPythonAsync("import pandas as pd\npd.set_option('display.width', 120)\npd.set_option('display.max_columns', 20)");
+            pandasLoaded=true;
+          }catch(e){ console.error(e); }
+          statusEl.textContent=pandasLoaded?'Python + pandas έτοιμα ✓':'Python έτοιμη ✓ (το pandas δεν φορτώθηκε)'; statusEl.classList.add('ready');
+          res(pyodide);
+        }catch(e){statusEl.textContent='η Python δεν φορτώθηκε'; rej(e);}
+      };
+      s.onerror=()=>{statusEl.textContent='η Python δεν φορτώθηκε (έλεγξε τη σύνδεση)'; rej(new Error('load'));};
+      document.head.appendChild(s);
+    });
+    return loading;
+  }
+  let chain=Promise.resolve();
+  function runPython(src){
+    // serialise runs: stdout capture is global in Pyodide
+    const p=chain.then(()=>runPythonNow(src));
+    chain=p.catch(()=>{});
+    return p;
+  }
+  async function runPythonNow(src){
+    const py=await loadPy();
+    let out='';
+    py.setStdout({batched:(t)=>{out+=t+'\n';}});
+    py.setStderr({batched:(t)=>{out+=t+'\n';}});
+    const ns=py.globals.get('dict')();
+    let err=null;
+    try{ await py.runPythonAsync(src,{globals:ns}); }
+    catch(e){ err=String(e.message||e); }
+    return {out,err,ns};
+  }
+  function fmtErr(e){
+    // show where (line in the user's code) and what (the last Error line)
+    const lines=e.trim().split('\n');
+    const where=lines.filter(l=>/File "<exec>", line \d+/.test(l)).map(l=>l.replace(/.*line (\d+).*/,'γραμμή $1')).pop();
+    let what='';
+    for(let i=lines.length-1;i>=0;i--){ if(/^[A-Za-z]*(Error|Exception|Warning)\b/.test(lines[i])){ what=lines[i]; break; } }
+    if(!what) what=lines[lines.length-1];
+    return (where?'Σφάλμα στη '+where+':\n':'')+what;
+  }
+
+  // ---------- runners ----------
+  document.querySelectorAll('.runner').forEach(r=>{
+    const code=r.dataset.code;
+    r.innerHTML='<div class="bar"><span>script.py</span><span class="spacer"></span><button class="btn secondary reset">Επαναφορά</button><button class="btn run">▶ Τρέξε</button></div><textarea spellcheck="false"></textarea><div class="out"></div>';
+    const ta=r.querySelector('textarea'), out=r.querySelector('.out');
+    ta.value=code; ta.rows=Math.max(4,code.split('\n').length+1);
+    ta.addEventListener('keydown',e=>{
+      if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();run();}
+      if(e.key==='Tab'){e.preventDefault();const s=ta.selectionStart;ta.value=ta.value.slice(0,s)+'    '+ta.value.slice(ta.selectionEnd);ta.selectionStart=ta.selectionEnd=s+4;}
+    });
+    r.querySelector('.reset').onclick=()=>{ta.value=code;out.textContent='';out.classList.remove('err');};
+    const btn=r.querySelector('.run');
+    async function run(){
+      btn.disabled=true; out.classList.remove('err'); out.textContent='…';
+      try{
+        const res=await runPython(ta.value);
+        out.textContent=(res.out+(res.err?fmtErr(res.err):'')).trimEnd();
+        if(res.err) out.classList.add('err');
+        if(!out.textContent) out.textContent='(καμία έξοδος — μήπως ξέχασες το print;)';
+      }catch(e){out.textContent='Η Python δεν είναι διαθέσιμη: '+e; out.classList.add('err');}
+      btn.disabled=false;
+    }
+    btn.onclick=run;
+  });
+
+  // ---------- quizzes ----------
+  const quizzes=[...document.querySelectorAll('.quiz')];
+  quizzes.forEach((q,qi)=>{
+    const opts=JSON.parse(q.dataset.opts), ans=+q.dataset.ans;
+    q.innerHTML='<div class="q">'+q.dataset.q+'</div>'+(q.dataset.code?'<pre></pre>':'')+'<div class="opts"></div><div class="fb"></div>';
+    if(q.dataset.code) q.querySelector('pre').textContent=q.dataset.code;
+    const box=q.querySelector('.opts'), fb=q.querySelector('.fb');
+    opts.forEach((o,i)=>{
+      const b=document.createElement('button'); b.textContent=o;
+      b.onclick=()=>{
+        [...box.children].forEach(c=>c.classList.remove('ok','bad'));
+        if(i===ans){b.classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why; state.quiz[qi]=true;}
+        else{b.classList.add('bad'); fb.className='fb bad'; fb.textContent='Όχι ακριβώς. '+q.dataset.why; state.quiz[qi]=false;}
+        save(); updateDone(); finalScore();
+      };
+      box.appendChild(b);
+    });
+    if(state.quiz[qi]===true){box.children[ans].classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why;}
+  });
+  function finalScore(){
+    const sec=steps[steps.length-1]; const qs=[...sec.querySelectorAll('.quiz')];
+    const idx=qs.map(q=>quizzes.indexOf(q)); const done=idx.filter(i=>state.quiz[i]!==undefined).length;
+    const ok=idx.filter(i=>state.quiz[i]===true).length;
+    const el=document.getElementById('finalScore');
+    if(done===qs.length){el.style.display='block'; el.innerHTML='<b>ΑΠΟΤΕΛΕΣΜΑ</b>Σωστές απαντήσεις: '+ok+' / '+qs.length+(ok===qs.length?' — άψογα!':ok>=8?' — πολύ καλά, ξαναδές τις λάθος.':' — ξαναδιάβασε τα βήματα 1–7 και ξαναπροσπάθησε.');}
+  }
+  finalScore();
+
+  // ---------- exercises ----------
+  const exs=[...document.querySelectorAll('.exercise')];
+  exs.forEach((ex,ei)=>{
+    const code=ex.dataset.code, check=ex.dataset.check, sol=ex.dataset.solution;
+    const wrap=document.createElement('div');
+    wrap.innerHTML='<div class="runner"><div class="bar"><span>script.py</span><span class="spacer"></span><button class="btn secondary reset">Επαναφορά</button><button class="btn run">✔ Έλεγξε</button></div><textarea spellcheck="false"></textarea><div class="out"></div></div><div class="result"></div><details><summary>Δείξε μια λύση</summary><pre class="solpre"></pre></details>';
+    ex.appendChild(wrap);
+    const ta=wrap.querySelector('textarea'), out=wrap.querySelector('.out'), res=wrap.querySelector('.result'), btn=wrap.querySelector('.run');
+    ta.value=code; ta.rows=Math.max(5,code.split('\n').length+2);
+    wrap.querySelector('.solpre').textContent=sol;
+    Object.assign(wrap.querySelector('.solpre').style,{fontFamily:'var(--mono)',fontSize:'14px',background:'var(--pale)',padding:'10px 12px',borderRadius:'8px',whiteSpace:'pre-wrap',margin:'6px 0 0'});
+    ta.addEventListener('keydown',e=>{ if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();run();}
+      if(e.key==='Tab'){e.preventDefault();const s=ta.selectionStart;ta.value=ta.value.slice(0,s)+'    '+ta.value.slice(ta.selectionEnd);ta.selectionStart=ta.selectionEnd=s+4;}});
+    wrap.querySelector('.reset').onclick=()=>{ta.value=code;out.textContent='';out.classList.remove('err');res.textContent='';res.className='result';};
+    async function run(){
+      btn.disabled=true; out.classList.remove('err'); out.textContent='…'; res.className='result'; res.textContent='';
+      try{
+        const py=await loadPy();
+        const src=ta.value;
+        const r=await runPython(src);
+        out.textContent=(r.out+(r.err?fmtErr(r.err):'')).trimEnd();
+        if(r.err){out.classList.add('err'); res.className='result bad'; res.textContent='Ο κώδικας έβγαλε σφάλμα. Διάβασε το μήνυμα και διόρθωσέ τον.'; state.ex[ei]=false;}
+        else{
+          r.ns.set('_out',r.out); r.ns.set('_src',src);
+          try{ await py.runPythonAsync(check,{globals:r.ns}); res.className='result ok'; res.textContent='Σωστά! Η άσκηση ολοκληρώθηκε.'; state.ex[ei]=true; }
+          catch(e){ const m=String(e.message||e); const am=m.match(/AssertionError: ([^\n]*)/); res.className='result bad'; res.textContent=am?am[1]:'Δεν είναι ακόμη σωστό: '+fmtErr(m); state.ex[ei]=false; }
+        }
+      }catch(e){out.textContent='Η Python δεν είναι διαθέσιμη: '+e; out.classList.add('err');}
+      save(); updateDone(); btn.disabled=false;
+    }
+    btn.onclick=run;
+    if(state.ex[ei]===true){res.className='result ok'; res.textContent='Ολοκληρωμένη ✓ (μπορείς την ξανακάνεις)';}
+  });
+
+  function updateDone(){
+    steps.forEach((s,i)=>{
+      const qs=[...s.querySelectorAll('.quiz')].map(q=>quizzes.indexOf(q));
+      const es=[...s.querySelectorAll('.exercise')].map(e=>exs.indexOf(e));
+      const all=qs.every(i=>state.quiz[i]===true)&&es.every(i=>state.ex[i]===true)&&(qs.length+es.length)>0;
+      stepper.children[i].classList.toggle('done',all);
+    });
+  }
+
+  // ---------- groupby visualizer (split – apply – combine) ----------
+  const DF_ROWS=[{"order_id": 1003, "item": "mouse", "category": "accessories", "unit_price": 19.9, "quantity": 6, "channel": "online", "city": "Thessaloniki"}, {"order_id": 1005, "item": "laptop", "category": "computers", "unit_price": 899.0, "quantity": 2, "channel": "online", "city": "Thessaloniki"}, {"order_id": 1008, "item": "laptop", "category": "computers", "unit_price": 899.0, "quantity": 1, "channel": "store", "city": null}, {"order_id": 1013, "item": "mouse", "category": "accessories", "unit_price": 19.9, "quantity": 8, "channel": "store", "city": "Patras"}, {"order_id": 1014, "item": "keyboard", "category": "accessories", "unit_price": 45.0, "quantity": 7, "channel": "online", "city": "Thessaloniki"}, {"order_id": 1025, "item": "monitor", "category": "displays", "unit_price": 249.0, "quantity": 2, "channel": "online", "city": "Thessaloniki"}, {"order_id": 1030, "item": "webcam", "category": "accessories", "unit_price": 59.0, "quantity": 8, "channel": "online", "city": "Athens"}, {"order_id": 1059, "item": "laptop", "category": "computers", "unit_price": 899.0, "quantity": 1, "channel": "store", "city": "Thessaloniki"}];
+  const DF_IDX=[2,4,7,12,13,24,29,58];
+  document.querySelectorAll('.gbviz').forEach(v=>{
+    const cols=Object.keys(DF_ROWS[0]); const numeric=['order_id','unit_price','quantity'];
+    v.className='viz gbviz';
+    v.innerHTML='<div style="font-family:var(--mono);font-size:15px;color:var(--navy)">orders.<span class="cond"></span>   # 8 από τις 60 γραμμές</div><input spellcheck="false" autocomplete="off"><div class="two"><div><div class="lbl">SPLIT: οι γραμμές, χωρισμένες σε ομάδες</div><div style="overflow-x:auto"><table class="rows"><thead><tr><th></th>'+cols.map(c=>'<th>'+c+'</th>').join('')+'</tr></thead><tbody></tbody></table></div></div><div><div class="lbl">APPLY + COMBINE: ένα αποτέλεσμα ανά ομάδα</div><div style="overflow-x:auto"><table class="res-t"><thead></thead><tbody></tbody></table></div><div class="res" style="margin-top:8px"></div></div></div>';
+    const inp=v.querySelector('input'), tb=v.querySelector('table.rows tbody'), rth=v.querySelector('table.res-t thead'), rtb=v.querySelector('table.res-t tbody'), res=v.querySelector('.res'), condEl=v.querySelector('.cond');
+    const fmt=(c,x)=>x===null?'NaN':(c==='unit_price'?x.toFixed(1):x);
+    function parse(e){
+      e=e.trim();
+      const m=e.match(/^groupby\(\s*["']([A-Za-z_]+)["']\s*\)(?:\s*\[\s*["']([A-Za-z_]+)["']\s*\])?\s*\.\s*(size|count|sum|mean|min|max)\(\s*\)$/);
+      if(!m) return {err:'Γράψε κάτι σαν groupby("channel")["quantity"].sum() ή groupby("item").size()'};
+      const key=m[1], col=m[2], fn=m[3];
+      if(!cols.includes(key)) return {err:"KeyError: '"+key+"' — δεν υπάρχει τέτοια στήλη"};
+      if(col&&!cols.includes(col)) return {err:"KeyError: '"+col+"' — δεν υπάρχει τέτοια στήλη"};
+      if(fn==='size'&&col) return {err:'Το size() μετρά γραμμές: γράψε groupby("'+key+'").size() χωρίς στήλη'};
+      if(fn!=='size'&&!col) return {err:'Διάλεξε στήλη: groupby("'+key+'")["quantity"].'+fn+'()'};
+      if(col&&['sum','mean'].includes(fn)&&!numeric.includes(col)) return {err:"TypeError: agg function failed [how->"+fn+", dtype->object] — η στήλη "+col+" είναι κείμενο"};
+      return {key,col,fn};
+    }
+    function upd(){
+      const p=parse(inp.value); condEl.textContent=inp.value.trim();
+      tb.innerHTML=''; rth.innerHTML=''; rtb.innerHTML='';
+      if(p.err){ res.style.color='var(--red)'; res.textContent=p.err;
+        DF_ROWS.forEach((r,i)=>{const tr=document.createElement('tr'); tr.innerHTML='<td class="idx">'+DF_IDX[i]+'</td>'+cols.map(c=>'<td>'+fmt(c,r[c])+'</td>').join(''); tb.appendChild(tr);});
+        return; }
+      // split: NaN keys are dropped, like pandas
+      const rows=DF_ROWS.map((r,i)=>({r,i})).filter(x=>x.r[p.key]!==null);
+      const groups=[...new Set(rows.map(x=>x.r[p.key]))].sort((a,b)=>a<b?-1:a>b?1:0);
+      rows.sort((a,b)=>groups.indexOf(a.r[p.key])-groups.indexOf(b.r[p.key])||a.i-b.i);
+      rows.forEach(x=>{const g=groups.indexOf(x.r[p.key])%5; const tr=document.createElement('tr'); tr.className='g'+g;
+        tr.innerHTML='<td class="idx">'+DF_IDX[x.i]+'</td>'+cols.map(c=>'<td class="'+(c===p.key?'key':'')+'"'+(c===p.col?' style="font-weight:bold;text-decoration:underline"':'')+'>'+fmt(c,x.r[c])+'</td>').join(''); tb.appendChild(tr);});
+      const dropped=DF_ROWS.length-rows.length;
+      rth.innerHTML='<tr><th>'+p.key+'</th><th>'+(p.fn==='size'?'size':p.col+' · '+p.fn)+'</th></tr>';
+      groups.forEach((g,gi)=>{const vals=rows.filter(x=>x.r[p.key]===g).map(x=>x.r[p.col]).filter(x=>x!==null); let out;
+        if(p.fn==='size') out=rows.filter(x=>x.r[p.key]===g).length; else if(p.fn==='count') out=vals.length; else if(p.fn==='sum') out=vals.reduce((a,b)=>a+b,0); else if(p.fn==='mean') out=vals.reduce((a,b)=>a+b,0)/vals.length; else if(p.fn==='max') out=vals.reduce((a,b)=>a>b?a:b); else out=vals.reduce((a,b)=>a<b?a:b);
+        if(typeof out==='number'&&!Number.isInteger(out)) out=Math.round(out*1000)/1000;
+        const tr=document.createElement('tr'); tr.className='g'+(gi%5); tr.innerHTML='<td class="key">'+g+'</td><td>'+out+'</td>'; rtb.appendChild(tr);});
+      res.style.color='var(--navy)'; res.textContent='→ '+groups.length+' ομάδες'+(dropped?' · '+dropped+' γραμμή με NaN στο κλειδί αγνοήθηκε':'')+(p.fn==='size'?'':' · το αποτέλεσμα είναι Series με ευρετήριο '+p.key);
+    }
+    inp.oninput=upd; inp.value=v.dataset.init; upd();
+  });
+
+  updateDone();
+  go(Math.min(state.step||0,steps.length-1));
+  // warm up python (and pandas) in the background
+  loadPy().catch(()=>{});
+})();
+</script>
+</body>
+</html>
