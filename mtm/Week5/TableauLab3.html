@@ -12,8 +12,8 @@
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tableau 3: Από το dashboard στην απόφαση · Εβδομάδα 4</title>
-<meta name="description" content="Οδηγός εργαστηρίου Tableau 3 με δεδομένα κρατήσεων ξενοδοχείων: σύγκριση resort και city hotel με Measure Values, πρόβλεψη (forecast), γραμμή τάσης και R², ποσοστιαία διαφορά από πέρυσι (table calculation), σχεδίαση καλού dashboard, Story Points και η 5λεπτη παρουσίαση. Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις, Εβδομάδα 4.">
+<title>Tableau 3: Από το dashboard στην απόφαση · Εβδομάδα 5</title>
+<meta name="description" content="Οδηγός εργαστηρίου Tableau 3 με δεδομένα κρατήσεων ξενοδοχείων: σύγκριση resort και city hotel με Measure Values, πρόβλεψη (forecast), γραμμή τάσης και R², ποσοστιαία διαφορά από πέρυσι (table calculation), σχεδίαση καλού dashboard, Story Points και η 5λεπτη παρουσίαση. Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις, Εβδομάδα 5.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -119,7 +119,7 @@
 <nav id="site-nav"><a class="sn-home" href="../../index.html">Dr. Evangelos Kalampokis</a><span class="sn-sep">|</span><a class="sn-back" href="../../courses/e-services-tourism-businesses.html">&larr; Σελίδα μαθήματος: Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις</a><a class="sn-teach" href="../../index.html#teaching">Αρχική</a></nav>
 <div class="wrap">
   <div>
-    <div class="kicker">Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις · Εβδομάδα 4 · Εργαστήριο Tableau 3/3</div>
+    <div class="kicker">Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις · Εβδομάδα 5 · Εργαστήριο Tableau 3/3</div>
     <h1>Από το dashboard στην απόφαση</h1>
     <p class="lead" style="margin-top:10px">Οδηγός εργαστηρίου σε 7 βήματα, το τελευταίο με Tableau. Τις δύο προηγούμενες εβδομάδες μάθαμε να <b>βλέπουμε</b> τα δεδομένα και να <b>υπολογίζουμε</b> δείκτες. Σήμερα κάνουμε αυτό που περιμένει ένας διευθυντής: συγκρίνουμε τα δύο ξενοδοχεία σε έναν πίνακα, <b>προβλέπουμε</b> τους επόμενους μήνες, μετράμε τη διαφορά <b>από πέρυσι</b>, σχεδιάζουμε ένα dashboard που διαβάζεται σε 10 δευτερόλεπτα, το κάνουμε <b>Story</b> και το παρουσιάζουμε σε 5 λεπτά. Τα checkpoints ελέγχονται πάνω στα πραγματικά νούμερα. Τα βήματα 2–4 γίνονται στο μάθημα, τα 5–7 είναι το παραδοτέο. Πριν ξεκινήσεις, δες <a href="Result.html"><b>πώς μοιάζει το αποτέλεσμα</b></a>: το τελικό dashboard και το Story των 5 σημείων.</p>
   </div>
@@ -133,7 +133,7 @@
     <div class="journey">
       <div><small>Εβδομάδα 2 · Βλέπω</small><b>Από τις κρατήσεις στο πρώτο dashboard</b>Σύνδεση με το CSV, διαστάσεις και μετρούμενα μεγέθη, μπάρες, εποχικότητα, χάρτης, το πρώτο υπολογιζόμενο πεδίο (<code>Cancellation Rate</code>), το πρώτο dashboard.</div>
       <div><small>Εβδομάδα 3 · Υπολογίζω</small><b>Το dashboard του revenue manager</b>Φίλτρα τριών επιπέδων, παράμετροι <code>Rooms</code> και <code>Commission</code>, πληρότητα και RevPAR, ομάδες lead time, καθαρά έσοδα, σύγκριση ετών, KPI tiles και ενέργεια φίλτρου.</div>
-      <div class="now"><small>Εβδομάδα 4 · Πείθω</small><b>Από το dashboard στην απόφαση</b>Πίνακας δεικτών με Measure Values, πρόβλεψη (forecast), γραμμή τάσης και R², % διαφορά από πέρυσι (table calculation), σχεδίαση dashboard, Story Points, 5λεπτη παρουσίαση.</div>
+      <div class="now"><small>Εβδομάδα 5 · Πείθω</small><b>Από το dashboard στην απόφαση</b>Πίνακας δεικτών με Measure Values, πρόβλεψη (forecast), γραμμή τάσης και R², % διαφορά από πέρυσι (table calculation), σχεδίαση dashboard, Story Points, 5λεπτη παρουσίαση.</div>
     </div>
     <p>Άνοιξε το <code>.twbx</code> της Εβδομάδας 3 (αυτό με το dashboard «Revenue manager»). Όλα τα σημερινά φύλλα χτίζουν πάνω σε πεδία που έχεις ήδη. Αν κάποιο λείπει, ξαναφτιάξ᾽ το από τους τύπους παρακάτω· αν δεν έχεις το workbook, σύνδεσε ένα νέο με το <a href="../Week2/data/hotel_bookings.csv" download>hotel_bookings.csv</a> και φτιάξε μόνο αυτά τα τρία.</p>
     <div class="box note"><b>ΤΑ ΤΡΙΑ ΠΕΔΙΑ ΠΟΥ ΧΡΕΙΑΖΕΣΑΙ ΑΠΟ ΤΙΣ ΕΒΔΟΜΑΔΕΣ 2–3</b>
@@ -142,7 +142,7 @@
       <b>Room Nights Sold</b><div class="calc">SUM(IF [Canceled] = 'No' THEN [Nights] END)</div>
     </div>
     <h3>Διορθώστε πρώτα την Εργασία 2</h3>
-    <p>Έξι πράγματα που εμφανίστηκαν στα dashboards της προηγούμενης εβδομάδας. Βρες αν σε αφορά κάποιο· καθένα διορθώνεται σε 5 λεπτά, και το σημερινό εργαστήριο χτίζει πάνω σε σωστά νούμερα.</p>
+    <p>Έξι πράγματα που εμφανίστηκαν στα dashboards της Εργασίας 2 (Εβδομάδα 3). Βρες αν σε αφορά κάποιο· καθένα διορθώνεται σε 5 λεπτά, και το σημερινό εργαστήριο χτίζει πάνω σε σωστά νούμερα.</p>
     <table class="t">
       <tr><th style="width:26%">Σύμπτωμα</th><th style="width:34%">Αιτία</th><th>Διόρθωση</th></tr>
       <tr><td><b>ADR = 12.152.224</b></td><td>SUM αντί για AVG. Ο ADR είναι ήδη μέσος όρος ανά κράτηση· αθροισμένος δεν σημαίνει τίποτα.</td><td>Βελάκι του pill › <span class="ui">Measure › Average</span>. Πρώτα διαβάζεις το pill, μετά τον αριθμό.</td></tr>
@@ -267,7 +267,7 @@
     <h3>Η άσκηση: ξαναχτίσε το «Revenue manager»</h3>
     <div class="box note"><b>Ο ΣΤΟΧΟΣ</b>Το dashboard που θα φτιάξεις, ολοκληρωμένο και με τους έξι κανόνες σημειωμένους πάνω του: <a href="Result.html">Πώς μοιάζει το αποτέλεσμα › Το dashboard</a>.</div>
     <ol class="todo">
-      <li>Άνοιξε το dashboard της προηγούμενης εβδομάδας. <span class="ui">Size › Fixed</span>, Generic Desktop. Δες τι χαλάει: σ᾽ αυτό το μέγεθος θα το παρουσιάσεις.</li>
+      <li>Άνοιξε το dashboard «Revenue manager» της Εβδομάδας 3. <span class="ui">Size › Fixed</span>, Generic Desktop. Δες τι χαλάει: σ᾽ αυτό το μέγεθος θα το παρουσιάσεις.</li>
       <li>Πρόσθεσε ένα τέταρτο KPI tile <code>KPI Διανυκτερεύσεις</code>: νέο φύλλο, <span class="pill m">Room Nights Sold</span> στο Text, Format › Numbers › Display units <span class="ui">Thousands</span>. Βάλ᾽ το στη σειρά με τα άλλα KPI.</li>
       <li>Αντικατάστησε ένα από τα παλιά γραφήματα με το <code>Έσοδα vs πέρυσι</code> (βήμα 4). Κράτα 3 γραφήματα κάτω από τα KPI: ένα για «τι συνέβη» (έσοδα vs πέρυσι), ένα για «πού χάνουμε» (ακυρώσεις ανά lead time ή κανάλι), ένα για «τι έρχεται» (η πρόβλεψη).</li>
       <li>Δώσε σε κάθε φύλλο τίτλο-συμπέρασμα. Ενοποίησε τα χρώματα των ετών (2016 μπλε, 2017 πορτοκαλί) σε όλα τα φύλλα. Σβήσε τις γραμμές πλέγματος.</li>
@@ -371,7 +371,7 @@
 
 <script>
 (function(){
-  const KEY='mtm-week4-tableau3';
+  const KEY='mtm-week5-tableau3';
   let state={step:0,quiz:{},check:{},prep:{}};
   try{const s=localStorage.getItem(KEY); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
   function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
