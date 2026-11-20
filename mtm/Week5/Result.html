@@ -12,8 +12,8 @@
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Το αποτέλεσμα του εργαστηρίου Tableau 3 · Εβδομάδα 4</title>
-<meta name="description" content="Πώς μοιάζει το παραδοτέο της Εβδομάδας 4: το ανανεωμένο dashboard «Revenue manager» με τους έξι κανόνες σχεδίασης και το Story πέντε σημείων (τι συνέβη, γιατί, πού κινδυνεύουμε, τι προτείνω, τι περιμένουμε) με τη λεζάντα-συμπέρασμα του κάθε σημείου. Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις.">
+<title>Το αποτέλεσμα του εργαστηρίου Tableau 3 · Εβδομάδα 5</title>
+<meta name="description" content="Πώς μοιάζει το παραδοτέο της Εβδομάδας 5: το ανανεωμένο dashboard «Revenue manager» με τους έξι κανόνες σχεδίασης και το Story πέντε σημείων (τι συνέβη, γιατί, πού κινδυνεύουμε, τι προτείνω, τι περιμένουμε) με τη λεζάντα-συμπέρασμα του κάθε σημείου. Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -77,7 +77,7 @@
 <nav id="site-nav"><a class="sn-home" href="../../index.html">Dr. Evangelos Kalampokis</a><span class="sn-sep">|</span><a class="sn-back" href="../../courses/e-services-tourism-businesses.html">&larr; Σελίδα μαθήματος: Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις</a><a class="sn-teach" href="TableauLab3.html">Ο οδηγός του εργαστηρίου &rarr;</a></nav>
 <div class="wrap">
   <div>
-    <div class="kicker">Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις · Εβδομάδα 4 · Εργαστήριο Tableau 3/3</div>
+    <div class="kicker">Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις · Εβδομάδα 5 · Εργαστήριο Tableau 3/3</div>
     <h1>Πώς μοιάζει το αποτέλεσμα</h1>
     <p class="lead" style="margin-top:10px">Αυτό είναι το παραδοτέο της εβδομάδας, ολοκληρωμένο: το ανανεωμένο dashboard «Revenue manager» και το Story των πέντε σημείων, με τη λεζάντα-συμπέρασμα του κάθε σημείου και τον χρόνο που του αναλογεί στην παρουσίαση των 5 λεπτών. Το τι θα πεις σε κάθε σημείο είναι η δική σου δουλειά. Τα γραφήματα είναι σχεδιασμένα πάνω στα πραγματικά νούμερα του dataset (όχι screenshots από Tableau), για να ξέρεις πού πας· το δικό σου θα διαφέρει στις λεπτομέρειες, όχι στη δομή. Πώς φτιάχνεται το καθένα: <a href="TableauLab3.html">ο οδηγός</a>, βήματα 2–6.</p>
   </div>
@@ -177,8 +177,8 @@
 (function(){
   // tabs
   const tabs=[...document.querySelectorAll('.tabs button')];
-  tabs.forEach(b=>b.onclick=()=>{tabs.forEach(x=>x.classList.toggle('active',x===b)); document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+b.dataset.tab)); try{localStorage.setItem('mtm-week4-result-tab',b.dataset.tab);}catch(e){}});
-  try{const t=localStorage.getItem('mtm-week4-result-tab'); if(t){const b=tabs.find(x=>x.dataset.tab===t); if(b) b.click();}}catch(e){}
+  tabs.forEach(b=>b.onclick=()=>{tabs.forEach(x=>x.classList.toggle('active',x===b)); document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+b.dataset.tab)); try{localStorage.setItem('mtm-week5-result-tab',b.dataset.tab);}catch(e){}});
+  try{const t=localStorage.getItem('mtm-week5-result-tab'); if(t){const b=tabs.find(x=>x.dataset.tab===t); if(b) b.click();}}catch(e){}
   // story
   const pts=[...document.querySelectorAll('.pt')], caps=document.getElementById('caps'); let cur=0;
   pts.forEach((p,i)=>{const b=document.createElement('button'); b.innerHTML='<small>'+p.dataset.label+'</small>'+p.dataset.cap; b.onclick=()=>go(i); caps.appendChild(b);});
