@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7KW3PRQVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R7KW3PRQVZ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tableau σε μία σελίδα · Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις</title>
+<meta name="description" content="Σύνοψη των τριών εργαστηρίων Tableau του μαθήματος: διαστάσεις και μετρούμενα μεγέθη, aggregation, τα τρία επίπεδα φίλτρων, παράμετροι, υπολογιζόμενα πεδία, υπολογισμοί πίνακα, Analytics (τάση, πρόβλεψη), dashboard και Story, δημοσίευση, δικά σου δεδομένα. Εκτυπώσιμο.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#1B2F6B;--text:#26314F;--gray:#5A6385;--blue:#7895F9;--lblue:#B9C8FC;--pale:#EEF1FE;--orange:#F5821F;--peach:#FDE8D4;--green:#1e7a4c;--red:#B23A3A;--lred:#FBE4E4;--code:#141E3C;--codefg:#F4F6FF;--mono:'JetBrains Mono',Consolas,monospace;--dim:#4E79A7;--mea:#59A14F}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pale);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.4}
+  a{color:var(--green)}
+  .wrap{max-width:1100px;margin:0 auto;padding:26px 16px 60px;display:flex;flex-direction:column;gap:14px}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--gray);text-transform:uppercase}
+  h1{margin:4px 0 0;font-family:Georgia,serif;font-weight:700;font-size:32px;line-height:1.1;color:var(--navy)}
+  .lead{font-size:16px;max-width:900px;margin:6px 0 0}
+  .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .card{background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 1px 3px rgba(27,47,107,.08);font-size:14px;display:flex;flex-direction:column;gap:6px;break-inside:avoid}
+  .card h2{margin:0;font-family:Georgia,serif;font-size:18px;color:var(--navy)}
+  .card h2 small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--gray);text-transform:uppercase;margin-bottom:2px}
+  .card p{margin:0}
+  .card ul{margin:0;padding-left:18px} .card li{margin:2px 0}
+  .ui{font-family:var(--mono);font-size:.9em;color:var(--navy);background:var(--pale);border:1px solid var(--lblue);border-radius:4px;padding:0 5px;white-space:nowrap}
+  .pill{display:inline-block;font-family:var(--mono);font-size:12px;padding:1px 8px;border-radius:10px;color:#fff;background:var(--dim)} .pill.m{background:var(--mea)}
+  .calc{font-family:var(--mono);font-size:12.5px;background:var(--code);color:var(--codefg);padding:8px 10px;border-radius:6px;white-space:pre-wrap;line-height:1.45;margin:2px 0}
+  .calc b{color:#FFD28A;font-weight:normal}
+  .wide{grid-column:1/-1}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .warn{background:var(--lred);border-radius:8px;padding:10px 14px;font-size:14px} .warn b:first-child{color:var(--red);font-size:11px;letter-spacing:.1em;display:block;margin-bottom:3px}
+  .tip{background:var(--peach);border-radius:8px;padding:10px 14px;font-size:14px} .tip b:first-child{color:var(--orange);font-size:11px;letter-spacing:.1em;display:block;margin-bottom:3px}
+  table.t{border-collapse:collapse;width:100%;font-size:13px}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:5px 8px}
+  table.t td{padding:5px 8px;border-bottom:1px solid var(--lblue);vertical-align:top}
+  .print{align-self:flex-start;font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--navy);color:#fff}
+  footer{font-size:12px;color:var(--gray);text-align:center;margin-top:10px}
+  @media (max-width:900px){.grid{grid-template-columns:1fr 1fr}} @media (max-width:620px){.grid,.two{grid-template-columns:1fr} h1{font-size:26px}}
+  @media print{
+    body{background:#fff} .wrap{padding:0;gap:8px;max-width:none} #site-nav,.print{display:none} .card{box-shadow:none;border:1px solid #ccd;padding:8px 10px;font-size:11px} .card h2{font-size:14px}
+    .grid{gap:8px} .calc{font-size:10px;background:#f0f2f8;color:#000;border:1px solid #ccd} .calc b{color:#000} h1{font-size:22px} .lead{font-size:12px} table.t{font-size:10px} .warn,.tip{font-size:11px}
+    @page{size:A4;margin:10mm}
+  }
+</style>
+<style id="site-nav-style">
+  #site-nav{font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#1B2F6B;color:#fff;padding:8px 16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  #site-nav a{color:#fff;text-decoration:none}
+  #site-nav .sn-home{font-weight:bold} #site-nav .sn-sep{opacity:.5} #site-nav .sn-teach{color:#B9C8FC;margin-left:auto}
+  @media (max-width:700px){#site-nav{font-size:13px;gap:6px 12px;padding:8px 12px}#site-nav .sn-sep{display:none}#site-nav .sn-back{flex-basis:100%;order:3;padding-top:2px}#site-nav .sn-teach{order:2}}
+</style>
+</head>
+<body>
+<nav id="site-nav"><a class="sn-home" href="../../index.html">Dr. Evangelos Kalampokis</a><span class="sn-sep">|</span><a class="sn-back" href="../../courses/e-services-tourism-businesses.html">&larr; Σελίδα μαθήματος: Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις</a><a class="sn-teach" href="TableauLab3.html">Οδηγός Εβδομάδας 5 &rarr;</a></nav>
+<div class="wrap">
+  <div>
+    <div class="kicker">Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις · Εργαστήρια Tableau, Εβδομάδες 2, 3 και 5</div>
+    <h1>Tableau σε μία σελίδα</h1>
+    <p class="lead">Ό,τι χρησιμοποιήσαμε στα τρία εργαστήρια, με τη διαδρομή στο μενού και τους τύπους όπως τους γράψαμε. Για να το έχεις δίπλα σου όταν δουλεύεις με δικά σου δεδομένα. Οι αναλυτικοί οδηγοί: <a href="../Week2/TableauLab1.html">Εβδ. 2</a> · <a href="../Week3/TableauLab2.html">Εβδ. 3</a> · <a href="TableauLab3.html">Εβδ. 5</a>.</p>
+  </div>
+  <button class="print" onclick="window.print()">Εκτύπωση / PDF</button>
+
+  <div class="grid">
+    <div class="card"><h2><small>1 · Τα δύο είδη πεδίων</small>Διάσταση και μετρούμενο μέγεθος</h2>
+      <p><span class="pill">Διάσταση</span> (μπλε, dimension): <i>κατηγορία</i> που κόβει τα δεδομένα: Hotel, Country, Market Segment, ημερομηνία. <span class="pill m">Μετρούμενο μέγεθος</span> (πράσινο, measure): <i>αριθμός</i> που αθροίζεται: ADR, Nights, Revenue.</p>
+      <p>Κάθε μετρούμενο μέγεθος μπαίνει στο φύλλο με μια <b>συνάθροιση</b> (aggregation): SUM, AVG, COUNT, COUNTD. Αλλαγή: βελάκι του pill › <span class="ui">Measure › Average</span>. Το <b>πρώτο πράγμα που διαβάζεις</b> είναι το pill, όχι ο αριθμός: SUM(ADR) δεν σημαίνει τίποτα.</p></div>
+
+    <div class="card"><h2><small>2 · Η οθόνη</small>Ράφια, Marks, πάνελ</h2>
+      <ul><li><span class="ui">Columns</span> / <span class="ui">Rows</span>: τι πάει οριζόντια / κάθετα.</li>
+      <li>Κάρτα <span class="ui">Marks</span>: τύπος (Bar, Line, Square, Circle) και Color, Size, Label, Text, Detail, Tooltip. Σύρε ένα πεδίο πάνω σε ό,τι θέλεις να το ελέγχει.</li>
+      <li><span class="ui">Show Me</span> (πάνω δεξιά): προτείνει γράφημα για τα πεδία που έχεις επιλέξει.</li>
+      <li>Ημερομηνία: βελάκι του pill › πάνω ομάδα = <b>διακριτό</b> (μπλε: «Μάιος», όλα τα χρόνια μαζί), κάτω ομάδα = <b>συνεχές</b> (πράσινο: «May 2016», άξονας χρόνου).</li>
+      <li>Πάνελ <span class="ui">Analytics</span> (δίπλα στο Data): Trend Line, Forecast, Average Line, Reference Line.</li></ul></div>
+
+    <div class="card"><h2><small>3 · Τρία επίπεδα</small>Φίλτρα</h2>
+      <ul><li><b>Φίλτρο φύλλου</b>: σύρε πεδίο στο ράφι <span class="ui">Filters</span>. Διαστάσεις με λίστα, μετρούμενα μεγέθη με εύρος, Top N από την καρτέλα Top.</li>
+      <li><b>Κάρτα φίλτρου</b> (ο χρήστης διαλέγει): pill › <span class="ui">Show Filter</span>· μορφή από το βελάκι της κάρτας (Single Value dropdown, Multiple Values list).</li>
+      <li><b>Φίλτρο dashboard</b>: βελάκι της κάρτας › <span class="ui">Apply to Worksheets › All Using This Data Source</span>. Χωρίς αυτό φιλτράρει μόνο το φύλλο όπου φτιάχτηκε.</li>
+      <li><b>Ενέργεια φίλτρου</b>: Dashboard › Actions › Add Action › Filter: κλικ σε ένα γράφημα φιλτράρει τα άλλα. Προσοχή: ένα KPI «πληρότητα» φιλτραρισμένο σε ένα κανάλι δείχνει μερίδιο, όχι πληρότητα.</li></ul></div>
+
+    <div class="card"><h2><small>4 · Ό,τι ξέρει ο χρήστης, όχι τα δεδομένα</small>Παράμετροι</h2>
+      <p>Πάνελ Data › βελάκι › <span class="ui">Create Parameter</span>: όνομα, τύπος (Integer / Float), τρέχουσα τιμή, εύρος και βήμα. Μετά <span class="ui">Show Parameter</span> για το slider. Μπαίνει μέσα σε τύπους σαν πεδίο: <code>[Rooms]</code>.</p>
+      <p>Δύο που χρησιμοποιήσαμε: <b>Rooms</b> (Integer, 200, 50–600, βήμα 10) και <b>Commission</b> (Float, 0,18, 0,10–0,30, Percentage). <b>Ποσοστό = 0,18, όχι 18</b>: αλλιώς το 1 − 18 βγάζει αρνητικά έσοδα.</p>
+      <p>Στην παρουσίαση η παράμετρος λέγεται δυνατά: «με την υπόθεση 200 δωματίων…». Αν η πληρότητα βγαίνει πάνω από 100%, φταίει η υπόθεση, όχι το Tableau.</p></div>
+
+    <div class="card"><h2><small>5 · Πάνελ Analytics</small>Τάση και πρόβλεψη</h2>
+      <p><b>Trend Line › Linear</b> σε άξονα συνεχούς χρόνου. Ποντίκι πάνω στη γραμμή: κλίση, <b>R²</b> (0–1, πόσο «εξηγεί» η ευθεία), P-value. Η τάση περιγράφει το παρελθόν, δεν υπόσχεται το μέλλον.</p>
+      <p><b>Forecast</b> σε γραμμή με MONTH continuous. <span class="ui">Analysis › Forecast › Forecast Options</span>: μήκος (Exactly 12 Months), <b>Ignore last 1</b> (ο τελευταίος μήνας θεωρείται ατελής). Η σκιασμένη ζώνη είναι η πληροφορία: «1.900–2.700», όχι «2.300». <span class="ui">Describe Forecast</span> για μοντέλο και MAPE. Ξέρει μόνο το παρελθόν της ίδιας της γραμμής.</p></div>
+
+    <div class="card"><h2><small>6 · Πολλά μετρούμενα μεγέθη μαζί</small>Measure Names / Measure Values</h2>
+      <p><span class="pill">Measure Names</span> (τελευταίο στις διαστάσεις) και <span class="pill m">Measure Values</span> (τελευταίο στα μετρούμενα μεγέθη). Measure Names στο Rows + Measure Values στο Text = πίνακας δεικτών· στην κάρτα Measure Values σύρε έξω ό,τι δεν θέλεις.</p>
+      <p>Highlight table: Marks <span class="ui">Square</span>, Measure Values και στο Color, υπόμνημα › <span class="ui">Use Separate Legends</span>. Δύο στήλες μπάρες (μικτά/καθαρά): Measure Values στο <b>Columns</b>, όχι στο Color (αλλιώς στοιβάζονται).</p></div>
+
+    <div class="card wide"><h2><small>7 · Νέα πεδία από τα παλιά</small>Υπολογιζόμενα πεδία (Create Calculated Field)</h2>
+      <div class="two">
+        <div>
+<div class="calc"><b>Cancellation Rate</b>
+SUM(IF [Canceled] = 'Yes' THEN 1 ELSE 0 END) / COUNT([Booking ID])</div>
+<div class="calc"><b>Revenue Kept</b>  (έσοδα που πραγματοποιήθηκαν)
+IF [Canceled] = 'No' THEN [Revenue] END</div>
+<div class="calc"><b>Room Nights Sold</b>
+SUM(IF [Canceled] = 'No' THEN [Nights] END)</div>
+<div class="calc"><b>Days in Period</b>
+COUNTD([Arrival Date])</div>
+<div class="calc"><b>Occupancy</b>
+[Room Nights Sold] / ([Rooms] * [Days in Period])</div>
+<div class="calc"><b>RevPAR</b>
+SUM(IF [Canceled] = 'No' THEN [Revenue] END) / ([Rooms] * [Days in Period])</div>
+        </div>
+        <div>
+<div class="calc"><b>Lead Time Group</b>  (ομάδες με επιχειρησιακό νόημα· ο αριθμός μπροστά για τη σειρά)
+IF [Lead Time (days)] &lt;= 7 THEN '1 · 0–7 μέρες'
+ELSEIF [Lead Time (days)] &lt;= 30 THEN '2 · 8–30 μέρες'
+ELSEIF [Lead Time (days)] &lt;= 90 THEN '3 · 1–3 μήνες'
+ELSEIF [Lead Time (days)] &lt;= 180 THEN '4 · 3–6 μήνες'
+ELSE '5 · πάνω από 6 μήνες'
+END</div>
+<div class="calc"><b>Net Revenue</b>  (πάνω στο Revenue Kept, όχι στο Revenue: οι ακυρωμένες δεν πληρώνουν προμήθεια)
+[Revenue Kept] * (1 - IF [Market Segment] = 'Online TA'
+   OR [Market Segment] = 'Offline TA/TO' THEN [Commission] ELSE 0 END)</div>
+          <p style="font-size:13px;margin-top:4px">Κανόνες: <code>IF … THEN … ELSEIF … ELSE … END</code>· κείμενο σε μονά εισαγωγικά· πεδία σε αγκύλες· «The calculation is valid» πριν το OK. Ένα πεδίο που επιστρέφει κείμενο γίνεται διάσταση, ένα που επιστρέφει αριθμό μετρούμενο μέγεθος. Έλεγχος λογικής πάντα: καθαρά &lt; μικτά, πληρότητα ≤ 100%, ADR δεκάδες ή εκατοντάδες ευρώ.</p>
+        </div>
+      </div></div>
+
+    <div class="card"><h2><small>8 · Πάνω στα αθροισμένα κελιά</small>Υπολογισμοί πίνακα (table calculations)</h2>
+      <p>Δεν δημιουργούν πεδίο· υπολογίζουν πάνω στο φύλλο όπως είναι, συγκρίνοντας κελί με κελί. Βελάκι του pill › <span class="ui">Quick Table Calculation</span>: Percent Difference, Running Total, Percent of Total, Rank.</p>
+      <p>Η παγίδα είναι η κατεύθυνση: <span class="ui">Compute Using</span>. «Ίδιος μήνας πέρυσι» = Percent Difference με Compute Using › <b>Year</b>· αλλιώς συγκρίνει με τον προηγούμενο μήνα. Το pill αποκτά τριγωνάκι Δ.</p></div>
+
+    <div class="card"><h2><small>9 · Παράδοση</small>Δημοσίευση και εξαγωγή</h2>
+      <ul><li><b>Tableau Public</b>: File › <span class="ui">Save to Tableau Public</span> (desktop) ή <span class="ui">Publish</span> (web). Το link από το κουμπί Share.</li>
+      <li><b>Αρχείο</b>: File › <span class="ui">Export Packaged Workbook</span> (.twbx, περιέχει και τα δεδομένα).</li>
+      <li><b>Εικόνα / PDF / PowerPoint</b>: Dashboard › Export Image, File › Print to PDF, File › Export as PowerPoint. Στο Public: κουμπί Download.</li></ul>
+      <div class="warn"><b>ΔΗΜΟΣΙΟ ΣΗΜΑΙΝΕΙ ΔΗΜΟΣΙΟ</b>Ό,τι ανεβαίνει στο Tableau Public το βλέπει και το κατεβάζει όποιος θέλει, μαζί με τα δεδομένα. Ποτέ πραγματικά δεδομένα πελατών ή της επιχείρησης· ανωνυμοποίηση ή Tableau Desktop/Server. Θα το ξαναδούμε στην ενότητα για GDPR.</div></div>
+
+    <div class="card"><h2><small>10 · Μετά το μάθημα</small>Δικά σου δεδομένα</h2>
+      <ul><li>Connect › <span class="ui">Microsoft Excel</span> ή <span class="ui">Text file</span> (CSV). Μία γραμμή επικεφαλίδων, μία γραμμή ανά εγγραφή (κράτηση, διανυκτέρευση, κριτική), χωρίς συγχωνευμένα κελιά και σύνολα στο τέλος.</li>
+      <li>Αν το Excel είναι «μορφοποιημένη αναφορά»: τσέκαρε <span class="ui">Use Data Interpreter</span>. Μήνες σε στήλες; Επίλεξέ τες › <span class="ui">Pivot</span>.</li>
+      <li>Έλεγξε τους τύπους στη σελίδα Data Source (ημερομηνία ως ημερομηνία, αριθμοί ως αριθμοί, χώρα με το εικονίδιο σφαίρας)· κόμμα/τελεία στα δεκαδικά είναι η συνηθέστερη αιτία για «Null».</li>
+      <li>Πηγές που αξίζουν: εξαγωγή από το PMS ή τον channel manager, το Google Analytics (επόμενες εβδομάδες), κριτικές (ενότητα φήμης), ΕΛΣΤΑΤ/INSETE για τον κλάδο.</li></ul></div>
+
+    <div class="card wide"><h2><small>11 · Από τα φύλλα στην οθόνη και στην αφήγηση</small>Dashboard και Story</h2>
+      <div class="two">
+        <div><p><b>Dashboard</b> (εικονίδιο κάτω, New Dashboard). <span class="ui">Size › Fixed</span> (Generic Desktop ή 1200×800). Objects: Horizontal / Vertical container, Text, Blank. KPI tile = φύλλο με ένα μετρούμενο μέγεθος στο Text, γραμματοσειρά 36+.</p>
+        <p><b>Έξι κανόνες</b>: ένα ερώτημα για έναν αναγνώστη (3–5 γραφήματα) · οι μεγάλοι αριθμοί πάνω αριστερά · τίτλοι-συμπεράσματα με αριθμό μέσα («Οι κρατήσεις 6+ μήνες πριν ακυρώνονται 6 φορές συχνότερα») · ένα χρώμα = μία έννοια, το σημαντικό με χρώμα, τα υπόλοιπα γκρίζα · χωρίς θόρυβο (πλέγμα, περιγράμματα, πίτες πάνω από 3 κομμάτια, 8 ψηφία χωρίς διαχωριστικό) · σταθερό μέγεθος και φίλτρα Apply to All. Μορφοποίηση: Format › Numbers (Percentage, Display units Millions).</p></div>
+        <div><p><b>Story</b> (New Story). Size ίδιο με το dashboard. Κάθε σημείο: ένα φύλλο ή dashboard + λεζάντα = το συμπέρασμα. <span class="ui">Update</span> αν αλλάξεις φίλτρο/παράμετρο μέσα στο σημείο. Πλοήγηση: Caption boxes ή Numbers. Presentation mode: F7.</p>
+        <p><b>Η σειρά</b>: συμπέρασμα πρώτα → τι συνέβη → γιατί → πού κινδυνεύουμε → τι προτείνω (απόφαση, κόστος, ρίσκο) → τι περιμένουμε → τι δεν ξέρουμε. Πέντε λεπτά, ένα σημείο ανά λεπτό, ένας αριθμός ανά οθόνη, οι υποθέσεις δυνατά.</p></div>
+      </div></div>
+
+    <div class="card wide"><h2><small>12 · Πριν παραδώσεις</small>Έλεγχος λογικής σε 60 δευτερόλεπτα</h2>
+      <table class="t"><tr><th>Αν βλέπεις…</th><th>…μάλλον</th><th>Διόρθωση</th></tr>
+      <tr><td>ADR ή τιμή σε εκατομμύρια</td><td>SUM αντί για AVG</td><td>Measure › Average</td></tr>
+      <tr><td>Κρατήσεις σε δισεκατομμύρια</td><td>SUM(Booking ID) αντί για COUNT</td><td>Measure › Count</td></tr>
+      <tr><td>Πληρότητα &gt; 100% ή = 19,9</td><td>Λάθος Rooms, ή λάθος τύπος</td><td>Διανυκτερεύσεις / (Rooms × μέρες)· άλλαξε την υπόθεση</td></tr>
+      <tr><td>Αρνητικά ή μεγαλύτερα καθαρά έσοδα</td><td>Commission = 18 αντί 0,18 · Revenue αντί Revenue Kept</td><td>Edit Parameter · ξαναγράψε τον τύπο</td></tr>
+      <tr><td>Γραμμές «Null»</td><td>Κενές γραμμές ή λάθος τύπος στήλης</td><td>Φίλτρο χωρίς Null · τύπος στη σελίδα Data Source</td></tr>
+      <tr><td>Το φίλτρο αλλάζει ένα μόνο γράφημα</td><td>Λείπει το Apply to Worksheets</td><td>All Using This Data Source</td></tr>
+      <tr><td>Ο τελευταίος μήνας «πέφτει»</td><td>Ατελή δεδομένα</td><td>Έλεγξε τα όρια των δεδομένων πριν ψάξεις αιτίες</td></tr>
+      <tr><td>Ο τίτλος είναι «Sheet 7» ή «Έσοδα ανά μήνα»</td><td>Τίτλος-θέμα</td><td>Γράψε το συμπέρασμα με τον αριθμό μέσα</td></tr></table></div>
+  
+  </div>
+  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Δεδομένα των εργαστηρίων: Antonio, de Almeida &amp; Nunes (2019), Hotel booking demand datasets, <i>Data in Brief</i> 22, 41–49 (CC BY 4.0).</footer>
+</div>
+</body>
+</html>
