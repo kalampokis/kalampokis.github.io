@@ -141,6 +141,18 @@
       <b>Revenue Kept</b> (έσοδα που πραγματοποιήθηκαν)<div class="calc">IF [Canceled] = 'No' THEN [Revenue] END</div>
       <b>Room Nights Sold</b><div class="calc">SUM(IF [Canceled] = 'No' THEN [Nights] END)</div>
     </div>
+    <h3>Διορθώστε πρώτα την Εργασία 2</h3>
+    <p>Έξι πράγματα που εμφανίστηκαν στα dashboards της προηγούμενης εβδομάδας. Βρες αν σε αφορά κάποιο· καθένα διορθώνεται σε 5 λεπτά, και το σημερινό εργαστήριο χτίζει πάνω σε σωστά νούμερα.</p>
+    <table class="t">
+      <tr><th style="width:26%">Σύμπτωμα</th><th style="width:34%">Αιτία</th><th>Διόρθωση</th></tr>
+      <tr><td><b>ADR = 12.152.224</b></td><td>SUM αντί για AVG. Ο ADR είναι ήδη μέσος όρος ανά κράτηση· αθροισμένος δεν σημαίνει τίποτα.</td><td>Βελάκι του pill › <span class="ui">Measure › Average</span>. Πρώτα διαβάζεις το pill, μετά τον αριθμό.</td></tr>
+      <tr><td><b>Net Revenue = −554 εκατ.</b></td><td>Η παράμετρος Commission έχει τιμή 18,6 αντί για 0,186· το 1 − 18,6 είναι αρνητικό.</td><td>Edit Parameter: Float, εύρος 0,10–0,30, Display format Percentage. Έλεγχος λογικής: τα καθαρά είναι <i>πάντα</i> μικρότερα από τα μικτά.</td></tr>
+      <tr><td><b>Καθαρά &gt; μικτά</b> σε κάποιο κανάλι</td><td>Το Net Revenue υπολογίστηκε πάνω στο <span class="pill m">Revenue</span> (όλες οι κρατήσεις) αντί στο <span class="pill m">Revenue Kept</span>.</td><td>Net Revenue = <code>[Revenue Kept] * (1 - …)</code>. Οι ακυρωμένες κρατήσεις δεν πληρώνουν προμήθεια.</td></tr>
+      <tr><td><b>Πληρότητα 111%</b> ή <b>19,90</b></td><td>Ή λάθος υπόθεση (200 δωμάτια για το City Hotel, που θέλει ~300), ή <code>COUNT(κρατήσεων) / (Rooms × 30)</code> για όλη την περίοδο.</td><td>Διανυκτερεύσεις / (Rooms × μέρες της περιόδου), οι τύποι του βήματος 3 της Εβδ. 3. Αν βγαίνει πάνω από 100%, δεν φταίει το Tableau: φταίει η υπόθεση. Κούνησε το slider μέχρι ο Αύγουστος να πέσει κάτω από 100%, και αυτό είναι το «πραγματικό» μέγεθος του ξενοδοχείου.</td></tr>
+      <tr><td><b>Κρατήσεις = 2,4 δισ.</b> · γραμμές «Null»</td><td>SUM(Booking ID) αντί για COUNT· κενές γραμμές από τη σύνδεση με το αρχείο.</td><td><span class="pill m">Booking ID</span> › Measure › <span class="ui">Count</span>. Σύρε το <span class="pill">Hotel</span> στα Filters και ξετσέκαρε το Null.</td></tr>
+      <tr><td><b>KPI «0,6871»</b> · μικτά/καθαρά στοιβαγμένα</td><td>Χωρίς μορφοποίηση· Measure Values στο Color του ίδιου γραφήματος αντί για δύο στήλες.</td><td>Format › Numbers › Percentage με 1 δεκαδικό, και € στα ποσά. Το <span class="pill m">Measure Values</span> στο Columns (βήμα 5 της Εβδ. 3), όχι στο Color.</td></tr>
+    </table>
+    <div class="box tip"><b>ΚΑΙ ΜΙΑ ΠΑΓΙΔΑ ΕΡΜΗΝΕΙΑΣ</b>Αν στο dashboard κάνεις κλικ σε ένα κανάλι (ενέργεια φίλτρου) και το KPI «Πληρότητα» δείξει 12%, αυτό δεν είναι η πληρότητα των Direct κρατήσεων: είναι το μερίδιο των Direct στις διανυκτερεύσεις. Η πληρότητα ορίζεται για το ξενοδοχείο, όχι για ένα κανάλι. Ο αριθμός βγαίνει, αλλά δεν σημαίνει αυτό που λέει ο τίτλος.</div>
     <div class="checklist" id="prep">
       <label><input type="checkbox" data-k="wb"> Το workbook της Εβδομάδας 3 είναι ανοιχτό (ή νέο workbook συνδεδεμένο με το CSV)</label>
       <label><input type="checkbox" data-k="par"> Βλέπω στο πάνελ Data τα πεδία Cancellation Rate, Revenue Kept και Room Nights Sold</label>
