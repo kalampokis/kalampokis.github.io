@@ -13,7 +13,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Το αποτέλεσμα του εργαστηρίου Tableau 3 · Εβδομάδα 4</title>
-<meta name="description" content="Πώς μοιάζει το παραδοτέο της Εβδομάδας 4: το ανανεωμένο dashboard «Revenue manager» με τους έξι κανόνες σχεδίασης και το Story πέντε σημείων (τι συνέβη, γιατί, πού κινδυνεύουμε, τι προτείνω, τι περιμένουμε) με τη λεζάντα και το λεκτικό του κάθε σημείου. Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις.">
+<meta name="description" content="Πώς μοιάζει το παραδοτέο της Εβδομάδας 4: το ανανεωμένο dashboard «Revenue manager» με τους έξι κανόνες σχεδίασης και το Story πέντε σημείων (τι συνέβη, γιατί, πού κινδυνεύουμε, τι προτείνω, τι περιμένουμε) με τη λεζάντα-συμπέρασμα του κάθε σημείου. Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -44,7 +44,7 @@
   .caps button small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--gray);text-transform:uppercase;margin-bottom:2px}
   .caps button.active{background:var(--navy);color:#fff;border-color:var(--navy)} .caps button.active small{color:var(--lblue)}
   .caps button.active::after{content:"";position:absolute;left:50%;bottom:-7px;margin-left:-7px;border:7px solid transparent;border-top-color:var(--navy);border-bottom:0}
-  .pt{display:none;padding:16px 18px 18px;gap:14px;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}
+  .pt{display:none;padding:16px 18px 18px;gap:14px;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr)}
   .pt.active{display:grid}
   .pt .cap{background:var(--peach);border-left:4px solid var(--orange);padding:10px 14px;font-size:17px;font-weight:bold;color:var(--navy);margin-bottom:10px;border-radius:0 8px 8px 0}
   .pt .cap small{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--orange);font-weight:normal;margin-bottom:3px}
@@ -79,7 +79,7 @@
   <div>
     <div class="kicker">Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις · Εβδομάδα 4 · Εργαστήριο Tableau 3/3</div>
     <h1>Πώς μοιάζει το αποτέλεσμα</h1>
-    <p class="lead" style="margin-top:10px">Αυτό είναι το παραδοτέο της εβδομάδας, ολοκληρωμένο: το ανανεωμένο dashboard «Revenue manager» και το Story των πέντε σημείων, με τη λεζάντα και το λεκτικό του κάθε σημείου για την παρουσίαση των 5 λεπτών. Τα γραφήματα είναι σχεδιασμένα πάνω στα πραγματικά νούμερα του dataset (όχι screenshots από Tableau), για να ξέρεις πού πας· το δικό σου θα διαφέρει στις λεπτομέρειες, όχι στη δομή. Πώς φτιάχνεται το καθένα: <a href="TableauLab3.html">ο οδηγός</a>, βήματα 2–6.</p>
+    <p class="lead" style="margin-top:10px">Αυτό είναι το παραδοτέο της εβδομάδας, ολοκληρωμένο: το ανανεωμένο dashboard «Revenue manager» και το Story των πέντε σημείων, με τη λεζάντα-συμπέρασμα του κάθε σημείου και τον χρόνο που του αναλογεί στην παρουσίαση των 5 λεπτών. Το τι θα πεις σε κάθε σημείο είναι η δική σου δουλειά. Τα γραφήματα είναι σχεδιασμένα πάνω στα πραγματικά νούμερα του dataset (όχι screenshots από Tableau), για να ξέρεις πού πας· το δικό σου θα διαφέρει στις λεπτομέρειες, όχι στη δομή. Πώς φτιάχνεται το καθένα: <a href="TableauLab3.html">ο οδηγός</a>, βήματα 2–6.</p>
   </div>
 
   <div class="tabs"><button class="active" data-tab="story">Το Story (5 σημεία)</button><button data-tab="dash">Το dashboard «Revenue manager»</button><button data-tab="sheets">Τα φύλλα του εργαστηρίου</button></div>
@@ -97,8 +97,6 @@
       <div class="pt" data-label="1 · Τι συνέβη" data-cap="Ιαν–Αυγ 2017: +23% έσοδα με μόλις +4% περισσότερες αφίξεις">
         <div><div class="cap"><small>Λεζάντα · 0:00–1:00</small>Ιαν–Αυγ 2017: +23% έσοδα με μόλις +4% περισσότερες αφίξεις</div><img class="shot" src="img/yoy.png" alt="Έσοδα ανά μήνα 2016 και 2017 και ποσοστιαία διαφορά από τον ίδιο μήνα πέρυσι"></div>
         <div class="side">
-          <h3>Τι λες <span class="time">60″</span></h3>
-          <div class="say"><b>Πρώτη πρόταση, πριν οτιδήποτε άλλο:</b> «Το 2017 βγάλαμε 23% περισσότερα έσοδα με τους ίδιους σχεδόν πελάτες, και προτείνω να το ασφαλίσουμε με προκαταβολή στις πρώιμες κρατήσεις.» Μετά το γράφημα: κάθε μήνας του 2017 πάνω από τον αντίστοιχο του 2016, από +9% τον Αύγουστο ως +94% τον Ιανουάριο. Δείχνεις με το ποντίκι τον Ιούνιο: 1,14 → 1,44 εκατ., +25,7%.</div>
           <h3>Πώς φτιάχτηκε</h3>
           <div class="how">Φύλλο <code>Έσοδα vs πέρυσι</code>: MONTH discrete στο Columns, SUM(Revenue Kept) στο Rows, YEAR στο Color, Quick Table Calculation › Percent Difference › Compute Using › Year (βήμα 4Α). Το +23% του συνόλου: YEAR στο Columns με φίλτρο μηνών Ιαν–Αυγ (βήμα 6).</div>
         </div>
@@ -107,8 +105,6 @@
       <div class="pt" data-label="2 · Γιατί" data-cap="Το City Hotel ανέβασε τιμές σταθερά, +1,8 € τον μήνα">
         <div><div class="cap"><small>Λεζάντα · 1:00–2:00</small>Το City Hotel ανέβασε τιμές σταθερά, +1,8 € τον μήνα· το Resort ζει από την εποχικότητα</div><img class="shot" src="img/trend.png" alt="Μηνιαίος μέσος ADR City και Resort με γραμμές τάσης"></div>
         <div class="side">
-          <h3>Τι λες <span class="time">60″</span></h3>
-          <div class="say">«Οι αφίξεις δεν άλλαξαν· άλλαξε η τιμή.» Στο City Hotel ο μέσος ADR ανεβαίνει 1,8 € κάθε μήνα επί δύο χρόνια, και η άνοδος είναι σταθερή, όχι εποχική (R² = 0,50). Στο Resort η ευθεία δεν λέει τίποτα (R² = 0,06): Αύγουστος 190 €, Ιανουάριος 50 €. <b>Το ρίσκο, δυνατά:</b> η τάση περιγράφει το παρελθόν· κάποια στιγμή η ζήτηση αντιδρά στην τιμή.</div>
           <h3>Πώς φτιάχτηκε</h3>
           <div class="how">Φύλλο <code>Τάση ADR</code>: MONTH continuous, AVG(ADR), φίλτρο Canceled = No, Hotel στο Color, Analytics › Trend Line › Linear (βήμα 4Β).</div>
         </div>
@@ -117,8 +113,6 @@
       <div class="pt" data-label="3 · Πού κινδυνεύουμε" data-cap="Οι κρατήσεις 6+ μήνες πριν ακυρώνονται στο 57%">
         <div><div class="cap"><small>Λεζάντα · 2:00–3:00</small>Οι κρατήσεις 6+ μήνες πριν ακυρώνονται στο 57%· είναι 24.700 κρατήσεις</div><img class="shot" src="img/result_leadtime.png" alt="Ποσοστό ακυρώσεων ανά ομάδα lead time, η ομάδα 6+ μήνες τονισμένη"></div>
         <div class="side">
-          <h3>Τι λες <span class="time">60″</span></h3>
-          <div class="say">«Το κέρδος του 2017 είναι εύθραυστο, γιατί ένα στα πέντε δωμάτια που κλείνουμε, κλείνεται πάνω από 6 μήνες πριν, και από αυτά το 57% δεν έρχεται ποτέ.» Σύγκριση με την τελευταία εβδομάδα: 10%. Αν θες και το κανάλι: τα Groups ακυρώνουν 61%, οι άμεσες 15%.</div>
           <h3>Πώς φτιάχτηκε</h3>
           <div class="how">Φύλλο της Εβδομάδας 3 (<code>Ακυρώσεις ανά lead time</code>): Lead Time Group στο Rows, Cancellation Rate στο Columns, Count στο Label. Μία μπάρα με χρώμα: Ctrl+κλικ › Color, οι υπόλοιπες γκρίζες.</div>
         </div>
@@ -127,8 +121,6 @@
       <div class="pt" data-label="4 · Τι προτείνω" data-cap="Προκαταβολή 30% για κρατήσεις πάνω από 6 μήνες πριν">
         <div><div class="cap"><small>Λεζάντα · 3:00–4:00</small>Προκαταβολή 30% για κρατήσεις πάνω από 6 μήνες πριν· με 200 δωμάτια το Resort αντέχει overbooking 5% τον Αύγουστο</div><img class="shot" src="img/dashboard_good.png" alt="Το dashboard Revenue manager με τέσσερα KPI και τρία γραφήματα"></div>
         <div class="side">
-          <h3>Τι λες <span class="time">60″</span></h3>
-          <div class="say"><b>Απόφαση, κόστος, ρίσκο.</b> «Για κρατήσεις πάνω από 6 μήνες πριν ζητάμε 30% μη επιστρέψιμη προκαταβολή. Κόστος: ίσως χάσουμε λίγες πρώιμες κρατήσεις από πελάτες που δεν θέλουν δέσμευση. Ρίσκο αν δεν το κάνουμε: 57% ακυρώσεις σε 24.700 κρατήσεις, δηλαδή δωμάτια που μένουν απούλητα στην υψηλή σεζόν.» Κουνάς το slider Rooms μπροστά τους: «με 200 δωμάτια ο Αύγουστος είναι 91%, με 180 ξεπερνά το 100%: άρα το ξενοδοχείο έχει τουλάχιστον 200».</div>
           <h3>Πώς φτιάχτηκε</h3>
           <div class="how">Το dashboard της Εβδομάδας 3, ανανεωμένο με τους έξι κανόνες (βήμα 5)· στο story σύρεται ολόκληρο, με τις παραμέτρους στις τιμές του σεναρίου και <code>Update</code> στο σημείο.</div>
         </div>
@@ -137,8 +129,6 @@
       <div class="pt" data-label="5 · Τι περιμένουμε" data-cap="Αν συνεχίσει το μοτίβο, ~38 χιλ. αφίξεις τον επόμενο χρόνο">
         <div><div class="cap"><small>Λεζάντα · 4:00–5:00</small>Αν συνεχίσει το μοτίβο: ~38 χιλ. πραγματικές αφίξεις Σεπτ 2017 – Αυγ 2018· ο χειμώνας μένει το αδύνατο σημείο</div><img class="shot" src="img/forecast.png" alt="Μηνιαίες αφίξεις και πρόβλεψη 12 μηνών με ζώνη αβεβαιότητας"></div>
         <div class="side">
-          <h3>Τι λες <span class="time">60″</span></h3>
-          <div class="say">«Αν συνεχίσουν όλα όπως πήγαιναν, περιμένουμε για τον Ιανουάριο 1.900–2.700 αφίξεις, πιθανότερα γύρω στις 2.300· μόνιμο προσωπικό για το κάτω όριο, έκτακτο για το πάνω.» <b>Και το κλείσιμο, τι δεν ξέρουμε:</b> «Υποθέσαμε 200 δωμάτια και 18% προμήθεια, η πληρότητα είναι κατά προσέγγιση, και η πρόβλεψη δεν ξέρει τίποτα για το 2018 εκτός από το 2016 και το 2017. Επόμενο βήμα: να το τρέξουμε με τα πραγματικά νούμερα από το PMS.»</div>
           <h3>Πώς φτιάχτηκε</h3>
           <div class="how">Φύλλο <code>Αφίξεις ανά μήνα</code>: MONTH continuous, COUNT(Booking ID), Canceled = No, Analytics › Forecast, Exactly 12 Months (βήμα 3).</div>
         </div>
