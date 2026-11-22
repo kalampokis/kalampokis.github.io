@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7KW3PRQVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-R7KW3PRQVZ');
+</script>
+<title>Explainable AI: three checks · Advanced Predictive Analytics and Data Mining</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Three short interactive checks on explainable AI: two definitions of fairness on the COMPAS data, which explanation answers which question, and Shapley values with two features. Advanced Predictive Analytics and Data Mining, Week 7.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1B2F6B;--navy2:#26314F;--muted:#5A6385;--tint:#EEF1FE;--ice:#B9C8FC;--green:#1e7a4c;--greenbg:#E6F4EC;--red:#b3261e;--redbg:#FBEAEA;--hl:#ffe27a;--line:#C9D0EE;--bg:#ffffff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--navy);font-family:Arial,Helvetica,sans-serif}
+a{color:var(--green)}a:hover{color:#15513d}
+.wrap{min-height:100vh;padding:40px 32px 64px}
+.col{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+h1{margin:8px 0 0;font-family:Georgia,serif;font-weight:700;font-size:40px;line-height:1.1}
+.stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px}
+.stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:9px 12px;color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.stepper .n{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px}
+.stepper .l{font-size:13px;line-height:1.25}
+.task{margin:0;font-size:20px;line-height:1.4;max-width:800px}
+.sub{font-size:16px;line-height:1.5;max-width:800px;margin:0}
+.lab{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.12em;color:var(--green);text-transform:uppercase}
+.box{display:flex;flex-direction:column;gap:14px}
+.sep{border-top:2px solid var(--navy);padding-top:20px}
+input.num{font-family:'JetBrains Mono',monospace;font-size:18px;width:96px;padding:8px 10px;border:2px solid var(--navy);border-radius:8px;background:var(--tint);color:var(--navy)}
+select{font:inherit;font-size:15px;padding:8px 10px;border:2px solid var(--navy);border-radius:8px;background:var(--tint);color:var(--navy);max-width:100%}
+input[type=range]{width:100%;accent-color:var(--navy)}
+.status{min-height:22px;font-size:15px;font-weight:500;line-height:1.45}
+.ok{color:var(--green)}.bad{color:var(--red)}
+.row{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:10px 14px;background:#fff;flex-wrap:wrap}
+.mono{font-family:'JetBrains Mono',monospace}
+.small{font-size:13px;color:var(--muted);line-height:1.45}
+.btn{font:inherit;font-size:15px;padding:10px 18px;border:2px solid var(--navy);border-radius:8px;background:transparent;cursor:pointer;color:var(--navy)}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy);font-size:16px;padding:12px 22px}
+.btn.sm{padding:6px 12px;font-size:14px}
+.btn:disabled{opacity:.4;cursor:default}
+.hint{font-size:16px;background:var(--tint);border:1px dashed var(--navy);border-radius:8px;padding:9px 14px;line-height:1.45}
+.opt{text-align:left;font:inherit;font-size:17px;line-height:1.4;padding:13px 16px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--navy);cursor:pointer;width:100%}
+.opt.right{background:var(--greenbg);border-color:var(--green)}.opt.wrong{background:var(--redbg);border-color:var(--red)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#fff;min-width:0}
+.card.pass{background:var(--greenbg);border-color:var(--green)}.card.fail{background:var(--redbg);border-color:var(--red)}
+.card.case{background:var(--tint);border-color:var(--tint)}
+table{border-collapse:collapse;font-size:15px;width:100%}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:middle}
+th{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;font-weight:500}
+td.r,th.r{text-align:right}
+table.kv td{padding:4px 6px;border-bottom:0;font-size:14px;vertical-align:top}
+.stat{display:flex;gap:28px;flex-wrap:wrap}
+.stat div{font-size:13px;color:var(--muted)}
+.stat div b{display:block;font-family:Georgia,serif;font-size:32px;color:var(--navy)}
+.seg{font:inherit;font-size:14px;padding:7px 12px;border:2px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy);cursor:pointer}
+.seg.on{background:var(--navy);color:#fff}
+.bar{display:inline-block;height:12px;border-radius:3px;background:var(--navy);vertical-align:middle}
+.bar.neg{background:var(--red)}.bar.pos{background:var(--green)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+.pill{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;padding:4px 10px;border-radius:999px}
+.pill.yes{background:var(--greenbg);color:var(--green)}.pill.no{background:var(--redbg);color:var(--red)}
+.q{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:16px;line-height:1.5}
+.done{font-size:18px;font-weight:700;color:var(--green)}
+svg text{font-family:Arial,Helvetica,sans-serif;fill:#1B2F6B}
+svg .mn{font-family:'JetBrains Mono',monospace}
+.pager{display:flex;align-items:center;justify-content:center;gap:6px;align-self:center;background:var(--navy);color:#fff;border-radius:999px;padding:6px 10px;margin-top:8px}
+.pager button{font:inherit;font-size:22px;line-height:1;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:#fff;cursor:pointer}
+.pager span{font-family:'JetBrains Mono',monospace;font-size:15px;min-width:64px;text-align:center}
+.narrow{display:none}
+@media (max-width:600px){.wrap{padding:24px 16px 48px}h1{font-size:30px}.task{font-size:18px}}
+@media (max-width:860px){.narrow{display:block}}
+</style>
+<style id="site-nav-style">
+  #site-nav{font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#1B2F6B;color:#fff;padding:8px 16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  #site-nav a{color:#fff;text-decoration:none}
+  #site-nav .sn-home{font-weight:bold} #site-nav .sn-sep{opacity:.5} #site-nav .sn-teach{color:#B9C8FC;margin-left:auto}
+  @media (max-width:700px){
+    #site-nav{font-size:13px;gap:6px 12px;padding:8px 12px}
+    #site-nav .sn-sep{display:none}
+    #site-nav .sn-back{flex-basis:100%;order:3;padding-top:2px}
+    #site-nav .sn-teach{order:2}
+    .wrap{overflow-x:hidden}
+  }
+</style>
+</head>
+<body>
+<nav id="site-nav"><a class="sn-home" href="../../index.html">Dr. Evangelos Kalampokis</a><span class="sn-sep">|</span><a class="sn-back" href="../../courses/advanced-predictive-analytics-data-mining.html">&larr; Course page: Advanced Predictive Analytics and Data Mining</a><a class="sn-teach" href="../../index.html#teaching">Home</a></nav>
+<div class="wrap"><div class="col">
+  <div>
+    <div class="kicker">Advanced Predictive Analytics and Data Mining · Week 7 · Explainable AI</div>
+    <h1 id="title"></h1>
+  </div>
+  <div class="stepper" id="stepper"></div>
+  <div id="stage"></div>
+  <div class="pager">
+    <button id="prev" aria-label="Previous step">‹</button>
+    <span id="pos"></span>
+    <button id="next" aria-label="Next step">›</button>
+  </div>
+</div></div>
+
+<script>
+const DATA = {"meta":{"features":[]},"compas":{"total":7214,"Black":{"n":3696,"no":[307,274,201,208,189,169,163,114,111,59],"yes":[91,119,145,177,176,215,237,245,269,227]},"White":{"n":2454,"no":[539,248,180,172,130,83,55,32,30,19],"yes":[142,113,93,113,111,111,88,82,68,45]}},"shap2":{"none":23.9,"A":40.2,"E":47.1,"AE":70.7}};
+
+/* ---------- helpers ---------- */
+const D = DATA;
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const N = n => Number(n).toLocaleString('en-US');
+const F1 = x => (+x).toFixed(1), F3 = x => (+x).toFixed(3), F4 = x => (+x).toFixed(4);
+const P1 = x => (100 * x).toFixed(1) + '%';
+const sgn = x => (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1);
+const num = v => { const x = parseFloat(String(v === undefined ? '' : v).replace(',', '.').replace('%', '')); return isNaN(x) ? null : x; };
+const near = (v, t, tol) => num(v) !== null && Math.abs(num(v) - t) <= tol + 1e-9;
+const S = { step: 0, max: 0, done: {} };
+const mark = (shown, ok) => shown ? `<span class="${ok ? 'ok' : 'bad'}">${ok ? '✓' : '✗'}</span>` : '';
+
+/* multiple-choice block */
+function mcq(id, q, opts, right, why) {
+  const st = S[id] || {};
+  let h = `<div class="box"><div style="font-size:16px;line-height:1.5">${q}</div>`;
+  opts.forEach((o, i) => {
+    let cls = '';
+    if (st.pick === i) cls = i === right ? 'right' : 'wrong';
+    h += `<button class="opt ${cls}" data-mcq="${id}" data-i="${i}">${o}</button>`;
+  });
+  if (st.pick !== undefined) h += `<div class="status ${st.pick === right ? 'ok' : 'bad'}">${st.pick === right ? 'Correct. ' + why : 'Not quite. Read the other options again.'}</div>`;
+  return h + '</div>';
+}
+const mcqOk = (id, right) => !!(S[id] && S[id].pick === right);
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-mcq]');
+  if (b) { S[b.dataset.mcq] = { pick: +b.dataset.i }; render(); return; }
+  const h = e.target.closest('[data-hint]');
+  if (h) { S[h.dataset.hint] = !S[h.dataset.hint]; render(); }
+});
+const hint = (id, text) => `<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" data-hint="${id}">${S[id] ? 'Hide hint' : 'Show hint'}</button>${S[id] ? `<span class="hint">${text}</span>` : ''}</div>`;
+const nextBtn = () => S.step + 1 < STEPS.length ? `<div><button class="btn primary" onclick="go(S.step + 1)">Next step →</button></div>` : '<div class="done">All three checks complete. Next week: the hands-on case study.</div>';
+const sel = (key, options, ph = 'choose…') => `<select data-sel="${key}"><option value="">${ph}</option>${options.map(o => `<option ${S[key] === String(o) ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
+const inp = (key, ph = '') => `<input class="num" data-in="${key}" inputmode="decimal" autocomplete="off" placeholder="${ph}" value="${esc(S[key] === undefined ? '' : S[key])}">`;
+function wireInputs() {
+  $$('[data-in]').forEach(el => el.addEventListener('input', () => { S[el.dataset.in] = el.value; }));
+  $$('[data-sel]').forEach(el => el.addEventListener('change', () => { S[el.dataset.sel] = el.value; if (el.dataset.rerender !== undefined) render(); }));
+}
+const FEATS = D.meta.features;
+const val = (p, k) => k.startsWith('Capital') ? '$' + N(p[k]) : p[k];
+const kv = (p, keys = FEATS) => `<table class="kv">${keys.map(k => `<tr><td class="small" style="white-space:nowrap">${k}</td><td>${esc(val(p, k))}</td></tr>`).join('')}</table>`;
+
+/* ---------- stop 1: two definitions of fair (COMPAS, ProPublica data) ---------- */
+const C = D.compas, G1 = ['Black', 'White'];
+function rates(g, t) {
+  let tp = 0, fp = 0, fn = 0, tn = 0;
+  for (let k = 1; k <= 10; k++) { const y = C[g].yes[k - 1], n = C[g].no[k - 1]; if (k >= t) { tp += y; fp += n; } else { fn += y; tn += n; } }
+  return { fpr: 100 * fp / (fp + tn), fnr: 100 * fn / (fn + tp), ppv: 100 * tp / (tp + fp), base: 100 * (tp + fn) / (tp + fp + fn + tn), flagged: tp + fp };
+}
+const BEST_B = (() => { const w = rates('White', 5).fpr; let b = 2; for (let t = 2; t <= 10; t++) if (Math.abs(rates('Black', t).fpr - w) < Math.abs(rates('Black', b).fpr - w)) b = t; return b; })();
+function t1table() {
+  const b = rates('Black', S.tB), w = rates('White', S.tW);
+  const row = (lab, k, strong) => `<tr><td>${lab}</td><td class="r mono">${strong ? '<b>' : ''}${F1(b[k])}%${strong ? '</b>' : ''}</td><td class="r mono">${strong ? '<b>' : ''}${F1(w[k])}%${strong ? '</b>' : ''}</td><td class="r mono small">${F1(Math.abs(b[k] - w[k]))}</td></tr>`;
+  return `<table><tr><th></th><th class="r">Black defendants</th><th class="r">White defendants</th><th class="r">gap</th></tr>
+    <tr><td class="small">Labelled higher risk from score</td><td class="r mono">${S.tB}</td><td class="r mono">${S.tW}</td><td></td></tr>
+    ${row('Did <b>not</b> reoffend, but were labelled higher risk', 'fpr', true)}
+    ${row('Did reoffend, but were labelled lower risk', 'fnr')}
+    ${row('Of those labelled higher risk, the share who did reoffend', 'ppv', true)}</table>`;
+}
+function s1() {
+  if (!S.tB) { S.tB = 5; S.tW = 5; }
+  const bb = rates('Black', 5), ww = rates('White', 5), okA = (S.a1a || '').startsWith('Black'), okB = (S.a1b || '').startsWith('about');
+  let h = `<div class="box"><div class="card case"><div class="lab">The data</div><div style="font-size:16px;line-height:1.5">ProPublica's own data: ${N(C.total)} people scored by COMPAS in Broward County, Florida, in 2013 and 2014, among them ${N(C.Black.n)} Black and ${N(C.White.n)} white defendants. Each has a score from 1 to 10 and we know who reoffended within two years: ${F1(bb.base)}% of the Black and ${F1(ww.base)}% of the white defendants. ProPublica called a score of 5 or more “higher risk”.</div></div>
+  <p class="task">Read the table with the threshold at 5 for both groups. ProPublica and Northpointe looked at the same numbers and reached opposite conclusions. Which row did each of them read?</p>
+  <div class="card"><div id="t1">${t1table()}</div>${S.ok1a ? `<label class="small" for="tB">Threshold for Black defendants</label><input type="range" id="tB" min="2" max="10" step="1" value="${S.tB}">` : ''}</div>
+  <div class="q">Among people who did not reoffend, the share labelled higher risk is ${sel('a1a', ['Black defendants: about twice as high', 'white defendants: about twice as high', 'about the same in both groups'])} ${mark(S.c1a, okA)}</div>
+  <div class="q">Among people labelled higher risk, the share who did reoffend is ${sel('a1b', ['much higher for Black defendants', 'much higher for white defendants', 'about the same: within 5 points'])} ${mark(S.c1a, okB)}</div>
+  <div><button class="btn" id="c1a">Check</button></div>`;
+  if (S.c1a && !S.ok1a) h += `<div class="status bad">Not yet. Each question is one of the two rows in bold.</div>`;
+  if (S.ok1a) {
+    const nb = rates('Black', S.tB);
+    h += `<div class="box sep"><div class="status ok">The first bold row is ProPublica's argument: equal error rates. The last one is Northpointe's: a “higher risk” label should mean the same in both groups, and it nearly does. (ProPublica's article rounds ${F1(bb.fpr)}% to 44.9%.)</div>
+    <p class="task">Now try to repair it. Keep the threshold at 5 for white defendants. Move the slider above for Black defendants until the first bold row is as equal as you can make it.</p>
+    <div><button class="btn" id="c1b">Check</button></div>`;
+    if (S.c1b && !S.ok1b) h += `<div class="status bad">Not yet. Another threshold brings ${F1(ww.fpr)}% and the rate for Black defendants closer together.</div>`;
+    if (S.ok1b) {
+      const fb = rates('Black', BEST_B);
+      h += mcq('q1', `Explain it · with a threshold of ${BEST_B} for Black defendants the first row is almost equal: ${F1(fb.fpr)}% and ${F1(ww.fpr)}%. What did it cost?`, [
+        `The label no longer means the same: ${F1(fb.ppv)}% of the Black defendants labelled higher risk reoffend, against ${F1(ww.ppv)}% of the white ones. And a score of 5 or 6 now counts as lower risk for one group and higher risk for the other.`,
+        'Nothing: both definitions of fairness are satisfied now.',
+        'The error rates of white defendants got worse, because their threshold changed.'], 0,
+        `The two groups reoffend at different rates in this data (${F1(bb.base)}% and ${F1(ww.base)}%). When that is so, no imperfect score can have equal error rates and the same meaning in both groups. Which of the two to give up is a decision for people, not for the model.`);
+      if (mcqOk('q1', 0)) h += nextBtn();
+    }
+    h += '</div>';
+  }
+  return h + '</div>';
+}
+function s1wire() {
+  $('#c1a').onclick = () => { S.c1a = true; if ((S.a1a || '').startsWith('Black') && (S.a1b || '').startsWith('about')) S.ok1a = true; render(); };
+  const sl = $('#tB'); if (sl) sl.addEventListener('input', () => { S.tB = +sl.value; $('#t1').innerHTML = t1table(); });
+  const c = $('#c1b'); if (c) c.onclick = () => { S.c1b = true; if (S.tB === BEST_B) S.ok1b = true; render(); };
+}
+
+/* ---------- stop 2: which explanation for which question ---------- */
+const METHODS = ['SHAP values for one prediction', 'Counterfactual', 'Permutation importance', 'Partial dependence plot', 'Surrogate model', 'Saliency map (Grad-CAM)'];
+const SCEN = [
+  ['A customer asks why her loan application was refused.', 'Local', 0],
+  ['The risk manager wants to know which features the model relies on overall. The model is a black box and only its predictions are available.', 'Global', 2],
+  ['The same customer asks what she would have to change for the application to be accepted.', 'Local', 1],
+  ['An analyst wants to see how the predicted risk moves, on average, as the age of the applicant goes from 20 to 80.', 'Global', 3],
+  ['A radiologist wants to see which region of one X-ray a neural network looked at before it answered “pneumonia”.', 'Local', 5],
+  ['The regulator asks for a short list of rules that imitates the black box, to read its overall logic.', 'Global', 4]];
+function s2() {
+  let h = `<div class="box"><p class="task">Six people ask six different questions about a model. For each one decide whether the answer is a <b>local</b> explanation (one prediction) or a <b>global</b> one (the whole model), and which method gives it. Each method is used once.</p><div class="box" style="gap:10px">`;
+  SCEN.forEach(([txt, scope, m], i) => {
+    const ok = S['sc' + i] === scope && S['me' + i] === METHODS[m];
+    h += `<div class="card ${S.c2 ? (ok ? 'pass' : 'fail') : ''}"><div style="font-size:17px;line-height:1.45">${i + 1}. ${txt}</div><div class="q">${sel('sc' + i, ['Local', 'Global'], 'scope…')} ${sel('me' + i, METHODS, 'method…')} ${mark(S.c2, ok)}</div></div>`;
+  });
+  h += `</div><div><button class="btn" id="c2">Check</button></div>`;
+  if (S.c2 && !S.ok2) h += `<div class="status bad">Not yet. The red cards have a wrong scope or a wrong method.</div>`;
+  h += hint('h2', '“Why this decision?” and “what should change?” are two different local questions. A feature ranking, an average curve and an imitation of the model all describe the whole model.');
+  if (S.ok2) h += `<div class="box sep">${mcq('q2', 'Explain it · all six answers are post-hoc explanations. What do they have in common?', [
+    'They are computed from the outside, after the model was trained. They approximate what the model does and leave the model as opaque as it was.',
+    'They make the model interpretable: once explained, it can be read like a decision tree.',
+    'They need access to the weights of the model, so they work only for neural networks.'], 0,
+    'Interpretability is a property of the model; explainability is a toolset. Most of them, such as permutation importance and counterfactuals, need nothing but the predictions of the model.')}
+    ${mcqOk('q2', 0) ? nextBtn() : ''}</div>`;
+  return h + '</div>';
+}
+function s2wire() {
+  $('#c2').onclick = () => { S.c2 = true; if (SCEN.every(([t, scope, m], i) => S['sc' + i] === scope && S['me' + i] === METHODS[m])) S.ok2 = true; render(); };
+}
+
+/* ---------- stop 3: Shapley values with two features ---------- */
+function s3() {
+  const V = D.shap2, T = { a1: V.A - V.none, e2: V.AE - V.A, e1: V.E - V.none, a2: V.AE - V.E };
+  T.pa = (T.a1 + T.a2) / 2; T.pe = (T.e1 + T.e2) / 2;
+  const ok = k => near(S['x3' + k], T[k], k[0] === 'p' ? 0.11 : 0.06);
+  let h = `<div class="box"><p class="task">A model with only two features, Age and Education level, predicts <b>${F1(V.AE)}%</b> for a 53-year-old with a master's degree: the chance of earning more than $50,000 a year. Its average prediction is <b>${F1(V.none)}%</b>. Split the +${F1(V.AE - V.none)} points fairly between the two features.</p>
+  <div class="grid2"><div class="card"><div class="lab">Average prediction when the model is told only…</div><table>
+    <tr><td>nothing about the person</td><td class="r mono">${F1(V.none)}%</td></tr><tr><td>Age</td><td class="r mono">${F1(V.A)}%</td></tr>
+    <tr><td>Education</td><td class="r mono">${F1(V.E)}%</td></tr><tr><td>Age and Education</td><td class="r mono">${F1(V.AE)}%</td></tr></table>
+    <div class="small">A real model, trained on 24,420 people from the 1994 US census. The slides continue with a third feature, Hours per week.</div></div>
+  <div class="card"><div class="lab">Two features can arrive in two orders</div><table>
+    <tr><th>order</th><th>Age adds</th><th>Education adds</th></tr>
+    <tr><td>Age first, then Education</td><td>${inp('x3a1')} ${mark(S.c3, ok('a1'))}</td><td>${inp('x3e2')} ${mark(S.c3, ok('e2'))}</td></tr>
+    <tr><td>Education first, then Age</td><td>${inp('x3a2')} ${mark(S.c3, ok('a2'))}</td><td>${inp('x3e1')} ${mark(S.c3, ok('e1'))}</td></tr>
+    <tr><td><b>Shapley value</b>: the average of the two orders</td><td>${inp('x3pa')} ${mark(S.c3, ok('pa'))}</td><td>${inp('x3pe')} ${mark(S.c3, ok('pe'))}</td></tr></table></div></div>
+  <div><button class="btn" id="c3">Check</button></div>`;
+  if (S.c3 && !S.ok3) h += `<div class="status bad">Not yet. Each cell of the first two rows is one subtraction from the table on the left: the prediction after the feature arrives minus the prediction before.</div>`;
+  h += hint('h3', `Age first: Age takes the prediction from ${F1(V.none)} to ${F1(V.A)}; then Education takes it from ${F1(V.A)} to ${F1(V.AE)}.`);
+  if (S.ok3) h += `<div class="box sep"><div class="card"><div class="lab">The whole payout</div><div style="font-size:18px;line-height:1.7" class="mono">${F1(V.none)} <span class="small">average</span> + ${T.pa.toFixed(2)} <span class="small">Age</span> + ${T.pe.toFixed(2)} <span class="small">Education</span> = ${F1(V.AE)}%</div></div>
+    ${mcq('q3', `Explain it · in the first order Age adds ${F1(T.a1)} points, in the second ${F1(T.a2)}. Why not simply take the first order?`, [
+      'Because the order is our choice, not a fact about the model. What a feature adds depends on what is already known, so we average over every order and favour none.',
+      'Because the first order is always the least accurate one.',
+      'Because the model was trained with Education before Age.'], 0,
+      'With two features there are 2 orders, with three there are 6, with ten more than 3.6 million. The slides continue with three features; computing it fast is what SHAP is for.')}
+    ${mcqOk('q3', 0) ? nextBtn() : ''}</div>`;
+  return h + '</div>';
+}
+function s3wire() {
+  const V = D.shap2, T = { a1: V.A - V.none, e2: V.AE - V.A, e1: V.E - V.none, a2: V.AE - V.E };
+  T.pa = (T.a1 + T.a2) / 2; T.pe = (T.e1 + T.e2) / 2;
+  $('#c3').onclick = () => { S.c3 = true; if (Object.keys(T).every(k => near(S['x3' + k], T[k], k[0] === 'p' ? 0.11 : 0.06))) S.ok3 = true; render(); };
+}
+
+/* ---------- steps ---------- */
+const STEPS = [
+  { label: 'Two kinds of fair', title: '1 · Two definitions of fair', html: s1, wire: s1wire, ok: () => mcqOk('q1', 0) },
+  { label: 'Which explanation?', title: '2 · Which explanation for which question?', html: s2, wire: s2wire, ok: () => mcqOk('q2', 0) },
+  { label: 'Shapley for two', title: '3 · A fair share, with two features', html: s3, wire: s3wire, ok: () => mcqOk('q3', 0) },
+];
+
+function drawStepper() {
+  $('#stepper').innerHTML = STEPS.map((s, i) => {
+    const bg = i === S.step ? '#1B2F6B' : STEPS[i].ok() ? '#26314F' : '#5A6385';
+    return `<button data-go="${i}" style="background:${bg}"><span class="n">${i + 1} ${STEPS[i].ok() ? '✓' : ''}</span><span class="l">${s.label}</span></button>`;
+  }).join('');
+  $$('[data-go]').forEach(b => b.onclick = () => go(+b.dataset.go));
+}
+function render() {
+  const st = STEPS[S.step];
+  $('#title').textContent = st.title;
+  $('#stage').innerHTML = st.html();
+  wireInputs();
+  st.wire();
+  drawStepper();
+  $('#pos').textContent = `${S.step + 1} / ${STEPS.length}`;
+  $('#prev').style.opacity = S.step > 0 ? 1 : .4;
+  $('#next').style.opacity = S.step < STEPS.length - 1 ? 1 : .4;
+}
+function go(i) {
+  if (i < 0 || i >= STEPS.length) return;
+  S.step = i; S.max = Math.max(S.max, i);
+  try { history.replaceState(null, '', '#step' + (i + 1)); } catch (e) {}
+  render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+$('#prev').onclick = () => go(S.step - 1);
+$('#next').onclick = () => go(S.step + 1);
+const m = location.hash.match(/step(\d)/);
+S.step = m ? Math.min(Math.max(+m[1] - 1, 0), STEPS.length - 1) : 0;
+render();
+</script>
+</body>
+</html>
