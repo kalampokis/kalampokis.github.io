@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7KW3PRQVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R7KW3PRQVZ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Εργασία εξαμήνου · Instacart</title>
+<meta name="description" content="Εκφώνηση και οδηγός της εργασίας εξαμήνου: Google Colab και notebooks, τα δεδομένα Instacart, βήματα εκκίνησης με σημεία ελέγχου, θέματα εμβάθυνσης, κριτήρια και χρονοδιάγραμμα. Προγραμματισμός για Επιχειρηματική Αναλυτική.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2F6B; --text:#26314F; --gray:#5A6385; --blue:#7895F9; --lblue:#B9C8FC; --pale:#EEF1FE;
+    --orange:#F5821F; --peach:#FDE8D4; --green:#1e7a4c; --lgreen:#E3F3EA; --red:#B23A3A; --lred:#FBE4E4;
+    --code:#141E3C; --codefg:#F4F6FF; --comment:#9FB3E8; --mono:'JetBrains Mono',Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pale);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+  a{color:var(--green)}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 16px 80px;display:flex;flex-direction:column;gap:22px}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--gray);text-transform:uppercase}
+  h1{margin:6px 0 0;font-family:Georgia,serif;font-weight:700;font-size:38px;line-height:1.1;color:var(--navy)}
+  h2{margin:0;font-family:Georgia,serif;font-size:28px;color:var(--navy)}
+  h3{margin:18px 0 6px;font-family:Georgia,serif;font-size:20px;color:var(--navy)}
+  p{margin:0 0 10px;font-size:17px}
+  .lead{font-size:19px;max-width:800px}
+  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px}
+  .stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 12px;background:var(--navy);color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px;opacity:.55}
+  .stepper button.active{opacity:1;outline:3px solid var(--orange)}
+  .stepper button.done{opacity:.9;background:var(--green)}
+  .stepper button span.n{font-family:var(--mono);font-weight:700;font-size:14px}
+  .stepper button span.l{font-size:13px}
+  section.step{display:none;flex-direction:column;gap:14px;background:#fff;border-radius:12px;padding:22px 22px 26px;box-shadow:0 1px 3px rgba(27,47,107,.08)}
+  section.step.active{display:flex}
+  code{font-family:var(--mono);background:var(--pale);padding:1px 5px;border-radius:4px;color:var(--navy);font-size:.95em}
+  .en{color:var(--gray);font-style:italic}
+  .box{border-radius:8px;padding:12px 16px;font-size:16px}
+  .tip{background:var(--peach)} .tip>b:first-child{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .note{background:var(--pale)} .note>b:first-child{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  /* runnable code */
+  .runner{border-radius:10px;overflow:hidden;border:2px solid var(--navy);background:var(--code)}
+  .runner .bar{display:flex;align-items:center;gap:10px;padding:6px 12px;background:#0E1630;color:var(--lblue);font-family:var(--mono);font-size:12px}
+  .runner .bar .spacer{flex:1}
+  .runner textarea{width:100%;display:block;border:0;outline:0;resize:vertical;min-height:120px;padding:12px 14px;background:var(--code);color:var(--codefg);font-family:var(--mono);font-size:16px;line-height:1.5;tab-size:4}
+  .runner .out{background:var(--pale);color:var(--navy);font-family:var(--mono);font-size:14px;padding:10px 14px;white-space:pre-wrap;min-height:34px;border-top:1px solid var(--lblue)}
+  .runner .out.err{color:var(--red);background:var(--lred)}
+  .runner .out:empty::before{content:"— πάτησε «Τρέξε» ή Ctrl+Enter —";color:var(--gray);font-style:italic;font-family:Arial}
+  .btn{font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--green);color:#fff;font-weight:bold}
+  .btn.secondary{background:transparent;border:2px solid var(--lblue);color:var(--lblue);font-weight:normal}
+  .btn.navy{background:var(--navy)}
+  .btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+  .btn:disabled{opacity:.5;cursor:default}
+  /* quiz */
+  .quiz{background:var(--pale);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .quiz .q{font-weight:bold;color:var(--navy)}
+  .quiz pre{margin:0;font-family:var(--mono);font-size:15px;background:var(--code);color:var(--codefg);padding:10px 14px;border-radius:8px;white-space:pre-wrap}
+  .quiz .opts{display:grid;gap:6px}
+  .quiz .opts button{text-align:left;font:inherit;font-size:16px;padding:9px 12px;border-radius:8px;border:1px solid var(--lblue);background:#fff;color:var(--navy);cursor:pointer;font-family:var(--mono);white-space:pre-wrap}
+  .quiz .opts button.ok{background:var(--lgreen);border-color:var(--green)}
+  .quiz .opts button.bad{background:var(--lred);border-color:var(--red)}
+  .quiz .fb{min-height:20px;font-size:15px}
+  .quiz .fb.ok{color:var(--green);font-weight:bold} .quiz .fb.bad{color:var(--red)}
+  /* exercise */
+  .exercise{border:2px dashed var(--orange);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#fff}
+  .exercise .title{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--orange);text-transform:uppercase}
+  .exercise .result{font-size:15px;min-height:20px}
+  .exercise .result.ok{color:var(--green);font-weight:bold} .exercise .result.bad{color:var(--red)}
+  .exercise details{font-size:15px} .exercise summary{cursor:pointer;color:var(--navy)}
+  /* visualizers */
+  .viz{display:flex;flex-direction:column;gap:10px;background:var(--pale);border-radius:10px;padding:14px 16px}
+  .viz input{font-family:var(--mono);font-size:20px;padding:8px 12px;border:2px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy);width:100%;max-width:420px}
+  .cells{display:flex;gap:8px;flex-wrap:wrap}
+  .cell{display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--mono)}
+  .cell .i{font-size:12px;color:var(--navy);background:var(--lblue);border-radius:10px;padding:1px 10px}
+  .cell .v{width:62px;height:52px;display:flex;align-items:center;justify-content:center;background:var(--code);color:#fff;font-weight:bold;font-size:18px;border-radius:6px}
+  .cell.hit .v{background:var(--orange)}
+  .cell.off .v{opacity:.35}
+  .cell .b{font-size:12px;font-family:var(--mono);color:var(--gray)}
+  .cell.hit .b{color:var(--orange);font-weight:bold}
+  .viz .res{font-family:var(--mono);font-size:17px;color:var(--navy);min-height:24px;white-space:pre-wrap}
+  .grid2d{display:inline-grid;gap:6px;align-items:center;align-self:flex-start;max-width:100%;overflow-x:auto}
+  .grid2d .hd{font-family:var(--mono);font-size:12px;color:var(--navy);background:var(--lblue);border-radius:10px;padding:1px 0;text-align:center}
+  .grid2d .rh{font-family:var(--mono);font-size:12px;color:var(--navy);background:var(--lblue);border-radius:10px;padding:1px 10px;text-align:center}
+  .grid2d .c{width:78px;height:46px;display:flex;align-items:center;justify-content:center;background:var(--code);color:#fff;font-family:var(--mono);font-weight:bold;font-size:17px;border-radius:6px}
+  .grid2d .c.hit{background:var(--orange)}
+  .dfviz table{border-collapse:collapse;font-family:var(--mono);font-size:14px;width:100%}
+  .dfviz th{background:var(--navy);color:#fff;text-align:left;padding:5px 8px;font-weight:bold}
+  .dfviz td{padding:5px 8px;border-bottom:1px solid var(--lblue);color:var(--navy)}
+  .dfviz td.idx{color:var(--gray)}
+  .dfviz tr.hit td{background:var(--peach);font-weight:bold}
+  .dfviz tr.off td{opacity:.4}
+  .dfviz td.b{text-align:center;color:var(--gray)} .dfviz tr.hit td.b{color:var(--orange)}
+  .steps-list{font-size:17px;padding-left:22px} .steps-list li{margin-bottom:6px}
+  .grid2 .box{font-size:16px}
+  .task{border:1px solid var(--lblue);border-radius:10px;padding:12px 16px;margin-bottom:10px;background:#fff}
+  .task.done{background:var(--lgreen);border-color:var(--green)}
+  .task-h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:17px}
+  .task-h input{transform:scale(1.25);margin-right:6px}
+  .tools{font-family:var(--mono);font-size:12px;color:var(--gray);background:var(--pale);border-radius:6px;padding:2px 8px}
+  .task p{margin:8px 0 6px;font-size:16px}
+  .task details{font-size:15px;background:var(--pale);border-radius:8px;padding:8px 12px} .task summary{cursor:pointer;color:var(--navy);font-weight:bold}
+  .topics{display:flex;flex-direction:column;gap:8px}
+  .topic{border:2px solid var(--lblue);border-radius:10px;padding:10px 16px;background:#fff}
+  .topic[open]{border-color:var(--orange)}
+  .topic summary{cursor:pointer;font-family:Georgia,serif;font-size:19px;color:var(--navy)}
+  .topic .tn{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--orange);margin-right:8px}
+  .topic .bq{font-style:italic;color:var(--gray);margin:10px 0 6px;font-size:16px}
+  .topic ol{font-size:16px;padding-left:22px} .topic ol li{margin-bottom:6px}
+  .topic .more{font-size:15px;background:var(--peach);border-radius:8px;padding:8px 12px}
+  .planner{background:var(--pale);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .planner label{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--gray)}
+  .planner input,.planner select,.planner textarea{font:inherit;font-size:16px;padding:7px 10px;border:1px solid var(--lblue);border-radius:6px;background:#fff;color:var(--text)}
+  .plout{font-family:var(--mono);font-size:14px;background:var(--code);color:var(--codefg);padding:12px 14px;border-radius:8px;white-space:pre-wrap;margin:0}
+  .checklist{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--lblue);border-radius:10px;padding:12px 16px;font-size:16px}
+  .checklist input{transform:scale(1.2);margin-right:8px}
+  .runner.static pre.code{margin:0;padding:12px 14px;background:var(--code);color:var(--codefg);font-family:var(--mono);font-size:14px;line-height:1.5;white-space:pre-wrap}
+  .schema svg{width:100%;height:auto;display:block;background:#fff;border:1px solid var(--lblue);border-radius:10px}
+  .schema .tb{fill:var(--pale);stroke:var(--lblue);stroke-width:2} .schema .tb.hi{fill:#FDE8D4;stroke:var(--orange)}
+  .schema .tt{font-family:var(--mono);font-weight:bold;font-size:16px;fill:var(--navy)}
+  .schema .tc{font-family:var(--mono);font-size:13px;fill:var(--text)} .schema .tc.key{font-weight:bold;fill:var(--navy)}
+  .schema .ln{fill:none;stroke:var(--navy);stroke-width:2} .schema .ll{font-family:var(--mono);font-size:12px;fill:var(--navy)}
+  .schema .ln-note{font-family:Arial;font-size:13px;fill:var(--gray);font-style:italic}
+  .schema-cap{font-size:15px;color:var(--gray);margin-top:6px}
+  /* mini notebook */
+  .nb{border:2px solid var(--navy);border-radius:10px;overflow:hidden;background:#fff}
+  .nb-bar{display:flex;gap:8px;align-items:center;padding:6px 12px;background:#0E1630;color:var(--lblue);font-family:var(--mono);font-size:12px;flex-wrap:wrap}
+  .nb-bar .spacer{flex:1}
+  .nb-cells{display:flex;flex-direction:column;gap:6px;padding:10px}
+  .nb .cell{display:grid;grid-template-columns:52px 1fr 60px;gap:8px;align-items:start}
+  .nb .gut{font-family:var(--mono);font-size:12px;color:var(--gray);padding-top:10px;text-align:right}
+  .nb .cell.md .gut{color:var(--orange)}
+  .nb textarea{width:100%;display:block;border:1px solid var(--lblue);border-radius:6px;outline:0;resize:vertical;padding:8px 10px;background:#F7F8FD;color:var(--navy);font-family:var(--mono);font-size:15px;line-height:1.5;tab-size:4}
+  .nb .cell.md textarea{background:#FFFBF5;border-color:#F5C9A0}
+  .nb .cell:focus-within textarea{border-color:var(--navy);box-shadow:0 0 0 2px var(--lblue)}
+  .nb .mdview{padding:6px 10px;border-left:3px solid var(--orange);font-size:16px} .nb .mdview h3,.nb .mdview h4,.nb .mdview h5{margin:4px 0}
+  .nb .out{font-family:var(--mono);font-size:14px;white-space:pre-wrap;padding:6px 10px;color:var(--navy);border-left:3px solid var(--lblue);margin-top:4px}
+  .nb .out.err{color:var(--red);border-color:var(--red);background:var(--lred)}
+  .nb .ctl{display:flex;gap:4px;padding-top:6px} .nb .ctl button{font:inherit;font-size:13px;border:1px solid var(--lblue);background:#fff;color:var(--navy);border-radius:6px;cursor:pointer;padding:3px 7px}
+  /* print / full view */
+  body.printmode section.step{display:flex!important} body.printmode .stepper,body.printmode .nav,body.printmode .nb,body.printmode #pyStatus,body.printmode .quiz,body.printmode #planner,body.printmode .ctl,body.printmode .screen-only,body.printmode .nb+.box{display:none!important}
+  @media print{ .stepper,.nav,.nb,#pyStatus,.quiz,#planner,#site-nav,.screen-only,.nb+.box{display:none!important} section.step{display:flex!important;box-shadow:none;padding:10px 0} h2{break-after:avoid} .task,.topic,.box,tr,.schema{break-inside:avoid} body{background:#fff} .wrap{padding:0;gap:10px} details>summary{list-style:none} a{color:var(--navy);text-decoration:none} .lead{font-size:16px} p,.steps-list,.task p,.topic ol{font-size:14px} }
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+  .status{font-family:var(--mono);font-size:12px;color:var(--gray)}
+  .status.ready{color:var(--green)}
+  table.t{border-collapse:collapse;width:100%;font-size:15px}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:bold}
+  table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue)} table.t td:first-child, table.t td.m{font-family:var(--mono);color:var(--navy)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:700px){.grid2{grid-template-columns:1fr} h1{font-size:30px}}
+  footer{font-size:13px;color:var(--gray);text-align:center}
+</style>
+<style id="site-nav-style">
+  #site-nav{font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#1B2F6B;color:#fff;padding:8px 16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  #site-nav a{color:#fff;text-decoration:none}
+  #site-nav .sn-home{font-weight:bold} #site-nav .sn-sep{opacity:.5} #site-nav .sn-teach{color:#B9C8FC;margin-left:auto}
+  @media (max-width:700px){
+    #site-nav{font-size:13px;gap:6px 12px;padding:8px 12px}
+    #site-nav .sn-sep{display:none}
+    #site-nav .sn-back{flex-basis:100%;order:3;padding-top:2px}
+    #site-nav .sn-teach{order:2}
+    table.t{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+    .ui,.pill,td.m,.pill.m{white-space:normal}
+    .check input{max-width:100%} .check select{max-width:100%}
+    .calc,pre,code{overflow-wrap:anywhere}
+    .wrap{overflow-x:hidden}
+  }
+</style>
+</head>
+<body>
+<nav id="site-nav"><a class="sn-home" href="../../index.html">Dr. Evangelos Kalampokis</a><span class="sn-sep">|</span><a class="sn-back" href="../../courses/business-analytics-programming.html">&larr; Σελίδα μαθήματος: Προγραμματισμός για Επιχειρηματική Αναλυτική</a><a class="sn-teach" href="../../index.html#teaching">Αρχική</a></nav>
+<div class="wrap">
+  <div>
+    <div class="kicker">Προγραμματισμός για Επιχειρηματική Αναλυτική · Εργασία εξαμήνου · <span id="pyStatus" class="status">φόρτωση Python…</span></div>
+    <h1>Εργασία εξαμήνου: Instacart</h1>
+    <p class="lead" style="margin-top:10px">Μια ομάδα 2–3 ατόμων, ένα πραγματικό σύνολο δεδομένων με 3 εκατομμύρια παραγγελίες σούπερ μάρκετ, ένα notebook και μια παρουσίαση 10 λεπτών. Αυτή η σελίδα είναι ο <b>μπούσουλάς</b> σας: ξεκινά από το μηδέν (τι είναι το Colab και το notebook), σας οδηγεί βήμα-βήμα στα πρώτα υποχρεωτικά ερωτήματα με <b>σημεία ελέγχου</b> για να ξέρετε ότι είστε σωστά, και μετά σας αφήνει χώρο να πειραματιστείτε πάνω στο θέμα που θα διαλέξετε. Ό,τι χρειάζεστε το έχετε ήδη μάθει: φίλτρα, groupby, merge και γραφήματα.</p>
+    <div class="box note"><b>ΜΕ ΜΙΑ ΜΑΤΙΑ</b><span id="glance"></span></div>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- ============ 1 ============ -->
+  <section class="step" data-title="Colab &amp; notebooks">
+    <h2>1. Πριν ξεκινήσεις: Google Colab και notebooks</h2>
+    <p>Μέχρι τώρα τρέχατε κώδικα μέσα σε αυτές τις σελίδες. Για την εργασία θα δουλέψετε σε ένα <b>notebook</b> <span class="en">(Jupyter notebook)</span>: ένα έγγραφο που αποτελείται από <b>κελιά</b> <span class="en">(cells)</span>. Κάθε κελί είναι είτε <b>κώδικας</b> που τρέχει και δείχνει το αποτέλεσμά του ακριβώς από κάτω, είτε <b>κείμενο</b> <span class="en">(Markdown)</span> όπου εξηγείτε τι κάνετε και τι βρήκατε. Κώδικας, αποτελέσματα, γραφήματα και σχόλια μαζί, με τη σειρά: γι' αυτό το notebook είναι ταυτόχρονα το εργαλείο σας και η αναφορά σας.</p>
+    <p>Το <b>Google Colab</b> <span class="en">(colab.research.google.com)</span> είναι ένα δωρεάν notebook που τρέχει στον browser, σε υπολογιστή της Google: δεν εγκαθιστάτε τίποτα, το pandas είναι ήδη εκεί, και το αρχείο σώζεται στο Google Drive σας.</p>
+
+    <h3>Πώς ανοίγω το πρώτο μου notebook</h3>
+    <ol class="steps-list">
+      <li>Πήγαινε στο <a href="https://colab.research.google.com" target="_blank" rel="noopener">colab.research.google.com</a> και συνδέσου με λογαριασμό Google (ο πανεπιστημιακός ή προσωπικός, δεν έχει σημασία· <b>όλη η ομάδα όμως να χρησιμοποιεί τον ίδιο φάκελο</b>).</li>
+      <li>Πάτησε <b>File → New notebook</b>. Ανοίγει ένα κενό notebook με ένα κελί κώδικα.</li>
+      <li>Πάνω αριστερά, κάνε κλικ στο όνομα <code>Untitled0.ipynb</code> και μετονόμασέ το, π.χ. <code>BAP_Instacart_Ομάδα07.ipynb</code>. Σώζεται αυτόματα στο Drive σου, στον φάκελο <code>Colab Notebooks</code>.</li>
+      <li>Γράψε <code>print("Γεια σου, Colab")</code> στο κελί και πάτησε <b>Shift + Enter</b>. Την πρώτη φορά περιμένει λίγα δευτερόλεπτα για να «ξυπνήσει» τον υπολογιστή (runtime) και μετά τυπώνει το αποτέλεσμα από κάτω.</li>
+      <li>Πάτησε <b>+ Code</b> για νέο κελί κώδικα ή <b>+ Text</b> για κελί κειμένου. Στο κελί κειμένου γράφεις με Markdown: <code># Τίτλος</code>, <code>## Υπότιτλος</code>, <code>**έντονα**</code>, <code>- λίστα</code>.</li>
+      <li><b>Share</b> (πάνω δεξιά) → πρόσθεσε τα email των συμφοιτητών σου ως Editors. Από εκεί και πέρα δουλεύετε όλοι στο ίδιο αρχείο, όπως σε ένα Google Doc.</li>
+    </ol>
+
+    <h3 class="screen-only">Δοκίμασέ το εδώ: ένα μίνι notebook</h3>
+    <p class="screen-only">Πριν πας στο Colab, πάρε μια γεύση. Αυτό είναι ένα μικρό notebook μέσα στη σελίδα, με την ίδια λογική: κελιά, <b>Shift + Enter</b> για εκτέλεση, κοινές μεταβλητές ανάμεσα στα κελιά, αρίθμηση <code>[1]</code>, <code>[2]</code>… με τη σειρά εκτέλεσης. Τρέξε τα κελιά με τη σειρά, μετά δοκίμασε να τρέξεις το τρίτο <i>πριν</i> το δεύτερο, και δες τι γίνεται.</p>
+    <div class="nb" id="demoNb"></div>
+    <div class="box tip"><b>ΟΙ ΤΡΕΙΣ ΚΑΝΟΝΕΣ ΤΟΥ NOTEBOOK</b>(1) Οι μεταβλητές ζουν σε όλο το notebook: ό,τι ορίσεις σε ένα κελί υπάρχει στα επόμενα. (2) Η <b>σειρά εκτέλεσης</b> μετράει, όχι η σειρά στη σελίδα: ο αριθμός σε αγκύλες λέει τι έτρεξε πότε. (3) Όταν μπερδευτείς, <b>Runtime → Restart session and run all</b>: τρέχει όλα από την αρχή, με τη σειρά. Το notebook που παραδίδετε πρέπει να τρέχει έτσι χωρίς σφάλμα.</div>
+
+    <div class="quiz" data-q="Σε ένα notebook τρέχεις πρώτα το κελί Β και μετά το κελί Α. Τι θα τυπώσει το Α;" data-code="# Κελί Α
+print(total)
+
+# Κελί Β
+total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined","Τίποτα","0"]' data-ans="0" data-why="Μετράει η σειρά ΕΚΤΕΛΕΣΗΣ: το Β έτρεξε πρώτο και όρισε το total, άρα το Α βρίσκει 100. Αν το έτρεχες με «Run all» (σειρά σελίδας), το Α θα έδινε NameError. Γι' αυτό ελέγχουμε πάντα με Restart and run all."></div>
+    <div class="quiz" data-q="Τι συνδυασμός πλήκτρων τρέχει το κελί;" data-opts='["Shift + Enter","Enter","Ctrl + S","Alt + F4"]' data-ans="0" data-why="Shift + Enter τρέχει το κελί και πηγαίνει στο επόμενο. Το σκέτο Enter απλώς αλλάζει γραμμή μέσα στο κελί."></div>
+    <div class="quiz" data-q="Πού σώζεται το notebook του Colab;" data-opts='["Στο Google Drive του λογαριασμού, φάκελος Colab Notebooks","Στον σκληρό δίσκο του υπολογιστή μου","Πουθενά, χάνεται όταν κλείσω τον browser","Στο eClass"]' data-ans="0" data-why="Σώζεται αυτόματα στο Drive. Για να το παραδώσεις, κατεβάζεις το .ipynb (File → Download) ή μοιράζεσαι τον σύνδεσμο."></div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="step" data-title="Η εργασία">
+    <h2>2. Η εργασία με μια ματιά</h2>
+    <p>Η <b>Instacart</b> είναι υπηρεσία παράδοσης ψωνιών από σούπερ μάρκετ στις ΗΠΑ. Το 2017 δημοσίευσε ανωνυμοποιημένα δεδομένα: <b>3,4 εκατομμύρια παραγγελίες</b> από 206 χιλιάδες πελάτες, με τα προϊόντα κάθε καλαθιού, την ημέρα και ώρα της παραγγελίας, και αν κάθε προϊόν ήταν επαναγορά. Είναι από τα πιο γνωστά σύνολα δεδομένων στην επιχειρηματική αναλυτική, και ακριβώς το είδος δεδομένων που έχει κάθε λιανέμπορος.</p>
+    <p><b>Ο ρόλος σας:</b> είστε η ομάδα αναλυτικής της Instacart. Η διοίκηση θέλει να καταλάβει <i>πώς ψωνίζουν οι πελάτες</i> και τι μπορεί να κάνει με αυτή τη γνώση. Κάθε ομάδα απαντά πρώτα σε ένα κοινό σύνολο ερωτημάτων (βήμα 4), διαλέγει μετά ένα <b>θέμα εμβάθυνσης</b> (βήμα 5) και καταλήγει σε <b>ευρήματα και μία πρόταση</b> προς τη διοίκηση.</p>
+
+    <div class="grid2">
+      <div class="box note"><b>ΟΜΑΔΕΣ</b><span class="cfg" data-k="team"></span></div>
+      <div class="box note"><b>ΒΑΘΜΟΣ</b><span class="cfg" data-k="weight"></span></div>
+      <div class="box note"><b>ΠΑΡΑΔΟΤΕΑ</b>Ένα notebook (.ipynb) που τρέχει από την αρχή ως το τέλος χωρίς σφάλμα, και μία παρουσίαση 10 λεπτών (5–6 διαφάνειες). Λεπτομέρειες στο βήμα 6.</div>
+      <div class="box note"><b>ΕΡΓΑΛΕΙΑ</b>Google Colab, pandas, Matplotlib. Ό,τι έχουμε κάνει στο μάθημα· τίποτα επιπλέον δεν απαιτείται (αλλά επιτρέπεται).</div>
+    </div>
+
+    <h3>Τα τρία μέρη της εργασίας</h3>
+    <table class="t">
+      <tr><th>Μέρος</th><th>Τι κάνετε</th><th>Πού βρίσκεται η καθοδήγηση</th><th>Βάρος</th></tr>
+      <tr><td>Α. Εκκίνηση (κοινό για όλους)</td><td>Φόρτωση, έλεγχος, merge και 6 υποχρεωτικά ερωτήματα με σημεία ελέγχου</td><td>Βήμα 4</td><td>30%</td></tr>
+      <tr><td>Β. Εμβάθυνση (ανά ομάδα)</td><td>Ένα θέμα από το μενού, 3 καθοδηγούμενα ερωτήματα + τουλάχιστον 1 δικό σας</td><td>Βήμα 5</td><td>45%</td></tr>
+      <tr><td>Γ. Επικοινωνία</td><td>Καθαρό notebook με σχόλια, γραφήματα, συμπεράσματα, παρουσίαση 10'</td><td>Βήμα 6</td><td>25%</td></tr>
+    </table>
+    <div class="box tip" style="margin-top:10px"><b>ΤΙ ΔΕΝ ΕΙΝΑΙ Η ΕΡΓΑΣΙΑ</b>Δεν είναι διαγωνισμός machine learning, ούτε «όσο περισσότερος κώδικας τόσο καλύτερα». Είναι: σωστά νούμερα, καθαρά γραφήματα, και μια απάντηση σε επιχειρηματική ερώτηση που θα καταλάβαινε ένας διευθυντής χωρίς να διαβάσει κώδικα.</div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="step" data-title="Τα δεδομένα">
+    <h2>3. Τα δεδομένα και πώς τα φορτώνετε</h2>
+    <p>Έξι αρχεία CSV που συνδέονται μεταξύ τους με «κλειδιά» <span class="en">(ids)</span>, όπως σε μια βάση δεδομένων. Η κεντρική ιδέα: οι <b>παραγγελίες</b> είναι ένας πίνακας, τα <b>προϊόντα κάθε παραγγελίας</b> άλλος, και τα <b>προϊόντα</b> με τις κατηγορίες τους ένας τρίτος. Για να απαντήσετε «πόσες μπανάνες πουλήθηκαν την Κυριακή» χρειάζεστε και τους τρεις, ενωμένους με <code>merge</code>.</p>
+    <div class="schema"></div>
+    <table class="t" style="margin-top:12px">
+      <tr><th>Αρχείο</th><th>Γραμμές</th><th>Στήλες</th><th>Τι είναι</th></tr>
+      <tr><td>orders.csv</td><td>3.421.083</td><td>order_id, user_id, eval_set, order_number, order_dow, order_hour_of_day, days_since_prior_order</td><td>Μία γραμμή ανά παραγγελία: ποιος, πότε (ημέρα 0–6, ώρα 0–23), πόσες μέρες από την προηγούμενη (NaN στην πρώτη παραγγελία κάθε πελάτη)</td></tr>
+      <tr><td>order_products__prior.csv</td><td>32.434.489</td><td>order_id, product_id, add_to_cart_order, reordered</td><td>Μία γραμμή ανά προϊόν μέσα σε παραγγελία: η σειρά που μπήκε στο καλάθι και αν ήταν επαναγορά (1) ή πρώτη φορά (0)</td></tr>
+      <tr><td>order_products__train.csv</td><td>1.384.617</td><td>όπως το prior</td><td>Το ίδιο, για την τελευταία παραγγελία 131 χιλ. πελατών. <b>Χρήσιμο για δοκιμές: είναι 23 φορές μικρότερο</b></td></tr>
+      <tr><td>products.csv</td><td>49.688</td><td>product_id, product_name, aisle_id, department_id</td><td>Ο κατάλογος προϊόντων</td></tr>
+      <tr><td>aisles.csv</td><td>134</td><td>aisle_id, aisle</td><td>Ο «διάδρομος» (υποκατηγορία), π.χ. fresh fruits, yogurt</td></tr>
+      <tr><td>departments.csv</td><td>21</td><td>department_id, department</td><td>Το τμήμα, π.χ. produce, dairy eggs, snacks</td></tr>
+    </table>
+    <div class="box note" style="margin-top:10px"><b>ΤΟ eval_set</b>Στο <code>orders.csv</code> η στήλη <code>eval_set</code> λέει σε ποιο αρχείο βρίσκονται τα προϊόντα της παραγγελίας: <code>prior</code> (3,2 εκ. παραγγελίες), <code>train</code> (131 χιλ.) ή <code>test</code> (75 χιλ., <b>χωρίς</b> προϊόντα, αγνοήστε τες). Για την εργασία δουλεύετε με το <b>prior</b>: είναι το πλήρες ιστορικό.</div>
+
+    <h3>Φόρτωση στο Colab από το Google Drive</h3>
+    <p>Τα αρχεία βρίσκονται σε κοινόχρηστο φάκελο Google Drive του μαθήματος (<span class="cfg" data-k="drive"></span>). Δύο βήματα, μία φορά:</p>
+    <ol class="steps-list">
+      <li>Άνοιξε τον κοινόχρηστο φάκελο στο Drive, κάνε δεξί κλικ στο όνομά του → <b>Organise → Add shortcut</b> (Προσθήκη συντόμευσης) → <b>My Drive</b>. Έτσι ο φάκελος εμφανίζεται μέσα στο δικό σου Drive, χωρίς να αντιγραφεί.</li>
+      <li>Στο notebook, «συνδέεις» το Drive και διαβάζεις τα αρχεία με το <code>read_csv</code> που ξέρεις:</li>
+    </ol>
+    <div class="runner static" data-code="from google.colab import drive
+drive.mount(&quot;/content/drive&quot;)      # θα ζητήσει άδεια: πάτησε Connect to Google Drive
+
+import pandas as pd
+DATA = &quot;/content/drive/MyDrive/instacart/&quot;   # ο φάκελος με τα 6 αρχεία (άλλαξέ τον αν τον έβαλες αλλού)
+
+orders      = pd.read_csv(DATA + &quot;orders.csv&quot;)
+products    = pd.read_csv(DATA + &quot;products.csv&quot;)
+aisles      = pd.read_csv(DATA + &quot;aisles.csv&quot;)
+departments = pd.read_csv(DATA + &quot;departments.csv&quot;)
+train       = pd.read_csv(DATA + &quot;order_products__train.csv&quot;)
+
+# Το prior είναι μεγάλο (32 εκ. γραμμές): δήλωσε μικρούς τύπους για να χωρά άνετα στη μνήμη
+prior = pd.read_csv(DATA + &quot;order_products__prior.csv&quot;,
+                    dtype={&quot;order_id&quot;: &quot;int32&quot;, &quot;product_id&quot;: &quot;int32&quot;,
+                           &quot;add_to_cart_order&quot;: &quot;int16&quot;, &quot;reordered&quot;: &quot;int8&quot;})
+print(orders.shape, prior.shape)"></div>
+    <div class="box tip"><b>Ο ΜΠΟΥΣΟΥΛΑΣ ΓΙΑ ΤΑ ΜΕΓΑΛΑ ΑΡΧΕΙΑ</b>(1) Γράψε και δοκίμασε κάθε ανάλυση πρώτα στο <code>train</code> (1,4 εκ. γραμμές, τρέχει σε δευτερόλεπτα)· όταν δουλεύει, άλλαξε τη μεταβλητή σε <code>prior</code>. (2) Κάνε merge <b>μόνο τις στήλες που χρειάζεσαι</b>: <code>products[["product_id", "product_name", "department_id"]]</code>. (3) Αν το Colab βγάλει «Your session crashed after using all available RAM», ξεκίνα πάλι (Runtime → Restart) και φόρτωσε λιγότερα. (4) Μη φορτώνεις το prior δύο φορές.</div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="step" data-title="Βήματα εκκίνησης">
+    <h2>4. Μέρος Α: βήματα εκκίνησης με σημεία ελέγχου</h2>
+    <p>Έξι ερωτήματα, κοινά για όλες τις ομάδες. Για το καθένα δίνουμε τι να κάνετε, ποια εργαλεία του μαθήματος χρειάζονται, και ένα <b>σημείο ελέγχου</b> <span class="en">(checkpoint)</span>: ένα νούμερο που πρέπει να βγάλετε κι εσείς. Αν βγάλετε άλλο, κάτι πήγε στραβά (συνήθως λάθος αρχείο, λάθος merge ή ξεχασμένο φίλτρο) και το βρίσκετε πριν χτίσετε πάνω του. Τσεκάρετε κάθε βήμα όταν το ολοκληρώσετε· η λίστα θυμάται την πρόοδό σας σε αυτόν τον browser.</p>
+
+    <div class="task" data-id="a1">
+      <div class="task-h"><label><input type="checkbox"> <b>Α1. Φόρτωσε και επιθεώρησε τα έξι αρχεία</b></label><span class="tools">read_csv · shape · head · info</span></div>
+      <p>Για κάθε πίνακα: <code>shape</code>, <code>head()</code>, <code>info()</code>. Σε ένα κελί κειμένου γράψτε με δικά σας λόγια τι είναι μία γραμμή κάθε πίνακα (η «μονάδα»). Αυτή η πρόταση θα σας σώσει από τα μισά λάθη αργότερα.</p>
+      <details><summary>Σημείο ελέγχου</summary><code>orders.shape → (3421083, 7)</code> · <code>prior.shape → (32434489, 4)</code> · <code>products.shape → (49688, 4)</code> · aisles 134 γραμμές, departments 21. Πόσοι πελάτες; <code>orders["user_id"].nunique() → 206209</code>.</details>
+    </div>
+
+    <div class="task" data-id="a2">
+      <div class="task-h"><label><input type="checkbox"> <b>Α2. Πότε παραγγέλνουν οι πελάτες;</b></label><span class="tools">value_counts · groupby · bar chart</span></div>
+      <p>Παραγγελίες ανά ημέρα της εβδομάδας (<code>order_dow</code>, 0–6) και ανά ώρα (<code>order_hour_of_day</code>). Ένα ραβδόγραμμα για το καθένα. Ποια είναι η ώρα αιχμής; Ποιες δύο μέρες ξεχωρίζουν; (Η Instacart δεν λέει ποια μέρα είναι το 0· τι υποθέτετε, και γιατί;)</p>
+      <details><summary>Σημείο ελέγχου</summary>Η ώρα με τις περισσότερες παραγγελίες είναι η <b>10</b> (λίγο πάνω από τις 11, 14 και 15). Οι μέρες 0 και 1 έχουν η καθεμία πάνω από 580.000 παραγγελίες· οι υπόλοιπες κάτω από 470.000.</details>
+    </div>
+
+    <div class="task" data-id="a3">
+      <div class="task-h"><label><input type="checkbox"> <b>Α3. Πόσο συχνά ψωνίζουν;</b></label><span class="tools">groupby · size · describe · histogram</span></div>
+      <p>Παραγγελίες ανά πελάτη: <code>orders.groupby("user_id").size()</code> και <code>describe()</code>. Ιστόγραμμα. Μετά η κατανομή του <code>days_since_prior_order</code>: ποιες δύο τιμές ξεχωρίζουν και τι σημαίνουν για τη συνήθεια των πελατών; (Προσοχή: η τιμή 30 είναι «30 ή περισσότερες»· τα δεδομένα είναι κομμένα εκεί.)</p>
+      <details><summary>Σημείο ελέγχου</summary>Κάθε πελάτης έχει από <b>4</b> έως <b>100</b> παραγγελίες, μέσος όρος <b>≈ 16,6</b>. Στο days_since_prior_order οι δύο κορυφές είναι στο <b>7</b> και στο <b>30</b>.</details>
+    </div>
+
+    <div class="task" data-id="a4">
+      <div class="task-h"><label><input type="checkbox"> <b>Α4. Ένωσε τους πίνακες σε έναν</b></label><span class="tools">merge · shape πριν/μετά</span></div>
+      <p>Φτιάξτε έναν πίνακα <code>items</code> με μία γραμμή ανά προϊόν-σε-παραγγελία και δίπλα το όνομα, τον διάδρομο και το τμήμα: <code>prior → products → aisles → departments</code>, με <code>merge(..., on=...)</code>. <b>Ελέγξτε τον αριθμό γραμμών πριν και μετά από κάθε merge</b>: πρέπει να μένει ίδιος. Αν αυξηθεί, υπάρχουν διπλά κλειδιά· αν μειωθεί, χάνονται γραμμές (inner join).</p>
+      <details><summary>Σημείο ελέγχου</summary><code>items.shape[0] → 32434489</code>, ίδιο με το prior, και μετά τα τρία merge. Οι στήλες: order_id, product_id, add_to_cart_order, reordered, product_name, aisle_id, department_id, aisle, department.</details>
+    </div>
+
+    <div class="task" data-id="a5">
+      <div class="task-h"><label><input type="checkbox"> <b>Α5. Τα δημοφιλέστερα προϊόντα και τμήματα</b></label><span class="tools">value_counts · groupby · sort_values · head · barh</span></div>
+      <p>Τα 15 προϊόντα με τις περισσότερες πωλήσεις (γραμμές στο items) και το μερίδιο κάθε τμήματος (<code>department</code>) στο σύνολο των προϊόντων που πουλήθηκαν. Οριζόντιο ραβδόγραμμα για τα προϊόντα, ραβδόγραμμα ή πίτα για τα τμήματα. Τι παρατηρείτε για το είδος των προϊόντων στην κορυφή;</p>
+      <details><summary>Σημείο ελέγχου</summary>Πρώτο προϊόν: <b>Banana</b> (472.565 φορές), δεύτερο <b>Bag of Organic Bananas</b> (379.450), τρίτο <b>Organic Strawberries</b>. Το τμήμα <b>produce</b> έχει το μεγαλύτερο μερίδιο, περίπου <b>29%</b> των προϊόντων, με δεύτερο το dairy eggs.</details>
+    </div>
+
+    <div class="task" data-id="a6">
+      <div class="task-h"><label><input type="checkbox"> <b>Α6. Καλάθι και επαναγορές</b></label><span class="tools">groupby · size · mean σε 0/1</span></div>
+      <p>Μέγεθος καλαθιού: προϊόντα ανά παραγγελία (<code>items.groupby("order_id").size()</code>), μέσος και διάμεσος, ιστόγραμμα. Ποσοστό επαναγορών: ο μέσος όρος της στήλης <code>reordered</code> (είναι 0/1, άρα ο μέσος είναι ποσοστό, όπως μάθαμε). Μετά το ίδιο ποσοστό <b>ανά τμήμα</b>: ποια τμήματα ξαναγοράζονται περισσότερο και ποια λιγότερο, και γιατί βγάζει νόημα;</p>
+      <details><summary>Σημείο ελέγχου</summary>Μέσο καλάθι <b>≈ 10,1</b> προϊόντα, διάμεσος <b>8</b>. Συνολικό ποσοστό επαναγορών <b>≈ 0,59</b>. Ανά τμήμα, το dairy eggs και το produce είναι ψηλά (πάνω από 0,6), ενώ τμήματα όπως personal care και pantry χαμηλά (κάτω από 0,4).</details>
+    </div>
+
+    <div class="box note"><b>ΟΤΑΝ ΤΕΛΕΙΩΣΕΤΕ ΤΟ ΜΕΡΟΣ Α</b>Έχετε ήδη έναν ενωμένο πίνακα, έξι γραφήματα και μια πρώτη εικόνα του πελάτη της Instacart. Γράψτε σε ένα κελί κειμένου <b>τρεις προτάσεις</b> με τα πιο ενδιαφέροντα που είδατε. Από αυτές τις προτάσεις συνήθως βγαίνει και το θέμα εμβάθυνσης.</div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="step" data-title="Θέμα εμβάθυνσης">
+    <h2>5. Μέρος Β: διαλέξτε θέμα και πειραματιστείτε</h2>
+    <p>Έξι κατευθύνσεις. Κάθε μία έχει μια <b>επιχειρηματική ερώτηση</b>, τρία <b>καθοδηγούμενα ερωτήματα</b> που πρέπει να απαντήσετε (με τα εργαλεία που χρειάζονται), και ιδέες για να το πάτε <b>παραπέρα</b>. Υποχρεωτικό: τα τρία καθοδηγούμενα συν <b>τουλάχιστον ένα δικό σας ερώτημα</b>, που θα διατυπώσετε και θα αιτιολογήσετε εσείς. Εκεί είναι ο χώρος σας για πειραματισμό· εκεί διαφέρουν οι πολύ καλές εργασίες. Κάντε κλικ σε ένα θέμα για να το ανοίξετε.</p>
+
+    <div class="topics">
+      <details class="topic" data-id="t1"><summary><span class="tn">Θέμα 1</span> Πότε ψωνίζουν οι πελάτες, και τι σημαίνει για τη λειτουργία</summary>
+        <p class="bq">«Πότε χρειαζόμαστε περισσότερους διανομείς και πότε αξίζει να στέλνουμε προσφορές;»</p>
+        <ol>
+          <li>Συγκεντρωτικός πίνακας παραγγελιών <b>ημέρα × ώρα</b> (<code>pivot_table</code> με aggfunc="count") και απεικόνισή του ως heatmap (<code>plt.imshow</code> ή <code>pcolormesh</code>). Πού είναι η «καυτή ζώνη»;</li>
+          <li>Διαφέρει το <b>μέγεθος καλαθιού</b> ανά ώρα ή ανά ημέρα; (merge items με orders, groupby, mean)</li>
+          <li>Διαφέρουν τα <b>τμήματα</b> που αγοράζονται το πρωί από το βράδυ; (ποσοστό κάθε τμήματος ανά ζώνη ώρας: πρωί / μεσημέρι / απόγευμα / βράδυ, με <code>pd.cut</code> ή φίλτρα)</li>
+        </ol>
+        <p class="more"><b>Παραπέρα:</b> ψωνίζουν οι «πιστοί» πελάτες (πολλές παραγγελίες) σε άλλες ώρες από τους νέους; · Οι επαναγορές γίνονται πιο πολύ Σαββατοκύριακο; · Προτείνετε ένα πρόγραμμα βαρδιών με βάση τον πίνακα ημέρα × ώρα.</p>
+      </details>
+
+      <details class="topic" data-id="t2"><summary><span class="tn">Θέμα 2</span> Το καλάθι: μέγεθος, σύνθεση, και τι μπαίνει πρώτο</summary>
+        <p class="bq">«Τι χαρακτηρίζει ένα μεγάλο καλάθι, και τι βάζουν πρώτο οι πελάτες;»</p>
+        <ol>
+          <li>Κατανομή του μεγέθους καλαθιού και σύγκριση <b>μικρών</b> (≤ 5) με <b>μεγάλων</b> (≥ 15) καλαθιών: ποια τμήματα κυριαρχούν σε κάθε ομάδα;</li>
+          <li>Τα προϊόντα που μπαίνουν <b>πρώτα</b> στο καλάθι (<code>add_to_cart_order == 1</code>): top 10, και πώς διαφέρουν από τα top 10 συνολικά;</li>
+          <li>Σχέση <b>θέσης στο καλάθι</b> και <b>επαναγοράς</b>: είναι τα πρώτα προϊόντα πιο συχνά επαναγορές; (groupby add_to_cart_order, mean reordered, γραμμή)</li>
+        </ol>
+        <p class="more"><b>Παραπέρα:</b> από πόσα τμήματα ψωνίζει ένα τυπικό καλάθι (<code>nunique</code> ανά παραγγελία); · Μεγαλώνει το καλάθι όσο ο πελάτης ωριμάζει (ανά <code>order_number</code>); · Ποια προϊόντα εμφανίζονται σχεδόν πάντα σε μεγάλα καλάθια;</p>
+      </details>
+
+      <details class="topic" data-id="t3"><summary><span class="tn">Θέμα 3</span> Προϊόντα που ξαναγοράζονται, και προϊόντα «μιας φοράς»</summary>
+        <p class="bq">«Ποια προϊόντα κρατούν τους πελάτες και ποια δοκιμάζονται και εγκαταλείπονται;»</p>
+        <ol>
+          <li>Ποσοστό επαναγοράς <b>ανά προϊόν</b> (mean του reordered) <b>μαζί</b> με το πλήθος αγορών (<code>agg</code> με δύο στατιστικά). Ταξινομήστε, αλλά <b>μόνο για προϊόντα με τουλάχιστον 100 αγορές</b>: γιατί είναι απαραίτητο αυτό το φίλτρο;</li>
+          <li>Σχέση δημοτικότητας και επαναγοράς: διάγραμμα διασποράς (scatter) πλήθος αγορών × ποσοστό επαναγοράς. Ξαναγοράζονται περισσότερο τα δημοφιλή;</li>
+          <li>Προϊόντα <b>«μιας φοράς»</b>: με χαμηλό ποσοστό επαναγοράς παρότι αγοράζονται πολύ. Ποια είναι και σε ποια τμήματα ανήκουν;</li>
+        </ol>
+        <p class="more"><b>Παραπέρα:</b> ποσοστό επαναγοράς ανά διάδρομο (aisle) μέσα σε ένα τμήμα · Πόσα προϊόντα κάθε πελάτη είναι «δικά του» (τα ξαναγοράζει σε πάνω από 50% των παραγγελιών του); · Μια πρόταση για το «Buy it again» της εφαρμογής.</p>
+      </details>
+
+      <details class="topic" data-id="t4"><summary><span class="tn">Θέμα 4</span> Τμήματα και διάδρομοι: ανατομία ενός τμήματος</summary>
+        <p class="bq">«Πώς συγκρίνονται τα τμήματα, και τι συμβαίνει μέσα σε ένα από αυτά;»</p>
+        <ol>
+          <li>Προφίλ ανά τμήμα με <code>agg</code>: πλήθος προϊόντων στον κατάλογο, πλήθος πωλήσεων, ποσοστό επαναγοράς, μέση θέση στο καλάθι. Ταξινομημένος πίνακας-σύνοψη.</li>
+          <li>Διαλέξτε <b>ένα τμήμα</b> (π.χ. produce, snacks, beverages) και κατεβείτε στους <b>διαδρόμους</b> του: ποιοι πουλάνε, ποιοι ξαναγοράζονται, ποιοι έχουν πολλά προϊόντα αλλά λίγες πωλήσεις;</li>
+          <li>Το τμήμα σας στον χρόνο: ανά ημέρα και ώρα, διαφέρει από το σύνολο;</li>
+        </ol>
+        <p class="more"><b>Παραπέρα:</b> ποια τμήματα αγοράζονται μαζί συχνά (ποσοστό καλαθιών που περιέχουν και Α και Β); · Ο «κανόνας 80/20»: τι ποσοστό προϊόντων κάνει το 80% των πωλήσεων σε κάθε τμήμα (<code>cumsum</code>); · Πρόταση για τον κατάλογο: ποιοι διάδρομοι θέλουν περισσότερα ή λιγότερα προϊόντα;</p>
+      </details>
+
+      <details class="topic" data-id="t5"><summary><span class="tn">Θέμα 5</span> Πελάτες: συχνότητα, πιστότητα, τμηματοποίηση</summary>
+        <p class="bq">«Ποιοι είναι οι καλύτεροι πελάτες μας, και πώς συμπεριφέρονται διαφορετικά;»</p>
+        <ol>
+          <li>Προφίλ ανά πελάτη με <code>agg</code> πάνω στο orders: πλήθος παραγγελιών, μέσες μέρες ανάμεσα σε παραγγελίες, συνηθισμένη ώρα. Κατανομές (ιστογράμματα).</li>
+          <li><b>Τμήματα πελατών</b> με <code>pd.cut</code> πάνω στο πλήθος παραγγελιών (π.χ. 4–9 νέοι, 10–29 τακτικοί, 30+ πιστοί). Πόσοι σε κάθε τμήμα, και τι ποσοστό των παραγγελιών φέρνει το καθένα;</li>
+          <li>Διαφέρει το <b>καλάθι</b> ανάμεσα στα τμήματα πελατών (μέγεθος, ποσοστό επαναγοράς, κορυφαία τμήματα προϊόντων); Χρειάζεται merge items → orders.</li>
+        </ol>
+        <p class="more"><b>Παραπέρα:</b> ο ρυθμός ψωνίσματος (μέσες μέρες) αλλάζει καθώς ο πελάτης «ωριμάζει»; · Πελάτες «Σαββατοκύριακου» vs «καθημερινής» · Μια πρόταση για πρόγραμμα επιβράβευσης με βάση τα τμήματα.</p>
+      </details>
+
+      <details class="topic" data-id="t6"><summary><span class="tn">Θέμα 6</span> Organic ή όχι: ένα ερώτημα κατηγορίας</summary>
+        <p class="bq">«Πόσο μεγάλη είναι η αγορά των βιολογικών μέσα στην Instacart, και ποιος την αγοράζει;»</p>
+        <ol>
+          <li>Ορίστε στήλη <code>is_organic</code> από το όνομα προϊόντος (<code>products["product_name"].str.contains("Organic")</code>). Τι ποσοστό των προϊόντων του καταλόγου και τι ποσοστό των <b>πωλήσεων</b> είναι organic; Γιατί διαφέρουν τα δύο ποσοστά;</li>
+          <li>Ποσοστό organic <b>ανά τμήμα</b> (mean της is_organic ανά department, στο items). Πού είναι ισχυρά τα βιολογικά και πού απουσιάζουν;</li>
+          <li>Ξαναγοράζονται τα organic περισσότερο ή λιγότερο από τα συμβατικά; (groupby is_organic, mean reordered· μετά το ίδιο μέσα σε κάθε τμήμα)</li>
+        </ol>
+        <p class="more"><b>Παραπέρα:</b> «organic πελάτες»: ποσοστό organic ανά πελάτη, κατανομή, και πώς ψωνίζουν διαφορετικά · Ζεύγη προϊόντων organic / συμβατικού (π.χ. Banana vs Bag of Organic Bananas): ποιο προτιμάται πότε; · Άλλες λέξεις-κλειδιά: "Gluten Free", "Low Fat".</p>
+      </details>
+    </div>
+
+    <h3>Το σχέδιο της ομάδας</h3>
+    <p>Συμπληρώστε το και πατήστε «Φτιάξε το πρώτο κελί»: παράγει το κείμενο Markdown για το <b>πρώτο κελί</b> του notebook σας (ομάδα, θέμα, ερώτημα, πλάνο). Αντιγράψτε το σε ένα κελί κειμένου στο Colab. Ένα notebook που ξεκινά με το ερώτημά του είναι ήδη μισοτελειωμένο.</p>
+    <div class="planner" id="planner">
+      <div class="grid2">
+        <label>Ομάδα (αριθμός ή όνομα)<input id="plTeam" placeholder="π.χ. Ομάδα 07"></label>
+        <label>Μέλη (ονόματα, χωρισμένα με κόμμα)<input id="plMembers" placeholder="Μαρία Π., Γιώργος Κ., Ελένη Δ."></label>
+        <label>Θέμα εμβάθυνσης<select id="plTopic"><option value="">— διαλέξτε —</option><option>Θέμα 1 · Πότε ψωνίζουν οι πελάτες</option><option>Θέμα 2 · Το καλάθι</option><option>Θέμα 3 · Επαναγορές και προϊόντα μιας φοράς</option><option>Θέμα 4 · Τμήματα και διάδρομοι</option><option>Θέμα 5 · Πελάτες και τμηματοποίηση</option><option>Θέμα 6 · Organic ή όχι</option></select></label>
+        <label>Το δικό σας ερώτημα (μία πρόταση)<input id="plQ" placeholder="π.χ. Ξαναγοράζονται τα organic φρούτα περισσότερο από τα συμβατικά;"></label>
+      </div>
+      <label>Γιατί ενδιαφέρει τη διοίκηση; (1–2 προτάσεις)<textarea id="plWhy" rows="2" placeholder="Αν ναι, η Instacart μπορεί να προωθεί organic εναλλακτικές στο «Buy it again»…"></textarea></label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button class="btn navy" id="plMake">Φτιάξε το πρώτο κελί</button><button class="btn outline" id="plCopy" disabled>Αντιγραφή</button><span class="status" id="plStatus"></span></div>
+      <pre id="plOut" class="plout" style="display:none"></pre>
+    </div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="step" data-title="Notebook &amp; παρουσίαση">
+    <h2>6. Μέρος Γ: το notebook, η παρουσίαση, τα κριτήρια</h2>
+    <h3>Η δομή του notebook</h3>
+    <p>Ένα κελί κειμένου με τίτλο για κάθε ενότητα, και κάτω από κάθε αποτέλεσμα <b>μία πρόταση</b> που λέει τι δείχνει. Ο αναγνώστης (και ο βαθμολογητής) πρέπει να καταλαβαίνει το notebook διαβάζοντας μόνο τα κελιά κειμένου και τα γραφήματα.</p>
+    <table class="t">
+      <tr><th>#</th><th>Ενότητα</th><th>Περιεχόμενο</th></tr>
+      <tr><td>0</td><td>Τίτλος, ομάδα, ερώτημα</td><td>Το κελί που φτιάξατε στο βήμα 5</td></tr>
+      <tr><td>1</td><td>Φόρτωση δεδομένων</td><td>mount, read_csv, shape κάθε πίνακα, η «μονάδα» κάθε πίνακα σε μία πρόταση</td></tr>
+      <tr><td>2</td><td>Μέρος Α: εκκίνηση</td><td>Τα έξι ερωτήματα, το καθένα με κώδικα, αποτέλεσμα, γράφημα όπου ζητείται, μία πρόταση συμπέρασμα</td></tr>
+      <tr><td>3</td><td>Μέρος Β: εμβάθυνση</td><td>Τα τρία καθοδηγούμενα ερωτήματα και το δικό σας· κάθε γράφημα με τίτλο, άξονες και μία πρόταση «τι βλέπουμε»</td></tr>
+      <tr><td>4</td><td>Ευρήματα και πρόταση</td><td>3–5 κουκκίδες με τα ευρήματα (με νούμερα) και μία πρόταση προς τη διοίκηση που προκύπτει από αυτά</td></tr>
+      <tr><td>5</td><td>Περιορισμοί</td><td>Τι δεν ξέρουμε από αυτά τα δεδομένα (π.χ. τιμές, ποια μέρα είναι το 0, μόνο ΗΠΑ 2017) και τι θα θέλατε να είχατε</td></tr>
+    </table>
+
+    <h3>Η παρουσίαση: 10 λεπτά, 5–6 διαφάνειες</h3>
+    <ol class="steps-list">
+      <li><b>Ερώτημα</b> (1 διαφάνεια): ποια επιχειρηματική ερώτηση απαντάτε και γιατί έχει σημασία. Όχι «τι είναι η Instacart» για 3 λεπτά.</li>
+      <li><b>Δεδομένα</b> (1): τι χρησιμοποιήσατε, σε δύο προτάσεις, και ένα νούμερο που εντυπωσιάζει.</li>
+      <li><b>Τρία ευρήματα</b> (3): ένα γράφημα ανά διαφάνεια, με τίτλο που <i>λέει το εύρημα</i> («Οι Κυριακές 10–11 είναι η αιχμή», όχι «Παραγγελίες ανά ώρα»).</li>
+      <li><b>Πρόταση και περιορισμοί</b> (1): τι θα κάνατε αν ήσασταν η διοίκηση, και τι δεν ξέρετε.</li>
+    </ol>
+    <p>Κάθε μέλος μιλάει. Κώδικας στην παρουσίαση: <b>καθόλου</b>, εκτός αν μία γραμμή είναι το ίδιο το εύρημα.</p>
+
+    <h3>Κριτήρια βαθμολόγησης</h3>
+    <table class="t">
+      <tr><th>Κριτήριο</th><th>Βάρος</th><th>Τι σημαίνει «άριστα»</th></tr>
+      <tr><td>Ορθότητα Μέρους Α</td><td>30%</td><td>Και τα έξι ερωτήματα σωστά (τα σημεία ελέγχου βγαίνουν), merge ελεγμένα, κώδικας που τρέχει από την αρχή χωρίς σφάλμα</td></tr>
+      <tr><td>Εμβάθυνση Μέρους Β</td><td>30%</td><td>Τα τρία ερωτήματα απαντημένα σωστά και ερμηνευμένα· σωστή χρήση φίλτρων ελάχιστου πλήθους όπου χρειάζεται</td></tr>
+      <tr><td>Το δικό σας ερώτημα</td><td>15%</td><td>Καλά διατυπωμένο, αιτιολογημένο, απαντημένο με τα κατάλληλα εργαλεία· δείχνει σκέψη, όχι μόνο κώδικα</td></tr>
+      <tr><td>Γραφήματα και κείμενο στο notebook</td><td>15%</td><td>Κάθε γράφημα με τίτλο και άξονες, κάθε αποτέλεσμα με μία πρόταση· ο αναγνώστης καταλαβαίνει χωρίς να διαβάσει κώδικα</td></tr>
+      <tr><td>Παρουσίαση</td><td>10%</td><td>Στον χρόνο, ένα εύρημα ανά διαφάνεια, καθαρή πρόταση, όλοι μιλούν, απαντήσεις στις ερωτήσεις</td></tr>
+    </table>
+
+    <h3>Λίστα ελέγχου πριν την παράδοση</h3>
+    <div class="checklist" data-id="submit">
+      <label><input type="checkbox"> Runtime → Restart session and run all: τρέχει από την αρχή ως το τέλος χωρίς σφάλμα</label>
+      <label><input type="checkbox"> Τα σημεία ελέγχου του Μέρους Α βγαίνουν</label>
+      <label><input type="checkbox"> Κάθε merge έχει έλεγχο γραμμών πριν/μετά</label>
+      <label><input type="checkbox"> Κάθε γράφημα έχει τίτλο και ονόματα αξόνων</label>
+      <label><input type="checkbox"> Κάτω από κάθε αποτέλεσμα υπάρχει μία πρόταση κειμένου</label>
+      <label><input type="checkbox"> Υπάρχει ενότητα «Ευρήματα και πρόταση» με νούμερα</label>
+      <label><input type="checkbox"> Το δικό μας ερώτημα είναι διατυπωμένο και αιτιολογημένο</label>
+      <label><input type="checkbox"> Το notebook έχει τα ονόματα όλων των μελών στο πρώτο κελί</label>
+      <label><input type="checkbox"> Κατεβάσαμε το .ipynb (File → Download → .ipynb) και το ανεβάσαμε στο eClass</label>
+    </div>
+    <div class="box tip"><b>ΣΥΧΝΑ ΛΑΘΗ ΠΟΥ ΚΟΣΤΙΖΟΥΝ</b>Ποσοστά επαναγοράς σε προϊόντα με 3 αγορές (100% από 3 δεν λέει τίποτα) · merge που διπλασιάζει γραμμές χωρίς να το προσέξει κανείς · γράφημα χωρίς τίτλο που «μιλάει μόνο του» · συμπεράσματα που δεν στηρίζονται σε νούμερο · notebook που τρέχει μόνο με τη σειρά που το έφτιαξε η ομάδα.</div>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="step" data-title="Χρονοδιάγραμμα">
+    <h2>7. Χρονοδιάγραμμα και παράδοση</h2>
+    <table class="t" id="timeline"></table>
+    <h3>Πώς παραδίδετε</h3>
+    <ol class="steps-list">
+      <li><b>Δήλωση ομάδας</b>: <span class="cfg" data-k="register"></span></li>
+      <li><b>Notebook</b>: στο Colab, File → Download → <code>.ipynb</code>. Όνομα αρχείου <code>BAP_Instacart_ΟμάδαXX.ipynb</code>. Ανεβάστε το στο eClass (Εργασίες → Εργασία εξαμήνου) <b>ένα μέλος ανά ομάδα</b>. Μοιραστείτε επίσης τον σύνδεσμο του notebook (Share → Anyone with the link → Viewer) μέσα στο σχόλιο της υποβολής.</li>
+      <li><b>Παρουσίαση</b>: PDF ή PowerPoint, ανεβασμένο στο eClass πριν την ημέρα της παρουσίασης. Η σειρά των ομάδων ανακοινώνεται στο eClass.</li>
+    </ol>
+    <h3>Βοήθεια</h3>
+    <p>Στο εργαστήριο των εβδομάδων <span class="cfg" data-k="helpweeks"></span> οι ομάδες δουλεύουν στην εργασία με τον διδάσκοντα παρόντα: φέρτε το notebook σας και τις ερωτήσεις σας. Εκτός μαθήματος, ρωτήστε στο φόρουμ του eClass (ώστε να δουν την απάντηση όλοι) ή στις ώρες γραφείου. Για σφάλματα Python: πρώτα διαβάστε το μήνυμα (ξέρετε πια τα βασικά), μετά τη σελίδα της αντίστοιχης εβδομάδας, μετά ρωτήστε, μαζί με το μήνυμα και τον κώδικα που το προκάλεσε.</p>
+    <div class="box note"><b>ΑΚΑΔΗΜΑΪΚΗ ΑΚΕΡΑΙΟΤΗΤΑ</b>Μπορείτε να συμβουλευτείτε οποιαδήποτε πηγή, συμπεριλαμβανομένων εργαλείων AI, για να <i>μάθετε</i>· το notebook όμως πρέπει να είναι δικό σας και να μπορείτε να εξηγήσετε κάθε γραμμή του στην παρουσίαση. Κώδικας που δεν μπορείτε να εξηγήσετε δεν βαθμολογείται. Αναφέρετε στο τέλος τι πηγές ή εργαλεία χρησιμοποιήσατε και πώς.</div>
+    <div class="box tip"><b>ΚΑΛΗ ΔΟΥΛΕΙΑ</b>Η πρώτη φορά που θα δείτε τα 32 εκατομμύρια γραμμές να απαντούν σε μία ερώτηση με μία γραμμή groupby είναι η στιγμή που καταλαβαίνετε γιατί μάθατε όλα αυτά. Απολαύστε την.</div>
+  </section>
+
+  <div class="nav">
+    <button class="btn outline" id="prevBtn">← Προηγούμενο</button>
+    <button class="btn navy" id="nextBtn">Επόμενο βήμα →</button>
+  </div>
+  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Δεδομένα: <a href="https://www.instacart.com/datasets/grocery-shopping-2017" target="_blank" rel="noopener">The Instacart Online Grocery Shopping Dataset 2017</a>. Ο κώδικας του μίνι notebook εκτελείται στον browser με <a href="https://pyodide.org" target="_blank" rel="noopener">Pyodide</a>.</footer>
+</div>
+
+<script>
+(function(){
+  // ======================================================================
+  //  ΡΥΘΜΙΣΕΙΣ ΤΗΣ ΕΡΓΑΣΙΑΣ — άλλαξε εδώ ημερομηνίες, συνδέσμους, ποσοστά.
+  //  Ό,τι είναι εδώ εμφανίζεται αυτόματα σε όλη τη σελίδα.
+  // ======================================================================
+  const CONFIG = {
+    team: 'Ομάδες <b>2–3 ατόμων</b>. Δηλώνονται στο eClass μέχρι την ημερομηνία του χρονοδιαγράμματος· όποιος δεν βρει ομάδα, γράφει στον διδάσκοντα και τοποθετείται σε μία.',
+    weight: 'Η εργασία είναι το <b>50%</b> του τελικού βαθμού. Το υπόλοιπο 50% είναι η γραπτή εξέταση. Όλα τα μέλη παίρνουν τον ίδιο βαθμό, εκτός αν η ομάδα ζητήσει διαφορετικά με αιτιολόγηση.',
+    drive: '<a href="https://openeclass.uom.gr/courses/BA239/" target="_blank" rel="noopener">ο σύνδεσμος είναι αναρτημένος στο eClass</a>',
+    register: 'ένα μέλος δηλώνει την ομάδα στο eClass (Ομάδες χρηστών → επιλογή ομάδας) και γράφει τα ονόματα των μελών.',
+    helpweeks: '10 και 11',
+    timeline: [
+      ['Πέμ 26 Νοε 2026', 'Ανάθεση της εργασίας (εβδ. 9). Διαβάστε αυτή τη σελίδα, ανοίξτε το πρώτο σας notebook, φορτώστε τα δεδομένα.'],
+      ['Πέμ 3 Δεκ 2026', 'Προθεσμία δήλωσης ομάδας και θέματος εμβάθυνσης. Εργαστήριο: Μέρος Α με βοήθεια (εβδ. 10).'],
+      ['Πέμ 10 Δεκ 2026', 'Ενδιάμεσος έλεγχος: Μέρος Α ολοκληρωμένο, σημεία ελέγχου σωστά. Εργαστήριο: Μέρος Β με βοήθεια (εβδ. 11).'],
+      ['Τετ 16 Δεκ 2026, 23:59', 'Παράδοση notebook (.ipynb) και παρουσίασης στο eClass, για όλες τις ομάδες.'],
+      ['Πέμ 17 Δεκ 2026', 'Παρουσιάσεις, πρώτο μέρος (εβδ. 12). Η σειρά των ομάδων ανακοινώνεται στο eClass.'],
+      ['Πέμ 7 Ιαν 2027', 'Παρουσιάσεις, δεύτερο μέρος (εβδ. 13).'],
+    ],
+  };
+  // ======================================================================
+
+  document.querySelectorAll('.cfg').forEach(e=>{ e.innerHTML = CONFIG[e.dataset.k] || ''; });
+  document.getElementById('glance').innerHTML = 'Ομάδες 2–3 ατόμων · 50% του βαθμού · παραδοτέα: notebook + παρουσίαση 10′ · δεδομένα: Instacart 2017 (6 αρχεία CSV, Google Drive) · παράδοση: <b>' + CONFIG.timeline[3][0] + '</b> · παρουσιάσεις: ' + CONFIG.timeline[4][0] + ' και ' + CONFIG.timeline[5][0] + '.';
+  const tl = document.getElementById('timeline');
+  tl.innerHTML = '<tr><th>Πότε</th><th>Τι</th></tr>' + CONFIG.timeline.map(r=>'<tr><td class="m" style="white-space:nowrap">'+r[0]+'</td><td>'+r[1]+'</td></tr>').join('');
+
+  // ---------- storage ----------
+  const KEY='bap-project-instacart';
+  let state={step:0,quiz:{},chk:{},plan:{}};
+  try{const s=localStorage.getItem(KEY); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  // ---------- print mode: everything visible, no interaction ----------
+  const PRINT = /[?&]print\b/.test(location.search);
+  if(PRINT){ document.body.classList.add('printmode'); document.querySelectorAll('details').forEach(d=>d.open=true); }
+
+  // ---------- stepper ----------
+  const steps=[...document.querySelectorAll('section.step')];
+  const stepper=document.getElementById('stepper');
+  steps.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.innerHTML='<span class="n">'+(i+1)+'</span><span class="l">'+s.dataset.title+'</span>';
+    b.onclick=()=>go(i);
+    stepper.appendChild(b);
+  });
+  function go(i){
+    state.step=i; save();
+    steps.forEach((s,j)=>s.classList.toggle('active',PRINT||j===i));
+    [...stepper.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+    document.getElementById('prevBtn').disabled=i===0;
+    document.getElementById('nextBtn').disabled=i===steps.length-1;
+    if(!PRINT) window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.getElementById('prevBtn').onclick=()=>go(Math.max(0,state.step-1));
+  document.getElementById('nextBtn').onclick=()=>go(Math.min(steps.length-1,state.step+1));
+
+  // ---------- pyodide (base; numpy/pandas loaded on demand) ----------
+  let pyodide=null, loading=null; const loaded={numpy:false,pandas:false};
+  const statusEl=document.getElementById('pyStatus');
+  function loadPy(){
+    if(pyodide) return Promise.resolve(pyodide);
+    if(loading) return loading;
+    statusEl.textContent='φόρτωση Python…';
+    loading=new Promise((res,rej)=>{
+      const s=document.createElement('script');
+      s.src='https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js';
+      s.onload=async()=>{
+        try{
+          pyodide=await loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/'});
+          statusEl.textContent='Python έτοιμη ✓'; statusEl.classList.add('ready');
+          res(pyodide);
+        }catch(e){statusEl.textContent='η Python δεν φορτώθηκε'; rej(e);}
+      };
+      s.onerror=()=>{statusEl.textContent='η Python δεν φορτώθηκε (έλεγξε τη σύνδεση)'; rej(new Error('load'));};
+      document.head.appendChild(s);
+    });
+    return loading;
+  }
+  async function ensurePackages(src, py){
+    if(!loaded.pandas && /pandas|pd\./.test(src)){ statusEl.textContent='φόρτωση pandas (10–20 δευτ.)…'; try{ await py.loadPackage(['numpy','pandas']); loaded.numpy=loaded.pandas=true; await py.runPythonAsync("import pandas as pd\npd.set_option('display.width', 100)"); }catch(e){} statusEl.textContent='Python + pandas έτοιμα ✓'; }
+    else if(!loaded.numpy && /numpy|np\./.test(src)){ try{ await py.loadPackage('numpy'); loaded.numpy=true; }catch(e){} }
+  }
+  function fmtErr(e){
+    const lines=e.trim().split('\n');
+    const where=lines.filter(l=>/File "<(exec|cell)>", line \d+/.test(l)).map(l=>l.replace(/.*line (\d+).*/,'γραμμή $1')).pop();
+    let what='';
+    for(let i=lines.length-1;i>=0;i--){ if(/^[A-Za-z]*(Error|Exception|Warning)\b/.test(lines[i])){ what=lines[i]; break; } }
+    if(!what) what=lines[lines.length-1];
+    return (where?'Σφάλμα στη '+where+':\n':'')+what;
+  }
+
+  // ---------- quizzes ----------
+  const quizzes=[...document.querySelectorAll('.quiz')];
+  quizzes.forEach((q,qi)=>{
+    const opts=JSON.parse(q.dataset.opts), ans=+q.dataset.ans;
+    q.innerHTML='<div class="q">'+q.dataset.q+'</div>'+(q.dataset.code?'<pre></pre>':'')+'<div class="opts"></div><div class="fb"></div>';
+    if(q.dataset.code) q.querySelector('pre').textContent=q.dataset.code;
+    const box=q.querySelector('.opts'), fb=q.querySelector('.fb');
+    opts.forEach((o,i)=>{
+      const b=document.createElement('button'); b.textContent=o;
+      b.onclick=()=>{
+        [...box.children].forEach(c=>c.classList.remove('ok','bad'));
+        if(i===ans){b.classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why; state.quiz[qi]=true;}
+        else{b.classList.add('bad'); fb.className='fb bad'; fb.textContent='Όχι ακριβώς. '+q.dataset.why; state.quiz[qi]=false;}
+        save();
+      };
+      box.appendChild(b);
+    });
+    if(state.quiz[qi]===true){box.children[ans].classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why;}
+  });
+
+  // ---------- static code (Colab-only snippets: shown, not run) ----------
+  document.querySelectorAll('.runner.static').forEach(r=>{
+    const code=r.dataset.code;
+    r.innerHTML='<div class="bar"><span>notebook · κελί κώδικα (τρέχει στο Colab, όχι εδώ)</span><span class="spacer"></span><button class="btn secondary copy">Αντιγραφή</button></div><pre class="code"></pre>';
+    r.querySelector('pre').textContent=code;
+    r.querySelector('.copy').onclick=async()=>{ try{ await navigator.clipboard.writeText(code); r.querySelector('.copy').textContent='Αντιγράφηκε ✓'; setTimeout(()=>r.querySelector('.copy').textContent='Αντιγραφή',1500);}catch(e){} };
+  });
+
+  // ---------- checklists & tasks (persisted) ----------
+  document.querySelectorAll('.task, .checklist').forEach(box=>{
+    const id=box.dataset.id;
+    [...box.querySelectorAll('input[type=checkbox]')].forEach((cb,i)=>{
+      const k=id+':'+i;
+      cb.checked=!!state.chk[k];
+      box.classList.toggle('done', box.classList.contains('task') && cb.checked);
+      cb.onchange=()=>{ state.chk[k]=cb.checked; save(); if(box.classList.contains('task')) box.classList.toggle('done',cb.checked); };
+    });
+  });
+
+  // ---------- planner: first markdown cell ----------
+  const pl={team:'plTeam',members:'plMembers',topic:'plTopic',q:'plQ',why:'plWhy'};
+  for(const k in pl){ const el=document.getElementById(pl[k]); if(state.plan[k]) el.value=state.plan[k]; el.oninput=()=>{state.plan[k]=el.value; save();}; }
+  document.getElementById('plMake').onclick=()=>{
+    const v=k=>document.getElementById(pl[k]).value.trim();
+    const md=['# Εργασία εξαμήνου · Instacart','','**Ομάδα:** '+(v('team')||'…'),'**Μέλη:** '+(v('members')||'…'),'**Θέμα εμβάθυνσης:** '+(v('topic')||'…'),'','## Το ερώτημά μας','',v('q')||'…','',v('why')||'…','','## Πλάνο','','1. Φόρτωση δεδομένων και έλεγχος (shape, head, info)','2. Μέρος Α: τα έξι ερωτήματα εκκίνησης, με σημεία ελέγχου','3. Μέρος Β: τα τρία καθοδηγούμενα ερωτήματα του θέματος','4. Το δικό μας ερώτημα','5. Ευρήματα, πρόταση προς τη διοίκηση, περιορισμοί'].join('\n');
+    const out=document.getElementById('plOut'); out.textContent=md; out.style.display='block';
+    document.getElementById('plCopy').disabled=false;
+    document.getElementById('plStatus').textContent='Αντιγράψτε το σε ένα κελί κειμένου (+ Text) στο Colab.';
+  };
+  document.getElementById('plCopy').onclick=async()=>{ try{ await navigator.clipboard.writeText(document.getElementById('plOut').textContent); document.getElementById('plStatus').textContent='Αντιγράφηκε ✓'; }catch(e){ document.getElementById('plStatus').textContent='Επίλεξε το κείμενο και αντίγραψέ το με Ctrl+C.'; } };
+
+  // ---------- schema diagram (SVG) ----------
+  document.querySelectorAll('.schema').forEach(el=>{
+    const box=(x,y,w,title,cols,hi)=>{
+      let s='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+(34+cols.length*22+10)+'" rx="10" class="tb'+(hi?' hi':'')+'"/>';
+      s+='<text x="'+(x+14)+'" y="'+(y+24)+'" class="tt">'+title+'</text>';
+      cols.forEach((c,i)=>{ const key=c.startsWith('*'); s+='<text x="'+(x+14)+'" y="'+(y+54+i*22)+'" class="tc'+(key?' key':'')+'">'+(key?c.slice(1):c)+'</text>'; });
+      return s;
+    };
+    const link=(x1,y1,x2,y2,label)=>'<path d="M'+x1+' '+y1+' C '+(x1+40)+' '+y1+', '+(x2-40)+' '+y2+', '+x2+' '+y2+'" class="ln"/><text x="'+((x1+x2)/2)+'" y="'+((y1+y2)/2-6)+'" class="ll" text-anchor="middle">'+label+'</text>';
+    el.innerHTML='<svg viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Σχήμα των έξι πινάκων του Instacart">'
+      + box(20,40,230,'orders',['*order_id','user_id','eval_set','order_number','order_dow','order_hour_of_day','days_since_prior_order'])
+      + box(330,110,300,'order_products__prior / train',['*order_id','*product_id','add_to_cart_order','reordered'],true)
+      + box(680,60,220,'products',['*product_id','product_name','*aisle_id','*department_id'])
+      + box(680,250,130,'aisles',['*aisle_id','aisle'])
+      + box(840,250,150,'departments',['*department_id','department'])
+      + link(250,94,330,164,'order_id')
+      + link(630,186,680,114,'product_id')
+      + '<path d="M760 192 C 760 230, 745 230, 745 250" class="ln"/><text x="660" y="235" class="ll">aisle_id</text>'
+      + '<path d="M840 192 C 840 230, 915 230, 915 250" class="ln"/><text x="860" y="230" class="ll">department_id</text>'
+      + '<text x="20" y="330" class="ln-note">Μία γραμμή = μία παραγγελία</text><text x="330" y="330" class="ln-note">Μία γραμμή = ένα προϊόν μέσα σε μία παραγγελία (32 εκ.)</text><text x="620" y="365" class="ln-note">Ο κατάλογος: κάθε προϊόν ανήκει σε έναν διάδρομο (aisle) και ένα τμήμα</text>'
+      + '</svg><div class="schema-cap">Τα κλειδιά (με έντονα) είναι οι στήλες που ενώνουν τους πίνακες με <code>merge</code>. Ο κεντρικός πίνακας είναι το order_products: από εκεί ξεκινούν τα περισσότερα ερωτήματα.</div>';
+  });
+
+  // ---------- mini notebook ----------
+  const MD=t=>{ // tiny Markdown → HTML
+    const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const inline=s=>esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\*(.+?)\*/g,'<i>$1</i>').replace(/`([^`]+)`/g,'<code>$1</code>');
+    const out=[]; let list=null;
+    t.split('\n').forEach(l=>{
+      const m=l.match(/^(#{1,3})\s+(.*)/);
+      if(list && !/^\s*[-*]\s+/.test(l)){ out.push('</ul>'); list=null; }
+      if(m) out.push('<h'+(m[1].length+2)+'>'+inline(m[2])+'</h'+(m[1].length+2)+'>');
+      else if(/^\s*[-*]\s+/.test(l)){ if(!list){ out.push('<ul>'); list=true; } out.push('<li>'+inline(l.replace(/^\s*[-*]\s+/,''))+'</li>'); }
+      else if(l.trim()==='') out.push('');
+      else out.push('<p>'+inline(l)+'</p>');
+    });
+    if(list) out.push('</ul>');
+    return out.join('\n');
+  };
+  const NB_HELPER = `
+import ast, sys, io
+def _nb_run(src):
+    tree = ast.parse(src)
+    g = globals()
+    if tree.body and isinstance(tree.body[-1], ast.Expr):
+        last = tree.body.pop()
+        exec(compile(tree, "<cell>", "exec"), g)
+        val = eval(compile(ast.Expression(last.value), "<cell>", "eval"), g)
+        if val is not None:
+            print(val if hasattr(val, "to_string") else repr(val))
+    else:
+        exec(compile(tree, "<cell>", "exec"), g)
+`;
+  document.querySelectorAll('.nb').forEach(nb=>{
+    const cells=[
+      {type:'md', src:'# Το πρώτο μου notebook\nΑυτό είναι κελί **κειμένου** (Markdown). Τρέξε το με Shift + Enter για να «αποδοθεί». Κάνε διπλό κλικ πάνω του για να το ξαναγράψεις.'},
+      {type:'code', src:'sales = [1200, 1550, 1000, 1800]\ntotal = sum(sales)\nprint(total)'},
+      {type:'code', src:'# Χρησιμοποιεί το total από το προηγούμενο κελί\nprint(total / len(sales))'},
+      {type:'code', src:'import pandas as pd\ndf = pd.DataFrame({"month": ["Jan", "Feb", "Mar", "Apr"], "sales": sales})\ndf        # η τελευταία γραμμή ενός κελιού εμφανίζεται μόνη της, χωρίς print'},
+    ];
+    let counter=0, ns=null, chain=Promise.resolve();
+    nb.innerHTML='<div class="nb-bar"><span class="nb-title">BAP_demo.ipynb</span><span class="spacer"></span><button class="btn secondary" data-a="code">+ Code</button><button class="btn secondary" data-a="md">+ Text</button><button class="btn secondary" data-a="all">▶ Run all</button><button class="btn secondary" data-a="restart">Restart</button></div><div class="nb-cells"></div>';
+    const wrap=nb.querySelector('.nb-cells');
+    function render(){
+      wrap.innerHTML='';
+      cells.forEach((c,i)=>{
+        const d=document.createElement('div'); d.className='cell '+c.type; c.el=d;
+        d.innerHTML='<div class="gut">'+(c.type==='code'?('['+(c.n||' ')+']'):'¶')+'</div><div class="body"><textarea spellcheck="false"></textarea><div class="mdview" style="display:none"></div><div class="out"'+(c.out?'':' style="display:none"')+'></div></div><div class="ctl"><button title="Τρέξε (Shift+Enter)">▶</button><button title="Διαγραφή">✕</button></div>';
+        const ta=d.querySelector('textarea'); ta.value=c.src; ta.rows=Math.max(2,c.src.split('\n').length);
+        ta.oninput=()=>{c.src=ta.value; ta.rows=Math.max(2,c.src.split('\n').length);};
+        ta.onkeydown=e=>{ if(e.shiftKey&&e.key==='Enter'){ e.preventDefault(); run(i); if(i===cells.length-1){ cells.push({type:'code',src:''}); render(); } else { const nx=cells[i+1].el.querySelector('textarea'); if(nx && cells[i+1].el.querySelector('.mdview').style.display==='none') nx.focus(); } }
+          if(e.key==='Tab'){e.preventDefault();const s=ta.selectionStart;ta.value=ta.value.slice(0,s)+'    '+ta.value.slice(ta.selectionEnd);ta.selectionStart=ta.selectionEnd=s+4;c.src=ta.value;} };
+        if(c.type==='md' && c.rendered){ ta.style.display='none'; const mv=d.querySelector('.mdview'); mv.style.display='block'; mv.innerHTML=MD(c.src); mv.ondblclick=()=>{c.rendered=false; render(); d.querySelector('textarea').focus();}; }
+        if(c.out){ const o=d.querySelector('.out'); o.textContent=c.out; o.classList.toggle('err',!!c.err); }
+        const [bRun,bDel]=d.querySelectorAll('.ctl button');
+        bRun.onclick=()=>run(i); bDel.onclick=()=>{cells.splice(i,1); render();};
+        wrap.appendChild(d);
+      });
+    }
+    async function run(i){
+      const c=cells[i];
+      if(c.type==='md'){ c.rendered=true; render(); return; }
+      const p=chain.then(()=>runCode(c)); chain=p.catch(()=>{}); await p;
+    }
+    async function runCode(c){
+      const o=c.el.querySelector('.out'); o.style.display='block'; o.classList.remove('err'); o.textContent='…'; c.el.querySelector('.gut').textContent='[*]';
+      try{
+        const py=await loadPy(); await ensurePackages(c.src, py);
+        if(!ns){ ns=py.globals.get('dict')(); await py.runPythonAsync(NB_HELPER,{globals:ns}); }
+        let out=''; py.setStdout({batched:t=>{out+=t+'\n';}}); py.setStderr({batched:t=>{out+=t+'\n';}});
+        let err=null; ns.set('_cell_src', c.src);
+        try{ await py.runPythonAsync('_nb_run(_cell_src)',{globals:ns}); }catch(e){ err=String(e.message||e); }
+        counter+=1; c.n=counter; c.out=(out+(err?fmtErr(err):'')).trimEnd(); c.err=!!err;
+        if(!c.out){ c.out=''; o.style.display='none'; } else { o.textContent=c.out; o.classList.toggle('err',c.err); }
+        c.el.querySelector('.gut').textContent='['+c.n+']';
+      }catch(e){ o.textContent='Η Python δεν είναι διαθέσιμη: '+e; o.classList.add('err'); c.el.querySelector('.gut').textContent='[ ]'; }
+    }
+    nb.querySelector('.nb-bar').onclick=async e=>{
+      const a=e.target.dataset.a; if(!a) return;
+      if(a==='code'){ cells.push({type:'code',src:''}); render(); cells[cells.length-1].el.querySelector('textarea').focus(); }
+      if(a==='md'){ cells.push({type:'md',src:'## Νέα ενότητα\nΓράψε εδώ τι κάνεις και τι βρήκες.'}); render(); }
+      if(a==='all'){ for(let i=0;i<cells.length;i++) await run(i); }
+      if(a==='restart'){ ns=null; counter=0; cells.forEach(c=>{c.n=null; c.out=''; c.err=false;}); render(); }
+    };
+    render();
+  });
+
+  go(Math.min(state.step||0,steps.length-1));
+  if(!PRINT) loadPy().catch(()=>{});
+})();
+
+</script>
+</body>
+</html>
