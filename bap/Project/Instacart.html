@@ -257,7 +257,7 @@ total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined",
     <div class="box note" style="margin-top:10px"><b>ΤΟ eval_set</b>Στο <code>orders.csv</code> η στήλη <code>eval_set</code> λέει σε ποιο αρχείο βρίσκονται τα προϊόντα της παραγγελίας: <code>prior</code> (3,2 εκ. παραγγελίες), <code>train</code> (131 χιλ.) ή <code>test</code> (75 χιλ., <b>χωρίς</b> προϊόντα, αγνοήστε τες). Για την εργασία δουλεύετε με το <b>prior</b>: είναι το πλήρες ιστορικό.</div>
 
     <h3>Φόρτωση στο Kaggle</h3>
-    <p>Τα έξι αρχεία βρίσκονται σε ένα <b>Kaggle Dataset</b> του μαθήματος (<span class="cfg" data-k="dataset"></span>). Αν ανοίξατε το notebook σας με Copy &amp; Edit από το starter notebook, το dataset είναι ήδη συνδεδεμένο: το βλέπετε στο panel <b>Input</b> δεξιά, και τα αρχεία του βρίσκονται στον φάκελο <code>/kaggle/input/…</code>. Δεν χρειάζεται upload, mount ή άδεια. Αν φτιάξετε δικό σας notebook από το μηδέν, πατήστε <b>+ Add Input</b> στο ίδιο panel και βρείτε το dataset με το όνομά του.</p>
+    <p>Τα έξι αρχεία βρίσκονται σε ένα <b>Kaggle Dataset</b> του μαθήματος (<span class="cfg" data-k="dataset"></span>). Αν ανοίξατε το notebook σας με Copy &amp; Edit από το starter notebook, το dataset είναι ήδη συνδεδεμένο: το βλέπετε στο panel <b>Input</b> δεξιά, και τα αρχεία του βρίσκονται στον φάκελο <code>/kaggle/input/…</code>. Δεν χρειάζεται upload, mount ή άδεια. Αν φτιάξετε δικό σας notebook από το μηδέν, πατήστε <b>+ Add Input</b> στο ίδιο panel, ψάξτε «Instacart Market Basket Analysis» και διαλέξτε αυτό του χρήστη <b>psparks</b> (υπάρχουν πολλά αντίγραφα με παρόμοιο όνομα).</p>
     <p>Στο notebook διαβάζετε τα αρχεία με το <code>read_csv</code> που ξέρετε:</p>
     <div class="runner static" data-code="import os
 import pandas as pd
@@ -489,8 +489,8 @@ print(orders.shape, prior.shape)"></div>
     weight: 'Η εργασία είναι το <b>50%</b> του τελικού βαθμού. Το υπόλοιπο 50% είναι η γραπτή εξέταση. Στις ομάδες των 2, και τα δύο μέλη παίρνουν τον ίδιο βαθμό, εκτός αν η ομάδα ζητήσει διαφορετικά με αιτιολόγηση.',
     // Kaggle: το starter notebook και το dataset του μαθήματος (βάλε εδώ τους συνδέσμους όταν τα ανεβάσεις)
     starter: '<a href="https://openeclass.uom.gr/courses/BA239/" target="_blank" rel="noopener">ο σύνδεσμος είναι αναρτημένος στο eClass</a>',
-    dataset: '<a href="https://openeclass.uom.gr/courses/BA239/" target="_blank" rel="noopener">ο σύνδεσμος είναι αναρτημένος στο eClass</a>',
-    dataPath: '/kaggle/input/instacart-2017/',        // ο φάκελος όπως τον δείχνει το panel Input, με / στο τέλος
+    dataset: '<a href="https://www.kaggle.com/datasets/psparks/instacart-market-basket-analysis" target="_blank" rel="noopener">Instacart Market Basket Analysis, kaggle.com/datasets/psparks/instacart-market-basket-analysis</a>',
+    dataPath: '/kaggle/input/instacart-market-basket-analysis/',   // ο φάκελος όπως τον δείχνει το panel Input, με / στο τέλος
     kaggleUser: 'τον διδάσκοντα (το Kaggle username του είναι στο eClass)',
     register: 'ένα από τα δύο μέλη δηλώνει την ομάδα στο eClass (Ομάδες χρηστών → επιλογή ομάδας) και γράφει τα δύο ονόματα. Όποιος εργάζεται ατομικά δεν χρειάζεται δήλωση.',
     helpweeks: '11 και 12 (10 και 17 Δεκεμβρίου)',
