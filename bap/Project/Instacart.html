@@ -191,6 +191,7 @@
     <h2>1. Πριν ξεκινήσεις: Kaggle και notebooks</h2>
     <p>Μέχρι τώρα τρέχατε κώδικα μέσα σε αυτές τις σελίδες. Για την εργασία θα δουλέψετε σε ένα <b>notebook</b> <span class="en">(Jupyter notebook)</span>: ένα έγγραφο που αποτελείται από <b>κελιά</b> <span class="en">(cells)</span>. Κάθε κελί είναι είτε <b>κώδικας</b> που τρέχει και δείχνει το αποτέλεσμά του ακριβώς από κάτω, είτε <b>κείμενο</b> <span class="en">(Markdown)</span> όπου εξηγείτε τι κάνετε και τι βρήκατε. Κώδικας, αποτελέσματα, γραφήματα και σχόλια μαζί, με τη σειρά: γι' αυτό το notebook είναι ταυτόχρονα το εργαλείο σας και η αναφορά σας.</p>
     <p>Το <b>Kaggle</b> <span class="en">(kaggle.com)</span> είναι μια δωρεάν πλατφόρμα για δεδομένα και notebooks που τρέχει στον browser, σε υπολογιστή της Google: δεν εγκαθιστάτε τίποτα, το pandas και το Matplotlib είναι ήδη εκεί, τα δεδομένα της εργασίας είναι ήδη «κουμπωμένα» στο notebook, και κάθε notebook έχει στη διάθεσή του 30 GB μνήμης, αρκετή για τα 32 εκατομμύρια γραμμές του Instacart. Η δουλειά σας σώζεται στον λογαριασμό σας στο Kaggle.</p>
+    <div class="box note" style="margin:10px 0"><b>ΤΟ NOTEBOOK ΤΗΣ ΕΡΓΑΣΙΑΣ</b>Ξεκινάτε από εδώ: <span class="cfg" data-k="starter"></span>. Ανοίξτε το, πατήστε <b>Copy &amp; Edit</b> και έχετε δικό σας αντίγραφο με τα δεδομένα ήδη συνδεδεμένα. <a class="btn navy screen-only" data-href="starterUrl" target="_blank" rel="noopener" style="display:inline-block;text-decoration:none;margin-top:8px">Άνοιξε το starter notebook στο Kaggle →</a></div>
 
     <h3>Πώς ανοίγω το notebook της εργασίας</h3>
     <ol class="steps-list">
@@ -257,7 +258,7 @@ total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined",
     <div class="box note" style="margin-top:10px"><b>ΤΟ eval_set</b>Στο <code>orders.csv</code> η στήλη <code>eval_set</code> λέει σε ποιο αρχείο βρίσκονται τα προϊόντα της παραγγελίας: <code>prior</code> (3,2 εκ. παραγγελίες), <code>train</code> (131 χιλ.) ή <code>test</code> (75 χιλ., <b>χωρίς</b> προϊόντα, αγνοήστε τες). Για την εργασία δουλεύετε με το <b>prior</b>: είναι το πλήρες ιστορικό.</div>
 
     <h3>Φόρτωση στο Kaggle</h3>
-    <p>Τα έξι αρχεία βρίσκονται σε ένα <b>Kaggle Dataset</b> του μαθήματος (<span class="cfg" data-k="dataset"></span>). Αν ανοίξατε το notebook σας με Copy &amp; Edit από το starter notebook, το dataset είναι ήδη συνδεδεμένο: το βλέπετε στο panel <b>Input</b> δεξιά, και τα αρχεία του βρίσκονται στον φάκελο <code>/kaggle/input/…</code>. Δεν χρειάζεται upload, mount ή άδεια. Αν φτιάξετε δικό σας notebook από το μηδέν, πατήστε <b>+ Add Input</b> στο ίδιο panel, ψάξτε «Instacart Market Basket Analysis» και διαλέξτε αυτό του χρήστη <b>psparks</b> (υπάρχουν πολλά αντίγραφα με παρόμοιο όνομα).</p>
+    <p>Τα έξι αρχεία βρίσκονται σε ένα <b>Kaggle Dataset</b> του μαθήματος (<span class="cfg" data-k="dataset"></span>). Αν ανοίξατε το notebook σας με Copy &amp; Edit από το <a data-href="starterUrl" target="_blank" rel="noopener">starter notebook</a>, το dataset είναι ήδη συνδεδεμένο: το βλέπετε στο panel <b>Input</b> δεξιά, και τα αρχεία του βρίσκονται στον φάκελο <code>/kaggle/input/…</code>. Δεν χρειάζεται upload, mount ή άδεια. Αν φτιάξετε δικό σας notebook από το μηδέν, πατήστε <b>+ Add Input</b> στο ίδιο panel, ψάξτε «Instacart Market Basket Analysis» και διαλέξτε αυτό του χρήστη <b>psparks</b> (υπάρχουν πολλά αντίγραφα με παρόμοιο όνομα).</p>
     <p>Στο notebook διαβάζετε τα αρχεία με το <code>read_csv</code> που ξέρετε:</p>
     <div class="runner static" data-code="import os
 import pandas as pd
@@ -463,7 +464,7 @@ print(orders.shape, prior.shape)"></div>
     <h3>Πώς παραδίδετε</h3>
     <ol class="steps-list">
       <li><b>Δήλωση ομάδας</b> (μόνο για τις ομάδες των 2): <span class="cfg" data-k="register"></span></li>
-      <li><b>Notebook</b>: στο Kaggle, πρώτα <b>Save Version → Save &amp; Run All (Commit)</b>: τρέχει όλο το notebook από την αρχή σε καθαρή συνεδρία, ώστε να είστε σίγουροι ότι δουλεύει. Μετά <b>File → Download Notebook</b>: κατεβαίνει το <code>.ipynb</code>. Όνομα αρχείου <code>BAP_Instacart_ΟμάδαXX.ipynb</code>. Ανεβάστε το στο eClass (Εργασίες → Εργασία εξαμήνου), <b>μία υποβολή ανά ομάδα</b>. Την ίδια μέρα κάντε το notebook <b>Public</b> (Share → Public, και Save αν το ζητήσει) και γράψτε τον σύνδεσμό του στο σχόλιο της υποβολής: έτσι βλέπουμε και τα αποτελέσματα όπως έτρεξαν στο Kaggle. <b>Όχι νωρίτερα</b>: μέχρι την παράδοση το notebook μένει Private, ορατό μόνο στην ομάδα σας.</li>
+      <li><b>Notebook</b>: στο αντίγραφο του <a data-href="starterUrl" target="_blank" rel="noopener">starter notebook</a> που δουλεύετε στο Kaggle, πρώτα <b>Save Version → Save &amp; Run All (Commit)</b>: τρέχει όλο το notebook από την αρχή σε καθαρή συνεδρία, ώστε να είστε σίγουροι ότι δουλεύει. Μετά <b>File → Download Notebook</b>: κατεβαίνει το <code>.ipynb</code>. Όνομα αρχείου <code>BAP_Instacart_ΟμάδαXX.ipynb</code>. Ανεβάστε το στο eClass (Εργασίες → Εργασία εξαμήνου), <b>μία υποβολή ανά ομάδα</b>. Την ίδια μέρα κάντε το notebook <b>Public</b> (Share → Public, και Save αν το ζητήσει) και γράψτε τον σύνδεσμό του στο σχόλιο της υποβολής: έτσι βλέπουμε και τα αποτελέσματα όπως έτρεξαν στο Kaggle. <b>Όχι νωρίτερα</b>: μέχρι την παράδοση το notebook μένει Private, ορατό μόνο στην ομάδα σας.</li>
       <li><b>Πότε</b>: notebook και παρουσίαση (PDF ή PowerPoint) ανεβαίνουν στο eClass <b>την ημέρα της παρουσίασής σας, πριν το μάθημα</b>. Η σειρά των ομάδων (8 ή 15 Ιανουαρίου) ανακοινώνεται στο eClass.</li>
     </ol>
     <h3>Βοήθεια</h3>
@@ -485,17 +486,20 @@ print(orders.shape, prior.shape)"></div>
   //  ΡΥΘΜΙΣΕΙΣ ΤΗΣ ΕΡΓΑΣΙΑΣ — άλλαξε εδώ ημερομηνίες, συνδέσμους, ποσοστά.
   //  Ό,τι είναι εδώ εμφανίζεται αυτόματα σε όλη τη σελίδα.
   // ======================================================================
+  const STARTER_URL = 'https://www.kaggle.com/code/evangeloskalampokis/starter-notebook';
+  const DATASET_URL = 'https://www.kaggle.com/datasets/psparks/instacart-market-basket-analysis';
   const CONFIG = {
     team: 'Ατομικά ή σε <b>ομάδες 2 ατόμων</b>. Οι ομάδες δηλώνονται στο eClass μέχρι την ημερομηνία του χρονοδιαγράμματος. Όποιος δεν δηλώσει ομάδα, εργάζεται ατομικά. Στη συνέχεια λέμε «ομάδα» και για όσους δουλεύουν μόνοι τους.',
     weight: 'Η εργασία είναι το <b>50%</b> του τελικού βαθμού. Το υπόλοιπο 50% είναι η γραπτή εξέταση. Στις ομάδες των 2, και τα δύο μέλη παίρνουν τον ίδιο βαθμό, εκτός αν η ομάδα ζητήσει διαφορετικά με αιτιολόγηση.',
     // Kaggle: το starter notebook και το dataset του μαθήματος (βάλε εδώ τους συνδέσμους όταν τα ανεβάσεις)
-    starter: '<a href="https://www.kaggle.com/code/evangeloskalampokis/starter-notebook" target="_blank" rel="noopener">kaggle.com/code/evangeloskalampokis/starter-notebook</a>',
-    dataset: '<a href="https://www.kaggle.com/datasets/psparks/instacart-market-basket-analysis" target="_blank" rel="noopener">Instacart Market Basket Analysis, kaggle.com/datasets/psparks/instacart-market-basket-analysis</a>',
+    starter: '<a href="' + STARTER_URL + '" target="_blank" rel="noopener">' + STARTER_URL.replace('https://www.', '') + '</a>',
+    dataset: '<a href="' + DATASET_URL + '" target="_blank" rel="noopener">Instacart Market Basket Analysis, ' + DATASET_URL.replace('https://www.', '') + '</a>',
+    starterUrl: STARTER_URL,
     dataPath: '/kaggle/input/datasets/psparks/instacart-market-basket-analysis/',   // ο φάκελος όπως τον δείχνει το panel Input, με / στο τέλος
     register: 'ένα από τα δύο μέλη δηλώνει την ομάδα στο eClass (Ομάδες χρηστών → επιλογή ομάδας) και γράφει τα δύο ονόματα. Όποιος εργάζεται ατομικά δεν χρειάζεται δήλωση.',
     helpweeks: '11 και 12 (10 και 17 Δεκεμβρίου)',
     timeline: [
-      ['Πέμ 26 Νοε 2026', 'Ανάθεση της εργασίας (εβδ. 9). Διαβάστε αυτή τη σελίδα, φτιάξτε λογαριασμό στο Kaggle, ανοίξτε το notebook σας με Copy &amp; Edit, φορτώστε τα δεδομένα.'],
+      ['Πέμ 26 Νοε 2026', 'Ανάθεση της εργασίας (εβδ. 9). Διαβάστε αυτή τη σελίδα, φτιάξτε λογαριασμό στο Kaggle, ανοίξτε το <a href="' + STARTER_URL + '" target="_blank" rel="noopener">starter notebook</a> με Copy &amp; Edit, φορτώστε τα δεδομένα.'],
       ['Πέμ 3 Δεκ 2026', 'Προθεσμία δήλωσης ομάδας (για τις ομάδες των 2) και θέματος εμβάθυνσης στο eClass.'],
       ['Πέμ 10 Δεκ 2026', 'Εργαστήριο στην τάξη: <b>Μέρος Α</b> με βοήθεια (εβδ. 11). Έρχεστε με το notebook ανοιχτό και τα δεδομένα φορτωμένα.'],
       ['Πέμ 17 Δεκ 2026', 'Εργαστήριο στην τάξη: <b>Μέρος Β</b> με βοήθεια (εβδ. 12). Έρχεστε με το Μέρος Α ολοκληρωμένο και τα σημεία ελέγχου σωστά.'],
@@ -506,7 +510,8 @@ print(orders.shape, prior.shape)"></div>
   // ======================================================================
 
   document.querySelectorAll('.cfg').forEach(e=>{ e.innerHTML = CONFIG[e.dataset.k] || ''; });
-  document.getElementById('glance').innerHTML = 'Ατομικά ή σε ομάδες 2 ατόμων. 50% του βαθμού. Παραδοτέα: notebook + παρουσίαση 10′. Πλατφόρμα: Kaggle Notebooks. Δεδομένα: Instacart 2017 (6 αρχεία CSV, έτοιμα στο Kaggle). Εργαστήρια βοήθειας: ' + CONFIG.timeline[2][0] + ' (Μέρος Α) και ' + CONFIG.timeline[3][0] + ' (Μέρος Β). Παρουσιάσεις και παράδοση: <b>' + CONFIG.timeline[4][0] + ' και ' + CONFIG.timeline[5][0] + '</b>.';
+  document.querySelectorAll('[data-href]').forEach(e=>{ e.href = CONFIG[e.dataset.href] || '#'; });
+  document.getElementById('glance').innerHTML = 'Ατομικά ή σε ομάδες 2 ατόμων. 50% του βαθμού. Παραδοτέα: notebook + παρουσίαση 10′. Πλατφόρμα: Kaggle Notebooks, ξεκινάτε με Copy &amp; Edit από το starter notebook: <b>' + CONFIG.starter + '</b>. Δεδομένα: Instacart 2017 (6 αρχεία CSV, ήδη συνδεδεμένα στο notebook). Εργαστήρια βοήθειας: ' + CONFIG.timeline[2][0] + ' (Μέρος Α) και ' + CONFIG.timeline[3][0] + ' (Μέρος Β). Παρουσιάσεις και παράδοση: <b>' + CONFIG.timeline[4][0] + ' και ' + CONFIG.timeline[5][0] + '</b>.';
   const tl = document.getElementById('timeline');
   tl.innerHTML = '<tr><th>Πότε</th><th>Τι</th></tr>' + CONFIG.timeline.map(r=>'<tr><td class="m" style="white-space:nowrap">'+r[0]+'</td><td>'+r[1]+'</td></tr>').join('');
 
