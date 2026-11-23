@@ -243,7 +243,7 @@ total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined",
 
   <!-- ============ 3 ============ -->
   <section class="step" data-title="Τα δεδομένα">
-    <h2>3. Τα δεδομένα και πώς τα φορτώνετε</h2>
+    <h2>3. Τα δεδομένα</h2>
     <p>Έξι αρχεία CSV που συνδέονται μεταξύ τους με «κλειδιά» <span class="en">(ids)</span>, όπως σε μια βάση δεδομένων. Η κεντρική ιδέα: οι <b>παραγγελίες</b> είναι ένας πίνακας, τα <b>προϊόντα κάθε παραγγελίας</b> άλλος, και τα <b>προϊόντα</b> με τις κατηγορίες τους ένας τρίτος. Για να απαντήσετε «πόσες μπανάνες πουλήθηκαν την Κυριακή» χρειάζεστε και τους τρεις, ενωμένους με <code>merge</code>.</p>
     <div class="schema"></div>
     <table class="t" style="margin-top:12px">
@@ -257,27 +257,8 @@ total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined",
     </table>
     <div class="box note" style="margin-top:10px"><b>ΤΟ eval_set</b>Στο <code>orders.csv</code> η στήλη <code>eval_set</code> λέει σε ποιο αρχείο βρίσκονται τα προϊόντα της παραγγελίας: <code>prior</code> (3,2 εκ. παραγγελίες), <code>train</code> (131 χιλ.) ή <code>test</code> (75 χιλ., <b>χωρίς</b> προϊόντα, αγνοήστε τες). Για την εργασία δουλεύετε με το <b>prior</b>: είναι το πλήρες ιστορικό.</div>
 
-    <h3>Φόρτωση στο Kaggle</h3>
-    <p>Τα έξι αρχεία βρίσκονται σε ένα <b>Kaggle Dataset</b> του μαθήματος (<span class="cfg" data-k="dataset"></span>). Αν ανοίξατε το notebook σας με Copy &amp; Edit από το <a data-href="starterUrl" target="_blank" rel="noopener">starter notebook</a>, το dataset είναι ήδη συνδεδεμένο: το βλέπετε στο panel <b>Input</b> δεξιά, και τα αρχεία του βρίσκονται στον φάκελο <code>/kaggle/input/…</code>. Δεν χρειάζεται upload, mount ή άδεια. Αν φτιάξετε δικό σας notebook από το μηδέν, πατήστε <b>+ Add Input</b> στο ίδιο panel, ψάξτε «Instacart Market Basket Analysis» και διαλέξτε αυτό του χρήστη <b>psparks</b> (υπάρχουν πολλά αντίγραφα με παρόμοιο όνομα).</p>
-    <p>Στο notebook διαβάζετε τα αρχεία με το <code>read_csv</code> που ξέρετε:</p>
-    <div class="runner static" data-code="import os
-import pandas as pd
-
-# Ο φάκελος του dataset: το όνομά του φαίνεται στο panel Input δεξιά
-DATA = &quot;{{DATA}}&quot;
-print(os.listdir(DATA))      # πρέπει να τυπώσει τα 6 αρχεία
-
-orders      = pd.read_csv(DATA + &quot;orders.csv&quot;)
-products    = pd.read_csv(DATA + &quot;products.csv&quot;)
-aisles      = pd.read_csv(DATA + &quot;aisles.csv&quot;)
-departments = pd.read_csv(DATA + &quot;departments.csv&quot;)
-train       = pd.read_csv(DATA + &quot;order_products__train.csv&quot;)
-
-# Το prior είναι μεγάλο (32 εκ. γραμμές): δήλωσε μικρούς τύπους για να φορτώνει γρήγορα και να χωρά άνετα
-prior = pd.read_csv(DATA + &quot;order_products__prior.csv&quot;,
-                    dtype={&quot;order_id&quot;: &quot;int32&quot;, &quot;product_id&quot;: &quot;int32&quot;,
-                           &quot;add_to_cart_order&quot;: &quot;int16&quot;, &quot;reordered&quot;: &quot;int8&quot;})
-print(orders.shape, prior.shape)"></div>
+    <h3>Πού είναι τα αρχεία</h3>
+    <p>Σε ένα <b>Kaggle Dataset</b> (<span class="cfg" data-k="dataset"></span>), ήδη συνδεδεμένο με το <a data-href="starterUrl" target="_blank" rel="noopener">starter notebook</a>: το βλέπετε στο panel <b>Input</b> δεξιά. Δεν χρειάζεται upload, mount ή άδεια. Το πρώτο κελί κώδικα του starter notebook τυπώνει τις διαδρομές των αρχείων και το δεύτερο τα φορτώνει με το <code>read_csv</code> που ξέρετε, σε έξι DataFrames: <code>orders</code>, <code>prior</code>, <code>train</code>, <code>products</code>, <code>aisles</code>, <code>departments</code>. Τρέξτε τα δύο κελιά και ελέγξτε ότι το τελευταίο <code>print</code> δίνει <code>(3421083, 7) (32434489, 4) (1384617, 4) (49688, 4) (134, 2) (21, 2)</code>. Αν ναι, είστε έτοιμοι για το Μέρος Α.</p>
     <div class="box tip"><b>ΣΥΜΒΟΥΛΕΣ ΓΙΑ ΤΑ ΜΕΓΑΛΑ ΑΡΧΕΙΑ</b>(1) Γράψε και δοκίμασε κάθε ανάλυση πρώτα στο <code>train</code> (1,4 εκ. γραμμές, τρέχει σε δευτερόλεπτα). Όταν δουλεύει, άλλαξε τη μεταβλητή σε <code>prior</code>. (2) Κάνε merge <b>μόνο τις στήλες που χρειάζεσαι</b>: <code>products[["product_id", "product_name", "department_id"]]</code>. (3) Το Kaggle δίνει 30 GB μνήμης, που φτάνουν για όλα τα αρχεία μαζί. Αν παρ’ όλα αυτά η συνεδρία «πέσει» (ο δείκτης RAM δεξιά γεμίσει), ξεκίνα πάλι (Run → Restart &amp; clear cell outputs) και φόρτωσε λιγότερες στήλες. (4) Μη φορτώνεις το prior δύο φορές. (5) Αν αφήσεις το notebook ανοιχτό χωρίς να το ακουμπάς για αρκετή ώρα, η συνεδρία κλείνει: ο κώδικας και οι εκδόσεις μένουν, οι μεταβλητές χάνονται. Ξανατρέχεις τα κελιά από την αρχή.</div>
   </section>
 
@@ -495,7 +476,6 @@ print(orders.shape, prior.shape)"></div>
     starter: '<a href="' + STARTER_URL + '" target="_blank" rel="noopener">' + STARTER_URL.replace('https://www.', '') + '</a>',
     dataset: '<a href="' + DATASET_URL + '" target="_blank" rel="noopener">Instacart Market Basket Analysis, ' + DATASET_URL.replace('https://www.', '') + '</a>',
     starterUrl: STARTER_URL,
-    dataPath: '/kaggle/input/datasets/psparks/instacart-market-basket-analysis/',   // ο φάκελος όπως τον δείχνει το panel Input, με / στο τέλος
     register: 'ένα από τα δύο μέλη δηλώνει την ομάδα στο eClass (Ομάδες χρηστών → επιλογή ομάδας) και γράφει τα δύο ονόματα. Όποιος εργάζεται ατομικά δεν χρειάζεται δήλωση.',
     helpweeks: '11 και 12 (10 και 17 Δεκεμβρίου)',
     timeline: [
@@ -602,7 +582,7 @@ print(orders.shape, prior.shape)"></div>
 
   // ---------- static code (Kaggle-only snippets: shown, not run) ----------
   document.querySelectorAll('.runner.static').forEach(r=>{
-    const code=r.dataset.code.replace(/\{\{DATA\}\}/g, CONFIG.dataPath);
+    const code=r.dataset.code;
     r.innerHTML='<div class="bar"><span>notebook: κελί κώδικα (τρέχει στο Kaggle, όχι εδώ)</span><span class="spacer"></span><button class="btn secondary copy">Αντιγραφή</button></div><pre class="code"></pre>';
     r.querySelector('pre').textContent=code;
     r.querySelector('.copy').onclick=async()=>{ try{ await navigator.clipboard.writeText(code); r.querySelector('.copy').textContent='Αντιγράφηκε ✓'; setTimeout(()=>r.querySelector('.copy').textContent='Αντιγραφή',1500);}catch(e){} };
