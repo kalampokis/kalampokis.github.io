@@ -451,6 +451,7 @@ print(orders.shape, prior.shape)"></div>
       <label><input type="checkbox"> Το δικό μας ερώτημα είναι διατυπωμένο και αιτιολογημένο</label>
       <label><input type="checkbox"> Το notebook έχει το όνομα ή τα ονόματά σας στο πρώτο κελί</label>
       <label><input type="checkbox"> Κατεβάσαμε το .ipynb (File → Download Notebook) και το ανεβάσαμε στο eClass</label>
+      <label><input type="checkbox"> Το notebook έγινε Public και ο σύνδεσμός του είναι στο σχόλιο της υποβολής</label>
     </div>
     <div class="box tip"><b>ΣΥΧΝΑ ΛΑΘΗ ΠΟΥ ΚΟΣΤΙΖΟΥΝ</b>Ποσοστά επαναγοράς σε προϊόντα με 3 αγορές (100% από 3 δεν λέει τίποτα). Merge που διπλασιάζει γραμμές χωρίς να το προσέξει κανείς. Γράφημα χωρίς τίτλο που «μιλάει μόνο του». Συμπεράσματα που δεν στηρίζονται σε νούμερο. Notebook που τρέχει μόνο με τη σειρά που το έφτιαξε η ομάδα.</div>
   </section>
@@ -462,7 +463,7 @@ print(orders.shape, prior.shape)"></div>
     <h3>Πώς παραδίδετε</h3>
     <ol class="steps-list">
       <li><b>Δήλωση ομάδας</b> (μόνο για τις ομάδες των 2): <span class="cfg" data-k="register"></span></li>
-      <li><b>Notebook</b>: στο Kaggle, πρώτα <b>Save Version → Save &amp; Run All (Commit)</b>: τρέχει όλο το notebook από την αρχή σε καθαρή συνεδρία, ώστε να είστε σίγουροι ότι δουλεύει. Μετά <b>File → Download Notebook</b>: κατεβαίνει το <code>.ipynb</code>. Όνομα αρχείου <code>BAP_Instacart_ΟμάδαXX.ipynb</code>. Ανεβάστε το στο eClass (Εργασίες → Εργασία εξαμήνου), <b>μία υποβολή ανά ομάδα</b>. Γράψτε επίσης στο σχόλιο της υποβολής τον σύνδεσμο του notebook στο Kaggle, αφού τον μοιραστείτε με τον διδάσκοντα (Share → πρόσθεσε <span class="cfg" data-k="kaggleUser"></span> ως collaborator, ή κάνε το notebook Public).</li>
+      <li><b>Notebook</b>: στο Kaggle, πρώτα <b>Save Version → Save &amp; Run All (Commit)</b>: τρέχει όλο το notebook από την αρχή σε καθαρή συνεδρία, ώστε να είστε σίγουροι ότι δουλεύει. Μετά <b>File → Download Notebook</b>: κατεβαίνει το <code>.ipynb</code>. Όνομα αρχείου <code>BAP_Instacart_ΟμάδαXX.ipynb</code>. Ανεβάστε το στο eClass (Εργασίες → Εργασία εξαμήνου), <b>μία υποβολή ανά ομάδα</b>. Την ίδια μέρα κάντε το notebook <b>Public</b> (Share → Public, και Save αν το ζητήσει) και γράψτε τον σύνδεσμό του στο σχόλιο της υποβολής: έτσι βλέπουμε και τα αποτελέσματα όπως έτρεξαν στο Kaggle. <b>Όχι νωρίτερα</b>: μέχρι την παράδοση το notebook μένει Private, ορατό μόνο στην ομάδα σας.</li>
       <li><b>Πότε</b>: notebook και παρουσίαση (PDF ή PowerPoint) ανεβαίνουν στο eClass <b>την ημέρα της παρουσίασής σας, πριν το μάθημα</b>. Η σειρά των ομάδων (8 ή 15 Ιανουαρίου) ανακοινώνεται στο eClass.</li>
     </ol>
     <h3>Βοήθεια</h3>
@@ -491,7 +492,6 @@ print(orders.shape, prior.shape)"></div>
     starter: '<a href="https://www.kaggle.com/code/evangeloskalampokis/starter-notebook" target="_blank" rel="noopener">kaggle.com/code/evangeloskalampokis/starter-notebook</a>',
     dataset: '<a href="https://www.kaggle.com/datasets/psparks/instacart-market-basket-analysis" target="_blank" rel="noopener">Instacart Market Basket Analysis, kaggle.com/datasets/psparks/instacart-market-basket-analysis</a>',
     dataPath: '/kaggle/input/datasets/psparks/instacart-market-basket-analysis/',   // ο φάκελος όπως τον δείχνει το panel Input, με / στο τέλος
-    kaggleUser: '<code>evangeloskalampokis</code> (τον διδάσκοντα)',
     register: 'ένα από τα δύο μέλη δηλώνει την ομάδα στο eClass (Ομάδες χρηστών → επιλογή ομάδας) και γράφει τα δύο ονόματα. Όποιος εργάζεται ατομικά δεν χρειάζεται δήλωση.',
     helpweeks: '11 και 12 (10 και 17 Δεκεμβρίου)',
     timeline: [
