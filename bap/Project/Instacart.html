@@ -242,18 +242,16 @@ total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined",
   <!-- ============ 3 ============ -->
   <section class="step" data-title="Τα δεδομένα">
     <h2>3. Τα δεδομένα και πώς τα φορτώνετε</h2>
-    <p>Έξι αρχεία CSV που συνδέονται μεταξύ τους με «κλειδιά» <span class="en">(ids)</span>, όπως σε μια βάση δεδομένων. Η κεντρική ιδέα: οι <b>παραγγελίες</b> είναι ένας πίνακας, τα <b>προϊόντα κάθε παραγγελίας</b> άλλος, και τα <b>προϊόντα</b> με τις κατηγορίες τους ένας τρίτος. Για να απαντήσετε «πόσες μπανάνες πουλήθηκαν την Κυριακή» χρειάζεστε και τους τρεις, ενωμένους με <code>merge</code>.</p>
+    <p>Τέσσερα αρχεία CSV που συνδέονται μεταξύ τους με «κλειδιά» <span class="en">(ids)</span>, όπως σε μια βάση δεδομένων. Η κεντρική ιδέα: οι <b>παραγγελίες</b> είναι ένας πίνακας, τα <b>προϊόντα κάθε παραγγελίας</b> άλλος, και ο <b>κατάλογος προϊόντων</b> με τις κατηγορίες τους ένας τρίτος. Για να απαντήσετε «πόσες μπανάνες πουλήθηκαν την Κυριακή» χρειάζεστε και τους τρεις, ενωμένους με <code>merge</code>.</p>
     <div class="schema"></div>
     <table class="t" style="margin-top:12px">
       <tr><th>Αρχείο</th><th>Γραμμές</th><th>Στήλες</th><th>Τι είναι</th></tr>
-      <tr><td>orders.csv</td><td>3.421.083</td><td>order_id, user_id, eval_set, order_number, order_dow, order_hour_of_day, days_since_prior_order</td><td>Μία γραμμή ανά παραγγελία: ποιος, πότε (ημέρα 0–6, ώρα 0–23), πόσες μέρες από την προηγούμενη (NaN στην πρώτη παραγγελία κάθε πελάτη)</td></tr>
+      <tr><td>orders.csv</td><td>3.346.083</td><td>order_id, user_id, eval_set, order_number, order_dow, order_hour_of_day, days_since_prior_order</td><td>Μία γραμμή ανά παραγγελία: ποιος, πότε (ημέρα 0–6, ώρα 0–23), πόσες μέρες από την προηγούμενη (NaN στην πρώτη παραγγελία κάθε πελάτη)</td></tr>
       <tr><td>order_products__prior.csv</td><td>32.434.489</td><td>order_id, product_id, add_to_cart_order, reordered</td><td>Μία γραμμή ανά προϊόν μέσα σε παραγγελία: η σειρά που μπήκε στο καλάθι και αν ήταν επαναγορά (1) ή πρώτη φορά (0)</td></tr>
       <tr><td>order_products__train.csv</td><td>1.384.617</td><td>όπως το prior</td><td>Το ίδιο, για την τελευταία παραγγελία 131 χιλ. πελατών. <b>Χρήσιμο για δοκιμές: είναι 23 φορές μικρότερο</b></td></tr>
-      <tr><td>products.csv</td><td>49.688</td><td>product_id, product_name, aisle_id, department_id</td><td>Ο κατάλογος προϊόντων</td></tr>
-      <tr><td>aisles.csv</td><td>134</td><td>aisle_id, aisle</td><td>Ο «διάδρομος» (υποκατηγορία), π.χ. fresh fruits, yogurt</td></tr>
-      <tr><td>departments.csv</td><td>21</td><td>department_id, department</td><td>Το τμήμα, π.χ. produce, dairy eggs, snacks</td></tr>
+      <tr><td>products.csv</td><td>49.688</td><td>product_id, product_name, aisle, department</td><td>Ο κατάλογος προϊόντων, με τον «διάδρομο» (aisle, 134 υποκατηγορίες, π.χ. fresh fruits, yogurt) και το τμήμα (department, 21 τμήματα, π.χ. produce, dairy eggs, snacks)</td></tr>
     </table>
-    <div class="box note" style="margin-top:10px"><b>ΤΟ eval_set</b>Στο <code>orders.csv</code> η στήλη <code>eval_set</code> λέει σε ποιο αρχείο βρίσκονται τα προϊόντα της παραγγελίας: <code>prior</code> (3,2 εκ. παραγγελίες), <code>train</code> (131 χιλ.) ή <code>test</code> (75 χιλ., <b>χωρίς</b> προϊόντα, αγνοήστε τες). Για την εργασία δουλεύετε με το <b>prior</b>: είναι το πλήρες ιστορικό.</div>
+    <div class="box note" style="margin-top:10px"><b>ΤΟ eval_set</b>Στο <code>orders.csv</code> η στήλη <code>eval_set</code> λέει σε ποιο αρχείο βρίσκονται τα προϊόντα της παραγγελίας: <code>prior</code> (3,2 εκ. παραγγελίες, το πλήρες ιστορικό) ή <code>train</code> (131 χιλ., η τελευταία παραγγελία κάθε πελάτη). Για την εργασία δουλεύετε με το <b>prior</b>. Το train το χρησιμοποιείτε για γρήγορες δοκιμές.</div>
 
     <h3>Φόρτωση στο Colab από το Google Drive</h3>
     <p>Τα αρχεία βρίσκονται σε κοινόχρηστο φάκελο Google Drive του μαθήματος (<span class="cfg" data-k="drive"></span>). Δύο βήματα, μία φορά:</p>
@@ -265,13 +263,11 @@ total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined",
 drive.mount(&quot;/content/drive&quot;)      # θα ζητήσει άδεια: πάτησε Connect to Google Drive
 
 import pandas as pd
-DATA = &quot;/content/drive/MyDrive/instacart/&quot;   # ο φάκελος με τα 6 αρχεία (άλλαξέ τον αν τον έβαλες αλλού)
+DATA = &quot;/content/drive/MyDrive/instacart/&quot;   # ο φάκελος με τα 4 αρχεία (άλλαξέ τον αν τον έβαλες αλλού)
 
-orders      = pd.read_csv(DATA + &quot;orders.csv&quot;)
-products    = pd.read_csv(DATA + &quot;products.csv&quot;)
-aisles      = pd.read_csv(DATA + &quot;aisles.csv&quot;)
-departments = pd.read_csv(DATA + &quot;departments.csv&quot;)
-train       = pd.read_csv(DATA + &quot;order_products__train.csv&quot;)
+orders   = pd.read_csv(DATA + &quot;orders.csv&quot;)
+products = pd.read_csv(DATA + &quot;products.csv&quot;)
+train    = pd.read_csv(DATA + &quot;order_products__train.csv&quot;)
 
 # Το prior είναι μεγάλο (32 εκ. γραμμές): δήλωσε μικρούς τύπους για να χωρά άνετα στη μνήμη
 prior = pd.read_csv(DATA + &quot;order_products__prior.csv&quot;,
@@ -287,9 +283,9 @@ print(orders.shape, prior.shape)"></div>
     <p>Έξι ερωτήματα, κοινά για όλες τις ομάδες. Για το καθένα δίνουμε τι να κάνετε, ποια εργαλεία του μαθήματος χρειάζονται, και ένα <b>σημείο ελέγχου</b> <span class="en">(checkpoint)</span>: ένα νούμερο που πρέπει να βγάλετε κι εσείς. Αν βγάλετε άλλο, κάτι πήγε στραβά (συνήθως λάθος αρχείο, λάθος merge ή ξεχασμένο φίλτρο) και το βρίσκετε πριν χτίσετε πάνω του. Τσεκάρετε κάθε βήμα όταν το ολοκληρώσετε. Η λίστα θυμάται την πρόοδό σας σε αυτόν τον browser.</p>
 
     <div class="task" data-id="a1">
-      <div class="task-h"><label><input type="checkbox"> <b>Α1. Φόρτωσε και επιθεώρησε τα έξι αρχεία</b></label><span class="tools">read_csv, shape, head, info</span></div>
+      <div class="task-h"><label><input type="checkbox"> <b>Α1. Φόρτωσε και επιθεώρησε τα τέσσερα αρχεία</b></label><span class="tools">read_csv, shape, head, info</span></div>
       <p>Για κάθε πίνακα: <code>shape</code>, <code>head()</code>, <code>info()</code>. Σε ένα κελί κειμένου γράψτε με δικά σας λόγια τι είναι μία γραμμή κάθε πίνακα (η «μονάδα»). Αυτή η πρόταση θα σας σώσει από τα μισά λάθη αργότερα.</p>
-      <details><summary>Σημείο ελέγχου</summary><code>orders.shape → (3421083, 7)</code>, <code>prior.shape → (32434489, 4)</code>, <code>products.shape → (49688, 4)</code>, aisles 134 γραμμές, departments 21. Πόσοι πελάτες; <code>orders["user_id"].nunique() → 206209</code>.</details>
+      <details><summary>Σημείο ελέγχου</summary><code>orders.shape → (3346083, 7)</code>, <code>prior.shape → (32434489, 4)</code>, <code>train.shape → (1384617, 4)</code>, <code>products.shape → (49688, 4)</code>. Πόσοι πελάτες; <code>orders["user_id"].nunique() → 206209</code>. Πόσα τμήματα; <code>products["department"].nunique() → 21</code>.</details>
     </div>
 
     <div class="task" data-id="a2">
@@ -306,8 +302,8 @@ print(orders.shape, prior.shape)"></div>
 
     <div class="task" data-id="a4">
       <div class="task-h"><label><input type="checkbox"> <b>Α4. Ένωσε τους πίνακες σε έναν</b></label><span class="tools">merge, shape πριν/μετά</span></div>
-      <p>Φτιάξτε έναν πίνακα <code>items</code> με μία γραμμή ανά προϊόν-σε-παραγγελία και δίπλα το όνομα, τον διάδρομο και το τμήμα: <code>prior → products → aisles → departments</code>, με <code>merge(..., on=...)</code>. <b>Ελέγξτε τον αριθμό γραμμών πριν και μετά από κάθε merge</b>: πρέπει να μένει ίδιος. Αν αυξηθεί, υπάρχουν διπλά κλειδιά. Αν μειωθεί, χάνονται γραμμές (inner join).</p>
-      <details><summary>Σημείο ελέγχου</summary><code>items.shape[0] → 32434489</code>, ίδιο με το prior, και μετά τα τρία merge. Οι στήλες: order_id, product_id, add_to_cart_order, reordered, product_name, aisle_id, department_id, aisle, department.</details>
+      <p>Φτιάξτε έναν πίνακα <code>items</code> με μία γραμμή ανά προϊόν-σε-παραγγελία και δίπλα το όνομα, τον διάδρομο και το τμήμα: <code>prior.merge(products, on="product_id")</code>. Μετά, για τα ερωτήματα που θέλουν και την ώρα ή τον πελάτη, ένα δεύτερο merge με το <code>orders</code> πάνω στο <code>order_id</code>. <b>Ελέγξτε τον αριθμό γραμμών πριν και μετά από κάθε merge</b>: πρέπει να μένει ίδιος. Αν αυξηθεί, υπάρχουν διπλά κλειδιά. Αν μειωθεί, χάνονται γραμμές (inner join).</p>
+      <details><summary>Σημείο ελέγχου</summary><code>items.shape[0] → 32434489</code>, ίδιο με το prior, και μετά το merge. Οι στήλες: order_id, product_id, add_to_cart_order, reordered, product_name, aisle, department. Αν κάνετε και το merge με το orders, πάλι 32434489 γραμμές.</details>
     </div>
 
     <div class="task" data-id="a5">
@@ -503,7 +499,7 @@ print(orders.shape, prior.shape)"></div>
   // ======================================================================
 
   document.querySelectorAll('.cfg').forEach(e=>{ e.innerHTML = CONFIG[e.dataset.k] || ''; });
-  document.getElementById('glance').innerHTML = 'Ατομικά ή σε ομάδες 2 ατόμων. 50% του βαθμού. Παραδοτέα: notebook + παρουσίαση 10′. Δεδομένα: Instacart 2017 (6 αρχεία CSV, Google Drive). Εργαστήρια βοήθειας: ' + CONFIG.timeline[2][0] + ' (Μέρος Α) και ' + CONFIG.timeline[3][0] + ' (Μέρος Β). Παρουσιάσεις και παράδοση: <b>' + CONFIG.timeline[4][0] + ' και ' + CONFIG.timeline[5][0] + '</b>.';
+  document.getElementById('glance').innerHTML = 'Ατομικά ή σε ομάδες 2 ατόμων. 50% του βαθμού. Παραδοτέα: notebook + παρουσίαση 10′. Δεδομένα: Instacart 2017 (4 αρχεία CSV, Google Drive). Εργαστήρια βοήθειας: ' + CONFIG.timeline[2][0] + ' (Μέρος Α) και ' + CONFIG.timeline[3][0] + ' (Μέρος Β). Παρουσιάσεις και παράδοση: <b>' + CONFIG.timeline[4][0] + ' και ' + CONFIG.timeline[5][0] + '</b>.';
   const tl = document.getElementById('timeline');
   tl.innerHTML = '<tr><th>Πότε</th><th>Τι</th></tr>' + CONFIG.timeline.map(r=>'<tr><td class="m" style="white-space:nowrap">'+r[0]+'</td><td>'+r[1]+'</td></tr>').join('');
 
@@ -632,18 +628,14 @@ print(orders.shape, prior.shape)"></div>
       return s;
     };
     const link=(x1,y1,x2,y2,label)=>'<path d="M'+x1+' '+y1+' C '+(x1+40)+' '+y1+', '+(x2-40)+' '+y2+', '+x2+' '+y2+'" class="ln"/><text x="'+((x1+x2)/2)+'" y="'+((y1+y2)/2-6)+'" class="ll" text-anchor="middle">'+label+'</text>';
-    el.innerHTML='<svg viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Σχήμα των έξι πινάκων του Instacart">'
+    el.innerHTML='<svg viewBox="0 0 1000 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Σχήμα των τεσσάρων πινάκων του Instacart">'
       + box(20,40,230,'orders',['*order_id','user_id','eval_set','order_number','order_dow','order_hour_of_day','days_since_prior_order'])
       + box(330,110,300,'order_products__prior / train',['*order_id','*product_id','add_to_cart_order','reordered'],true)
-      + box(680,60,220,'products',['*product_id','product_name','*aisle_id','*department_id'])
-      + box(680,250,130,'aisles',['*aisle_id','aisle'])
-      + box(840,250,150,'departments',['*department_id','department'])
+      + box(735,110,255,'products',['*product_id','product_name','aisle','department'])
       + link(250,94,330,164,'order_id')
-      + link(630,186,680,114,'product_id')
-      + '<path d="M760 192 C 760 230, 745 230, 745 250" class="ln"/><text x="660" y="235" class="ll">aisle_id</text>'
-      + '<path d="M840 192 C 840 230, 915 230, 915 250" class="ln"/><text x="860" y="230" class="ll">department_id</text>'
-      + '<text x="20" y="330" class="ln-note">Μία γραμμή = μία παραγγελία</text><text x="330" y="330" class="ln-note">Μία γραμμή = ένα προϊόν μέσα σε μία παραγγελία (32 εκ.)</text><text x="620" y="365" class="ln-note">Ο κατάλογος: κάθε προϊόν ανήκει σε έναν διάδρομο (aisle) και ένα τμήμα</text>'
-      + '</svg><div class="schema-cap">Τα κλειδιά (με έντονα) είναι οι στήλες που ενώνουν τους πίνακες με <code>merge</code>. Ο κεντρικός πίνακας είναι το order_products: από εκεί ξεκινούν τα περισσότερα ερωτήματα.</div>';
+      + link(630,186,735,164,'product_id')
+      + '<text x="20" y="300" class="ln-note">Μία γραμμή = μία παραγγελία (3,3 εκ.)</text><text x="330" y="300" class="ln-note">Μία γραμμή = ένα προϊόν μέσα σε μία παραγγελία (32 εκ.)</text><text x="735" y="300" class="ln-note">Μία γραμμή = ένα προϊόν (49.688)</text>'
+      + '</svg><div class="schema-cap">Τα κλειδιά (με έντονα) είναι οι στήλες που ενώνουν τους πίνακες με <code>merge</code>. Ο κεντρικός πίνακας είναι το order_products: από εκεί ξεκινούν τα περισσότερα ερωτήματα. Στα αρχικά δεδομένα της Instacart ο διάδρομος και το τμήμα ήταν ξεχωριστοί πίνακες (aisles, departments). Σας τα δίνουμε ήδη ενωμένα μέσα στο products.</div>';
   });
 
   // ---------- mini notebook ----------
