@@ -12,7 +12,7 @@
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Εργασία εξαμήνου · Instacart</title>
+<title>Εργασία εξαμήνου: Instacart</title>
 <meta name="description" content="Εκφώνηση και οδηγός της εργασίας εξαμήνου: Google Colab και notebooks, τα δεδομένα Instacart, βήματα εκκίνησης με σημεία ελέγχου, θέματα εμβάθυνσης, κριτήρια και χρονοδιάγραμμα. Προγραμματισμός για Επιχειρηματική Αναλυτική.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -178,9 +178,9 @@
 <nav id="site-nav"><a class="sn-home" href="../../index.html">Dr. Evangelos Kalampokis</a><span class="sn-sep">|</span><a class="sn-back" href="../../courses/business-analytics-programming.html">&larr; Σελίδα μαθήματος: Προγραμματισμός για Επιχειρηματική Αναλυτική</a><a class="sn-teach" href="../../index.html#teaching">Αρχική</a></nav>
 <div class="wrap">
   <div>
-    <div class="kicker">Προγραμματισμός για Επιχειρηματική Αναλυτική · Εργασία εξαμήνου · <span id="pyStatus" class="status">φόρτωση Python…</span></div>
+    <div class="kicker">Προγραμματισμός για Επιχειρηματική Αναλυτική | Εργασία εξαμήνου | <span id="pyStatus" class="status">φόρτωση Python…</span></div>
     <h1>Εργασία εξαμήνου: Instacart</h1>
-    <p class="lead" style="margin-top:10px">Μια ομάδα 2–3 ατόμων, ένα πραγματικό σύνολο δεδομένων με 3 εκατομμύρια παραγγελίες σούπερ μάρκετ, ένα notebook και μια παρουσίαση 10 λεπτών. Αυτή η σελίδα είναι ο <b>μπούσουλάς</b> σας: ξεκινά από το μηδέν (τι είναι το Colab και το notebook), σας οδηγεί βήμα-βήμα στα πρώτα υποχρεωτικά ερωτήματα με <b>σημεία ελέγχου</b> για να ξέρετε ότι είστε σωστά, και μετά σας αφήνει χώρο να πειραματιστείτε πάνω στο θέμα που θα διαλέξετε. Ό,τι χρειάζεστε το έχετε ήδη μάθει: φίλτρα, groupby, merge και γραφήματα.</p>
+    <p class="lead" style="margin-top:10px">Μια ομάδα 2–3 ατόμων, ένα πραγματικό σύνολο δεδομένων με 3 εκατομμύρια παραγγελίες σούπερ μάρκετ, ένα notebook και μια παρουσίαση 10 λεπτών. Αυτή η σελίδα είναι ο <b>οδηγός</b> σας: ξεκινά από το μηδέν (τι είναι το Colab και το notebook), σας οδηγεί βήμα-βήμα στα πρώτα υποχρεωτικά ερωτήματα με <b>σημεία ελέγχου</b> για να ξέρετε ότι είστε σωστά, και μετά σας αφήνει χώρο να πειραματιστείτε πάνω στο θέμα που θα διαλέξετε. Ό,τι χρειάζεστε το έχετε ήδη μάθει: φίλτρα, groupby, merge και γραφήματα.</p>
     <div class="box note"><b>ΜΕ ΜΙΑ ΜΑΤΙΑ</b><span id="glance"></span></div>
   </div>
 
@@ -194,7 +194,7 @@
 
     <h3>Πώς ανοίγω το πρώτο μου notebook</h3>
     <ol class="steps-list">
-      <li>Πήγαινε στο <a href="https://colab.research.google.com" target="_blank" rel="noopener">colab.research.google.com</a> και συνδέσου με λογαριασμό Google (ο πανεπιστημιακός ή προσωπικός, δεν έχει σημασία· <b>όλη η ομάδα όμως να χρησιμοποιεί τον ίδιο φάκελο</b>).</li>
+      <li>Πήγαινε στο <a href="https://colab.research.google.com" target="_blank" rel="noopener">colab.research.google.com</a> και συνδέσου με λογαριασμό Google (ο πανεπιστημιακός ή προσωπικός, δεν έχει σημασία. <b>Όλη η ομάδα όμως να χρησιμοποιεί τον ίδιο φάκελο</b>).</li>
       <li>Πάτησε <b>File → New notebook</b>. Ανοίγει ένα κενό notebook με ένα κελί κώδικα.</li>
       <li>Πάνω αριστερά, κάνε κλικ στο όνομα <code>Untitled0.ipynb</code> και μετονόμασέ το, π.χ. <code>BAP_Instacart_Ομάδα07.ipynb</code>. Σώζεται αυτόματα στο Drive σου, στον φάκελο <code>Colab Notebooks</code>.</li>
       <li>Γράψε <code>print("Γεια σου, Colab")</code> στο κελί και πάτησε <b>Shift + Enter</b>. Την πρώτη φορά περιμένει λίγα δευτερόλεπτα για να «ξυπνήσει» τον υπολογιστή (runtime) και μετά τυπώνει το αποτέλεσμα από κάτω.</li>
@@ -226,7 +226,7 @@ total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined",
       <div class="box note"><b>ΟΜΑΔΕΣ</b><span class="cfg" data-k="team"></span></div>
       <div class="box note"><b>ΒΑΘΜΟΣ</b><span class="cfg" data-k="weight"></span></div>
       <div class="box note"><b>ΠΑΡΑΔΟΤΕΑ</b>Ένα notebook (.ipynb) που τρέχει από την αρχή ως το τέλος χωρίς σφάλμα, και μία παρουσίαση 10 λεπτών (5–6 διαφάνειες). Λεπτομέρειες στο βήμα 6.</div>
-      <div class="box note"><b>ΕΡΓΑΛΕΙΑ</b>Google Colab, pandas, Matplotlib. Ό,τι έχουμε κάνει στο μάθημα· τίποτα επιπλέον δεν απαιτείται (αλλά επιτρέπεται).</div>
+      <div class="box note"><b>ΕΡΓΑΛΕΙΑ</b>Google Colab, pandas, Matplotlib. Ό,τι έχουμε κάνει στο μάθημα. Τίποτα επιπλέον δεν απαιτείται (αλλά επιτρέπεται).</div>
     </div>
 
     <h3>Τα τρία μέρη της εργασίας</h3>
@@ -278,46 +278,46 @@ prior = pd.read_csv(DATA + &quot;order_products__prior.csv&quot;,
                     dtype={&quot;order_id&quot;: &quot;int32&quot;, &quot;product_id&quot;: &quot;int32&quot;,
                            &quot;add_to_cart_order&quot;: &quot;int16&quot;, &quot;reordered&quot;: &quot;int8&quot;})
 print(orders.shape, prior.shape)"></div>
-    <div class="box tip"><b>Ο ΜΠΟΥΣΟΥΛΑΣ ΓΙΑ ΤΑ ΜΕΓΑΛΑ ΑΡΧΕΙΑ</b>(1) Γράψε και δοκίμασε κάθε ανάλυση πρώτα στο <code>train</code> (1,4 εκ. γραμμές, τρέχει σε δευτερόλεπτα)· όταν δουλεύει, άλλαξε τη μεταβλητή σε <code>prior</code>. (2) Κάνε merge <b>μόνο τις στήλες που χρειάζεσαι</b>: <code>products[["product_id", "product_name", "department_id"]]</code>. (3) Αν το Colab βγάλει «Your session crashed after using all available RAM», ξεκίνα πάλι (Runtime → Restart) και φόρτωσε λιγότερα. (4) Μη φορτώνεις το prior δύο φορές.</div>
+    <div class="box tip"><b>ΣΥΜΒΟΥΛΕΣ ΓΙΑ ΤΑ ΜΕΓΑΛΑ ΑΡΧΕΙΑ</b>(1) Γράψε και δοκίμασε κάθε ανάλυση πρώτα στο <code>train</code> (1,4 εκ. γραμμές, τρέχει σε δευτερόλεπτα). Όταν δουλεύει, άλλαξε τη μεταβλητή σε <code>prior</code>. (2) Κάνε merge <b>μόνο τις στήλες που χρειάζεσαι</b>: <code>products[["product_id", "product_name", "department_id"]]</code>. (3) Αν το Colab βγάλει «Your session crashed after using all available RAM», ξεκίνα πάλι (Runtime → Restart) και φόρτωσε λιγότερα. (4) Μη φορτώνεις το prior δύο φορές.</div>
   </section>
 
   <!-- ============ 4 ============ -->
   <section class="step" data-title="Βήματα εκκίνησης">
     <h2>4. Μέρος Α: βήματα εκκίνησης με σημεία ελέγχου</h2>
-    <p>Έξι ερωτήματα, κοινά για όλες τις ομάδες. Για το καθένα δίνουμε τι να κάνετε, ποια εργαλεία του μαθήματος χρειάζονται, και ένα <b>σημείο ελέγχου</b> <span class="en">(checkpoint)</span>: ένα νούμερο που πρέπει να βγάλετε κι εσείς. Αν βγάλετε άλλο, κάτι πήγε στραβά (συνήθως λάθος αρχείο, λάθος merge ή ξεχασμένο φίλτρο) και το βρίσκετε πριν χτίσετε πάνω του. Τσεκάρετε κάθε βήμα όταν το ολοκληρώσετε· η λίστα θυμάται την πρόοδό σας σε αυτόν τον browser.</p>
+    <p>Έξι ερωτήματα, κοινά για όλες τις ομάδες. Για το καθένα δίνουμε τι να κάνετε, ποια εργαλεία του μαθήματος χρειάζονται, και ένα <b>σημείο ελέγχου</b> <span class="en">(checkpoint)</span>: ένα νούμερο που πρέπει να βγάλετε κι εσείς. Αν βγάλετε άλλο, κάτι πήγε στραβά (συνήθως λάθος αρχείο, λάθος merge ή ξεχασμένο φίλτρο) και το βρίσκετε πριν χτίσετε πάνω του. Τσεκάρετε κάθε βήμα όταν το ολοκληρώσετε. Η λίστα θυμάται την πρόοδό σας σε αυτόν τον browser.</p>
 
     <div class="task" data-id="a1">
-      <div class="task-h"><label><input type="checkbox"> <b>Α1. Φόρτωσε και επιθεώρησε τα έξι αρχεία</b></label><span class="tools">read_csv · shape · head · info</span></div>
+      <div class="task-h"><label><input type="checkbox"> <b>Α1. Φόρτωσε και επιθεώρησε τα έξι αρχεία</b></label><span class="tools">read_csv, shape, head, info</span></div>
       <p>Για κάθε πίνακα: <code>shape</code>, <code>head()</code>, <code>info()</code>. Σε ένα κελί κειμένου γράψτε με δικά σας λόγια τι είναι μία γραμμή κάθε πίνακα (η «μονάδα»). Αυτή η πρόταση θα σας σώσει από τα μισά λάθη αργότερα.</p>
-      <details><summary>Σημείο ελέγχου</summary><code>orders.shape → (3421083, 7)</code> · <code>prior.shape → (32434489, 4)</code> · <code>products.shape → (49688, 4)</code> · aisles 134 γραμμές, departments 21. Πόσοι πελάτες; <code>orders["user_id"].nunique() → 206209</code>.</details>
+      <details><summary>Σημείο ελέγχου</summary><code>orders.shape → (3421083, 7)</code>, <code>prior.shape → (32434489, 4)</code>, <code>products.shape → (49688, 4)</code>, aisles 134 γραμμές, departments 21. Πόσοι πελάτες; <code>orders["user_id"].nunique() → 206209</code>.</details>
     </div>
 
     <div class="task" data-id="a2">
-      <div class="task-h"><label><input type="checkbox"> <b>Α2. Πότε παραγγέλνουν οι πελάτες;</b></label><span class="tools">value_counts · groupby · bar chart</span></div>
-      <p>Παραγγελίες ανά ημέρα της εβδομάδας (<code>order_dow</code>, 0–6) και ανά ώρα (<code>order_hour_of_day</code>). Ένα ραβδόγραμμα για το καθένα. Ποια είναι η ώρα αιχμής; Ποιες δύο μέρες ξεχωρίζουν; (Η Instacart δεν λέει ποια μέρα είναι το 0· τι υποθέτετε, και γιατί;)</p>
-      <details><summary>Σημείο ελέγχου</summary>Η ώρα με τις περισσότερες παραγγελίες είναι η <b>10</b> (λίγο πάνω από τις 11, 14 και 15). Οι μέρες 0 και 1 έχουν η καθεμία πάνω από 580.000 παραγγελίες· οι υπόλοιπες κάτω από 470.000.</details>
+      <div class="task-h"><label><input type="checkbox"> <b>Α2. Πότε παραγγέλνουν οι πελάτες;</b></label><span class="tools">value_counts, groupby, bar chart</span></div>
+      <p>Παραγγελίες ανά ημέρα της εβδομάδας (<code>order_dow</code>, 0–6) και ανά ώρα (<code>order_hour_of_day</code>). Ένα ραβδόγραμμα για το καθένα. Ποια είναι η ώρα αιχμής; Ποιες δύο μέρες ξεχωρίζουν; (Η Instacart δεν λέει ποια μέρα είναι το 0. Τι υποθέτετε, και γιατί;)</p>
+      <details><summary>Σημείο ελέγχου</summary>Η ώρα με τις περισσότερες παραγγελίες είναι η <b>10</b> (λίγο πάνω από τις 11, 14 και 15). Οι μέρες 0 και 1 έχουν η καθεμία πάνω από 580.000 παραγγελίες, οι υπόλοιπες κάτω από 470.000.</details>
     </div>
 
     <div class="task" data-id="a3">
-      <div class="task-h"><label><input type="checkbox"> <b>Α3. Πόσο συχνά ψωνίζουν;</b></label><span class="tools">groupby · size · describe · histogram</span></div>
-      <p>Παραγγελίες ανά πελάτη: <code>orders.groupby("user_id").size()</code> και <code>describe()</code>. Ιστόγραμμα. Μετά η κατανομή του <code>days_since_prior_order</code>: ποιες δύο τιμές ξεχωρίζουν και τι σημαίνουν για τη συνήθεια των πελατών; (Προσοχή: η τιμή 30 είναι «30 ή περισσότερες»· τα δεδομένα είναι κομμένα εκεί.)</p>
+      <div class="task-h"><label><input type="checkbox"> <b>Α3. Πόσο συχνά ψωνίζουν;</b></label><span class="tools">groupby, size, describe, histogram</span></div>
+      <p>Παραγγελίες ανά πελάτη: <code>orders.groupby("user_id").size()</code> και <code>describe()</code>. Ιστόγραμμα. Μετά η κατανομή του <code>days_since_prior_order</code>: ποιες δύο τιμές ξεχωρίζουν και τι σημαίνουν για τη συνήθεια των πελατών; (Προσοχή: η τιμή 30 είναι «30 ή περισσότερες». Τα δεδομένα είναι κομμένα εκεί.)</p>
       <details><summary>Σημείο ελέγχου</summary>Κάθε πελάτης έχει από <b>4</b> έως <b>100</b> παραγγελίες, μέσος όρος <b>≈ 16,6</b>. Στο days_since_prior_order οι δύο κορυφές είναι στο <b>7</b> και στο <b>30</b>.</details>
     </div>
 
     <div class="task" data-id="a4">
-      <div class="task-h"><label><input type="checkbox"> <b>Α4. Ένωσε τους πίνακες σε έναν</b></label><span class="tools">merge · shape πριν/μετά</span></div>
-      <p>Φτιάξτε έναν πίνακα <code>items</code> με μία γραμμή ανά προϊόν-σε-παραγγελία και δίπλα το όνομα, τον διάδρομο και το τμήμα: <code>prior → products → aisles → departments</code>, με <code>merge(..., on=...)</code>. <b>Ελέγξτε τον αριθμό γραμμών πριν και μετά από κάθε merge</b>: πρέπει να μένει ίδιος. Αν αυξηθεί, υπάρχουν διπλά κλειδιά· αν μειωθεί, χάνονται γραμμές (inner join).</p>
+      <div class="task-h"><label><input type="checkbox"> <b>Α4. Ένωσε τους πίνακες σε έναν</b></label><span class="tools">merge, shape πριν/μετά</span></div>
+      <p>Φτιάξτε έναν πίνακα <code>items</code> με μία γραμμή ανά προϊόν-σε-παραγγελία και δίπλα το όνομα, τον διάδρομο και το τμήμα: <code>prior → products → aisles → departments</code>, με <code>merge(..., on=...)</code>. <b>Ελέγξτε τον αριθμό γραμμών πριν και μετά από κάθε merge</b>: πρέπει να μένει ίδιος. Αν αυξηθεί, υπάρχουν διπλά κλειδιά. Αν μειωθεί, χάνονται γραμμές (inner join).</p>
       <details><summary>Σημείο ελέγχου</summary><code>items.shape[0] → 32434489</code>, ίδιο με το prior, και μετά τα τρία merge. Οι στήλες: order_id, product_id, add_to_cart_order, reordered, product_name, aisle_id, department_id, aisle, department.</details>
     </div>
 
     <div class="task" data-id="a5">
-      <div class="task-h"><label><input type="checkbox"> <b>Α5. Τα δημοφιλέστερα προϊόντα και τμήματα</b></label><span class="tools">value_counts · groupby · sort_values · head · barh</span></div>
+      <div class="task-h"><label><input type="checkbox"> <b>Α5. Τα δημοφιλέστερα προϊόντα και τμήματα</b></label><span class="tools">value_counts, groupby, sort_values, head, barh</span></div>
       <p>Τα 15 προϊόντα με τις περισσότερες πωλήσεις (γραμμές στο items) και το μερίδιο κάθε τμήματος (<code>department</code>) στο σύνολο των προϊόντων που πουλήθηκαν. Οριζόντιο ραβδόγραμμα για τα προϊόντα, ραβδόγραμμα ή πίτα για τα τμήματα. Τι παρατηρείτε για το είδος των προϊόντων στην κορυφή;</p>
       <details><summary>Σημείο ελέγχου</summary>Πρώτο προϊόν: <b>Banana</b> (472.565 φορές), δεύτερο <b>Bag of Organic Bananas</b> (379.450), τρίτο <b>Organic Strawberries</b>. Το τμήμα <b>produce</b> έχει το μεγαλύτερο μερίδιο, περίπου <b>29%</b> των προϊόντων, με δεύτερο το dairy eggs.</details>
     </div>
 
     <div class="task" data-id="a6">
-      <div class="task-h"><label><input type="checkbox"> <b>Α6. Καλάθι και επαναγορές</b></label><span class="tools">groupby · size · mean σε 0/1</span></div>
+      <div class="task-h"><label><input type="checkbox"> <b>Α6. Καλάθι και επαναγορές</b></label><span class="tools">groupby, size, mean σε 0/1</span></div>
       <p>Μέγεθος καλαθιού: προϊόντα ανά παραγγελία (<code>items.groupby("order_id").size()</code>), μέσος και διάμεσος, ιστόγραμμα. Ποσοστό επαναγορών: ο μέσος όρος της στήλης <code>reordered</code> (είναι 0/1, άρα ο μέσος είναι ποσοστό, όπως μάθαμε). Μετά το ίδιο ποσοστό <b>ανά τμήμα</b>: ποια τμήματα ξαναγοράζονται περισσότερο και ποια λιγότερο, και γιατί βγάζει νόημα;</p>
       <details><summary>Σημείο ελέγχου</summary>Μέσο καλάθι <b>≈ 10,1</b> προϊόντα, διάμεσος <b>8</b>. Συνολικό ποσοστό επαναγορών <b>≈ 0,59</b>. Ανά τμήμα, το dairy eggs και το produce είναι ψηλά (πάνω από 0,6), ενώ τμήματα όπως personal care και pantry χαμηλά (κάτω από 0,4).</details>
     </div>
@@ -328,7 +328,7 @@ print(orders.shape, prior.shape)"></div>
   <!-- ============ 5 ============ -->
   <section class="step" data-title="Θέμα εμβάθυνσης">
     <h2>5. Μέρος Β: διαλέξτε θέμα και πειραματιστείτε</h2>
-    <p>Έξι κατευθύνσεις. Κάθε μία έχει μια <b>επιχειρηματική ερώτηση</b>, τρία <b>καθοδηγούμενα ερωτήματα</b> που πρέπει να απαντήσετε (με τα εργαλεία που χρειάζονται), και ιδέες για να το πάτε <b>παραπέρα</b>. Υποχρεωτικό: τα τρία καθοδηγούμενα συν <b>τουλάχιστον ένα δικό σας ερώτημα</b>, που θα διατυπώσετε και θα αιτιολογήσετε εσείς. Εκεί είναι ο χώρος σας για πειραματισμό· εκεί διαφέρουν οι πολύ καλές εργασίες. Κάντε κλικ σε ένα θέμα για να το ανοίξετε.</p>
+    <p>Έξι κατευθύνσεις. Κάθε μία έχει μια <b>επιχειρηματική ερώτηση</b>, τρία <b>καθοδηγούμενα ερωτήματα</b> που πρέπει να απαντήσετε (με τα εργαλεία που χρειάζονται), και ιδέες για να το πάτε <b>παραπέρα</b>. Υποχρεωτικό: τα τρία καθοδηγούμενα συν <b>τουλάχιστον ένα δικό σας ερώτημα</b>, που θα διατυπώσετε και θα αιτιολογήσετε εσείς. Εκεί είναι ο χώρος σας για πειραματισμό. Εκεί διαφέρουν οι πολύ καλές εργασίες. Κάντε κλικ σε ένα θέμα για να το ανοίξετε.</p>
 
     <div class="topics">
       <details class="topic" data-id="t1"><summary><span class="tn">Θέμα 1</span> Πότε ψωνίζουν οι πελάτες, και τι σημαίνει για τη λειτουργία</summary>
@@ -338,7 +338,7 @@ print(orders.shape, prior.shape)"></div>
           <li>Διαφέρει το <b>μέγεθος καλαθιού</b> ανά ώρα ή ανά ημέρα; (merge items με orders, groupby, mean)</li>
           <li>Διαφέρουν τα <b>τμήματα</b> που αγοράζονται το πρωί από το βράδυ; (ποσοστό κάθε τμήματος ανά ζώνη ώρας: πρωί / μεσημέρι / απόγευμα / βράδυ, με <code>pd.cut</code> ή φίλτρα)</li>
         </ol>
-        <p class="more"><b>Παραπέρα:</b> ψωνίζουν οι «πιστοί» πελάτες (πολλές παραγγελίες) σε άλλες ώρες από τους νέους; · Οι επαναγορές γίνονται πιο πολύ Σαββατοκύριακο; · Προτείνετε ένα πρόγραμμα βαρδιών με βάση τον πίνακα ημέρα × ώρα.</p>
+        <p class="more"><b>Παραπέρα:</b> ψωνίζουν οι «πιστοί» πελάτες (πολλές παραγγελίες) σε άλλες ώρες από τους νέους; Οι επαναγορές γίνονται πιο πολύ Σαββατοκύριακο; Προτείνετε ένα πρόγραμμα βαρδιών με βάση τον πίνακα ημέρα × ώρα.</p>
       </details>
 
       <details class="topic" data-id="t2"><summary><span class="tn">Θέμα 2</span> Το καλάθι: μέγεθος, σύνθεση, και τι μπαίνει πρώτο</summary>
@@ -348,7 +348,7 @@ print(orders.shape, prior.shape)"></div>
           <li>Τα προϊόντα που μπαίνουν <b>πρώτα</b> στο καλάθι (<code>add_to_cart_order == 1</code>): top 10, και πώς διαφέρουν από τα top 10 συνολικά;</li>
           <li>Σχέση <b>θέσης στο καλάθι</b> και <b>επαναγοράς</b>: είναι τα πρώτα προϊόντα πιο συχνά επαναγορές; (groupby add_to_cart_order, mean reordered, γραμμή)</li>
         </ol>
-        <p class="more"><b>Παραπέρα:</b> από πόσα τμήματα ψωνίζει ένα τυπικό καλάθι (<code>nunique</code> ανά παραγγελία); · Μεγαλώνει το καλάθι όσο ο πελάτης ωριμάζει (ανά <code>order_number</code>); · Ποια προϊόντα εμφανίζονται σχεδόν πάντα σε μεγάλα καλάθια;</p>
+        <p class="more"><b>Παραπέρα:</b> από πόσα τμήματα ψωνίζει ένα τυπικό καλάθι (<code>nunique</code> ανά παραγγελία); Μεγαλώνει το καλάθι όσο ο πελάτης ωριμάζει (ανά <code>order_number</code>); Ποια προϊόντα εμφανίζονται σχεδόν πάντα σε μεγάλα καλάθια;</p>
       </details>
 
       <details class="topic" data-id="t3"><summary><span class="tn">Θέμα 3</span> Προϊόντα που ξαναγοράζονται, και προϊόντα «μιας φοράς»</summary>
@@ -358,7 +358,7 @@ print(orders.shape, prior.shape)"></div>
           <li>Σχέση δημοτικότητας και επαναγοράς: διάγραμμα διασποράς (scatter) πλήθος αγορών × ποσοστό επαναγοράς. Ξαναγοράζονται περισσότερο τα δημοφιλή;</li>
           <li>Προϊόντα <b>«μιας φοράς»</b>: με χαμηλό ποσοστό επαναγοράς παρότι αγοράζονται πολύ. Ποια είναι και σε ποια τμήματα ανήκουν;</li>
         </ol>
-        <p class="more"><b>Παραπέρα:</b> ποσοστό επαναγοράς ανά διάδρομο (aisle) μέσα σε ένα τμήμα · Πόσα προϊόντα κάθε πελάτη είναι «δικά του» (τα ξαναγοράζει σε πάνω από 50% των παραγγελιών του); · Μια πρόταση για το «Buy it again» της εφαρμογής.</p>
+        <p class="more"><b>Παραπέρα:</b> ποσοστό επαναγοράς ανά διάδρομο (aisle) μέσα σε ένα τμήμα. Πόσα προϊόντα κάθε πελάτη είναι «δικά του» (τα ξαναγοράζει σε πάνω από 50% των παραγγελιών του); Μια πρόταση για το «Buy it again» της εφαρμογής.</p>
       </details>
 
       <details class="topic" data-id="t4"><summary><span class="tn">Θέμα 4</span> Τμήματα και διάδρομοι: ανατομία ενός τμήματος</summary>
@@ -368,7 +368,7 @@ print(orders.shape, prior.shape)"></div>
           <li>Διαλέξτε <b>ένα τμήμα</b> (π.χ. produce, snacks, beverages) και κατεβείτε στους <b>διαδρόμους</b> του: ποιοι πουλάνε, ποιοι ξαναγοράζονται, ποιοι έχουν πολλά προϊόντα αλλά λίγες πωλήσεις;</li>
           <li>Το τμήμα σας στον χρόνο: ανά ημέρα και ώρα, διαφέρει από το σύνολο;</li>
         </ol>
-        <p class="more"><b>Παραπέρα:</b> ποια τμήματα αγοράζονται μαζί συχνά (ποσοστό καλαθιών που περιέχουν και Α και Β); · Ο «κανόνας 80/20»: τι ποσοστό προϊόντων κάνει το 80% των πωλήσεων σε κάθε τμήμα (<code>cumsum</code>); · Πρόταση για τον κατάλογο: ποιοι διάδρομοι θέλουν περισσότερα ή λιγότερα προϊόντα;</p>
+        <p class="more"><b>Παραπέρα:</b> ποια τμήματα αγοράζονται μαζί συχνά (ποσοστό καλαθιών που περιέχουν και Α και Β); Ο «κανόνας 80/20»: τι ποσοστό προϊόντων κάνει το 80% των πωλήσεων σε κάθε τμήμα (<code>cumsum</code>); Πρόταση για τον κατάλογο: ποιοι διάδρομοι θέλουν περισσότερα ή λιγότερα προϊόντα;</p>
       </details>
 
       <details class="topic" data-id="t5"><summary><span class="tn">Θέμα 5</span> Πελάτες: συχνότητα, πιστότητα, τμηματοποίηση</summary>
@@ -378,7 +378,7 @@ print(orders.shape, prior.shape)"></div>
           <li><b>Τμήματα πελατών</b> με <code>pd.cut</code> πάνω στο πλήθος παραγγελιών (π.χ. 4–9 νέοι, 10–29 τακτικοί, 30+ πιστοί). Πόσοι σε κάθε τμήμα, και τι ποσοστό των παραγγελιών φέρνει το καθένα;</li>
           <li>Διαφέρει το <b>καλάθι</b> ανάμεσα στα τμήματα πελατών (μέγεθος, ποσοστό επαναγοράς, κορυφαία τμήματα προϊόντων); Χρειάζεται merge items → orders.</li>
         </ol>
-        <p class="more"><b>Παραπέρα:</b> ο ρυθμός ψωνίσματος (μέσες μέρες) αλλάζει καθώς ο πελάτης «ωριμάζει»; · Πελάτες «Σαββατοκύριακου» vs «καθημερινής» · Μια πρόταση για πρόγραμμα επιβράβευσης με βάση τα τμήματα.</p>
+        <p class="more"><b>Παραπέρα:</b> ο ρυθμός ψωνίσματος (μέσες μέρες) αλλάζει καθώς ο πελάτης «ωριμάζει»; Πελάτες «Σαββατοκύριακου» vs «καθημερινής». Μια πρόταση για πρόγραμμα επιβράβευσης με βάση τα τμήματα.</p>
       </details>
 
       <details class="topic" data-id="t6"><summary><span class="tn">Θέμα 6</span> Organic ή όχι: ένα ερώτημα κατηγορίας</summary>
@@ -386,9 +386,9 @@ print(orders.shape, prior.shape)"></div>
         <ol>
           <li>Ορίστε στήλη <code>is_organic</code> από το όνομα προϊόντος (<code>products["product_name"].str.contains("Organic")</code>). Τι ποσοστό των προϊόντων του καταλόγου και τι ποσοστό των <b>πωλήσεων</b> είναι organic; Γιατί διαφέρουν τα δύο ποσοστά;</li>
           <li>Ποσοστό organic <b>ανά τμήμα</b> (mean της is_organic ανά department, στο items). Πού είναι ισχυρά τα βιολογικά και πού απουσιάζουν;</li>
-          <li>Ξαναγοράζονται τα organic περισσότερο ή λιγότερο από τα συμβατικά; (groupby is_organic, mean reordered· μετά το ίδιο μέσα σε κάθε τμήμα)</li>
+          <li>Ξαναγοράζονται τα organic περισσότερο ή λιγότερο από τα συμβατικά; (groupby is_organic, mean reordered, μετά το ίδιο μέσα σε κάθε τμήμα)</li>
         </ol>
-        <p class="more"><b>Παραπέρα:</b> «organic πελάτες»: ποσοστό organic ανά πελάτη, κατανομή, και πώς ψωνίζουν διαφορετικά · Ζεύγη προϊόντων organic / συμβατικού (π.χ. Banana vs Bag of Organic Bananas): ποιο προτιμάται πότε; · Άλλες λέξεις-κλειδιά: "Gluten Free", "Low Fat".</p>
+        <p class="more"><b>Παραπέρα:</b> «organic πελάτες»: ποσοστό organic ανά πελάτη, κατανομή, και πώς ψωνίζουν διαφορετικά. Ζεύγη προϊόντων organic / συμβατικού (π.χ. Banana vs Bag of Organic Bananas): ποιο προτιμάται πότε; Άλλες λέξεις-κλειδιά: "Gluten Free", "Low Fat".</p>
       </details>
     </div>
 
@@ -398,7 +398,7 @@ print(orders.shape, prior.shape)"></div>
       <div class="grid2">
         <label>Ομάδα (αριθμός ή όνομα)<input id="plTeam" placeholder="π.χ. Ομάδα 07"></label>
         <label>Μέλη (ονόματα, χωρισμένα με κόμμα)<input id="plMembers" placeholder="Μαρία Π., Γιώργος Κ., Ελένη Δ."></label>
-        <label>Θέμα εμβάθυνσης<select id="plTopic"><option value="">— διαλέξτε —</option><option>Θέμα 1 · Πότε ψωνίζουν οι πελάτες</option><option>Θέμα 2 · Το καλάθι</option><option>Θέμα 3 · Επαναγορές και προϊόντα μιας φοράς</option><option>Θέμα 4 · Τμήματα και διάδρομοι</option><option>Θέμα 5 · Πελάτες και τμηματοποίηση</option><option>Θέμα 6 · Organic ή όχι</option></select></label>
+        <label>Θέμα εμβάθυνσης<select id="plTopic"><option value="">— διαλέξτε —</option><option>Θέμα 1: Πότε ψωνίζουν οι πελάτες</option><option>Θέμα 2: Το καλάθι</option><option>Θέμα 3: Επαναγορές και προϊόντα μιας φοράς</option><option>Θέμα 4: Τμήματα και διάδρομοι</option><option>Θέμα 5: Πελάτες και τμηματοποίηση</option><option>Θέμα 6: Organic ή όχι</option></select></label>
         <label>Το δικό σας ερώτημα (μία πρόταση)<input id="plQ" placeholder="π.χ. Ξαναγοράζονται τα organic φρούτα περισσότερο από τα συμβατικά;"></label>
       </div>
       <label>Γιατί ενδιαφέρει τη διοίκηση; (1–2 προτάσεις)<textarea id="plWhy" rows="2" placeholder="Αν ναι, η Instacart μπορεί να προωθεί organic εναλλακτικές στο «Buy it again»…"></textarea></label>
@@ -417,7 +417,7 @@ print(orders.shape, prior.shape)"></div>
       <tr><td>0</td><td>Τίτλος, ομάδα, ερώτημα</td><td>Το κελί που φτιάξατε στο βήμα 5</td></tr>
       <tr><td>1</td><td>Φόρτωση δεδομένων</td><td>mount, read_csv, shape κάθε πίνακα, η «μονάδα» κάθε πίνακα σε μία πρόταση</td></tr>
       <tr><td>2</td><td>Μέρος Α: εκκίνηση</td><td>Τα έξι ερωτήματα, το καθένα με κώδικα, αποτέλεσμα, γράφημα όπου ζητείται, μία πρόταση συμπέρασμα</td></tr>
-      <tr><td>3</td><td>Μέρος Β: εμβάθυνση</td><td>Τα τρία καθοδηγούμενα ερωτήματα και το δικό σας· κάθε γράφημα με τίτλο, άξονες και μία πρόταση «τι βλέπουμε»</td></tr>
+      <tr><td>3</td><td>Μέρος Β: εμβάθυνση</td><td>Τα τρία καθοδηγούμενα ερωτήματα και το δικό σας. Κάθε γράφημα με τίτλο, άξονες και μία πρόταση «τι βλέπουμε»</td></tr>
       <tr><td>4</td><td>Ευρήματα και πρόταση</td><td>3–5 κουκκίδες με τα ευρήματα (με νούμερα) και μία πρόταση προς τη διοίκηση που προκύπτει από αυτά</td></tr>
       <tr><td>5</td><td>Περιορισμοί</td><td>Τι δεν ξέρουμε από αυτά τα δεδομένα (π.χ. τιμές, ποια μέρα είναι το 0, μόνο ΗΠΑ 2017) και τι θα θέλατε να είχατε</td></tr>
     </table>
@@ -435,9 +435,9 @@ print(orders.shape, prior.shape)"></div>
     <table class="t">
       <tr><th>Κριτήριο</th><th>Βάρος</th><th>Τι σημαίνει «άριστα»</th></tr>
       <tr><td>Ορθότητα Μέρους Α</td><td>30%</td><td>Και τα έξι ερωτήματα σωστά (τα σημεία ελέγχου βγαίνουν), merge ελεγμένα, κώδικας που τρέχει από την αρχή χωρίς σφάλμα</td></tr>
-      <tr><td>Εμβάθυνση Μέρους Β</td><td>30%</td><td>Τα τρία ερωτήματα απαντημένα σωστά και ερμηνευμένα· σωστή χρήση φίλτρων ελάχιστου πλήθους όπου χρειάζεται</td></tr>
-      <tr><td>Το δικό σας ερώτημα</td><td>15%</td><td>Καλά διατυπωμένο, αιτιολογημένο, απαντημένο με τα κατάλληλα εργαλεία· δείχνει σκέψη, όχι μόνο κώδικα</td></tr>
-      <tr><td>Γραφήματα και κείμενο στο notebook</td><td>15%</td><td>Κάθε γράφημα με τίτλο και άξονες, κάθε αποτέλεσμα με μία πρόταση· ο αναγνώστης καταλαβαίνει χωρίς να διαβάσει κώδικα</td></tr>
+      <tr><td>Εμβάθυνση Μέρους Β</td><td>30%</td><td>Τα τρία ερωτήματα απαντημένα σωστά και ερμηνευμένα. Σωστή χρήση φίλτρων ελάχιστου πλήθους όπου χρειάζεται</td></tr>
+      <tr><td>Το δικό σας ερώτημα</td><td>15%</td><td>Καλά διατυπωμένο, αιτιολογημένο, απαντημένο με τα κατάλληλα εργαλεία. Δείχνει σκέψη, όχι μόνο κώδικα</td></tr>
+      <tr><td>Γραφήματα και κείμενο στο notebook</td><td>15%</td><td>Κάθε γράφημα με τίτλο και άξονες, κάθε αποτέλεσμα με μία πρόταση. Ο αναγνώστης καταλαβαίνει χωρίς να διαβάσει κώδικα</td></tr>
       <tr><td>Παρουσίαση</td><td>10%</td><td>Στον χρόνο, ένα εύρημα ανά διαφάνεια, καθαρή πρόταση, όλοι μιλούν, απαντήσεις στις ερωτήσεις</td></tr>
     </table>
 
@@ -453,7 +453,7 @@ print(orders.shape, prior.shape)"></div>
       <label><input type="checkbox"> Το notebook έχει τα ονόματα όλων των μελών στο πρώτο κελί</label>
       <label><input type="checkbox"> Κατεβάσαμε το .ipynb (File → Download → .ipynb) και το ανεβάσαμε στο eClass</label>
     </div>
-    <div class="box tip"><b>ΣΥΧΝΑ ΛΑΘΗ ΠΟΥ ΚΟΣΤΙΖΟΥΝ</b>Ποσοστά επαναγοράς σε προϊόντα με 3 αγορές (100% από 3 δεν λέει τίποτα) · merge που διπλασιάζει γραμμές χωρίς να το προσέξει κανείς · γράφημα χωρίς τίτλο που «μιλάει μόνο του» · συμπεράσματα που δεν στηρίζονται σε νούμερο · notebook που τρέχει μόνο με τη σειρά που το έφτιαξε η ομάδα.</div>
+    <div class="box tip"><b>ΣΥΧΝΑ ΛΑΘΗ ΠΟΥ ΚΟΣΤΙΖΟΥΝ</b>Ποσοστά επαναγοράς σε προϊόντα με 3 αγορές (100% από 3 δεν λέει τίποτα). Merge που διπλασιάζει γραμμές χωρίς να το προσέξει κανείς. Γράφημα χωρίς τίτλο που «μιλάει μόνο του». Συμπεράσματα που δεν στηρίζονται σε νούμερο. Notebook που τρέχει μόνο με τη σειρά που το έφτιαξε η ομάδα.</div>
   </section>
 
   <!-- ============ 7 ============ -->
@@ -468,7 +468,7 @@ print(orders.shape, prior.shape)"></div>
     </ol>
     <h3>Βοήθεια</h3>
     <p>Στο εργαστήριο των εβδομάδων <span class="cfg" data-k="helpweeks"></span> οι ομάδες δουλεύουν στην εργασία με τον διδάσκοντα παρόντα: φέρτε το notebook σας και τις ερωτήσεις σας. Εκτός μαθήματος, ρωτήστε στο φόρουμ του eClass (ώστε να δουν την απάντηση όλοι) ή στις ώρες γραφείου. Για σφάλματα Python: πρώτα διαβάστε το μήνυμα (ξέρετε πια τα βασικά), μετά τη σελίδα της αντίστοιχης εβδομάδας, μετά ρωτήστε, μαζί με το μήνυμα και τον κώδικα που το προκάλεσε.</p>
-    <div class="box note"><b>ΑΚΑΔΗΜΑΪΚΗ ΑΚΕΡΑΙΟΤΗΤΑ</b>Μπορείτε να συμβουλευτείτε οποιαδήποτε πηγή, συμπεριλαμβανομένων εργαλείων AI, για να <i>μάθετε</i>· το notebook όμως πρέπει να είναι δικό σας και να μπορείτε να εξηγήσετε κάθε γραμμή του στην παρουσίαση. Κώδικας που δεν μπορείτε να εξηγήσετε δεν βαθμολογείται. Αναφέρετε στο τέλος τι πηγές ή εργαλεία χρησιμοποιήσατε και πώς.</div>
+    <div class="box note"><b>ΑΚΑΔΗΜΑΪΚΗ ΑΚΕΡΑΙΟΤΗΤΑ</b>Μπορείτε να συμβουλευτείτε οποιαδήποτε πηγή, συμπεριλαμβανομένων εργαλείων AI, για να <i>μάθετε</i>. Το notebook όμως πρέπει να είναι δικό σας και να μπορείτε να εξηγήσετε κάθε γραμμή του στην παρουσίαση. Κώδικας που δεν μπορείτε να εξηγήσετε δεν βαθμολογείται. Αναφέρετε στο τέλος τι πηγές ή εργαλεία χρησιμοποιήσατε και πώς.</div>
     <div class="box tip"><b>ΚΑΛΗ ΔΟΥΛΕΙΑ</b>Η πρώτη φορά που θα δείτε τα 32 εκατομμύρια γραμμές να απαντούν σε μία ερώτηση με μία γραμμή groupby είναι η στιγμή που καταλαβαίνετε γιατί μάθατε όλα αυτά. Απολαύστε την.</div>
   </section>
 
@@ -476,7 +476,7 @@ print(orders.shape, prior.shape)"></div>
     <button class="btn outline" id="prevBtn">← Προηγούμενο</button>
     <button class="btn navy" id="nextBtn">Επόμενο βήμα →</button>
   </div>
-  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Δεδομένα: <a href="https://www.instacart.com/datasets/grocery-shopping-2017" target="_blank" rel="noopener">The Instacart Online Grocery Shopping Dataset 2017</a>. Ο κώδικας του μίνι notebook εκτελείται στον browser με <a href="https://pyodide.org" target="_blank" rel="noopener">Pyodide</a>.</footer>
+  <footer>Ευάγγελος Καλαμπόκης | Information Systems Lab | Πανεπιστήμιο Μακεδονίας | Δεδομένα: <a href="https://www.instacart.com/datasets/grocery-shopping-2017" target="_blank" rel="noopener">The Instacart Online Grocery Shopping Dataset 2017</a>. Ο κώδικας του μίνι notebook εκτελείται στον browser με <a href="https://pyodide.org" target="_blank" rel="noopener">Pyodide</a>.</footer>
 </div>
 
 <script>
@@ -486,7 +486,7 @@ print(orders.shape, prior.shape)"></div>
   //  Ό,τι είναι εδώ εμφανίζεται αυτόματα σε όλη τη σελίδα.
   // ======================================================================
   const CONFIG = {
-    team: 'Ομάδες <b>2–3 ατόμων</b>. Δηλώνονται στο eClass μέχρι την ημερομηνία του χρονοδιαγράμματος· όποιος δεν βρει ομάδα, γράφει στον διδάσκοντα και τοποθετείται σε μία.',
+    team: 'Ομάδες <b>2–3 ατόμων</b>. Δηλώνονται στο eClass μέχρι την ημερομηνία του χρονοδιαγράμματος. Όποιος δεν βρει ομάδα, γράφει στον διδάσκοντα και τοποθετείται σε μία.',
     weight: 'Η εργασία είναι το <b>50%</b> του τελικού βαθμού. Το υπόλοιπο 50% είναι η γραπτή εξέταση. Όλα τα μέλη παίρνουν τον ίδιο βαθμό, εκτός αν η ομάδα ζητήσει διαφορετικά με αιτιολόγηση.',
     drive: '<a href="https://openeclass.uom.gr/courses/BA239/" target="_blank" rel="noopener">ο σύνδεσμος είναι αναρτημένος στο eClass</a>',
     register: 'ένα μέλος δηλώνει την ομάδα στο eClass (Ομάδες χρηστών → επιλογή ομάδας) και γράφει τα ονόματα των μελών.',
@@ -503,7 +503,7 @@ print(orders.shape, prior.shape)"></div>
   // ======================================================================
 
   document.querySelectorAll('.cfg').forEach(e=>{ e.innerHTML = CONFIG[e.dataset.k] || ''; });
-  document.getElementById('glance').innerHTML = 'Ομάδες 2–3 ατόμων · 50% του βαθμού · παραδοτέα: notebook + παρουσίαση 10′ · δεδομένα: Instacart 2017 (6 αρχεία CSV, Google Drive) · παράδοση: <b>' + CONFIG.timeline[3][0] + '</b> · παρουσιάσεις: ' + CONFIG.timeline[4][0] + ' και ' + CONFIG.timeline[5][0] + '.';
+  document.getElementById('glance').innerHTML = 'Ομάδες 2–3 ατόμων. 50% του βαθμού. Παραδοτέα: notebook + παρουσίαση 10′. Δεδομένα: Instacart 2017 (6 αρχεία CSV, Google Drive). Παράδοση: <b>' + CONFIG.timeline[3][0] + '</b>. Παρουσιάσεις: ' + CONFIG.timeline[4][0] + ' και ' + CONFIG.timeline[5][0] + '.';
   const tl = document.getElementById('timeline');
   tl.innerHTML = '<tr><th>Πότε</th><th>Τι</th></tr>' + CONFIG.timeline.map(r=>'<tr><td class="m" style="white-space:nowrap">'+r[0]+'</td><td>'+r[1]+'</td></tr>').join('');
 
@@ -595,7 +595,7 @@ print(orders.shape, prior.shape)"></div>
   // ---------- static code (Colab-only snippets: shown, not run) ----------
   document.querySelectorAll('.runner.static').forEach(r=>{
     const code=r.dataset.code;
-    r.innerHTML='<div class="bar"><span>notebook · κελί κώδικα (τρέχει στο Colab, όχι εδώ)</span><span class="spacer"></span><button class="btn secondary copy">Αντιγραφή</button></div><pre class="code"></pre>';
+    r.innerHTML='<div class="bar"><span>notebook: κελί κώδικα (τρέχει στο Colab, όχι εδώ)</span><span class="spacer"></span><button class="btn secondary copy">Αντιγραφή</button></div><pre class="code"></pre>';
     r.querySelector('pre').textContent=code;
     r.querySelector('.copy').onclick=async()=>{ try{ await navigator.clipboard.writeText(code); r.querySelector('.copy').textContent='Αντιγράφηκε ✓'; setTimeout(()=>r.querySelector('.copy').textContent='Αντιγραφή',1500);}catch(e){} };
   });
@@ -616,7 +616,7 @@ print(orders.shape, prior.shape)"></div>
   for(const k in pl){ const el=document.getElementById(pl[k]); if(state.plan[k]) el.value=state.plan[k]; el.oninput=()=>{state.plan[k]=el.value; save();}; }
   document.getElementById('plMake').onclick=()=>{
     const v=k=>document.getElementById(pl[k]).value.trim();
-    const md=['# Εργασία εξαμήνου · Instacart','','**Ομάδα:** '+(v('team')||'…'),'**Μέλη:** '+(v('members')||'…'),'**Θέμα εμβάθυνσης:** '+(v('topic')||'…'),'','## Το ερώτημά μας','',v('q')||'…','',v('why')||'…','','## Πλάνο','','1. Φόρτωση δεδομένων και έλεγχος (shape, head, info)','2. Μέρος Α: τα έξι ερωτήματα εκκίνησης, με σημεία ελέγχου','3. Μέρος Β: τα τρία καθοδηγούμενα ερωτήματα του θέματος','4. Το δικό μας ερώτημα','5. Ευρήματα, πρόταση προς τη διοίκηση, περιορισμοί'].join('\n');
+    const md=['# Εργασία εξαμήνου: Instacart','','**Ομάδα:** '+(v('team')||'…'),'**Μέλη:** '+(v('members')||'…'),'**Θέμα εμβάθυνσης:** '+(v('topic')||'…'),'','## Το ερώτημά μας','',v('q')||'…','',v('why')||'…','','## Πλάνο','','1. Φόρτωση δεδομένων και έλεγχος (shape, head, info)','2. Μέρος Α: τα έξι ερωτήματα εκκίνησης, με σημεία ελέγχου','3. Μέρος Β: τα τρία καθοδηγούμενα ερωτήματα του θέματος','4. Το δικό μας ερώτημα','5. Ευρήματα, πρόταση προς τη διοίκηση, περιορισμοί'].join('\n');
     const out=document.getElementById('plOut'); out.textContent=md; out.style.display='block';
     document.getElementById('plCopy').disabled=false;
     document.getElementById('plStatus').textContent='Αντιγράψτε το σε ένα κελί κειμένου (+ Text) στο Colab.';
