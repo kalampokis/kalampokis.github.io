@@ -141,29 +141,30 @@ function s1() {
       <div class="rv"><b>The picture:</b> the tool squeezes the 100 numbers into 2 or 3 with PCA, the method of slide 37, or with UMAP.</div>
       <div class="rv"><b>The neighbours:</b> when you click a word, the panel on the right lists its nearest words, measured in all 100 dimensions, not on the picture.</div></div>
     <div class="card"><div class="lab">Before you start</div>
-      <div class="rv">In the panel on the right, choose <b>COSINE</b> as the distance. The tool shows the <b>cosine distance</b>, which is 1 − cosine similarity: a distance of 0.14 means a cosine similarity of 0.86. Small distance means close in meaning.</div>
+      <div class="rv"><b>Select one word.</b> The <b>Search</b> box on the right finds every word that contains the letters you type: ${w('dies')} also finds ${w('goodies')}. Click the exact word in the list of matches. The neighbours appear only when a single word is selected.</div>
+      <div class="rv"><b>Use the cosine.</b> Above the list of neighbours, choose <b>COSINE</b>. The tool shows the <b>cosine distance</b>, which is 1 − cosine similarity: a distance of 0.14 means a cosine similarity of 0.86. Small distance means close in meaning.</div>
       <div class="small">The page needs a few seconds to load the words. It works best on a laptop, in Chrome or Firefox.</div></div>
   </div>
   ${linkBtn(PROJECTOR, 'Open our model in the Embedding Projector ↗')}
   <div class="small">If the link does not load the model: download <a href="projector/vectors.tsv" download>vectors.tsv</a> and <a href="projector/metadata.tsv" download>metadata.tsv</a>, open <a href="https://projector.tensorflow.org/" target="_blank" rel="noopener">projector.tensorflow.org</a>, click <b>Load</b> on the left and choose the two files.</div>`;
   const c = chain([
-    { id: 'p1', pre: `<div class="rv">Type ${w('dies')} in the <b>Search</b> box on the right, click the word and read the list <i>Nearest points in the original space</i>.</div>`,
+    { id: 'p1', pre: `<div class="rv">Type ${w('dies')} in the <b>Search</b> box on the right. The tool finds two words, dies and goodies: click <b>dies</b> in the list of matches. On the right appears the list <i>Nearest points in the original space</i>; choose <b>COSINE</b> and read it.</div>`,
       q: 'Which three words are closest to dies?',
       opts: ['die, draining and drain', 'drains, drained and discharges', 'battery, phone and fast', 'died, death and survivor'], right: 0,
       why: 'Their distances are 0.14, 0.15 and 0.15, so their cosine similarities are 0.86, 0.85 and 0.85, as on slide 25. drains is ninth (0.19 → 0.81). The neighbours are the words of the same battery complaints, not only synonyms. died, death and survivor are the neighbours of dies in GloVe, trained on Wikipedia and news (notebook Step 2b).' },
-    { id: 'p2', pre: `<div class="rv">Write your prediction first: is ${w('good')}, the opposite of ${w('bad')}, among its five nearest words? Then search for ${w('bad')}.</div>`,
+    { id: 'p2', pre: `<div class="rv">Write your prediction first: is ${w('good')}, the opposite of ${w('bad')}, among its five nearest words? Then search for ${w('bad')} and click <b>bad</b> in the list of matches.</div>`,
       q: 'Where is good among the neighbours of bad?',
       opts: ['Among the five nearest, next to iffy, awful and terrible', 'Not among the first ten: opposites are far apart', 'First, far ahead of every other word', 'Last of all 5,667 words'], right: 0,
       why: 'good is fourth, at distance 0.33 (cosine 0.67), almost tied with terrible and dislike. good and bad fill the same places in a sentence (“The phone is ___.”), so they get similar vectors. Opposites share their contexts: close vectors mean that two words can replace each other, not that they agree.' },
-    { id: 'p3', pre: `<div class="rv">Search for ${w('excellent')} and look at its nearest word.</div>`,
+    { id: 'p3', pre: `<div class="rv">Search for ${w('excellent')}, click <b>excellent</b> in the list of matches and look at its nearest word.</div>`,
       q: 'Which word is the nearest to excellent, and why did the model put it there?',
       opts: ['excelent, a misspelling: it is used in the same sentences as excellent', 'excelent, a misspelling: word2vec compares the letters of the two words', 'outstanding, a synonym from a dictionary', 'good, because good is the most frequent positive word'], right: 0,
       why: 'Distance 0.16, cosine 0.84. word2vec never sees the letters of a word, only the words around it. The misspelling appears in the same contexts, so it gets almost the same vector. In Week 6, Naive Bayes had to learn each spelling on its own.' },
-    { id: 'p4', pre: `<div class="rv">Click <b>Clear selection</b> and choose <b>PCA</b> on the left. Look at the cloud of all 5,667 words and read the line <i>Total variance described</i> under the components.</div>`,
+    { id: 'p4', pre: `<div class="rv">Click <b>Clear selection</b> and choose <b>PCA</b> on the left. Look at the cloud of all 5,667 words and read the line <i>Total variance described</i> under the components. With the box of Component #3 ticked, the picture is in 3D.</div>`,
       q: 'How much of the spread of the 100 numbers do the components keep for all the words?',
       opts: ['Less than a third, so the groups of words are mixed in one cloud', 'About half, as on slide 37', 'Almost all of it, so the picture shows the true distances'], right: 0,
-      why: 'Two components keep about 22% of the spread and three about 29%. Slide 37 fitted PCA on 19 chosen words and kept 54%: the fewer and more related the words, the more of their differences fit in a few directions. The neighbours in the right panel do not change when the picture changes.' },
-    { id: 'p5', pre: `<div class="rv">Search for ${w('refund')}, click it, set the number of neighbours to about 50 and click <b>Isolate</b>. Then choose the <b>UMAP</b> tab, wait until the points stop moving, and run it a second time.</div>
+      why: 'Three components keep about 30% of the spread (the tool shows 29.7%), two about 22%. Slide 37 fitted PCA on 19 chosen words and kept 54%: the fewer and more related the words, the more of their differences fit in a few directions. The neighbours in the right panel do not change when the picture changes.' },
+    { id: 'p5', pre: `<div class="rv">Search for ${w('refund')}, click <b>refund</b> in the list of matches, set the number of neighbours to about 50 and click <b>Isolate</b>. Then choose the <b>UMAP</b> tab, wait until the points stop moving, and run it a second time.</div>
       <div class="small">UMAP is another method that draws many dimensions in two or three. Unlike PCA, it tries to keep each word next to its nearest neighbours and does not try to keep the large distances. It starts from random positions.</div>`,
       q: 'What can you read from a UMAP picture?',
       opts: ['Who is next to whom; the positions and the distances between groups change from run to run', 'The exact cosine between any two words', 'The same picture in every run, as with PCA', 'Which words are positive and which negative'], right: 0,
@@ -184,7 +185,11 @@ function s2() {
       <div><button class="btn primary" data-dl="1">Download amazon_short_reviews.csv</button></div>
       <div class="small">About 110 KB. The reviews are public Kaggle data.</div></div>
     <div class="card"><div class="lab">Load it into Embedding Atlas</div>
-      ${doList(['Open Embedding Atlas with the button below, in Chrome or Edge on a laptop.', 'Drag the CSV file into the page.', `Choose ${w('review')} as the text column and start. The first time, the model is downloaded; the computation takes one or two minutes.`])}
+      ${doList(['Open Embedding Atlas with the button below, in Chrome or Edge on a laptop.', 'Drag the CSV file into the page.',
+        `In <b>Search and Tooltip</b>, keep <b>Text</b> = ${w('review')}.`,
+        `In <b>Embedding View</b>, click the tab <b>From Text</b> (not <i>Pre-computed</i>) and choose the column ${w('review')}. Then click <b>Confirm</b>.`,
+        'Wait one or two minutes: the first time, the model is downloaded. At the top right you should read <b>1,925 points</b>, and a map of points appears next to the table.'])}
+      <div class="small">If it reads 413,840 points, you loaded the whole Kaggle file: open Embedding Atlas again and drag <span class="mono">amazon_short_reviews.csv</span>. If there is a table but no map, the tab <b>From Text</b> was not chosen.</div>
       <div class="small">The vectors and the map are computed in your browser: the file does not leave your computer.</div></div>
   </div>
   ${linkBtn(ATLAS, 'Open Embedding Atlas ↗')}`;
