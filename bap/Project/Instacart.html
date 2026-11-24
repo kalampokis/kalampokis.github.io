@@ -244,22 +244,21 @@ total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined",
   <!-- ============ 3 ============ -->
   <section class="step" data-title="Τα δεδομένα">
     <h2>3. Τα δεδομένα</h2>
-    <p>Έξι αρχεία CSV που συνδέονται μεταξύ τους με «κλειδιά» <span class="en">(ids)</span>, όπως σε μια βάση δεδομένων. Η κεντρική ιδέα: οι <b>παραγγελίες</b> είναι ένας πίνακας, τα <b>προϊόντα κάθε παραγγελίας</b> άλλος, και τα <b>προϊόντα</b> με τις κατηγορίες τους ένας τρίτος. Για να απαντήσετε «πόσες μπανάνες πουλήθηκαν την Κυριακή» χρειάζεστε και τους τρεις, ενωμένους με <code>merge</code>.</p>
+    <p>Πέντε αρχεία CSV που συνδέονται μεταξύ τους με «κλειδιά» <span class="en">(ids)</span>, όπως σε μια βάση δεδομένων. Η κεντρική ιδέα: οι <b>παραγγελίες</b> είναι ένας πίνακας, τα <b>προϊόντα κάθε παραγγελίας</b> άλλος, και τα <b>προϊόντα</b> με τις κατηγορίες τους ένας τρίτος. Για να απαντήσετε «πόσες μπανάνες πουλήθηκαν την Κυριακή» χρειάζεστε και τους τρεις, ενωμένους με <code>merge</code>.</p>
     <div class="schema"></div>
     <table class="t" style="margin-top:12px">
       <tr><th>Αρχείο</th><th>Γραμμές</th><th>Στήλες</th><th>Τι είναι</th></tr>
       <tr><td>orders.csv</td><td>3.421.083</td><td>order_id, user_id, eval_set, order_number, order_dow, order_hour_of_day, days_since_prior_order</td><td>Μία γραμμή ανά παραγγελία: ποιος, πότε (ημέρα 0–6, ώρα 0–23), πόσες μέρες από την προηγούμενη (NaN στην πρώτη παραγγελία κάθε πελάτη)</td></tr>
       <tr><td>order_products__prior.csv</td><td>32.434.489</td><td>order_id, product_id, add_to_cart_order, reordered</td><td>Μία γραμμή ανά προϊόν μέσα σε παραγγελία: η σειρά που μπήκε στο καλάθι και αν ήταν επαναγορά (1) ή πρώτη φορά (0)</td></tr>
-      <tr><td>order_products__train.csv</td><td>1.384.617</td><td>όπως το prior</td><td>Το ίδιο, για την τελευταία παραγγελία 131 χιλ. πελατών. <b>Χρήσιμο για δοκιμές: είναι 23 φορές μικρότερο</b></td></tr>
       <tr><td>products.csv</td><td>49.688</td><td>product_id, product_name, aisle_id, department_id</td><td>Ο κατάλογος προϊόντων</td></tr>
       <tr><td>aisles.csv</td><td>134</td><td>aisle_id, aisle</td><td>Ο «διάδρομος» (υποκατηγορία), π.χ. fresh fruits, yogurt</td></tr>
       <tr><td>departments.csv</td><td>21</td><td>department_id, department</td><td>Το τμήμα, π.χ. produce, dairy eggs, snacks</td></tr>
     </table>
-    <div class="box note" style="margin-top:10px"><b>ΤΟ eval_set</b>Στο <code>orders.csv</code> η στήλη <code>eval_set</code> λέει σε ποιο αρχείο βρίσκονται τα προϊόντα της παραγγελίας: <code>prior</code> (3,2 εκ. παραγγελίες), <code>train</code> (131 χιλ.) ή <code>test</code> (75 χιλ., <b>χωρίς</b> προϊόντα, αγνοήστε τες). Για την εργασία δουλεύετε με το <b>prior</b>: είναι το πλήρες ιστορικό.</div>
+    <div class="box note" style="margin-top:10px"><b>ΤΙ ΑΓΝΟΟΥΜΕ</b>Στο dataset υπάρχει και ένα αρχείο <code>order_products__train.csv</code>, και στο <code>orders.csv</code> μια στήλη <code>eval_set</code>. Αφορούν τον διαγωνισμό πρόβλεψης του 2017. <b>Δεν τα χρησιμοποιούμε.</b> Τα προϊόντα των παραγγελιών είναι στο <code>order_products__prior.csv</code>, και μόνο εκεί κοιτάμε.</div>
 
     <h3>Πού είναι τα αρχεία</h3>
-    <p>Σε ένα <b>Kaggle Dataset</b> (<span class="cfg" data-k="dataset"></span>), ήδη συνδεδεμένο με το <a data-href="starterUrl" target="_blank" rel="noopener">starter notebook</a>: το βλέπετε στο panel <b>Input</b> δεξιά. Δεν χρειάζεται upload, mount ή άδεια. Το πρώτο κελί κώδικα του starter notebook τυπώνει τις διαδρομές των αρχείων και το δεύτερο τα φορτώνει με το <code>read_csv</code> που ξέρετε, σε έξι DataFrames: <code>orders</code>, <code>prior</code>, <code>train</code>, <code>products</code>, <code>aisles</code>, <code>departments</code>. Τρέξτε τα δύο κελιά και ελέγξτε ότι το τελευταίο <code>print</code> δίνει <code>(3421083, 7) (32434489, 4) (1384617, 4) (49688, 4) (134, 2) (21, 2)</code>. Αν ναι, είστε έτοιμοι για το Μέρος Α.</p>
-    <div class="box tip"><b>ΣΥΜΒΟΥΛΕΣ ΓΙΑ ΤΑ ΜΕΓΑΛΑ ΑΡΧΕΙΑ</b>(1) Γράψε και δοκίμασε κάθε ανάλυση πρώτα στο <code>train</code> (1,4 εκ. γραμμές, τρέχει σε δευτερόλεπτα). Όταν δουλεύει, άλλαξε τη μεταβλητή σε <code>prior</code>. (2) Κάνε merge <b>μόνο τις στήλες που χρειάζεσαι</b>: <code>products[["product_id", "product_name", "department_id"]]</code>. (3) Το Kaggle δίνει 30 GB μνήμης, που φτάνουν για όλα τα αρχεία μαζί. Αν παρ’ όλα αυτά η συνεδρία «πέσει» (ο δείκτης RAM δεξιά γεμίσει), ξεκίνα πάλι (Run → Restart &amp; clear cell outputs) και φόρτωσε λιγότερες στήλες. (4) Μη φορτώνεις το prior δύο φορές. (5) Αν αφήσεις το notebook ανοιχτό χωρίς να το ακουμπάς για αρκετή ώρα, η συνεδρία κλείνει: ο κώδικας και οι εκδόσεις μένουν, οι μεταβλητές χάνονται. Ξανατρέχεις τα κελιά από την αρχή.</div>
+    <p>Σε ένα <b>Kaggle Dataset</b> (<span class="cfg" data-k="dataset"></span>), ήδη συνδεδεμένο με το <a data-href="starterUrl" target="_blank" rel="noopener">starter notebook</a>: το βλέπετε στο panel <b>Input</b> δεξιά. Δεν χρειάζεται upload, mount ή άδεια. Το πρώτο κελί κώδικα του starter notebook τυπώνει τις διαδρομές των αρχείων και το δεύτερο τα φορτώνει με το <code>read_csv</code> που ξέρετε, σε πέντε DataFrames: <code>orders</code>, <code>prior</code>, <code>products</code>, <code>aisles</code>, <code>departments</code>. Τρέξτε τα δύο κελιά και ελέγξτε ότι το τελευταίο <code>print</code> δίνει <code>(3421083, 7) (32434489, 4) (49688, 4) (134, 2) (21, 2)</code>. Αν ναι, είστε έτοιμοι για το Μέρος Α.</p>
+    <div class="box tip"><b>ΣΥΜΒΟΥΛΕΣ ΓΙΑ ΤΑ ΜΕΓΑΛΑ ΑΡΧΕΙΑ</b>(1) Γράψε και δοκίμασε κάθε ανάλυση πρώτα σε ένα δείγμα, π.χ. <code>mini = prior.head(1_000_000)</code> (τρέχει σε δευτερόλεπτα). Όταν δουλεύει, άλλαξε τη μεταβλητή σε <code>prior</code>. (2) Κάνε merge <b>μόνο τις στήλες που χρειάζεσαι</b>: <code>products[["product_id", "product_name", "department_id"]]</code>. (3) Το Kaggle δίνει 30 GB μνήμης, που φτάνουν για όλα τα αρχεία μαζί. Αν παρ’ όλα αυτά η συνεδρία «πέσει» (ο δείκτης RAM δεξιά γεμίσει), ξεκίνα πάλι (Run → Restart &amp; clear cell outputs) και φόρτωσε λιγότερες στήλες. (4) Μη φορτώνεις το prior δύο φορές. (5) Αν αφήσεις το notebook ανοιχτό χωρίς να το ακουμπάς για αρκετή ώρα, η συνεδρία κλείνει: ο κώδικας και οι εκδόσεις μένουν, οι μεταβλητές χάνονται. Ξανατρέχεις τα κελιά από την αρχή.</div>
   </section>
 
   <!-- ============ 4 ============ -->
@@ -268,7 +267,7 @@ total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined",
     <p>Έξι ερωτήματα, κοινά για όλες τις ομάδες. Για το καθένα δίνουμε τι να κάνετε, ποια εργαλεία του μαθήματος χρειάζονται, και ένα <b>σημείο ελέγχου</b> <span class="en">(checkpoint)</span>: ένα νούμερο που πρέπει να βγάλετε κι εσείς. Αν βγάλετε άλλο, κάτι πήγε στραβά (συνήθως λάθος αρχείο, λάθος merge ή ξεχασμένο φίλτρο) και το βρίσκετε πριν χτίσετε πάνω του. Τσεκάρετε κάθε βήμα όταν το ολοκληρώσετε. Η λίστα θυμάται την πρόοδό σας σε αυτόν τον browser.</p>
 
     <div class="task" data-id="a1">
-      <div class="task-h"><label><input type="checkbox"> <b>Α1. Φόρτωσε και επιθεώρησε τα έξι αρχεία</b></label><span class="tools">read_csv, shape, head, info</span></div>
+      <div class="task-h"><label><input type="checkbox"> <b>Α1. Φόρτωσε και επιθεώρησε τα πέντε αρχεία</b></label><span class="tools">read_csv, shape, head, info</span></div>
       <p>Για κάθε πίνακα: <code>shape</code>, <code>head()</code>, <code>info()</code>. Σε ένα κελί κειμένου γράψτε με δικά σας λόγια τι είναι μία γραμμή κάθε πίνακα (η «μονάδα»). Αυτή η πρόταση θα σας σώσει από τα μισά λάθη αργότερα.</p>
       <details><summary>Σημείο ελέγχου</summary><code>orders.shape → (3421083, 7)</code>, <code>prior.shape → (32434489, 4)</code>, <code>products.shape → (49688, 4)</code>, aisles 134 γραμμές, departments 21. Πόσοι πελάτες; <code>orders["user_id"].nunique() → 206209</code>.</details>
     </div>
@@ -491,7 +490,7 @@ total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined",
 
   document.querySelectorAll('.cfg').forEach(e=>{ e.innerHTML = CONFIG[e.dataset.k] || ''; });
   document.querySelectorAll('[data-href]').forEach(e=>{ e.href = CONFIG[e.dataset.href] || '#'; });
-  document.getElementById('glance').innerHTML = 'Ατομικά ή σε ομάδες 2 ατόμων. 50% του βαθμού. Παραδοτέα: notebook + παρουσίαση 10′. Πλατφόρμα: Kaggle Notebooks, ξεκινάτε με Copy &amp; Edit από το starter notebook: <b>' + CONFIG.starter + '</b>. Δεδομένα: Instacart 2017 (6 αρχεία CSV, ήδη συνδεδεμένα στο notebook). Εργαστήρια βοήθειας: ' + CONFIG.timeline[2][0] + ' (Μέρος Α) και ' + CONFIG.timeline[3][0] + ' (Μέρος Β). Παρουσιάσεις και παράδοση: <b>' + CONFIG.timeline[4][0] + ' και ' + CONFIG.timeline[5][0] + '</b>.';
+  document.getElementById('glance').innerHTML = 'Ατομικά ή σε ομάδες 2 ατόμων. 50% του βαθμού. Παραδοτέα: notebook + παρουσίαση 10′. Πλατφόρμα: Kaggle Notebooks, ξεκινάτε με Copy &amp; Edit από το starter notebook: <b>' + CONFIG.starter + '</b>. Δεδομένα: Instacart 2017 (5 αρχεία CSV, ήδη συνδεδεμένα στο notebook). Εργαστήρια βοήθειας: ' + CONFIG.timeline[2][0] + ' (Μέρος Α) και ' + CONFIG.timeline[3][0] + ' (Μέρος Β). Παρουσιάσεις και παράδοση: <b>' + CONFIG.timeline[4][0] + ' και ' + CONFIG.timeline[5][0] + '</b>.';
   const tl = document.getElementById('timeline');
   tl.innerHTML = '<tr><th>Πότε</th><th>Τι</th></tr>' + CONFIG.timeline.map(r=>'<tr><td class="m" style="white-space:nowrap">'+r[0]+'</td><td>'+r[1]+'</td></tr>').join('');
 
@@ -620,9 +619,9 @@ total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined",
       return s;
     };
     const link=(x1,y1,x2,y2,label)=>'<path d="M'+x1+' '+y1+' C '+(x1+40)+' '+y1+', '+(x2-40)+' '+y2+', '+x2+' '+y2+'" class="ln"/><text x="'+((x1+x2)/2)+'" y="'+((y1+y2)/2-6)+'" class="ll" text-anchor="middle">'+label+'</text>';
-    el.innerHTML='<svg viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Σχήμα των έξι πινάκων του Instacart">'
+    el.innerHTML='<svg viewBox="0 0 1000 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Σχήμα των πέντε πινάκων του Instacart">'
       + box(20,40,230,'orders',['*order_id','user_id','eval_set','order_number','order_dow','order_hour_of_day','days_since_prior_order'])
-      + box(330,110,300,'order_products__prior / train',['*order_id','*product_id','add_to_cart_order','reordered'],true)
+      + box(330,110,300,'order_products__prior',['*order_id','*product_id','add_to_cart_order','reordered'],true)
       + box(680,60,220,'products',['*product_id','product_name','*aisle_id','*department_id'])
       + box(680,250,130,'aisles',['*aisle_id','aisle'])
       + box(840,250,150,'departments',['*department_id','department'])
