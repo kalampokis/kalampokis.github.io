@@ -1,0 +1,13 @@
+{
+  "embeddings": [
+    {
+      "tensorName": "word2vec · the 23,052 training reviews of the Amazon Unlocked Mobile dataset (5,667 words)",
+      "tensorShape": [
+        5667,
+        100
+      ],
+      "tensorPath": "https://kalampokis.github.io/Week7/projector/vectors.tsv",
+      "metadataPath": "https://kalampokis.github.io/Week7/projector/metadata.tsv"
+    }
+  ]
+}
