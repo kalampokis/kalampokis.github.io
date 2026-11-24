@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7KW3PRQVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-R7KW3PRQVZ');
+</script>
+<title>Google Analytics 4: διαδραστικός οδηγός, Μέρος 1ο | Ηλεκτρονικό Επιχειρείν</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Διαδραστικός οδηγός για το Google Analytics 4: πού βρίσκεται κάθε αναφορά, είδη events, χρήστες και sessions, παράμετροι UTM και ασκήσεις στο demo account. Ηλεκτρονικό Επιχειρείν, Πανεπιστήμιο Μακεδονίας.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1B2F6B;--navy2:#26314F;--muted:#5A6385;--tint:#EEF1FE;--ice:#B9C8FC;--green:#1e7a4c;--greenbg:#E6F4EC;--red:#b3261e;--redbg:#FBEAEA;--hl:#ffe27a;--line:#C9D0EE;--bg:#ffffff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--navy);font-family:Arial,Helvetica,sans-serif}
+a{color:var(--green)}a:hover{color:#15513d}
+.wrap{min-height:100vh;padding:40px 32px 64px}
+.col{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+.kicker{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+h1{margin:8px 0 0;font-family:Georgia,serif;font-weight:700;font-size:40px;line-height:1.1}
+.stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:8px}
+.stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:9px 12px;color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px}
+.stepper .n{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px}
+.stepper .l{font-size:13px;line-height:1.25}
+.task{margin:0;font-size:20px;line-height:1.4;max-width:800px}
+.sub{font-size:16px;line-height:1.5;max-width:800px;margin:0}
+.lab{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.12em;color:var(--green);text-transform:uppercase}
+.box{display:flex;flex-direction:column;gap:14px}
+.sep{border-top:2px solid var(--navy);padding-top:20px}
+input.num{font-family:'JetBrains Mono',monospace;font-size:18px;width:96px;padding:8px 10px;border:2px solid var(--navy);border-radius:8px;background:var(--tint);color:var(--navy)}
+select{font:inherit;font-size:15px;padding:8px 10px;border:2px solid var(--navy);border-radius:8px;background:var(--tint);color:var(--navy);max-width:100%}
+input[type=range]{width:100%;accent-color:var(--navy)}
+.status{min-height:22px;font-size:15px;font-weight:500;line-height:1.45}
+.ok{color:var(--green)}.bad{color:var(--red)}
+.row{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:10px 14px;background:#fff;flex-wrap:wrap}
+.mono{font-family:'JetBrains Mono',monospace}
+.small{font-size:13px;color:var(--muted);line-height:1.45}
+.btn{font:inherit;font-size:15px;padding:10px 18px;border:2px solid var(--navy);border-radius:8px;background:transparent;cursor:pointer;color:var(--navy)}
+.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy);font-size:16px;padding:12px 22px}
+.btn.sm{padding:6px 12px;font-size:14px}
+.btn:disabled{opacity:.4;cursor:default}
+.hint{font-size:16px;background:var(--tint);border:1px dashed var(--navy);border-radius:8px;padding:9px 14px;line-height:1.45}
+.opt{text-align:left;font:inherit;font-size:17px;line-height:1.4;padding:13px 16px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--navy);cursor:pointer;width:100%}
+.opt.right{background:var(--greenbg);border-color:var(--green)}.opt.wrong{background:var(--redbg);border-color:var(--red)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#fff;min-width:0}
+.card.pass{background:var(--greenbg);border-color:var(--green)}.card.fail{background:var(--redbg);border-color:var(--red)}
+.card.case{background:var(--tint);border-color:var(--tint)}
+table{border-collapse:collapse;font-size:15px;width:100%}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:middle}
+th{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;font-weight:500}
+td.r,th.r{text-align:right}
+table.kv td{padding:4px 6px;border-bottom:0;font-size:14px;vertical-align:top}
+.stat{display:flex;gap:28px;flex-wrap:wrap}
+.stat div{font-size:13px;color:var(--muted)}
+.stat div b{display:block;font-family:Georgia,serif;font-size:32px;color:var(--navy)}
+.seg{font:inherit;font-size:14px;padding:7px 12px;border:2px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy);cursor:pointer}
+.seg.on{background:var(--navy);color:#fff}
+.bar{display:inline-block;height:12px;border-radius:3px;background:var(--navy);vertical-align:middle}
+.bar.neg{background:var(--red)}.bar.pos{background:var(--green)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+.pill{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;padding:4px 10px;border-radius:999px}
+.pill.yes{background:var(--greenbg);color:var(--green)}.pill.no{background:var(--redbg);color:var(--red)}
+.q{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:16px;line-height:1.5}
+.done{font-size:18px;font-weight:700;color:var(--green)}
+svg text{font-family:Arial,Helvetica,sans-serif;fill:#1B2F6B}
+svg .mn{font-family:'JetBrains Mono',monospace}
+.pager{display:flex;align-items:center;justify-content:center;gap:6px;align-self:center;background:var(--navy);color:#fff;border-radius:999px;padding:6px 10px;margin-top:8px}
+.pager button{font:inherit;font-size:22px;line-height:1;width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:#fff;cursor:pointer}
+.pager span{font-family:'JetBrains Mono',monospace;font-size:15px;min-width:64px;text-align:center}
+.narrow{display:none}
+@media (max-width:600px){.wrap{padding:24px 16px 48px}h1{font-size:30px}.task{font-size:18px}}
+@media (max-width:860px){.narrow{display:block}}
+</style>
+<style id="site-nav-style">
+  #site-nav{font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#1B2F6B;color:#fff;padding:8px 16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  #site-nav a{color:#fff;text-decoration:none}
+  #site-nav .sn-home{font-weight:bold} #site-nav .sn-sep{opacity:.5} #site-nav .sn-teach{color:#B9C8FC;margin-left:auto}
+  @media (max-width:700px){
+    #site-nav{font-size:13px;gap:6px 12px;padding:8px 12px}
+    #site-nav .sn-sep{display:none}
+    #site-nav .sn-back{flex-basis:100%;order:3;padding-top:2px}
+    #site-nav .sn-teach{order:2}
+    .wrap{overflow-x:hidden}
+  }
+</style>
+</head>
+<body>
+<nav id="site-nav"><a class="sn-home" href="../../index.html">Dr. Evangelos Kalampokis</a><span class="sn-sep">|</span><a class="sn-back" href="../../courses/ebusiness.html">&larr; Σελίδα μαθήματος: Ηλεκτρονικό Επιχειρείν</a><a class="sn-teach" href="../../index.html#teaching">Αρχική</a></nav>
+<div class="wrap"><div class="col">
+  <div>
+    <div class="kicker">Ηλεκτρονικό Επιχειρείν | Google Analytics 4 | Μέρος 1ο</div>
+    <h1 id="title"></h1>
+  </div>
+  <div class="stepper" id="stepper"></div>
+  <div id="stage"></div>
+  <div class="pager">
+    <button id="prev" aria-label="Προηγούμενο βήμα">‹</button>
+    <span id="pos"></span>
+    <button id="next" aria-label="Επόμενο βήμα">›</button>
+  </div>
+</div></div>
+
+<script>
+const DATA = {"meta":{"features":[]}};
+
+/* ---------- helpers ---------- */
+const D = DATA;
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const N = n => Number(n).toLocaleString('en-US');
+const F1 = x => (+x).toFixed(1), F3 = x => (+x).toFixed(3), F4 = x => (+x).toFixed(4);
+const P1 = x => (100 * x).toFixed(1) + '%';
+const sgn = x => (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1);
+const num = v => { const x = parseFloat(String(v === undefined ? '' : v).replace(',', '.').replace('%', '')); return isNaN(x) ? null : x; };
+const near = (v, t, tol) => num(v) !== null && Math.abs(num(v) - t) <= tol + 1e-9;
+const S = { step: 0, max: 0, done: {} };
+const mark = (shown, ok) => shown ? `<span class="${ok ? 'ok' : 'bad'}">${ok ? '✓' : '✗'}</span>` : '';
+
+/* multiple-choice block */
+function mcq(id, q, opts, right, why) {
+  const st = S[id] || {};
+  let h = `<div class="box"><div style="font-size:16px;line-height:1.5">${q}</div>`;
+  opts.forEach((o, i) => {
+    let cls = '';
+    if (st.pick === i) cls = i === right ? 'right' : 'wrong';
+    h += `<button class="opt ${cls}" data-mcq="${id}" data-i="${i}">${o}</button>`;
+  });
+  if (st.pick !== undefined) h += `<div class="status ${st.pick === right ? 'ok' : 'bad'}">${st.pick === right ? 'Σωστά. ' + why : 'Όχι ακριβώς. Διάβασε ξανά τις άλλες επιλογές.'}</div>`;
+  return h + '</div>';
+}
+const mcqOk = (id, right) => !!(S[id] && S[id].pick === right);
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-mcq]');
+  if (b) { S[b.dataset.mcq] = { pick: +b.dataset.i }; render(); return; }
+  const h = e.target.closest('[data-hint]');
+  if (h) { S[h.dataset.hint] = !S[h.dataset.hint]; render(); }
+});
+const hint = (id, text) => `<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" data-hint="${id}">${S[id] ? 'Απόκρυψη υπόδειξης' : 'Υπόδειξη'}</button>${S[id] ? `<span class="hint">${text}</span>` : ''}</div>`;
+const nextBtn = () => S.step + 1 < STEPS.length ? `<div><button class="btn primary" onclick="go(S.step + 1)">Επόμενο βήμα →</button></div>` : '';
+const sel = (key, options, ph = 'επίλεξε…') => `<select data-sel="${key}"><option value="">${ph}</option>${options.map(o => `<option ${S[key] === String(o) ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
+const inp = (key, ph = '') => `<input class="num" data-in="${key}" inputmode="decimal" autocomplete="off" placeholder="${ph}" value="${esc(S[key] === undefined ? '' : S[key])}">`;
+function wireInputs() {
+  $$('[data-in]').forEach(el => el.addEventListener('input', () => { S[el.dataset.in] = el.value; }));
+  $$('[data-sel]').forEach(el => el.addEventListener('change', () => { S[el.dataset.sel] = el.value; if (el.dataset.rerender !== undefined) render(); }));
+}
+const FEATS = D.meta.features;
+const val = (p, k) => k.startsWith('Capital') ? '$' + N(p[k]) : p[k];
+const kv = (p, keys = FEATS) => `<table class="kv">${keys.map(k => `<tr><td class="small" style="white-space:nowrap">${k}</td><td>${esc(val(p, k))}</td></tr>`).join('')}</table>`;
+
+/* ---------- βήμα 1: πού θα το βρω ---------- */
+const MENU = [
+  { group: 'Reports', items: ['Reports snapshot', 'Realtime overview'] },
+  { group: 'Life cycle: Acquisition', items: ['Acquisition overview', 'User acquisition', 'Traffic acquisition'] },
+  { group: 'Life cycle: Engagement', items: ['Engagement overview', 'Events', 'Pages and screens', 'Landing page'] },
+  { group: 'Life cycle: Monetization', items: ['Monetization overview', 'Ecommerce purchases', 'Purchase journey', 'Checkout journey'] },
+  { group: 'Life cycle: Retention', items: ['Retention'] },
+  { group: 'User', items: ['Demographics', 'Tech'] },
+];
+const RAIL = ['Home', 'Explore', 'Advertising', 'Admin'];
+const QUEST = [
+  ['Πόσοι χρήστες βρίσκονται στο site αυτή τη στιγμή;', 'Realtime overview', 'Ψάξε την αναφορά που δείχνει τα τελευταία 30 λεπτά.'],
+  ['Από ποιο κανάλι μας ανακάλυψαν για πρώτη φορά οι νέοι χρήστες;', 'User acquisition', 'Η ερώτηση αφορά τον χρήστη και την πρώτη του επίσκεψη, όχι κάθε session.'],
+  ['Από ποια πηγή ήρθαν τα sessions της τελευταίας εβδομάδας;', 'Traffic acquisition', 'Εδώ μετράμε sessions, όχι ανθρώπους.'],
+  ['Ποιες σελίδες έχουν τις περισσότερες προβολές;', 'Pages and screens', 'Το τι κάνουν οι χρήστες μέσα στο site ανήκει στο Engagement.'],
+  ['Πόσες φορές έγινε το event add_to_cart;', 'Events', 'Υπάρχει αναφορά με μία γραμμή για κάθε event.'],
+  ['Ποιο προϊόν έφερε τα περισσότερα έσοδα;', 'Ecommerce purchases', 'Τα έσοδα ανήκουν στο Monetization, και η ερώτηση είναι ανά προϊόν.'],
+  ['Θέλω μια δική μου χοάνη, με βήματα που ορίζω εγώ.', 'Explore', 'Οι έτοιμες αναφορές δεν αρκούν. Χρειάζεσαι το εργαλείο για δικές σου αναλύσεις.'],
+  ['Πού δηλώνω ότι το event sign_up είναι key event;', 'Admin', 'Δεν είναι αναφορά. Είναι ρύθμιση της property.'],
+];
+function s1() {
+  S.i1 = S.i1 || 0;
+  const done = S.i1 >= QUEST.length;
+  const node = n => `<button class="seg ${S.last1 === n ? 'on' : ''}" data-node="${n}" ${done ? 'disabled' : ''}>${n}</button>`;
+  let h = `<div class="box"><p class="task">Το μενού του GA4 οργανώνει τις αναφορές όπως η χοάνη του μάρκετινγκ. Για κάθε ερώτηση της επιχείρησης, πάτησε στον χάρτη το σημείο όπου θα βρεις την απάντηση.</p>`;
+  if (!done) h += `<div class="card case"><div class="lab">Ερώτηση ${S.i1 + 1} από ${QUEST.length}</div><div style="font-size:20px;line-height:1.4">${QUEST[S.i1][0]}</div></div>`;
+  if (S.msg1) h += `<div class="status ${S.msg1.ok ? 'ok' : 'bad'}">${S.msg1.text}</div>`;
+  h += `<div class="card"><div class="lab">Κύριο μενού</div><div class="q">${RAIL.map(node).join('')}</div>
+    ${MENU.map(g => `<div class="lab" style="color:var(--muted);margin-top:6px">${g.group}</div><div class="q">${g.items.map(node).join('')}</div>`).join('')}
+    <div class="small">Σχηματικός χάρτης, όχι η οθόνη του GA4. Τα ονόματα είναι όπως στο demo account. Στο δικό σου μπορεί να γράφει Monetisation, με βρετανική ορθογραφία.</div></div>`;
+  if (done) h += `<div class="box sep">${mcq('q1', 'Εξήγησέ το: γιατί η ενότητα Life cycle έχει τη σειρά Acquisition, Engagement, Monetization, Retention;', [
+    'Ακολουθεί τη χοάνη του μάρκετινγκ: ο χρήστης έρχεται, ασχολείται, αγοράζει, επιστρέφει.',
+    'Είναι αλφαβητική σειρά.',
+    'Μπαίνουν πρώτες οι αναφορές που έχουν τα περισσότερα δεδομένα.'], 0,
+    'Αν ξέρεις σε ποιο στάδιο της χοάνης ανήκει μια ερώτηση, ξέρεις και σε ποια ομάδα αναφορών να ψάξεις.')}
+    ${mcqOk('q1', 0) ? nextBtn() : ''}</div>`;
+  return h + '</div>';
+}
+function s1wire() {
+  $$('[data-node]').forEach(b => b.onclick = () => {
+    const n = b.dataset.node, q = QUEST[S.i1];
+    S.last1 = n;
+    if (n === q[1]) { S.i1++; S.msg1 = { ok: true, text: `Σωστά: ${n}.` + (S.i1 < QUEST.length ? ' Επόμενη ερώτηση.' : ' Βρήκες και τις οκτώ.') }; S.last1 = null; }
+    else S.msg1 = { ok: false, text: 'Όχι εκεί. ' + q[2] };
+    render();
+  });
+}
+
+/* ---------- βήμα 2: τι είδους event είναι ---------- */
+const KINDS = ['Automatically collected', 'Enhanced measurement', 'Recommended', 'Custom'];
+const EVS = [
+  ['scroll', 'ο χρήστης φτάνει στο 90% της σελίδας', 1],
+  ['add_to_cart', 'προσθήκη προϊόντος στο καλάθι', 2],
+  ['first_visit', 'η πρώτη φορά που ένας browser ανοίγει το site', 0],
+  ['newsletter_signup', 'εγγραφή στο newsletter του καταστήματος', 3],
+  ['file_download', 'κλικ σε link που κατεβάζει ένα PDF', 1],
+  ['session_start', 'ξεκινά ένα νέο session', 0],
+  ['sign_up', 'δημιουργία λογαριασμού πελάτη', 2],
+  ['room_availability_search', 'αναζήτηση διαθέσιμου δωματίου σε site ξενοδοχείου', 3],
+];
+function s2() {
+  let h = `<div class="box"><p class="task">Οκτώ events από πραγματικά sites. Για το καθένα διάλεξε το είδος του: το στέλνει το GA4 μόνο του, χρειάζεται μια ρύθμιση, ή πρέπει να το υλοποιήσεις εσύ;</p><div class="grid2">`;
+  EVS.forEach(([name, what, k], i) => {
+    const ok = S['ev' + i] === KINDS[k];
+    h += `<div class="card ${S.c2 ? (ok ? 'pass' : 'fail') : ''}"><div class="mono" style="font-size:18px;font-weight:700">${name}</div><div class="small">${what}</div><div class="q">${sel('ev' + i, KINDS)} ${mark(S.c2, ok)}</div></div>`;
+  });
+  h += `</div><div><button class="btn" id="c2">Έλεγχος</button></div>`;
+  if (S.c2 && !S.ok2) h += `<div class="status bad">Όχι ακόμη. Οι κόκκινες κάρτες έχουν λάθος είδος. Κάθε είδος εμφανίζεται δύο φορές.</div>`;
+  h += hint('h2', 'Ρώτα δύο πράγματα. Στέλνεται χωρίς να γράψεις κώδικα; Και το όνομά του το όρισε η Google ή εσύ;');
+  if (S.ok2) h += `<div class="box sep">${mcq('q2', 'Εξήγησέ το: ένας προγραμματιστής στέλνει την αγορά ως custom event με όνομα agora_oloklirothike. Τι χάνει το κατάστημα;', [
+    'Οι έτοιμες αναφορές e-commerce και το Purchase journey περιμένουν το event purchase με τις δικές του παραμέτρους. Με άλλο όνομα μένουν άδειες.',
+    'Τίποτα. Το GA4 καταλαβαίνει μόνο του ότι πρόκειται για αγορά.',
+    'Το event δεν καταγράφεται καθόλου, γιατί το όνομα δεν είναι στα αγγλικά.'], 0,
+    'Τα recommended events έχουν ονόματα που όρισε η Google ακριβώς για να τα αναγνωρίζουν οι αναφορές. Custom event φτιάχνεις μόνο όταν δεν ταιριάζει κανένα recommended.')}
+    ${mcqOk('q2', 0) ? nextBtn() : ''}</div>`;
+  return h + '</div>';
+}
+function s2wire() {
+  $('#c2').onclick = () => { S.c2 = true; if (EVS.every(([n, w, k], i) => S['ev' + i] === KINDS[k])) S.ok2 = true; render(); };
+}
+
+/* ---------- βήμα 3: χρήστες, sessions, πηγές ---------- */
+const VISITS = [
+  ['Δευτέρα 10:00', 'κλικ σε διαφήμιση στο Facebook', 'βλέπει 1 σελίδα για 5 δευτερόλεπτα και φεύγει'],
+  ['Δευτέρα 10:20', 'γράφει τη διεύθυνση του site', 'βλέπει 3 σελίδες προϊόντων'],
+  ['Τετάρτη 19:00', 'κλικ στο newsletter (link με UTM)', 'βάζει ένα προϊόν στο καλάθι και μένει 4 λεπτά'],
+  ['Παρασκευή 21:00', 'κλικ στο newsletter (link με UTM)', 'ολοκληρώνει την αγορά'],
+  ['Κυριακή 12:00', 'αναζήτηση στη Google', 'βλέπει 1 σελίδα για 4 δευτερόλεπτα και φεύγει'],
+];
+const CH = ['Paid Social', 'Email', 'Organic Search', 'Direct'];
+function s3() {
+  const okU = num(S.u3) === 1, okS = num(S.s3) === 4, okE = num(S.e3) === 3;
+  let h = `<div class="box"><p class="task">Η Μαρία επισκέπτεται το e-shop πέντε φορές μέσα σε μία εβδομάδα, πάντα από το ίδιο laptop και τον ίδιο browser. Τι θα μετρήσει το GA4;</p>
+  <div class="card"><div class="scroll"><table style="min-width:560px"><tr><th>πότε</th><th>πώς φτάνει</th><th>τι κάνει</th></tr>
+  ${VISITS.map(v => `<tr><td style="white-space:nowrap">${v[0]}</td><td>${v[1]}</td><td>${v[2]}</td></tr>`).join('')}</table></div></div>
+  <div class="q">Χρήστες ${inp('u3')} ${mark(S.c3, okU)} &nbsp; Sessions ${inp('s3')} ${mark(S.c3, okS)} &nbsp; Engaged sessions ${inp('e3')} ${mark(S.c3, okE)} <button class="btn" id="c3">Έλεγχος</button></div>`;
+  if (S.c3 && !S.ok3a) h += `<div class="status bad">Όχι ακόμη. ${!okS ? 'Πρόσεξε πόση ώρα πέρασε ανάμεσα στις δύο επισκέψεις της Δευτέρας.' : 'Έλεγξε κάθε session με τον ορισμό του engaged session.'}</div>`;
+  h += hint('h3', 'Το session τελειώνει μετά από 30 λεπτά αδράνειας. Engaged είναι ένα session που κρατά πάνω από 10 δευτερόλεπτα, ή έχει 2 ή περισσότερες προβολές σελίδας, ή έχει key event.');
+  if (S.ok3a) {
+    const o1 = S.a3u === 'Paid Social', o2 = num(S.a3n) === 2, o3 = S.a3t === 'Email', o4 = S.a3f === 'Paid Social';
+    h += `<div class="box sep"><div class="status ok">Ένας χρήστης, 4 sessions, 3 engaged. Οι δύο επισκέψεις της Δευτέρας είναι ένα session, γιατί πέρασαν μόνο 20 λεπτά. Το engagement rate είναι 3 στα 4, δηλαδή 75%.</div>
+    <p class="task">Τώρα οι πηγές. Η ίδια εβδομάδα φαίνεται διαφορετικά στις δύο αναφορές acquisition.</p>
+    <div class="q">Στο <b>User acquisition</b> η Μαρία μετρά ως νέος χρήστης στο κανάλι ${sel('a3u', CH)} ${mark(S.c3b, o1)}</div>
+    <div class="q">Στο <b>Traffic acquisition</b> το κανάλι Email έχει ${inp('a3n')} sessions ${mark(S.c3b, o2)}</div>
+    <div class="q">Η αγορά της Παρασκευής εμφανίζεται στο Traffic acquisition στο κανάλι ${sel('a3t', CH)} ${mark(S.c3b, o3)} και στο User acquisition στο κανάλι ${sel('a3f', CH)} ${mark(S.c3b, o4)}</div>
+    <div><button class="btn" id="c3b">Έλεγχος</button></div>`;
+    if (S.c3b && !S.ok3b) h += `<div class="status bad">Όχι ακόμη. Το User acquisition κρατά για πάντα την πρώτη πηγή του χρήστη. Το Traffic acquisition κοιτά την πηγή κάθε session χωριστά.</div>`;
+    if (S.ok3b) h += `<div class="status ok">Η ίδια αγορά πιστώνεται στο Email στη μία αναφορά και στο Paid Social στην άλλη. Καμία δεν κάνει λάθος: απαντούν σε διαφορετικές ερωτήσεις.</div>
+      ${mcq('q3', 'Εξήγησέ το: έστω ότι την Τετάρτη η Μαρία ανοίγει το newsletter στο κινητό της, χωρίς να συνδεθεί σε λογαριασμό. Πόσους χρήστες μετρά τότε το GA4;', [
+        'Δύο. Για το GA4 ο χρήστης είναι το cookie ενός browser. Άλλη συσκευή σημαίνει άλλο cookie, άρα νέος χρήστης, με πρώτη πηγή το Email.',
+        'Έναν, γιατί είναι ο ίδιος άνθρωπος.',
+        'Κανέναν παραπάνω, γιατί οι επισκέψεις από κινητό δεν μετρώνται ως χρήστες.'], 0,
+        'Γι’ αυτό οι χρήστες στο GA4 είναι συνήθως περισσότεροι από τους ανθρώπους. Το κενό κλείνει μόνο όταν το site στέλνει User-ID μετά από σύνδεση του πελάτη.')}
+      ${mcqOk('q3', 0) ? nextBtn() : ''}`;
+    h += '</div>';
+  }
+  return h + '</div>';
+}
+function s3wire() {
+  $('#c3').onclick = () => { S.c3 = true; if (num(S.u3) === 1 && num(S.s3) === 4 && num(S.e3) === 3) S.ok3a = true; render(); };
+  const b = $('#c3b'); if (b) b.onclick = () => { S.c3b = true; if (S.a3u === 'Paid Social' && num(S.a3n) === 2 && S.a3t === 'Email' && S.a3f === 'Paid Social') S.ok3b = true; render(); };
+}
+
+/* ---------- βήμα 4: link με UTM ---------- */
+const SEARCH = ['google', 'bing', 'yahoo', 'duckduckgo'], SOCIAL = ['facebook', 'instagram', 'linkedin', 'tiktok', 'twitter', 'pinterest'];
+const PAID = /^(.*cp.*|ppc|retargeting|paid.*)$/, MAIL = /^(email|e-mail|e_mail|e mail)$/;
+function channel(src, med) {
+  if (SEARCH.includes(src) && PAID.test(med)) return 'Paid Search';
+  if (SOCIAL.includes(src) && PAID.test(med)) return 'Paid Social';
+  if (['display', 'banner', 'expandable', 'interstitial', 'cpm'].includes(med)) return 'Display';
+  if (PAID.test(med)) return 'Paid Other';
+  if (SOCIAL.includes(src) || ['social', 'social-network', 'social-media', 'sm'].includes(med)) return 'Organic Social';
+  if (SEARCH.includes(src) || med === 'organic') return 'Organic Search';
+  if (['referral', 'app', 'link'].includes(med)) return 'Referral';
+  if (MAIL.test(src) || MAIL.test(med)) return 'Email';
+  if (med === 'affiliate') return 'Affiliates';
+  return 'Unassigned';
+}
+const DEST = 'https://www.to-eshop-mou.gr/black-friday';
+const clean = v => /^[a-z0-9_\-]+$/.test(v || '');
+function utmView(p) {
+  const g = k => (S[p + k] || '').trim();
+  const parts = [['utm_source', g('s')], ['utm_medium', g('m')], ['utm_campaign', g('c')], ['utm_content', g('t')]].filter(x => x[1]);
+  const url = DEST + (parts.length ? '?' + parts.map(x => x[0] + '=' + encodeURIComponent(x[1])).join('&') : '');
+  const bad = parts.filter(x => !clean(x[1])).map(x => x[0]);
+  const ready = g('s') && g('m') && g('c') && !bad.length;
+  return { url, bad, ready, ch: ready ? channel(g('s'), g('m')) : null, s: g('s'), m: g('m'), c: g('c') };
+}
+function utmOut(p) {
+  const v = utmView(p);
+  return `<div class="mono" style="font-size:14px;word-break:break-all;background:var(--tint);border-radius:8px;padding:10px 12px">${esc(v.url)}</div>
+    ${v.bad.length ? `<div class="status bad">Μόνο πεζά λατινικά, αριθμοί, παύλα και κάτω παύλα, χωρίς κενά: ${v.bad.join(', ')}</div>` : ''}
+    ${v.ready ? `<table class="kv"><tr><td class="small">Session source / medium</td><td class="mono">${esc(v.s)} / ${esc(v.m)}</td></tr><tr><td class="small">Session campaign</td><td class="mono">${esc(v.c)}</td></tr><tr><td class="small">Default channel group</td><td><b>${v.ch}</b></td></tr></table>` : '<div class="small">Συμπλήρωσε source, medium και campaign για να δεις πώς θα το κατατάξει το GA4.</div>'}`;
+}
+const utmForm = p => `<div class="grid2" style="gap:10px">${[['s', 'utm_source'], ['m', 'utm_medium'], ['c', 'utm_campaign'], ['t', 'utm_content (προαιρετικό)']].map(([k, lab]) => `<label class="small">${lab}<br><input class="num" style="width:100%" data-in="${p + k}" data-utm="${p}" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(S[p + k] === undefined ? '' : S[p + k])}"></label>`).join('')}</div><div id="out${p}" class="box" style="gap:8px">${utmOut(p)}</div>`;
+function s4() {
+  let h = `<div class="box"><p class="task">Το e-shop σου στέλνει newsletter για τη Black Friday. Το κουμπί του email οδηγεί στη σελίδα της προσφοράς. Συμπλήρωσε τις παραμέτρους UTM ώστε το GA4 να κατατάξει τα κλικ στο κανάλι <b>Email</b>.</p>
+  <div class="card"><div class="lab">Καμπάνια Α: newsletter</div>${utmForm('ua')}<div><button class="btn" id="c4a">Έλεγχος</button></div></div>`;
+  if (S.c4a && !S.ok4a) { const v = utmView('ua'); h += `<div class="status bad">Όχι ακόμη. ${!v.ready ? 'Χρειάζονται και οι τρεις βασικές παράμετροι, γραμμένες σωστά.' : `Με αυτές τις τιμές το GA4 θα το κατατάξει στο κανάλι ${v.ch}, όχι στο Email.`}</div>`; }
+  h += hint('h4', 'Το κανάλι το καθορίζει κυρίως το utm_medium. Για email η τιμή που αναγνωρίζει το GA4 είναι απλώς email.');
+  if (S.ok4a) {
+    h += `<div class="box sep"><div class="status ok">Αυτό το link μπαίνει στο κουμπί του newsletter. Χωρίς τις παραμέτρους, τα περισσότερα κλικ θα φαίνονταν ως Direct.</div>
+    <p class="task">Η ίδια προσφορά διαφημίζεται και με πληρωμένη διαφήμιση στο Facebook. Φτιάξε το δεύτερο link ώστε να καταταγεί στο κανάλι <b>Paid Social</b>, με το ίδιο όνομα καμπάνιας.</p>
+    <div class="card"><div class="lab">Καμπάνια Β: διαφήμιση στο Facebook</div>${utmForm('ub')}<div><button class="btn" id="c4b">Έλεγχος</button></div></div>`;
+    if (S.c4b && !S.ok4b) { const v = utmView('ub'), a = utmView('ua'); h += `<div class="status bad">Όχι ακόμη. ${!v.ready ? 'Χρειάζονται και οι τρεις βασικές παράμετροι, γραμμένες σωστά.' : v.ch !== 'Paid Social' ? `Με αυτές τις τιμές το κανάλι είναι ${v.ch}. Το Paid Social θέλει source ένα κοινωνικό δίκτυο και medium που δηλώνει πληρωμή, όπως cpc ή paid_social.` : `Το κανάλι είναι σωστό. Χρησιμοποίησε το ίδιο utm_campaign με την καμπάνια Α (${esc(a.c)}), για να τις συγκρίνεις σε μία γραμμή.`}</div>`; }
+    if (S.ok4b) h += mcq('q4', 'Εξήγησέ το: σε ένα link γράφεις utm_source=Newsletter και σε ένα άλλο utm_source=newsletter. Τι θα δεις στο Traffic acquisition;', [
+      'Δύο ξεχωριστές γραμμές, γιατί το GA4 κρατά τις τιμές όπως ακριβώς τις έγραψες. Γι’ αυτό συμφωνούμε κανόνες: πεζά, χωρίς κενά, τα ίδια ονόματα παντού.',
+      'Μία γραμμή. Το GA4 ενώνει αυτόματα τις τιμές που διαφέρουν μόνο στα κεφαλαία.',
+      'Καμία γραμμή. Τα links με κεφαλαία απορρίπτονται.'], 0,
+      'Κράτα μια λίστα με τα links κάθε καμπάνιας. Το ίδιο utm_campaign σε newsletter και διαφήμιση σου επιτρέπει να δεις ποιο κανάλι δούλεψε καλύτερα για την ίδια προσφορά.');
+    if (mcqOk('q4', 0)) h += nextBtn();
+    h += '</div>';
+  }
+  return h + `<div class="small">Η κατάταξη εδώ ακολουθεί απλοποιημένους κανόνες του Default channel group. Στην πράξη το link το φτιάχνεις με το Campaign URL Builder: ga-dev-tools.google/ga4/campaign-url-builder</div></div>`;
+}
+function s4wire() {
+  $$('[data-utm]').forEach(el => el.addEventListener('input', () => { S[el.dataset.in] = el.value; $('#out' + el.dataset.utm).innerHTML = utmOut(el.dataset.utm); }));
+  $('#c4a').onclick = () => { S.c4a = true; const v = utmView('ua'); if (v.ready && v.ch === 'Email') S.ok4a = true; render(); };
+  const b = $('#c4b'); if (b) b.onclick = () => { S.c4b = true; const v = utmView('ub'), a = utmView('ua'); if (v.ready && v.ch === 'Paid Social' && v.c === a.c) S.ok4b = true; render(); };
+}
+
+/* ---------- βήμα 5: στο demo account ---------- */
+const DEMO = [
+  ['Ποιο κανάλι φέρνει τους περισσότερους νέους χρήστες;', 'Reports → Acquisition → User acquisition. Όρισε την περίοδο στις τελευταίες 28 ημέρες και διάβασε τη στήλη New users.'],
+  ['Ποιο κανάλι έχει το υψηλότερο engagement rate; Είναι το ίδιο με το προηγούμενο;', 'Reports → Acquisition → Traffic acquisition. Πάτησε στην επικεφαλίδα της στήλης Engagement rate για ταξινόμηση.'],
+  ['Πόσα key events έγιναν, και από ποιο κανάλι τα περισσότερα;', 'Στην ίδια αναφορά, στήλη Key events. Το σύνολο είναι στην πρώτη γραμμή του πίνακα.'],
+  ['Σε σύγκριση με τις προηγούμενες 28 ημέρες, τι άλλαξε περισσότερο;', 'Άνοιξε τον επιλογέα ημερομηνιών, ενεργοποίησε το Compare και διάλεξε Preceding period.'],
+];
+function loadNotes() { try { const d = JSON.parse(localStorage.getItem('ga4guide1') || '{}'); DEMO.forEach((x, i) => { if (S['n5' + i] === undefined && d[i]) S['n5' + i] = d[i]; }); } catch (e) {} }
+function saveNotes() { try { localStorage.setItem('ga4guide1', JSON.stringify(DEMO.map((x, i) => S['n5' + i] || ''))); } catch (e) {} }
+const filled5 = () => DEMO.every((x, i) => (S['n5' + i] || '').trim().length > 1);
+function s5() {
+  loadNotes();
+  let h = `<div class="box"><p class="task">Τώρα στα πραγματικά δεδομένα. Άνοιξε το demo account του Google Merchandise Store σε άλλη καρτέλα και απάντησε στις τέσσερις ερωτήσεις.</p>
+  <div class="card case"><div class="lab">Πριν ξεκινήσεις</div><div style="font-size:16px;line-height:1.5">Συνδέσου με λογαριασμό Google, άνοιξε το άρθρο <a href="https://support.google.com/analytics/answer/6367342" target="_blank" rel="noopener">Demo account</a> και πάτησε τον σύνδεσμο για το Google Merchandise Store. Τα δεδομένα είναι ζωντανά και αλλάζουν κάθε μέρα, γι’ αυτό η σελίδα δεν ελέγχει τις απαντήσεις σου. Σημείωσέ τες εδώ και φέρε τες στο μάθημα.</div></div>`;
+  DEMO.forEach(([q, how], i) => {
+    h += `<div class="card"><div style="font-size:17px;line-height:1.45"><b>${i + 1}.</b> ${q}</div><div class="small">${how}</div><textarea data-note="${i}" rows="2" style="font:inherit;font-size:15px;padding:8px 10px;border:2px solid var(--navy);border-radius:8px;background:var(--tint);color:var(--navy);width:100%;resize:vertical" placeholder="Η απάντησή σου">${esc(S['n5' + i] || '')}</textarea></div>`;
+  });
+  h += `<div class="q"><button class="btn" id="c5">Τελείωσα</button><button class="btn" id="copy5">Αντιγραφή απαντήσεων</button><span class="small" id="copied5"></span></div>`;
+  if (S.c5 && !filled5()) h += `<div class="status bad">Λείπουν απαντήσεις. Συμπλήρωσε και τα τέσσερα πεδία.</div>`;
+  if (S.c5 && filled5()) h += `<div class="done">Ολοκλήρωσες τον οδηγό. Φέρε τις απαντήσεις σου στο μάθημα.</div>`;
+  return h + '</div>';
+}
+function s5wire() {
+  $$('[data-note]').forEach(el => el.addEventListener('input', () => { S['n5' + el.dataset.note] = el.value; saveNotes(); }));
+  $('#c5').onclick = () => { S.c5 = true; render(); };
+  $('#copy5').onclick = () => {
+    const txt = DEMO.map(([q], i) => `${i + 1}. ${q}\n${S['n5' + i] || ''}`).join('\n\n');
+    const done = () => { $('#copied5').textContent = 'Αντιγράφηκαν.'; };
+    try { navigator.clipboard.writeText(txt).then(done, () => { $('#copied5').textContent = 'Η αντιγραφή δεν επιτράπηκε. Επίλεξε το κείμενο με το χέρι.'; }); } catch (e) { $('#copied5').textContent = 'Η αντιγραφή δεν επιτράπηκε. Επίλεξε το κείμενο με το χέρι.'; }
+  };
+}
+
+/* ---------- βήματα ---------- */
+const STEPS = [
+  { label: 'Πού θα το βρω;', title: '1. Πού θα το βρω;', html: s1, wire: s1wire, ok: () => mcqOk('q1', 0) },
+  { label: 'Είδη events', title: '2. Τι είδους event είναι;', html: s2, wire: s2wire, ok: () => mcqOk('q2', 0) },
+  { label: 'Χρήστες και sessions', title: '3. Χρήστες, sessions και πηγές', html: s3, wire: s3wire, ok: () => mcqOk('q3', 0) },
+  { label: 'Link με UTM', title: '4. Φτιάξε ένα link καμπάνιας', html: s4, wire: s4wire, ok: () => mcqOk('q4', 0) },
+  { label: 'Demo account', title: '5. Στο demo account', html: s5, wire: s5wire, ok: () => !!S.c5 && filled5() },
+];
+
+function drawStepper() {
+  $('#stepper').innerHTML = STEPS.map((s, i) => {
+    const bg = i === S.step ? '#1B2F6B' : STEPS[i].ok() ? '#26314F' : '#5A6385';
+    return `<button data-go="${i}" style="background:${bg}"><span class="n">${i + 1} ${STEPS[i].ok() ? '✓' : ''}</span><span class="l">${s.label}</span></button>`;
+  }).join('');
+  $$('[data-go]').forEach(b => b.onclick = () => go(+b.dataset.go));
+}
+function render() {
+  const st = STEPS[S.step];
+  $('#title').textContent = st.title;
+  $('#stage').innerHTML = st.html();
+  wireInputs();
+  st.wire();
+  drawStepper();
+  $('#pos').textContent = `${S.step + 1} / ${STEPS.length}`;
+  $('#prev').style.opacity = S.step > 0 ? 1 : .4;
+  $('#next').style.opacity = S.step < STEPS.length - 1 ? 1 : .4;
+}
+function go(i) {
+  if (i < 0 || i >= STEPS.length) return;
+  S.step = i; S.max = Math.max(S.max, i);
+  try { history.replaceState(null, '', '#step' + (i + 1)); } catch (e) {}
+  render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+$('#prev').onclick = () => go(S.step - 1);
+$('#next').onclick = () => go(S.step + 1);
+const m = location.hash.match(/step(\d)/);
+S.step = m ? Math.min(Math.max(+m[1] - 1, 0), STEPS.length - 1) : 0;
+render();
+</script>
+</body>
+</html>
