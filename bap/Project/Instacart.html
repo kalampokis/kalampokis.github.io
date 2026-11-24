@@ -308,7 +308,7 @@ total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined",
   <!-- ============ 5 ============ -->
   <section class="step" data-title="Θέμα εμβάθυνσης">
     <h2>5. Μέρος Β: διαλέξτε θέμα και πειραματιστείτε</h2>
-    <p>Έξι κατευθύνσεις. Κάθε μία έχει μια <b>επιχειρηματική ερώτηση</b>, τρία <b>καθοδηγούμενα ερωτήματα</b> που πρέπει να απαντήσετε (με τα εργαλεία που χρειάζονται), και ιδέες για να το πάτε <b>παραπέρα</b>. Υποχρεωτικό: τα τρία καθοδηγούμενα συν <b>τουλάχιστον ένα δικό σας ερώτημα</b>, που θα διατυπώσετε και θα αιτιολογήσετε εσείς. Εκεί είναι ο χώρος σας για πειραματισμό. Εκεί διαφέρουν οι πολύ καλές εργασίες. Κάντε κλικ σε ένα θέμα για να το ανοίξετε.</p>
+    <p>Έξι κατευθύνσεις. Κάθε μία έχει μια <b>επιχειρηματική ερώτηση</b>, τρία <b>καθοδηγούμενα ερωτήματα</b> που πρέπει να απαντήσετε (με τα εργαλεία που χρειάζονται), και ιδέες για να το πάτε <b>παραπέρα</b>. Υποχρεωτικό: τα τρία καθοδηγούμενα συν <b>τουλάχιστον ένα δικό σας ερώτημα</b>, που θα διατυπώσετε και θα αιτιολογήσετε εσείς. Εκεί είναι ο χώρος σας για πειραματισμό. Εκεί διαφέρουν οι πολύ καλές εργασίες. Κάντε κλικ σε ένα θέμα για να το ανοίξετε. Όταν αποφασίσετε, δηλώστε το (μαζί με την ομάδα σας) στη <a data-href="formUrl" target="_blank" rel="noopener">φόρμα δήλωσης</a> μέχρι την προθεσμία του χρονοδιαγράμματος.</p>
 
     <div class="topics">
       <details class="topic" data-id="t1"><summary><span class="tn">Θέμα 1</span> Πότε παραγγέλνουν οι πελάτες, και τι σημαίνει για τη λειτουργία</summary>
@@ -443,7 +443,7 @@ total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined",
     <table class="t" id="timeline"></table>
     <h3>Πώς παραδίδετε</h3>
     <ol class="steps-list">
-      <li><b>Δήλωση ομάδας</b> (μόνο για τις ομάδες των 2): <span class="cfg" data-k="register"></span></li>
+      <li><b>Δήλωση ομάδας και θέματος</b>: <span class="cfg" data-k="register"></span></li>
       <li><b>Notebook</b>: στο αντίγραφο του <a data-href="starterUrl" target="_blank" rel="noopener">starter notebook</a> που δουλεύετε στο Kaggle, πρώτα <b>Save Version → Save &amp; Run All (Commit)</b>: τρέχει όλο το notebook από την αρχή σε καθαρή συνεδρία, ώστε να είστε σίγουροι ότι δουλεύει. Μετά <b>File → Download Notebook</b>: κατεβαίνει το <code>.ipynb</code>. Όνομα αρχείου <code>BAP_Instacart_ΟμάδαXX.ipynb</code>. Ανεβάστε το στο eClass (Εργασίες → Εργασία εξαμήνου), <b>μία υποβολή ανά ομάδα</b>. Την ίδια μέρα κάντε το notebook <b>Public</b> (Share → Public, και Save αν το ζητήσει) και γράψτε τον σύνδεσμό του στο σχόλιο της υποβολής: έτσι βλέπουμε και τα αποτελέσματα όπως έτρεξαν στο Kaggle. <b>Όχι νωρίτερα</b>: μέχρι την παράδοση το notebook μένει Private, ορατό μόνο στην ομάδα σας.</li>
       <li><b>Πότε</b>: notebook και παρουσίαση (PDF ή PowerPoint) ανεβαίνουν στο eClass <b>την ημέρα της παρουσίασής σας, πριν το μάθημα</b>. Η σειρά των ομάδων (8 ή 15 Ιανουαρίου) ανακοινώνεται στο eClass.</li>
     </ol>
@@ -468,18 +468,20 @@ total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined",
   // ======================================================================
   const STARTER_URL = 'https://www.kaggle.com/code/evangeloskalampokis/starter-notebook';
   const DATASET_URL = 'https://www.kaggle.com/datasets/psparks/instacart-market-basket-analysis';
+  const FORM_URL = 'https://forms.gle/KMfZtqSLonQhkwgK7';
   const CONFIG = {
-    team: 'Ατομικά ή σε <b>ομάδες 2 ατόμων</b>. Οι ομάδες δηλώνονται στο eClass μέχρι την ημερομηνία του χρονοδιαγράμματος. Όποιος δεν δηλώσει ομάδα, εργάζεται ατομικά. Στη συνέχεια λέμε «ομάδα» και για όσους δουλεύουν μόνοι τους.',
+    team: 'Ατομικά ή σε <b>ομάδες 2 ατόμων</b>. Ομάδα και θέμα δηλώνονται σε μια <a href="' + FORM_URL + '" target="_blank" rel="noopener">φόρμα</a> μέχρι την ημερομηνία του χρονοδιαγράμματος. Όποιος δεν δηλώσει ομάδα, εργάζεται ατομικά. Στη συνέχεια λέμε «ομάδα» και για όσους δουλεύουν μόνοι τους.',
     weight: 'Η εργασία είναι το <b>50%</b> του τελικού βαθμού. Το υπόλοιπο 50% είναι η γραπτή εξέταση. Στις ομάδες των 2, και τα δύο μέλη παίρνουν τον ίδιο βαθμό, εκτός αν η ομάδα ζητήσει διαφορετικά με αιτιολόγηση.',
     // Kaggle: το starter notebook και το dataset του μαθήματος (βάλε εδώ τους συνδέσμους όταν τα ανεβάσεις)
     starter: '<a href="' + STARTER_URL + '" target="_blank" rel="noopener">' + STARTER_URL.replace('https://www.', '') + '</a>',
     dataset: '<a href="' + DATASET_URL + '" target="_blank" rel="noopener">Instacart Market Basket Analysis, ' + DATASET_URL.replace('https://www.', '') + '</a>',
     starterUrl: STARTER_URL,
-    register: 'ένα από τα δύο μέλη δηλώνει την ομάδα στο eClass (Ομάδες χρηστών → επιλογή ομάδας) και γράφει τα δύο ονόματα. Όποιος εργάζεται ατομικά δεν χρειάζεται δήλωση.',
+    register: '<a href="' + FORM_URL + '" target="_blank" rel="noopener">Δήλωση ομάδας και θέματος, ' + FORM_URL.replace('https://', '') + '</a>. Μία απάντηση ανά ομάδα, από το ένα μέλος, με τα δύο ονόματα και το θέμα εμβάθυνσης. Όποιος εργάζεται ατομικά δηλώνει μόνο το θέμα.',
+    formUrl: FORM_URL,
     helpweeks: '11 και 12 (10 και 17 Δεκεμβρίου)',
     timeline: [
       ['Πέμ 26 Νοε 2026', 'Ανάθεση της εργασίας (εβδ. 9). Διαβάστε αυτή τη σελίδα, φτιάξτε λογαριασμό στο Kaggle, ανοίξτε το <a href="' + STARTER_URL + '" target="_blank" rel="noopener">starter notebook</a> με Copy &amp; Edit, φορτώστε τα δεδομένα.'],
-      ['Πέμ 3 Δεκ 2026', 'Προθεσμία δήλωσης ομάδας (για τις ομάδες των 2) και θέματος εμβάθυνσης στο eClass.'],
+      ['Πέμ 3 Δεκ 2026', 'Προθεσμία δήλωσης ομάδας και θέματος εμβάθυνσης στη <a href="' + FORM_URL + '" target="_blank" rel="noopener">φόρμα</a>.'],
       ['Πέμ 10 Δεκ 2026', 'Εργαστήριο στην τάξη: <b>Μέρος Α</b> με βοήθεια (εβδ. 11). Έρχεστε με το notebook ανοιχτό και τα δεδομένα φορτωμένα.'],
       ['Πέμ 17 Δεκ 2026', 'Εργαστήριο στην τάξη: <b>Μέρος Β</b> με βοήθεια (εβδ. 12). Έρχεστε με το Μέρος Α ολοκληρωμένο και τα σημεία ελέγχου σωστά.'],
       ['Παρ 8 Ιαν 2027', 'Παρουσιάσεις, πρώτο μέρος. <b>Παράδοση notebook και παρουσίασης στο eClass την ίδια μέρα, πριν το μάθημα</b>, για τις ομάδες που παρουσιάζουν.'],
@@ -490,7 +492,7 @@ total = 100" data-opts='["100","NameError: name &#39;total&#39; is not defined",
 
   document.querySelectorAll('.cfg').forEach(e=>{ e.innerHTML = CONFIG[e.dataset.k] || ''; });
   document.querySelectorAll('[data-href]').forEach(e=>{ e.href = CONFIG[e.dataset.href] || '#'; });
-  document.getElementById('glance').innerHTML = 'Ατομικά ή σε ομάδες 2 ατόμων. 50% του βαθμού. Παραδοτέα: notebook + παρουσίαση 10′. Πλατφόρμα: Kaggle Notebooks, ξεκινάτε με Copy &amp; Edit από το starter notebook: <b>' + CONFIG.starter + '</b>. Δεδομένα: Instacart 2017 (5 αρχεία CSV, ήδη συνδεδεμένα στο notebook). Εργαστήρια βοήθειας: ' + CONFIG.timeline[2][0] + ' (Μέρος Α) και ' + CONFIG.timeline[3][0] + ' (Μέρος Β). Παρουσιάσεις και παράδοση: <b>' + CONFIG.timeline[4][0] + ' και ' + CONFIG.timeline[5][0] + '</b>.';
+  document.getElementById('glance').innerHTML = 'Ατομικά ή σε ομάδες 2 ατόμων. 50% του βαθμού. Παραδοτέα: notebook + παρουσίαση 10′. Πλατφόρμα: Kaggle Notebooks, ξεκινάτε με Copy &amp; Edit από το starter notebook: <b>' + CONFIG.starter + '</b>. Δεδομένα: Instacart 2017 (5 αρχεία CSV, ήδη συνδεδεμένα στο notebook). Εργαστήρια βοήθειας: ' + CONFIG.timeline[2][0] + ' (Μέρος Α) και ' + CONFIG.timeline[3][0] + ' (Μέρος Β). Παρουσιάσεις και παράδοση: <b>' + CONFIG.timeline[4][0] + ' και ' + CONFIG.timeline[5][0] + '</b>. Δήλωση ομάδας και θέματος στη <a href="' + FORM_URL + '" target="_blank" rel="noopener">φόρμα</a> μέχρι ' + CONFIG.timeline[1][0] + '.';
   const tl = document.getElementById('timeline');
   tl.innerHTML = '<tr><th>Πότε</th><th>Τι</th></tr>' + CONFIG.timeline.map(r=>'<tr><td class="m" style="white-space:nowrap">'+r[0]+'</td><td>'+r[1]+'</td></tr>').join('');
 
