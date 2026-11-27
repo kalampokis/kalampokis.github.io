@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R7KW3PRQVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R7KW3PRQVZ');
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Το ψηφιακό οικοσύστημα της κράτησης · Εβδομάδα 6</title>
+<meta name="description" content="Διαδραστικός οδηγός: πώς φτάνει μια κράτηση στο ξενοδοχείο, ποιοι μεσολαβούν (OTAs, metasearch, channel manager, booking engine, tour operators), ποιος πληρώνει ποιον, προσομοιωτής μείγματος καναλιών με τα δεδομένα του μαθήματος, ισοτιμία τιμών και DMA, και η άσκηση ελέγχου ισοτιμίας σε πραγματικό ξενοδοχείο. Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις, Εβδομάδα 6.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2F6B; --text:#26314F; --gray:#5A6385; --blue:#7895F9; --lblue:#B9C8FC; --pale:#EEF1FE;
+    --orange:#F5821F; --peach:#FDE8D4; --green:#1e7a4c; --lgreen:#E3F3EA; --red:#B23A3A; --lred:#FBE4E4;
+    --code:#141E3C; --codefg:#F4F6FF; --mono:'JetBrains Mono',Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--pale);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+  a{color:var(--green)}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 16px 80px;display:flex;flex-direction:column;gap:22px}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;color:var(--gray);text-transform:uppercase}
+  h1{margin:6px 0 0;font-family:Georgia,serif;font-weight:700;font-size:38px;line-height:1.1;color:var(--navy)}
+  h2{margin:0;font-family:Georgia,serif;font-size:28px;color:var(--navy)}
+  h3{margin:18px 0 6px;font-family:Georgia,serif;font-size:20px;color:var(--navy)}
+  p{margin:0 0 10px;font-size:17px}
+  .lead{font-size:19px;max-width:800px}
+  .stepper{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:8px}
+  .stepper button{text-align:left;font:inherit;border:0;border-radius:8px;padding:10px 12px;background:var(--navy);color:#fff;cursor:pointer;display:flex;flex-direction:column;gap:2px;opacity:.55}
+  .stepper button.active{opacity:1;outline:3px solid var(--orange)}
+  .stepper button.done{opacity:.9;background:var(--green)}
+  .stepper button span.n{font-family:var(--mono);font-weight:700;font-size:14px}
+  .stepper button span.l{font-size:13px}
+  section.step{display:none;flex-direction:column;gap:14px;background:#fff;border-radius:12px;padding:22px 22px 26px;box-shadow:0 1px 3px rgba(27,47,107,.08)}
+  section.step.active{display:flex}
+  code{font-family:var(--mono);background:var(--pale);padding:1px 5px;border-radius:4px;color:var(--navy);font-size:.95em}
+  .en{color:var(--gray);font-style:italic}
+  .box{border-radius:8px;padding:12px 16px;font-size:16px}
+  .tip{background:var(--peach)} .tip>b:first-child{color:var(--orange);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .note{background:var(--pale)} .note>b:first-child{color:var(--navy);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .warn{background:var(--lred)} .warn>b:first-child{color:var(--red);font-size:12px;letter-spacing:.1em;display:block;margin-bottom:4px}
+  .btn{font:inherit;font-size:14px;padding:7px 14px;border:0;border-radius:6px;cursor:pointer;background:var(--green);color:#fff;font-weight:bold}
+  .btn.navy{background:var(--navy)} .btn.orange{background:var(--orange)}
+  .btn.outline{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+  .btn:disabled{opacity:.5;cursor:default}
+  ol.todo{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px;counter-reset:s}
+  ol.todo li{position:relative;padding:10px 14px 10px 50px;background:var(--pale);border-radius:8px;font-size:16px;counter-increment:s}
+  ol.todo li::before{content:counter(s);position:absolute;left:12px;top:9px;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--mono);font-weight:bold;font-size:14px;display:flex;align-items:center;justify-content:center}
+  .check{border:2px dashed var(--orange);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#fff}
+  .check .title{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--orange);text-transform:uppercase}
+  .check .q{font-weight:bold;color:var(--navy);font-size:16px}
+  .check .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .check input{font:inherit;font-family:var(--mono);font-size:17px;padding:7px 10px;border:2px solid var(--navy);border-radius:8px;width:180px;background:#fff;color:var(--navy)}
+  .check select{font:inherit;font-size:16px;padding:7px 10px;border:2px solid var(--navy);border-radius:8px;background:#fff;color:var(--navy);max-width:100%}
+  .check .unit{color:var(--gray);font-size:15px}
+  .check .result{font-size:15px;min-height:20px}
+  .check .result.ok{color:var(--green);font-weight:bold} .check .result.bad{color:var(--red)}
+  .check details{font-size:15px} .check summary{cursor:pointer;color:var(--navy)}
+  .quiz{background:var(--pale);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+  .quiz .q{font-weight:bold;color:var(--navy)}
+  .quiz .opts{display:grid;gap:6px}
+  .quiz .opts button{text-align:left;font:inherit;font-size:16px;padding:9px 12px;border-radius:8px;border:1px solid var(--lblue);background:#fff;color:var(--navy);cursor:pointer}
+  .quiz .opts button.ok{background:var(--lgreen);border-color:var(--green)}
+  .quiz .opts button.bad{background:var(--lred);border-color:var(--red)}
+  .quiz .fb{min-height:20px;font-size:15px}
+  .quiz .fb.ok{color:var(--green);font-weight:bold} .quiz .fb.bad{color:var(--red)}
+  table.t{border-collapse:collapse;width:100%;font-size:15px}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:bold}
+  table.t td{padding:7px 10px;border-bottom:1px solid var(--lblue);vertical-align:top} table.t td.r,table.t th.r{text-align:right;font-family:var(--mono);color:var(--navy)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .shot{display:block;max-width:100%;border:1px solid var(--lblue);border-radius:8px;box-shadow:0 1px 4px rgba(27,47,107,.12)}
+  figure.fig{margin:6px 0 10px;display:flex;flex-direction:column;gap:6px} figure.fig figcaption{font-size:13px;color:var(--gray)}
+  .nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px}
+  /* journey */
+  .journey{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+  .journey button{font:inherit;border:0;border-radius:10px;padding:12px 8px;background:var(--pale);color:var(--navy);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;border:2px solid transparent}
+  .journey button .ic{font-size:26px} .journey button .t{font-size:13px;font-weight:bold;text-align:center}
+  .journey button.active{background:var(--peach);border-color:var(--orange)} .journey button.seen{border-color:var(--lblue)}
+  .jpanel{background:var(--pale);border-radius:10px;padding:14px 16px;font-size:16px;display:none} .jpanel.active{display:block}
+  .jpanel h4{margin:0 0 6px;font-family:Georgia,serif;font-size:19px;color:var(--navy)}
+  .jpanel .who{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}
+  .jpanel .who div{background:#fff;border-radius:8px;padding:8px 10px;font-size:14px} .jpanel .who b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--gray);text-transform:uppercase;margin-bottom:3px}
+  /* players */
+  .players{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .pl{background:var(--pale);border-radius:10px;padding:12px 14px;font-size:14px} .pl b{display:block;font-family:Georgia,serif;font-size:16px;color:var(--navy);margin-bottom:2px} .pl i{display:block;color:var(--gray);font-style:normal;font-size:12px;margin-bottom:4px}
+  .pl.ex{background:var(--peach)}
+  /* simulator */
+  .sim{background:var(--pale);border-radius:12px;padding:16px 18px;display:grid;grid-template-columns:1.1fr 1fr;gap:16px}
+  .sim h4{margin:0 0 8px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--gray);text-transform:uppercase}
+  .sl{display:grid;grid-template-columns:150px 1fr 64px;gap:8px;align-items:center;font-size:14px;margin:6px 0}
+  .sl input[type=range]{width:100%;accent-color:var(--navy)} .sl .v{font-family:var(--mono);text-align:right;color:var(--navy);font-weight:bold}
+  .sl.c input[type=range]{accent-color:var(--orange)}
+  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .kpi{background:#fff;border-radius:8px;padding:10px 12px} .kpi b{display:block;font-size:11px;letter-spacing:.08em;color:var(--gray);text-transform:uppercase} .kpi .n{font-family:Georgia,serif;font-size:26px;color:var(--navy);font-weight:bold} .kpi .d{font-size:12px;color:var(--gray)}
+  .kpi.hl .n{color:var(--orange)}
+  .bar{height:22px;border-radius:6px;overflow:hidden;display:flex;margin:6px 0 2px} .bar span{height:100%;display:block} .legend{font-size:12px;color:var(--gray);display:flex;gap:10px;flex-wrap:wrap} .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
+  /* timeline */
+  .tl{border-left:3px solid var(--lblue);margin-left:10px;padding-left:18px;display:flex;flex-direction:column;gap:10px}
+  .tl div{position:relative;font-size:15px} .tl div::before{content:"";position:absolute;left:-25px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--navy)} .tl div.o::before{background:var(--orange)}
+  .tl b{font-family:var(--mono);color:var(--navy);font-size:13px;margin-right:6px}
+  /* parity form */
+  .form{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:15px}
+  .form label{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--gray)}
+  .form input,.form select,.form textarea{font:inherit;font-size:15px;padding:7px 9px;border:1px solid var(--lblue);border-radius:6px;color:var(--text);background:#fff}
+  .form .full{grid-column:1/-1}
+  .prices{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr 1fr;gap:6px;align-items:center;font-size:14px}
+  .prices .h{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--gray);text-transform:uppercase}
+  .prices input[type=number]{width:100%;font:inherit;font-size:15px;padding:6px 8px;border:1px solid var(--lblue);border-radius:6px}
+  .prices input[type=checkbox]{width:18px;height:18px}
+  .out{background:#fff;border-radius:8px;padding:12px 14px;font-size:15px;border:1px solid var(--lblue)}
+  .out table{width:100%;border-collapse:collapse} .out td{padding:4px 6px;border-bottom:1px solid var(--pale)} .out td.r{text-align:right;font-family:var(--mono)}
+  .out .best{color:var(--green);font-weight:bold}
+  .checklist label{display:flex;gap:10px;align-items:flex-start;font-size:16px;padding:8px 10px;background:var(--pale);border-radius:8px;margin-bottom:6px;cursor:pointer}
+  .checklist input{margin-top:4px;width:18px;height:18px}
+  @media (max-width:760px){.grid2,.sim,.form{grid-template-columns:1fr} h1{font-size:30px} .journey{grid-template-columns:repeat(3,1fr)} .jpanel .who,.players{grid-template-columns:1fr} .prices{grid-template-columns:1fr 1fr 1fr;font-size:12px} .sl{grid-template-columns:110px 1fr 56px}}
+  footer{font-size:13px;color:var(--gray);text-align:center}
+</style>
+<style id="site-nav-style">
+  #site-nav{font-family:Arial,Helvetica,sans-serif;font-size:14px;background:#1B2F6B;color:#fff;padding:8px 16px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  #site-nav a{color:#fff;text-decoration:none}
+  #site-nav .sn-home{font-weight:bold} #site-nav .sn-sep{opacity:.5} #site-nav .sn-teach{color:#B9C8FC;margin-left:auto}
+  @media (max-width:700px){#site-nav{font-size:13px;gap:6px 12px;padding:8px 12px}#site-nav .sn-sep{display:none}#site-nav .sn-back{flex-basis:100%;order:3;padding-top:2px}#site-nav .sn-teach{order:2}}
+</style>
+</head>
+<body>
+<nav id="site-nav"><a class="sn-home" href="../../index.html">Dr. Evangelos Kalampokis</a><span class="sn-sep">|</span><a class="sn-back" href="../../courses/e-services-tourism-businesses.html">&larr; Σελίδα μαθήματος: Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις</a><a class="sn-teach" href="../../index.html#teaching">Αρχική</a></nav>
+<div class="wrap">
+  <div>
+    <div class="kicker">Ηλεκτρονικές Υπηρεσίες στις Τουριστικές Επιχειρήσεις · Εβδομάδα 6</div>
+    <h1>Το ψηφιακό οικοσύστημα της κράτησης</h1>
+    <p class="lead" style="margin-top:10px">Στις Εβδομάδες 3 και 5 βάλαμε μια παράμετρο «προμήθεια 18%» και είδαμε 3,5 εκατομμύρια ευρώ να φεύγουν από τα έσοδα των δύο ξενοδοχείων. Σήμερα ανοίγουμε αυτό το νούμερο: ποιος κάθεται ανάμεσα στον ταξιδιώτη και το ξενοδοχείο, τι προσφέρει, τι χρεώνει, και τι άλλαξε όταν η Ευρώπη κήρυξε την Booking.com «ρυθμιστή πρόσβασης». Έξι βήματα· στο τέλος μια άσκηση σε πραγματικό ξενοδοχείο.</p>
+  </div>
+
+  <div class="stepper" id="stepper"></div>
+
+  <!-- ============ 1 ============ -->
+  <section class="step" data-title="Η διαδρομή">
+    <h2>1. Η διαδρομή μιας κράτησης</h2>
+    <p>Μια οικογένεια από το Μάντσεστερ θα έρθει Αύγουστο στην Κρήτη. Πάτα κάθε στάδιο και δες <b>ποιος βρίσκεται ανάμεσα</b> στην οικογένεια και το ξενοδοχείο, τι πληροφορία περνάει, και ποιος πληρώνεται.</p>
+    <div class="journey" id="journey">
+      <button data-i="0"><span class="ic">💡</span><span class="t">Έμπνευση</span></button>
+      <button data-i="1"><span class="ic">🔍</span><span class="t">Αναζήτηση</span></button>
+      <button data-i="2"><span class="ic">⚖️</span><span class="t">Σύγκριση</span></button>
+      <button data-i="3"><span class="ic">💳</span><span class="t">Κράτηση</span></button>
+      <button data-i="4"><span class="ic">🛎️</span><span class="t">Διαμονή</span></button>
+      <button data-i="5"><span class="ic">⭐</span><span class="t">Κριτική</span></button>
+    </div>
+    <div class="jpanel" data-i="0"><h4>Έμπνευση: «πού θα πάμε φέτος;»</h4>Instagram, TikTok, YouTube, ένα άρθρο «10 παραλίες της Κρήτης», η διαφήμιση ενός tour operator, η σύσταση ενός φίλου. Το ξενοδοχείο σπάνια είναι εδώ με το όνομά του· ο προορισμός είναι. <div class="who"><div><b>Ποιος μεσολαβεί</b>Πλατφόρμες περιεχομένου, influencers, οργανισμοί προορισμού (DMO), tour operators</div><div><b>Τι δεδομένα</b>Ενδιαφέρον, όχι πρόθεση: ποιος κοίταξε τι</div><div><b>Ποιος πληρώνει</b>Διαφήμιση ανά εμφάνιση ή κλικ· ο προορισμός και οι μεγάλοι, σπάνια το μεμονωμένο ξενοδοχείο</div></div></div>
+    <div class="jpanel" data-i="1"><h4>Αναζήτηση: «ξενοδοχείο Χανιά Αύγουστος οικογένεια»</h4>Google (και όλο και περισσότερο ένα AI assistant), η εφαρμογή της Booking.com, η Expedia, το Airbnb. Εδώ κρίνεται αν το ξενοδοχείο <i>υπάρχει</i> για τον πελάτη. <div class="who"><div><b>Ποιος μεσολαβεί</b>Μηχανές αναζήτησης, OTAs, metasearch (Google Hotels, trivago, TripAdvisor)</div><div><b>Τι δεδομένα</b>Ημερομηνίες, άτομα, προϋπολογισμός: πρόθεση κράτησης</div><div><b>Ποιος πληρώνει</b>Η θέση στα αποτελέσματα: διαφήμιση ανά κλικ (CPC) στη Google, προγράμματα ορατότητας στις OTAs</div></div></div>
+    <div class="jpanel" data-i="2"><h4>Σύγκριση: τρεις καρτέλες ανοιχτές</h4>Booking.com, το site του ξενοδοχείου, και το Google Hotels που δείχνει τις τιμές όλων δίπλα-δίπλα. Η οικογένεια ψάχνει τη φθηνότερη τιμή, τη δωρεάν ακύρωση και το πρωινό. <div class="who"><div><b>Ποιος μεσολαβεί</b>Metasearch, συγκριτές, κριτικές (TripAdvisor, Google reviews)</div><div><b>Τι δεδομένα</b>Τιμές ανά κανάλι, διαθεσιμότητα, βαθμολογίες</div><div><b>Ποιος πληρώνει</b>Το metasearch πληρώνεται από όποιον θέλει να εμφανίζεται η τιμή του: η OTA ή το ξενοδοχείο (CPC ή ποσοστό)</div></div></div>
+    <div class="jpanel" data-i="3"><h4>Κράτηση: το κλικ</h4>Αν κλείσει στη Booking.com: η Booking εισπράττει την προμήθεια (15–20%), η κράτηση φτάνει στο ξενοδοχείο μέσω του channel manager στο PMS, και η διαθεσιμότητα κλείνει αυτόματα σε όλα τα άλλα κανάλια. Αν κλείσει στο site: το booking engine χρεώνει 2–4%, ο πελάτης είναι «δικός» του ξενοδοχείου (email, προτιμήσεις). <div class="who"><div><b>Ποιος μεσολαβεί</b>OTA ή booking engine, πάροχος πληρωμών, channel manager, PMS</div><div><b>Τι δεδομένα</b>Στοιχεία πελάτη (στην OTA συχνά μόνο ένα ψευδώνυμο email), κάρτα, ειδικά αιτήματα</div><div><b>Ποιος πληρώνει</b>Το ξενοδοχείο: προμήθεια OTA ή τέλος booking engine + πληρωμών</div></div></div>
+    <div class="jpanel" data-i="4"><h4>Διαμονή: check-in, παραγγελίες, Wi-Fi</h4>PMS, κλειδί στο κινητό, εφαρμογή εξυπηρέτησης, POS στο εστιατόριο, Wi-Fi που ζητά email. Εδώ το ξενοδοχείο μαθαίνει επιτέλους ποιος είναι ο πελάτης, και μπορεί να πουλήσει επιπλέον (αναβάθμιση, spa, εκδρομή). <div class="who"><div><b>Ποιος μεσολαβεί</b>PMS, εφαρμογές εξυπηρέτησης, πάροχοι εκδρομών, πληρωμές</div><div><b>Τι δεδομένα</b>Πραγματικές προτιμήσεις και δαπάνη: τα πολυτιμότερα δεδομένα της διαδρομής</div><div><b>Ποιος πληρώνει</b>Συνδρομές λογισμικού (SaaS), προμήθεια σε πωλήσεις εκδρομών</div></div></div>
+    <div class="jpanel" data-i="5"><h4>Κριτική: «θα το συνιστούσα;»</h4>Η Booking.com ζητά κριτική από τον πελάτη της· το ξενοδοχείο από τον δικό του. Η βαθμολογία επιστρέφει στο στάδιο 2 της επόμενης οικογένειας: ένα 8,9 αντί για 8,4 αλλάζει θέση στα αποτελέσματα και τιμή που αντέχει η αγορά. <div class="who"><div><b>Ποιος μεσολαβεί</b>OTAs, Google, TripAdvisor, πλατφόρμες φήμης</div><div><b>Τι δεδομένα</b>Βαθμολογίες, κείμενα, απαντήσεις της διεύθυνσης</div><div><b>Ποιος πληρώνει</b>Κανείς άμεσα· έμμεσα, η φήμη τιμολογείται στο επόμενο στάδιο 2 (θα το μετρήσουμε στην ενότητα φήμης)</div></div></div>
+    <div class="box note"><b>ΤΟ ΜΟΤΙΒΟ</b>Σε κάθε στάδιο κάποιος κάθεται ανάμεσα στον πελάτη και το ξενοδοχείο, κρατά τα δεδομένα του σταδίου και χρεώνει για την πρόσβαση. Το ξενοδοχείο ελέγχει πλήρως μόνο το στάδιο 4. Όλη η ψηφιακή στρατηγική ενός ξενοδοχείου είναι η απάντηση στο ερώτημα: <b>σε ποια στάδια αξίζει να πληρώσω τον μεσάζοντα και σε ποια να χτίσω δικό μου δρόμο;</b></div>
+    <div class="quiz" data-q="Σε ποιο στάδιο της διαδρομής το ξενοδοχείο μαθαίνει για πρώτη φορά ποιος πραγματικά είναι ο πελάτης (όνομα, email, προτιμήσεις), όταν η κράτηση έγινε μέσω OTA;" data-opts='["Στην αναζήτηση, από τα δεδομένα της Google","Στην κράτηση: η OTA στέλνει όλα τα στοιχεία","Στη διαμονή: η OTA δίνει συχνά μόνο ψευδώνυμο email και το ξενοδοχείο γνωρίζει τον πελάτη στο check-in","Ποτέ, ο πελάτης ανήκει στην OTA"]' data-ans="2" data-why="Οι OTAs κρατούν τη σχέση με τον πελάτη (και το email του) για τον εαυτό τους. Γι᾽ αυτό το check-in και το Wi-Fi που ζητά email δεν είναι γραφειοκρατία: είναι η στιγμή που το ξενοδοχείο αποκτά τον δικό του πελάτη για την επόμενη φορά."></div>
+    <div class="quiz" data-q="Στο στάδιο της σύγκρισης, το Google Hotels δείχνει την τιμή του ξενοδοχείου από τη Booking.com, την Expedia και το ίδιο το site. Ποιος πληρώνει τη Google για αυτή την εμφάνιση;" data-opts='["Ο ταξιδιώτης, μέσω της τιμής","Κανείς, είναι δωρεάν υπηρεσία της Google","Όποιος θέλει να εμφανίζεται η τιμή του: η OTA ή το ξενοδοχείο, ανά κλικ ή με ποσοστό επί της κράτησης","Μόνο το ξενοδοχείο"]' data-ans="2" data-why="Το metasearch είναι διαφήμιση με τιμή. Υπάρχουν και δωρεάν σύνδεσμοι (free booking links, από το 2021), αλλά τις καλές θέσεις τις παίρνει όποιος πληρώνει. Συχνά η Booking.com πληρώνει τη Google για να εμφανίσει το ξενοδοχείο σου πριν από σένα."></div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="step" data-title="Οι παίκτες">
+    <h2>2. Ο χάρτης των παικτών</h2>
+    <p>Δώδεκα όροι που θα ακούς σε κάθε συζήτηση με προμηθευτές. Τρεις κατηγορίες: <b>κανάλια</b> (από πού έρχεται ο πελάτης), <b>υποδομή</b> (πώς κυκλοφορεί η κράτηση μέσα στο ξενοδοχείο) και <b>διαμεσολαβητές του παλιού κόσμου</b> που δεν έφυγαν ποτέ.</p>
+    <h3>Κανάλια</h3>
+    <div class="players">
+      <div class="pl"><b>OTA <span class="en">online travel agency</span></b><i>Booking.com, Expedia (Hotels.com), Airbnb για καταλύματα</i>Πουλά το δωμάτιο στο δικό της site, εισπράττει προμήθεια επί της κράτησης. Φέρνει ζήτηση που το ξενοδοχείο δεν θα έβρισκε μόνο του, ειδικά από μακρινές αγορές. Στην Ευρώπη το 2025: 29,9% των κρατήσεων, με τη Booking Holdings να έχει το 69% αυτών.</div>
+      <div class="pl"><b>Metasearch</b><i>Google Hotels, trivago, TripAdvisor, Kayak</i>Δεν πουλά· συγκρίνει τιμές από OTAs και site και στέλνει τον πελάτη εκεί. Χρεώνει ανά κλικ (CPC) ή ποσοστό επί της κράτησης (CPA). Το ξενοδοχείο μπορεί να εμφανίσει τη δική του τιμή δίπλα στης Booking.</div>
+      <div class="pl"><b>Booking engine</b><i>Ενσωματώνεται στο site του ξενοδοχείου</i>Η «μηχανή» που κάνει το site να πουλά: διαθεσιμότητα, τιμές, πληρωμή. Κοστίζει συνδρομή ή 2–4% ανά κράτηση. Χωρίς αυτό, το site είναι φυλλάδιο.</div>
+      <div class="pl"><b>Brand.com / απευθείας</b><i>Site, τηλέφωνο, email, walk-in, επαναλαμβανόμενοι πελάτες</i>Το κανάλι χωρίς προμήθεια, αλλά όχι χωρίς κόστος: site, booking engine, διαφήμιση, πρόγραμμα πιστότητας. Στην Ελλάδα το 2025 μόλις 8,7% των διανυκτερεύσεων ήρθε από το site του ξενοδοχείου· 14,3% από το τηλέφωνο.</div>
+      <div class="pl"><b>Tour operator / ΤΟ</b><i>TUI, Jet2, Der Touristik, και οι έλληνες εισερχόμενοι πράκτορες</i>Αγοράζει δωμάτια με συμβόλαιο (allotment ή εγγύηση) μήνες πριν, σε τιμή χονδρικής, και τα πουλά ως πακέτο με πτήση. Για το εποχικό ελληνικό ξενοδοχείο συχνά το μισό της πληρότητας. Στο dataset: «Offline TA/TO», 20% των κρατήσεων.</div>
+      <div class="pl"><b>Bed bank / wholesaler & GDS</b><i>Hotelbeds, WebBeds · Amadeus, Sabre, Travelport</i>Το bed bank αγοράζει χονδρικά και μεταπωλεί σε πρακτορεία και OTAs (εδώ γεννιέται συχνά η «υποτιμολόγηση»: η τιμή χονδρικής εμφανίζεται λιανικά). Το GDS συνδέει το ξενοδοχείο με ταξιδιωτικά γραφεία και εταιρικά ταξίδια.</div>
+    </div>
+    <h3>Υποδομή</h3>
+    <div class="players">
+      <div class="pl"><b>PMS <span class="en">property management system</span></b><i>Opera, Mews, Protel, ελληνικά συστήματα</i>Η καρδιά: δωμάτια, κρατήσεις, check-in, λογαριασμοί, καθαριότητα. Από εδώ βγήκε το CSV των εργαστηρίων.</div>
+      <div class="pl"><b>Channel manager</b><i>SiteMinder, D-EDGE, ελληνικοί πάροχοι</i>Συγχρονίζει διαθεσιμότητα και τιμές σε όλα τα κανάλια ταυτόχρονα. Χωρίς αυτόν, πουλάς το ίδιο δωμάτιο δύο φορές (overbooking) ή κλείνεις χειροκίνητα 8 extranets κάθε βράδυ.</div>
+      <div class="pl"><b>RMS <span class="en">revenue management system</span></b><i>IDeaS, Duetto, Atomize</i>Προτείνει τιμή ανά ημέρα με βάση ζήτηση, ανταγωνισμό, pickup. Αυτό που κάναμε με το Tableau και τις παραμέτρους, αυτοματοποιημένο.</div>
+      <div class="pl"><b>CRM & πληρωμές</b><i>Revinate, Mailchimp · Stripe, Viva, Adyen</i>Το CRM κρατά τον πελάτη για την επόμενη φορά (email, προτιμήσεις, διαμονές). Ο πάροχος πληρωμών χρεώνει 1–2% ανά συναλλαγή, είτε κλείσει στο site είτε μέσω Payments by Booking.</div>
+      <div class="pl"><b>Πλατφόρμες φήμης</b><i>TripAdvisor, Google, οι ίδιες οι OTAs</i>Κριτικές και βαθμολογίες που επιστρέφουν στο στάδιο της σύγκρισης. Ενότητα δική τους σε λίγες εβδομάδες.</div>
+      <div class="pl ex"><b>Και ο νέος παίκτης: ο AI assistant</b><i>ChatGPT, Gemini, οι «agents» της Booking και της Expedia</i>«Βρες μου οικογενειακό ξενοδοχείο στα Χανιά κάτω από 200 € με πισίνα και κλείσ᾽ το.» Ποιος απαντά, με ποια δεδομένα, και ποιος πληρώνεται; Ανοιχτό ερώτημα του 2026· θα το ξαναδούμε στην ενότητα της γενετικής ΑΙ.</div>
+    </div>
+    <div class="check" data-select='["Το PMS","Ο channel manager","Το booking engine","Το metasearch"]' data-answer="1" data-hint="Το PMS ξέρει τι έχει το ξενοδοχείο· ο channel manager το λέει σε όλα τα κανάλια ταυτόχρονα και φέρνει πίσω τις κρατήσεις τους.">
+      <div class="title">Checkpoint 1</div>
+      <div class="q">Η Booking.com, η Expedia και το site πουλούν το ίδιο τελευταίο δωμάτιο. Ποιος εξασφαλίζει ότι θα πουληθεί μόνο μία φορά;</div>
+    </div>
+    <div class="check" data-select='["Προμήθεια επί της κράτησης","Χρέωση ανά κλικ ή ποσοστό, για να εμφανίζεται μια τιμή","Τιμή χονδρικής με συμβόλαιο μήνες πριν","Συνδρομή λογισμικού"]' data-answer="1" data-hint="Το metasearch δεν πουλά δωμάτια· πουλά θέση δίπλα στις τιμές των άλλων. Η OTA πουλά και εισπράττει προμήθεια· ο tour operator αγοράζει χονδρικά.">
+      <div class="title">Checkpoint 2</div>
+      <div class="q">Πώς βγάζει χρήματα ένα metasearch όπως το Google Hotels ή το trivago;</div>
+    </div>
+    <div class="quiz" data-q="Ένα εποχικό ξενοδοχείο 120 δωματίων στη Ρόδο έχει το 55% της πληρότητας από δύο tour operators με συμβόλαιο εγγύησης. Τι είναι αυτό;" data-opts='["Λάθος στρατηγική: πρέπει να πάει όλο online","Σιγουριά με αντίτιμο: χαμηλή τιμή χονδρικής και εξάρτηση από δύο πελάτες, αλλά εγγυημένα έσοδα πριν ανοίξει","Το ίδιο με τη Booking.com, απλώς offline","Κάτι που δεν υπάρχει πια μετά την πανδημία"]' data-ans="1" data-why="Στην Ελλάδα το 2025 οι tour operators και τα πρακτορεία έφεραν ακόμα το 25–30% των διανυκτερεύσεων (HOTREC 2026), πολύ πάνω από τον ευρωπαϊκό μέσο όρο. Το ερώτημα δεν είναι «online ή TO» αλλά ποιο μείγμα: η εγγύηση του TO πληρώνει τους μισθούς του Μαΐου, η Booking πληρώνει το περιθώριο του Αυγούστου."></div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="step" data-title="Ποιος πληρώνει">
+    <h2>3. Ποιος πληρώνει ποιον: η στοίβα της προμήθειας</h2>
+    <p>«Η Booking παίρνει 15%» είναι η αρχή της κουβέντας, όχι το τέλος. Το 15% είναι η βασική προμήθεια (διαφέρει ανά χώρα)· πάνω της στοιβάζονται προγράμματα που το ξενοδοχείο «επιλέγει» για να μη χαθεί στη σελίδα 4 των αποτελεσμάτων.</p>
+    <table class="t">
+      <tr><th>Στρώμα</th><th>Τι είναι</th><th class="r">Τυπικό κόστος</th></tr>
+      <tr><td><b>Βασική προμήθεια</b></td><td>Ποσοστό επί της αξίας της κράτησης, συμπεριλαμβανομένων των φόρων που πληρώνει ο πελάτης</td><td class="r">15% (12–18% ανά χώρα)</td></tr>
+      <tr><td><b>Preferred / Preferred Plus</b></td><td>Το «μπράβο» δίπλα στο όνομα και καλύτερη θέση στα αποτελέσματα</td><td class="r">+2 έως +5 μονάδες</td></tr>
+      <tr><td><b>Genius</b></td><td>Έκπτωση 10–20% στα μέλη του προγράμματος πιστότητας της Booking· την πληρώνει το ξενοδοχείο, η προμήθεια υπολογίζεται στην τιμή <i>πριν</i> την έκπτωση</td><td class="r">10–20% της τιμής</td></tr>
+      <tr><td><b>Payments by Booking.com</b></td><td>Η πλατφόρμα εισπράττει από τον πελάτη και αποδίδει στο ξενοδοχείο</td><td class="r">+1,1 έως 1,4%</td></tr>
+      <tr><td><b>Booking Sponsored Benefit</b></td><td>Η Booking κατεβάζει μόνη της την εμφανιζόμενη τιμή και πληρώνει τη διαφορά. Το ξενοδοχείο κρατά τιμή και προμήθεια, αλλά βλέπει το site του να φαίνεται ακριβότερο</td><td class="r">0 € άμεσα</td></tr>
+      <tr><td><b>Σύνολο</b></td><td>Για τα περισσότερα ξενοδοχεία που συμμετέχουν στα προγράμματα</td><td class="r"><b>17–22%</b> συν Genius</td></tr>
+    </table>
+    <div class="box note"><b>ΚΑΙ Η ΑΛΛΗ ΠΛΕΥΡΑ</b>Το απευθείας κανάλι δεν είναι δωρεάν. Booking engine 2–4%, πληρωμές 1–2%, και κυρίως διαφήμιση για να σε βρουν: Google Ads και metasearch μπορεί να κοστίζουν 5–10% της κράτησης που φέρνουν. Το ρεαλιστικό κόστος μιας direct κράτησης είναι 6–12%, όχι μηδέν. Η σύγκριση είναι 18–22% έναντι 6–12%, συν το ότι ο πελάτης είναι δικός σου.</div>
+    <h3>Παράδειγμα: 3 νύχτες στα 120 €</h3>
+    <ol class="todo">
+      <li>Τιμή καταλόγου: 3 × 120 = <b>360 €</b>.</li>
+      <li>Ο πελάτης είναι μέλος Genius, έκπτωση 10%: πληρώνει <b>324 €</b>.</li>
+      <li>Προμήθεια 15% + Preferred 3% = 18% επί των 324 € = <b>58,32 €</b>.</li>
+      <li>Payments by Booking 1,2% επί των 324 € = <b>3,89 €</b>.</li>
+      <li>Μένουν στο ξενοδοχείο: 324 − 58,32 − 3,89 = <b>261,79 €</b>. Σε σχέση με τα 360 € του καταλόγου, το κανάλι «κόστισε» 98,21 €, δηλαδή <b>27,3%</b>.</li>
+    </ol>
+    <div class="check" data-answer="261.79" data-tol="0.6" data-unit="€" data-hint="Πρόσεξε τη σειρά: πρώτα η έκπτωση Genius (η προμήθεια υπολογίζεται στην τιμή που πλήρωσε ο πελάτης μετά την έκπτωση στην πράξη της Booking· εδώ χρησιμοποίησε τα 324 €), μετά 18% προμήθεια, μετά 1,2% πληρωμές. 324 − 58,32 − 3,89.">
+      <div class="title">Checkpoint 3</div>
+      <div class="q">Πόσα ευρώ μένουν τελικά στο ξενοδοχείο από την κράτηση των 3 νυχτών;</div>
+    </div>
+    <div class="check" data-answer="27.3" data-tol="0.3" data-unit="%" data-hint="(360 − 261,79) / 360. Το ξενοδοχείο «βλέπει» προμήθεια 18%, αλλά σε σχέση με την τιμή που θα έπαιρνε απευθείας το πραγματικό κόστος του καναλιού είναι πάνω από το ένα τέταρτο.">
+      <div class="title">Checkpoint 4</div>
+      <div class="q">Πόσο % της τιμής καταλόγου (360 €) κόστισε συνολικά το κανάλι;</div>
+    </div>
+    <div class="quiz" data-q="Η ίδια οικογένεια κλείνει τις 3 νύχτες στο site του ξενοδοχείου, με 10% έκπτωση μέλους για να τη δελεάσει, booking engine 3% και πληρωμές 1,5%. Πόσα μένουν στο ξενοδοχείο, και τι άλλο κερδίζει;" data-opts='["324 € και τίποτα άλλο","309,42 € και το email, τις προτιμήσεις και την επόμενη κράτηση της οικογένειας","261,79 €, ίδιο με τη Booking","360 €, γιατί το site δεν έχει κόστος"]' data-ans="1" data-why="324 × (1 − 0,045) = 309,42 €: 47,63 € περισσότερα από τη Booking στην ίδια τιμή για τον πελάτη. Και το σημαντικότερο δεν φαίνεται στον λογαριασμό: την επόμενη φορά η οικογένεια παίρνει email από το ξενοδοχείο, όχι από τη Booking."></div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="step" data-title="Προσομοιωτής">
+    <h2>4. Ο προσομοιωτής μείγματος καναλιών</h2>
+    <p>Τα δύο ξενοδοχεία του dataset έκαναν 26,0 εκατ. € πραγματοποιημένα έσοδα σε 26 μήνες. Από το Tableau ξέρουμε από πού ήρθαν: <b>53% Online TA, 22% tour operators και πρακτορεία, 16% απευθείας, 7% γκρουπ, 2% εταιρικοί</b>. Παίξε με το μείγμα και τις προμήθειες και δες τι μένει.</p>
+    <figure class="fig"><img class="shot" src="img/channel_mix.png" alt="Μερίδιο κρατήσεων και εσόδων ανά κανάλι στο dataset, και ποσοστό ακυρώσεων ανά κανάλι"><figcaption>Από το dataset των εργαστηρίων (Market Segment). Οι Online TA έχουν μεγαλύτερο μερίδιο στα έσοδα απ᾽ ό,τι στις κρατήσεις γιατί πληρώνουν υψηλότερο ADR· τα γκρουπ το αντίθετο, και ακυρώνουν 61%.</figcaption></figure>
+    <div class="sim" id="sim">
+      <div>
+        <h4>Μείγμα εσόδων (το Direct παίρνει ή δίνει μερίδιο από το κανάλι που διαλέγεις)</h4>
+        <div class="sl"><span>Απευθείας (Direct)</span><input type="range" id="sDirect" min="5" max="60" step="0.1"><span class="v" id="vDirect"></span></div>
+        <div class="sl"><span>Μετακίνηση από</span><select id="sFrom" style="font:inherit;padding:4px 8px;border:1px solid var(--lblue);border-radius:6px"><option value="ota">Online TA</option><option value="tato">Tour operators / TA</option></select><span class="v"></span></div>
+        <div class="sl"><span>Online TA</span><input type="range" id="sOta" min="0" max="80" step="0.5" disabled><span class="v" id="vOta"></span></div>
+        <div class="sl"><span>Tour op. / TA</span><input type="range" id="sTato" min="0" max="60" step="0.5" disabled><span class="v" id="vTato"></span></div>
+        <div class="sl"><span>Γκρουπ · Εταιρικοί</span><span style="font-size:13px;color:var(--gray)">σταθερά 7,2% και 2,2%</span><span class="v"></span></div>
+        <h4 style="margin-top:14px">Κόστος ανά κανάλι (% των εσόδων του καναλιού)</h4>
+        <div class="sl c"><span>Online TA</span><input type="range" id="cOta" min="10" max="30" step="0.5" value="18"><span class="v" id="vcOta"></span></div>
+        <div class="sl c"><span>Tour op. / TA</span><input type="range" id="cTato" min="10" max="35" step="0.5" value="20"><span class="v" id="vcTato"></span></div>
+        <div class="sl c"><span>Direct: engine + πληρωμές</span><input type="range" id="cDir1" min="0" max="8" step="0.5" value="4"><span class="v" id="vcDir1"></span></div>
+        <div class="sl c"><span>Direct: διαφήμιση</span><input type="range" id="cDir2" min="0" max="15" step="0.5" value="5"><span class="v" id="vcDir2"></span></div>
+        <div class="sl c"><span>Γκρουπ</span><input type="range" id="cGrp" min="0" max="20" step="0.5" value="10"><span class="v" id="vcGrp"></span></div>
+        <div class="sl c"><span>Εταιρικοί</span><input type="range" id="cCorp" min="0" max="15" step="0.5" value="5"><span class="v" id="vcCorp"></span></div>
+        <button class="btn outline" id="simReset" style="margin-top:8px">Επαναφορά στο dataset</button>
+      </div>
+      <div>
+        <h4>Αποτέλεσμα (26 μήνες, πραγματοποιημένα έσοδα)</h4>
+        <div class="bar" id="simBar"></div>
+        <div class="legend"><span><i style="background:#3F63D6"></i>Online TA</span><span><i style="background:#7895F9"></i>TO/TA</span><span><i style="background:#E8740F"></i>Direct</span><span><i style="background:#B9C8FC"></i>Γκρουπ</span><span><i style="background:#5A6385"></i>Εταιρικοί</span></div>
+        <div class="kpis" style="margin-top:10px">
+          <div class="kpi"><b>Μικτά έσοδα</b><div class="n" id="kGross"></div><div class="d">σταθερά: αλλάζει μόνο από πού έρχονται</div></div>
+          <div class="kpi hl"><b>Κόστος διανομής</b><div class="n" id="kCost"></div><div class="d" id="kCostPct"></div></div>
+          <div class="kpi"><b>Καθαρά έσοδα</b><div class="n" id="kNet"></div><div class="d" id="kNetD"></div></div>
+          <div class="kpi"><b>Σε σχέση με το dataset</b><div class="n" id="kDiff"></div><div class="d">εξοικονόμηση (+) ή επιπλέον κόστος (−)</div></div>
+        </div>
+        <div class="box tip" style="margin-top:10px;font-size:14px"><b>ΔΙΑΒΑΣΕ ΤΟ ΣΩΣΤΑ</b>Ο προσομοιωτής υποθέτει ότι οι κρατήσεις που «μετακινούνται» έρχονται ούτως ή άλλως. Στην πραγματικότητα, αν κλείσεις τη Booking χάνεις και ζήτηση που δεν θα σε έβρισκε ποτέ (η οικογένεια από το Μάντσεστερ). Γι᾽ αυτό κανείς δεν τη «κλείνει»: τη χρησιμοποιεί για να τον βρουν και δουλεύει να φέρει τη <i>δεύτερη</i> κράτηση απευθείας.</div>
+      </div>
+    </div>
+    <div class="check" data-answer="215" data-tol="6" data-unit="χιλ. €" data-hint="Πάτα «Επαναφορά στο dataset» για τις προεπιλογές των προμηθειών (Online TA 18%, TO/TA 20%, Direct 4% + 5%, Γκρουπ 10%, Εταιρικοί 5%), άφησε «Μετακίνηση από: Online TA» και σύρε το Direct στο 25%. Το κουτί «Σε σχέση με το dataset» δείχνει την εξοικονόμηση. Γιατί τόσο λίγο; Γιατί η διαφορά κόστους είναι 18% − 9% = 9 μονάδες, πάνω σε 2,4 εκατ. € που μετακινήθηκαν.">
+      <div class="title">Checkpoint 5</div>
+      <div class="q">Με τις προεπιλογές, αν το απευθείας κανάλι ανέβει από 15,8% στο 25% των εσόδων παίρνοντας μερίδιο από τις Online TA, πόσες χιλιάδες ευρώ εξοικονομούνται στους 26 μήνες;</div>
+    </div>
+    <div class="check" data-answer="1" data-select='["Να ανέβει το Direct στο 40%","Να πέσει το κόστος των Online TA από 18% σε 15% (π.χ. έξοδος από το Preferred)","Να μηδενιστεί η διαφήμιση του Direct","Να πέσει η προμήθεια των γκρουπ στο 0%"]' data-hint="Δοκίμασέ τα στον προσομοιωτή. Το Online TA είναι το 53% των εσόδων: 3 μονάδες πάνω σε 13,7 εκατ. € είναι 414 χιλ. €. Το Direct στο 40% (από Online TA) με 9% κόστος εξοικονομεί 564 χιλ. αλλά απαιτεί να τριπλασιαστούν οι απευθείας κρατήσεις· η διαφήμιση στο 0% είναι ανέφικτη· τα γκρουπ είναι μόλις 7% των εσόδων.">
+      <div class="title">Checkpoint 6</div>
+      <div class="q">Ποια από τις παρακάτω κινήσεις φέρνει τη μεγαλύτερη εξοικονόμηση με τη μικρότερη αλλαγή στη συμπεριφορά των πελατών;</div>
+    </div>
+    <div class="quiz" data-q="Ο διευθυντής λέει: «Η Booking μάς κοστίζει 2,5 εκατομμύρια, να την κλείσουμε». Τι του απαντάς με βάση τον προσομοιωτή;" data-opts='["Συμφωνώ, το 18% είναι ληστεία","Η Booking φέρνει το 53% των εσόδων· αν την κλείσουμε, η εξοικονόμηση είναι υποθετική και η απώλεια ζήτησης βέβαιη. Προτείνω να μειώσουμε το κόστος της (Preferred, Genius) και να φέρουμε τη δεύτερη κράτηση κάθε πελάτη απευθείας","Να την αντικαταστήσουμε με Expedia που έχει μικρότερη προμήθεια","Να βάλουμε μεγαλύτερη τιμή στη Booking για να καλύψουμε την προμήθεια"]' data-ans="1" data-why="Η τελευταία επιλογή ήταν παράνομη μέχρι το 2024 (ρήτρες ισοτιμίας) και σήμερα επιτρέπεται, αλλά η Booking μπορεί να «διορθώσει» την τιμή με δικά της χρήματα (Sponsored Benefit). Επόμενο βήμα."></div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="step" data-title="Ισοτιμία & DMA">
+    <h2>5. Ισοτιμία τιμών και τι άλλαξε με τον DMA</h2>
+    <p>Για είκοσι χρόνια οι OTAs απαιτούσαν με συμβόλαιο <b>ισοτιμία τιμών</b> <span class="en">(rate parity)</span>: το ξενοδοχείο δεν επιτρέπεται να πουλά φθηνότερα αλλού. «Ευρεία» ισοτιμία σήμαινε πουθενά, ούτε σε άλλη OTA· «στενή» σήμαινε τουλάχιστον όχι στο δικό σου site. Το επιχείρημα της Booking: χωρίς ισοτιμία, ο πελάτης βρίσκει το ξενοδοχείο στην Booking και κλείνει φθηνότερα στο site του, το λεγόμενο <b>billboard effect</b>, και η πλατφόρμα πληρώνει τη διαφήμιση για λογαριασμό όλων. Το επιχείρημα των ξενοδόχων: το ξενοδοχείο δεν μπορεί να ανταμείψει τον πελάτη που έρχεται απευθείας.</p>
+    <div class="tl">
+      <div><b>2015</b>Γαλλία, Αυστρία, Ιταλία, Βέλγιο απαγορεύουν με νόμο τις ρήτρες ισοτιμίας· η Γερμανία μέσω της αρχής ανταγωνισμού. Στην Ελλάδα παραμένουν.</div>
+      <div><b>Σεπ 2024</b>Το Δικαστήριο της ΕΕ (υπόθεση Booking.com κατά 25hours Hotel) κρίνει ότι ούτε οι «στενές» ρήτρες είναι αντικειμενικά αναγκαίες· δεν εξαιρούνται αυτόματα από τους κανόνες ανταγωνισμού.</div>
+      <div class="o"><b>13 Μαΐ 2024</b>Η Ευρωπαϊκή Επιτροπή ορίζει την Booking Holdings <b>ρυθμιστή πρόσβασης</b> <span class="en">(gatekeeper)</span> βάσει του Digital Markets Act. Ο DMA απαγορεύει στους gatekeepers κάθε απαίτηση ισοτιμίας, συμβατική ή έμμεση.</div>
+      <div class="o"><b>Ιούλ 2024</b>Η Booking.com αφαιρεί τις ρήτρες ισοτιμίας από τους όρους της στον ΕΟΧ· η ισοτιμία παύει να είναι προϋπόθεση για Genius, Preferred και Preferred Plus.</div>
+      <div class="o"><b>14 Νοε 2024</b>Προθεσμία πλήρους συμμόρφωσης. Τα ξενοδοχεία μπορούν να προσφέρουν καλύτερες τιμές και όρους σε άλλα κανάλια, και στο site τους, και αποκτούν πρόσβαση σε πραγματικό χρόνο στα δεδομένα που παράγουν στην πλατφόρμα.</div>
+      <div><b>2024–2026</b>Οι ξενοδοχειακές ενώσεις (HOTREC, στην Ελλάδα το ΞΕΕ) οργανώνουν συλλογικές αγωγές για αποζημιώσεις από τα χρόνια της ισοτιμίας. Οι αρχές ανταγωνισμού Ελλάδας, Ιταλίας, Ισπανίας, Ουγγαρίας ερευνούν την Booking.</div>
+      <div class="o"><b>Ιούλ 2026</b>Η ελληνική Επιτροπή Ανταγωνισμού θέτει σε διαβούλευση δεσμεύσεις της Booking.com για πιθανολογούμενη κατάχρηση δεσπόζουσας θέσης: διαφάνεια κατάταξης, κατάργηση του «Performance Score» ως κριτηρίου για Preferred, και τέλος στους «εξωτερικούς ελέγχους τιμών» ως προϋπόθεση για το Sponsored Benefit. Δεκαετής ισχύς αν εγκριθούν.</div>
+      <div class="o"><b>Σεπ 2026</b>Η Booking.com σταματά σε όλο τον ΕΟΧ να χρησιμοποιεί τιμές εκτός πλατφόρμας για το Sponsored Benefit και αφαιρεί τις ετικέτες «ανταγωνιστική / μη ανταγωνιστική τιμή» από το extranet, μετά από διάλογο με την Επιτροπή.</div>
+    </div>
+    <div class="box note"><b>ΤΙ ΣΗΜΑΙΝΕΙ ΓΙΑ ΕΝΑ ΞΕΝΟΔΟΧΕΙΟ ΤΟ 2026</b>
+      1. <b>Ελευθερία τιμής</b>: μπορείς νόμιμα να δίνεις καλύτερη τιμή ή όρους (πρωινό, ακύρωση, αναβάθμιση) σε όποιον κλείνει απευθείας.<br>
+      2. <b>Η πλατφόρμα απαντά με χρήματα, όχι με συμβόλαια</b>: το Sponsored Benefit κατεβάζει την τιμή σου στη Booking με δικά της χρήματα· το site σου φαίνεται ακριβότερο χωρίς να έχεις κάνει τίποτα. Μέχρι τον Σεπτέμβριο του 2026 το έκανε κοιτάζοντας την τιμή του site σου.<br>
+      3. <b>Η κατάταξη είναι το νέο πεδίο</b>: αφού δεν μπορεί να σε υποχρεώσει, σε κάνει να διαλέξεις: Preferred, Genius, πληρωμές, όλα «προαιρετικά» και όλα με αντίτιμο ορατότητας.<br>
+      4. <b>Η μισή Ευρώπη λέει ότι συνεχίζεται η υποτιμολόγηση</b>: 51% των ξενοδοχείων αναφέρουν ότι OTAs εμφανίζουν τιμή χαμηλότερη από τη δική τους (συχνά μέσω bed banks), +8 μονάδες από το 2023.
+    </div>
+    <div class="check" data-select='["Να χρεώνει προμήθεια πάνω από 15%","Να απαιτεί από το ξενοδοχείο να μη δίνει καλύτερη τιμή στο δικό του site","Να προσφέρει έκπτωση Genius στα μέλη της","Να εμφανίζει το ξενοδοχείο χαμηλά στα αποτελέσματα"]' data-answer="1" data-hint="Ο DMA ρυθμίζει την πρόσβαση, όχι την τιμή της υπηρεσίας. Προμήθεια, Genius και κατάταξη παραμένουν επιχειρηματικές επιλογές της πλατφόρμας (με υποχρέωση διαφάνειας)· η απαίτηση ισοτιμίας απαγορεύεται.">
+      <div class="title">Checkpoint 7</div>
+      <div class="q">Τι από τα παρακάτω απαγορεύει ο DMA στην Booking.com ως gatekeeper;</div>
+    </div>
+    <div class="quiz" data-q="Μετά τον DMA ένα ξενοδοχείο στη Θεσσαλονίκη βάζει 10% χαμηλότερη τιμή στο site του. Μετά από δύο εβδομάδες βλέπει στη Booking την τιμή του ίδια με του site, χωρίς να την έχει αλλάξει. Τι συνέβη;" data-opts='["Παραβίαση του DMA από την Booking: πρέπει να καταγγελθεί","Booking Sponsored Benefit: η πλατφόρμα κατέβασε την εμφανιζόμενη τιμή με δικά της χρήματα· το ξενοδοχείο εισπράττει το ίδιο, αλλά το πλεονέκτημα του site εξαφανίστηκε","Ο channel manager έστειλε λάθος τιμή","Ο πελάτης βλέπει τιμή Genius"]' data-ans="1" data-why="Νόμιμο και είναι ακριβώς ο λόγος που η ελευθερία τιμής από μόνη της δεν αρκεί. Η απάντηση του ξενοδοχείου είναι αξία που δεν συγκρίνεται σε έναν αριθμό: πρωινό, ευέλικτη ακύρωση, δωρεάν πάρκινγκ, αναβάθμιση, μόνο για όσους κλείνουν απευθείας."></div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="step" data-title="Η άσκηση">
+    <h2>6. Η άσκηση: έλεγχος ισοτιμίας σε πραγματικό ξενοδοχείο</h2>
+    <p>Διάλεξε ένα ξενοδοχείο που ξέρεις (όπου δουλεύεις, ή ένα 4* στην πόλη σου). Ίδιο δωμάτιο, ίδιες ημερομηνίες, ίδια άτομα, σε τέσσερα κανάλια μέσα στην ίδια ώρα. Συμπλήρωσε τη φόρμα· υπολογίζει τις διαφορές και σου δίνει την αναφορά για το eClass. Αποθηκεύεται στον browser σου.</p>
+    <ol class="todo">
+      <li>Διάλεξε ημερομηνίες 4–8 εβδομάδες μπροστά, 2 νύχτες, 2 ενήλικες, μεσαία εποχή (όχι Πάσχα ή Δεκαπενταύγουστο).</li>
+      <li><b>Booking.com</b>: βρες το ξενοδοχείο, το φθηνότερο διαθέσιμο δίκλινο με τους ίδιους όρους. Σημείωσε αν η τιμή είναι Genius (θα το λέει) και αν έχει πρωινό / δωρεάν ακύρωση.</li>
+      <li><b>Expedia ή Hotels.com</b>: το ίδιο.</li>
+      <li><b>Google</b>: αναζήτησε το όνομα του ξενοδοχείου, άνοιξε το πλαίσιο με τις τιμές (Google Hotels), βάλε τις ίδιες ημερομηνίες. Σημείωσε τη χαμηλότερη τιμή και <i>ποιος</i> την προσφέρει, και αν εμφανίζεται το ίδιο το ξενοδοχείο («Επίσημος ιστότοπος»).</li>
+      <li><b>Το site του ξενοδοχείου</b>: ίδιες ημερομηνίες. Υπάρχει booking engine; Προσφέρει κάτι για την απευθείας κράτηση (έκπτωση μέλους, πρωινό, late check-out); Αν δεν έχει online κράτηση, γράψε 0 και σημείωσέ το.</li>
+      <li>Συμπλήρωσε, διάβασε την αναφορά και γράψε δύο προτάσεις: τι θα έλεγες στον διευθυντή του.</li>
+    </ol>
+    <div class="form" id="pf">
+      <label>Ξενοδοχείο<input id="pHotel" placeholder="π.χ. Hotel Olympia, Θεσσαλονίκη"></label>
+      <label>Κατηγορία<select id="pCat"><option>2*</option><option>3*</option><option selected>4*</option><option>5*</option><option>Ενοικιαζόμενα / διαμερίσματα</option></select></label>
+      <label>Check-in<input id="pDate" type="date"></label>
+      <label>Νύχτες · άτομα<input id="pNights" placeholder="2 νύχτες, 2 ενήλικες"></label>
+      <label class="full">Τύπος δωματίου που σύγκρινες<input id="pRoom" placeholder="π.χ. Standard double, θέα πόλη"></label>
+    </div>
+    <div class="prices" id="prices">
+      <div class="h">Κανάλι</div><div class="h">Τιμή συνολική (€)</div><div class="h">Πρωινό</div><div class="h">Δωρεάν ακύρωση</div><div class="h">Σημείωση</div>
+      <div>Booking.com</div><input type="number" id="pB" min="0" step="1" placeholder="€"><input type="checkbox" id="bB"><input type="checkbox" id="cB"><select id="nB"><option value="">—</option><option>Τιμή Genius</option><option>Preferred</option><option>Sponsored discount</option><option>Μη διαθέσιμο</option></select>
+      <div>Expedia / Hotels.com</div><input type="number" id="pE" min="0" step="1" placeholder="€"><input type="checkbox" id="bE"><input type="checkbox" id="cE"><select id="nE"><option value="">—</option><option>Τιμή μέλους</option><option>Μη διαθέσιμο</option></select>
+      <div>Google Hotels (χαμηλότερη)</div><input type="number" id="pG" min="0" step="1" placeholder="€"><input type="checkbox" id="bG"><input type="checkbox" id="cG"><select id="nG"><option value="">Ποιος την προσφέρει;</option><option>Booking.com</option><option>Expedia</option><option>Το ξενοδοχείο (επίσημος ιστότοπος)</option><option>Άλλη OTA / bed bank</option><option>Agoda / Trip.com</option></select>
+      <div>Site του ξενοδοχείου</div><input type="number" id="pS" min="0" step="1" placeholder="€ (0 αν δεν έχει)"><input type="checkbox" id="bS"><input type="checkbox" id="cS"><select id="nS"><option value="">—</option><option>Έκπτωση μέλους / κωδικός</option><option>Δώρο: πρωινό, late check-out…</option><option>Χωρίς κάποιο κίνητρο</option><option>Δεν έχει online κράτηση</option></select>
+    </div>
+    <div class="form"><label class="full">Τι θα έλεγες στον διευθυντή; (2–3 προτάσεις: τι βρήκες, τι προτείνεις, τι θα κοστίσει)<textarea id="pConc" rows="3"></textarea></label></div>
+    <div class="out" id="pOut">Συμπλήρωσε τουλάχιστον δύο τιμές για να δεις τη σύγκριση.</div>
+    <div class="row" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn navy" id="pCopy">Αντιγραφή αναφοράς για το eClass</button><button class="btn outline" id="pClear">Καθαρισμός</button></div>
+    <div class="check" data-select='["Δεν την έκανα ακόμα","Το site του ξενοδοχείου ήταν το φθηνότερο ή έδινε κάτι παραπάνω","Μια OTA ήταν φθηνότερη από το site","Όλα ίδια, στο ευρώ","Το ξενοδοχείο δεν έχει online κράτηση"]' data-answer="-1" data-any="1" data-hint="Δεν υπάρχει σωστή απάντηση εδώ· υπάρχει το εύρημά σου. Στην Ευρώπη το 2025 το 51% των ξενοδοχείων λένε ότι OTAs τα υποτιμολογούν. Αν βρήκες το ίδιο, δεν είναι σπάνιο.">
+      <div class="title">Checkpoint 8</div>
+      <div class="q">Τι βρήκες;</div>
+    </div>
+    <div class="box note"><b>ΠΑΡΑΔΟΤΕΟ (ΜΕΧΡΙ ΤΟ ΕΠΟΜΕΝΟ ΜΑΘΗΜΑ)</b>Η αναφορά της φόρμας (κουμπί «Αντιγραφή») επικολλημένη στο eClass, μαζί με 4 screenshots (ένα ανά κανάλι, με ορατές τις ημερομηνίες και την τιμή) και τις 2–3 προτάσεις προς τον διευθυντή. Στο επόμενο μάθημα θα βάλουμε όλα τα ευρήματα σε έναν πίνακα: πόσα ξενοδοχεία από όσα ελέγξαμε δίνουν λόγο να κλείσει κανείς απευθείας;</div>
+    <div class="box note" id="finalScore" style="display:none"></div>
+    <h3>Τι ακολουθεί</h3>
+    <p>Την επόμενη εβδομάδα συνεχίζουμε στο ίδιο οικοσύστημα από την πλευρά του ξενοδοχείου: πώς χτίζεται μια στρατηγική απευθείας κρατήσεων (site, booking engine, πρόγραμμα πιστότητας, metasearch), τι είναι το channel management στην πράξη, και πώς διαβάζεις τα ευρήματα της άσκησης ισοτιμίας όλης της τάξης. Μετά, το Google Analytics: τι κάνουν οι επισκέπτες στο site πριν (δεν) κλείσουν.</p>
+  </section>
+
+  <div class="nav">
+    <button class="btn outline" id="prevBtn">← Προηγούμενο</button>
+    <button class="btn navy" id="nextBtn">Επόμενο →</button>
+  </div>
+  <footer>Ευάγγελος Καλαμπόκης · Information Systems Lab · Πανεπιστήμιο Μακεδονίας · Πηγές: HOTREC European Hotel Distribution Study 2026 (δεδομένα 2025)· European Commission, DMA: Booking (14.11.2024) και factsheet για την ισοτιμία (28.9.2026)· Επιτροπή Ανταγωνισμού, διαβούλευση δεσμεύσεων Booking.com (Ιούλιος 2026)· ΙΤΕΠ, Ξενοδοχεία και OTAs (2022)· δημόσιοι όροι προμηθειών Booking.com. Τα νούμερα του προσομοιωτή από το dataset των εργαστηρίων (Antonio, de Almeida &amp; Nunes 2019, CC BY 4.0).</footer>
+</div>
+
+<script>
+(function(){
+  const KEY='mtm-week6-ecosystem';
+  let state={step:0,quiz:{},check:{},seen:{},parity:{}};
+  try{const s=localStorage.getItem(KEY); if(s) state=Object.assign(state,JSON.parse(s));}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+  const steps=[...document.querySelectorAll('section.step')];
+  const stepper=document.getElementById('stepper');
+  steps.forEach((s,i)=>{const b=document.createElement('button'); b.innerHTML='<span class="n">'+(i+1)+'</span><span class="l">'+s.dataset.title+'</span>'; b.onclick=()=>go(i); stepper.appendChild(b);});
+  function go(i){state.step=i; save(); steps.forEach((s,j)=>s.classList.toggle('active',j===i)); [...stepper.children].forEach((b,j)=>b.classList.toggle('active',j===i));
+    document.getElementById('prevBtn').disabled=i===0; document.getElementById('nextBtn').disabled=i===steps.length-1; window.scrollTo({top:0,behavior:'smooth'});}
+  document.getElementById('prevBtn').onclick=()=>go(Math.max(0,state.step-1));
+  document.getElementById('nextBtn').onclick=()=>go(Math.min(steps.length-1,state.step+1));
+
+  // journey
+  const jb=[...document.querySelectorAll('#journey button')], jp=[...document.querySelectorAll('.jpanel')];
+  jb.forEach(b=>{b.onclick=()=>{const i=+b.dataset.i; jb.forEach(x=>x.classList.toggle('active',x===b)); jp.forEach(p=>p.classList.toggle('active',+p.dataset.i===i)); state.seen[i]=true; b.classList.add('seen'); save(); updateDone();}; if(state.seen[b.dataset.i]) b.classList.add('seen');});
+
+  // quizzes
+  const quizzes=[...document.querySelectorAll('.quiz')];
+  quizzes.forEach((q,qi)=>{
+    const opts=JSON.parse(q.dataset.opts), ans=+q.dataset.ans;
+    q.innerHTML='<div class="q">'+q.dataset.q+'</div><div class="opts"></div><div class="fb"></div>';
+    const box=q.querySelector('.opts'), fb=q.querySelector('.fb');
+    opts.forEach((o,i)=>{const b=document.createElement('button'); b.textContent=o;
+      b.onclick=()=>{[...box.children].forEach(c=>c.classList.remove('ok','bad'));
+        if(i===ans){b.classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why; state.quiz[qi]=true;}
+        else{b.classList.add('bad'); fb.className='fb bad'; fb.textContent='Όχι ακριβώς. '+q.dataset.why; state.quiz[qi]=false;}
+        save(); updateDone(); finalScore();};
+      box.appendChild(b);});
+    if(state.quiz[qi]===true){box.children[ans].classList.add('ok'); fb.className='fb ok'; fb.textContent='Σωστά! '+q.dataset.why;}
+  });
+
+  // checkpoints
+  const checks=[...document.querySelectorAll('.check')];
+  function parseNum(s){s=String(s).trim().replace(/\s/g,'').replace(/%|€/g,''); if(/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(s)) s=s.replace(/\./g,'').replace(',','.'); else s=s.replace(',','.'); return parseFloat(s);}
+  checks.forEach((c,ci)=>{
+    const wrap=document.createElement('div');
+    if(c.dataset.select){
+      const opts=JSON.parse(c.dataset.select);
+      wrap.innerHTML='<div class="row"><select><option value="">— διάλεξε —</option>'+opts.map((o,i)=>'<option value="'+i+'">'+o+'</option>').join('')+'</select><button class="btn">✔ Έλεγξε</button></div><div class="result"></div><details><summary>Βοήθεια</summary><div>'+c.dataset.hint+'</div></details>';
+    }else{
+      wrap.innerHTML='<div class="row"><input inputmode="decimal" placeholder="αριθμός"><span class="unit">'+(c.dataset.unit||'')+'</span><button class="btn">✔ Έλεγξε</button></div><div class="result"></div><details><summary>Βοήθεια</summary><div>'+c.dataset.hint+'</div></details>';
+    }
+    c.appendChild(wrap);
+    const res=wrap.querySelector('.result'), btn=wrap.querySelector('button');
+    function check(){
+      let ok;
+      if(c.dataset.select){const v=wrap.querySelector('select').value; if(v==='')return; ok=c.dataset.any? +v>0 : +v===+c.dataset.answer;}
+      else{const v=parseNum(wrap.querySelector('input').value); if(isNaN(v)){res.className='result bad'; res.textContent='Γράψε έναν αριθμό.'; return;} ok=Math.abs(v-+c.dataset.answer)<=+c.dataset.tol+1e-9;}
+      res.className='result '+(ok?'ok':'bad'); res.textContent=ok?(c.dataset.any?'Καταγράφηκε. Αυτό είναι το εύρημά σου για το επόμενο μάθημα.':'Σωστά! Συνέχισε.'):(c.dataset.any?'Κάν᾽ την πρώτα και ξαναέλα.':'Δεν ταιριάζει με αυτό που περιμένω. Δες τη Βοήθεια και ξαναδοκίμασε.');
+      state.check[ci]=ok; save(); updateDone(); finalScore();
+    }
+    btn.onclick=check; const inp=wrap.querySelector('input'); if(inp) inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+    if(state.check[ci]===true){res.className='result ok'; res.textContent='Ολοκληρωμένο ✓';}
+  });
+  function finalScore(){
+    const n=checks.length, ok=checks.filter((c,i)=>state.check[i]===true).length;
+    const el=document.getElementById('finalScore');
+    if(ok===n){el.style.display='block'; el.innerHTML='<b>ΟΛΟΚΛΗΡΩΣΗ</b>Και τα '+n+' checkpoints. Μένει να ανεβάσεις την αναφορά και τα screenshots στο eClass.';}
+    else if(ok>0){el.style.display='block'; el.innerHTML='<b>ΠΡΟΟΔΟΣ</b>'+ok+' από '+n+' checkpoints.';}
+  }
+  function updateDone(){
+    steps.forEach((s,i)=>{
+      const qs=[...s.querySelectorAll('.quiz')].map(q=>quizzes.indexOf(q));
+      const cs=[...s.querySelectorAll('.check')].map(c=>checks.indexOf(c));
+      let extra=true; if(s.querySelector('#journey')) extra=[0,1,2,3,4,5].every(k=>state.seen[k]);
+      const all=qs.every(i=>state.quiz[i]===true)&&cs.every(i=>state.check[i]===true)&&extra&&(qs.length+cs.length>0);
+      stepper.children[i].classList.toggle('done',all);
+    });
+  }
+
+  // ---- simulator ----
+  const REV={ota:13714401, tato:5659555, dir:4099619, grp:1869157, corp:577912};
+  const TOT=Object.values(REV).reduce((a,b)=>a+b,0);
+  const base={tato:REV.tato/TOT*100, dir:Math.round(REV.dir/TOT*1000)/10, grp:REV.grp/TOT*100, corp:REV.corp/TOT*100}; base.ota=100-base.tato-base.dir-base.grp-base.corp;
+  const defC={cOta:18,cTato:20,cDir1:4,cDir2:5,cGrp:10,cCorp:5};
+  const $=id=>document.getElementById(id);
+  function fmtM(x){return (x/1e6).toFixed(2).replace('.',',')+' εκ. €';}
+  function fmtK(x){return (x>=0?'+':'−')+Math.round(Math.abs(x)/1000).toLocaleString('el-GR')+' χιλ. €';}
+  function shares(){
+    const d=+$('sDirect').value; const from=$('sFrom').value; let ota=base.ota, tato=base.tato;
+    const delta=d-base.dir;
+    if(from==='ota'){ota=Math.max(0,base.ota-delta); tato=base.tato+Math.min(0,base.ota-delta);} else {tato=Math.max(0,base.tato-delta); ota=base.ota+Math.min(0,base.tato-delta);}
+    return {ota,tato,dir:d,grp:base.grp,corp:base.corp};
+  }
+  function cost(sh,c){return TOT*(sh.ota/100*c.cOta/100+sh.tato/100*c.cTato/100+sh.dir/100*(c.cDir1+c.cDir2)/100+sh.grp/100*c.cGrp/100+sh.corp/100*c.cCorp/100);}
+  const baseCost=cost(base,defC);
+  function render(){
+    const sh=shares(); const c={}; for(const k in defC) c[k]=+$(k).value;
+    $('vDirect').textContent=sh.dir.toFixed(1).replace('.',',')+'%'; $('sOta').value=sh.ota; $('vOta').textContent=sh.ota.toFixed(1).replace('.',',')+'%'; $('sTato').value=sh.tato; $('vTato').textContent=sh.tato.toFixed(1).replace('.',',')+'%';
+    for(const k in defC) $('v'+k).textContent=c[k].toFixed(1).replace('.',',')+'%';
+    const cst=cost(sh,c);
+    $('simBar').innerHTML=['ota','tato','dir','grp','corp'].map((k,i)=>'<span style="width:'+sh[k]+'%;background:'+['#3F63D6','#7895F9','#E8740F','#B9C8FC','#5A6385'][i]+'"></span>').join('');
+    $('kGross').textContent=fmtM(TOT); $('kCost').textContent=fmtM(cst); $('kCostPct').textContent=(cst/TOT*100).toFixed(1).replace('.',',')+'% των εσόδων';
+    $('kNet').textContent=fmtM(TOT-cst); $('kNetD').textContent='dataset με προεπιλογές: '+fmtM(TOT-baseCost);
+    const diff=baseCost-cst; $('kDiff').textContent=fmtK(diff); $('kDiff').style.color=diff>=0?'var(--green)':'var(--red)';
+  }
+  function reset(){$('sDirect').value=base.dir; $('sFrom').value='ota'; for(const k in defC) $(k).value=defC[k]; render();}
+  ['sDirect','sFrom','cOta','cTato','cDir1','cDir2','cGrp','cCorp'].forEach(id=>$(id).addEventListener('input',render));
+  $('simReset').onclick=reset; reset();
+
+  // ---- parity form ----
+  const pf=['pHotel','pCat','pDate','pNights','pRoom','pB','pE','pG','pS','bB','bE','bG','bS','cB','cE','cG','cS','nB','nE','nG','nS','pConc'];
+  function pget(id){const el=$(id); return el.type==='checkbox'?el.checked:el.value;}
+  function pset(id,v){const el=$(id); if(el.type==='checkbox') el.checked=!!v; else el.value=v??'';}
+  pf.forEach(id=>{if(state.parity[id]!==undefined) pset(id,state.parity[id]); $(id).addEventListener('input',()=>{state.parity[id]=pget(id); save(); prender();});});
+  function prender(){
+    const ch=[['Booking.com','pB','bB','cB','nB'],['Expedia / Hotels.com','pE','bE','cE','nE'],['Google Hotels (χαμηλότερη)','pG','bG','cG','nG'],['Site του ξενοδοχείου','pS','bS','cS','nS']];
+    const rows=ch.map(([n,p,b,c,note])=>({n,p:parseFloat($(p).value),b:$(b).checked,c:$(c).checked,note:$(note).value})).filter(r=>!isNaN(r.p)&&r.p>0);
+    const out=$('pOut');
+    if(rows.length<2){out.textContent='Συμπλήρωσε τουλάχιστον δύο τιμές για να δεις τη σύγκριση.'; return;}
+    const min=Math.min(...rows.map(r=>r.p));
+    let html='<table>'+rows.map(r=>'<tr><td'+(r.p===min?' class="best"':'')+'>'+r.n+(r.p===min?' · φθηνότερο':'')+'</td><td class="r">'+r.p.toFixed(0)+' €</td><td class="r">'+(r.p===min?'—':'+'+((r.p-min)/min*100).toFixed(1).replace('.',',')+'%')+'</td><td>'+(r.b?'πρωινό · ':'')+(r.c?'δωρεάν ακύρωση':'')+(r.note?' · '+r.note:'')+'</td></tr>').join('')+'</table>';
+    const site=rows.find(r=>r.n.startsWith('Site')); const otas=rows.filter(r=>!r.n.startsWith('Site'));
+    let verdict='';
+    if(!site) verdict='Το ξενοδοχείο δεν μπόρεσε να ελεγχθεί απευθείας: χωρίς online κράτηση στο site, κάθε πελάτης που το βρίσκει καταλήγει σε μεσάζοντα.';
+    else{const minOta=Math.min(...otas.map(r=>r.p)); const d=(site.p-minOta)/minOta*100;
+      if(d<-0.5) verdict='Το site είναι '+Math.abs(d).toFixed(1).replace('.',',')+'% φθηνότερο από την καλύτερη OTA: το ξενοδοχείο χρησιμοποιεί την ελευθερία τιμής μετά τον DMA. Ερώτημα: το ξέρει ο πελάτης που συγκρίνει στο Google;';
+      else if(d>0.5) verdict='Μια OTA είναι '+d.toFixed(1).replace('.',',')+'% φθηνότερη από το ίδιο το ξενοδοχείο. Ή υποτιμολόγηση (bed bank, Sponsored Benefit), ή το ξενοδοχείο δεν διαχειρίζεται το site του. Και στις δύο περιπτώσεις ο πελάτης δεν έχει λόγο να κλείσει απευθείας.';
+      else verdict='Ισοτιμία στο ευρώ. Νόμιμη και συνηθισμένη, αλλά χαμένη ευκαιρία: χωρίς κανένα κίνητρο, ο πελάτης κλείνει εκεί που έχει ήδη λογαριασμό, δηλαδή στην OTA.'+( site.note.startsWith('Δώρο')||site.note.startsWith('Έκπτωση')?' Εδώ όμως το site δίνει κάτι παραπάνω, που δεν φαίνεται στη σύγκριση τιμών: αυτό είναι η σωστή απάντηση στο Sponsored Benefit.':'');}
+    out.innerHTML=html+'<p style="margin:8px 0 0;font-size:14px">'+verdict+'</p>';
+  }
+  prender();
+  $('pCopy').onclick=async()=>{
+    const L=[];
+    L.push('ΕΛΕΓΧΟΣ ΙΣΟΤΙΜΙΑΣ · Εβδομάδα 6'); L.push('Ξενοδοχείο: '+$('pHotel').value+' ('+$('pCat').value+')'); L.push('Check-in: '+$('pDate').value+' · '+$('pNights').value+' · '+$('pRoom').value);
+    [['Booking.com','pB','bB','cB','nB'],['Expedia/Hotels.com','pE','bE','cE','nE'],['Google Hotels','pG','bG','cG','nG'],['Site ξενοδοχείου','pS','bS','cS','nS']].forEach(([n,p,b,c,note])=>L.push(n+': '+($(p).value||'—')+' € · '+($(b).checked?'πρωινό':'χωρίς πρωινό')+' · '+($(c).checked?'δωρεάν ακύρωση':'μη επιστρέψιμο')+($(note).value?' · '+$(note).value:'')));
+    L.push('Σύγκριση: '+$('pOut').innerText.replace(/\n+/g,' | ')); L.push('Προς τον διευθυντή: '+$('pConc').value);
+    try{await navigator.clipboard.writeText(L.join('\n')); $('pCopy').textContent='Αντιγράφηκε ✓';}catch(e){$('pCopy').textContent='Επίλεξε και Ctrl+C';} setTimeout(()=>$('pCopy').textContent='Αντιγραφή αναφοράς για το eClass',2000);
+  };
+  $('pClear').onclick=()=>{pf.forEach(id=>pset(id,'')); state.parity={}; save(); prender();};
+
+  jb[0].click(); updateDone(); finalScore(); go(Math.min(state.step||0,steps.length-1));
+})();
+</script>
+</body>
+</html>
